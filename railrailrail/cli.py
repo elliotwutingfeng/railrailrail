@@ -74,7 +74,7 @@ if __name__ == "__main__":
     network_path = (
         pathlib.Path(__file__).resolve().parent.parent
         / "config"
-        / ("network.toml" if args.network == "now" else f"network_{args.network}.toml")
+        / f"network_{args.network}.toml"
     )
     network_path.parent.mkdir(parents=True, exist_ok=True)
 
