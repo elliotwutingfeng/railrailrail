@@ -1,0 +1,16 @@
+schema = 1
+transfer_time = 7
+dwell_time = 0.5
+
+[stations]
+NS15 = "Yio Chu Kang"
+NS16 = "Ang Mo Kio"
+NS17 = "Bishan"
+NS18 = "Braddell"
+NS19 = "Toa Payoh"
+
+[edges]
+NS15-NS16 = {duration = 3}
+NS16-NS17 = {duration = 4}
+NS17-NS18 = {duration = 2}
+NS18-NS19 = {duration = 2}

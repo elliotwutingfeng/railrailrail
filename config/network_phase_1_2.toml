@@ -1,0 +1,37 @@
+schema = 1
+transfer_time = 7
+dwell_time = 0.5
+
+[stations]
+EW13 = "City Hall"
+EW14 = "Raffles Place"
+EW15 = "Tanjong Pagar"
+EW16 = "Outram Park"
+NS15 = "Yio Chu Kang"
+NS16 = "Ang Mo Kio"
+NS17 = "Bishan"
+NS18 = "Braddell"
+NS19 = "Toa Payoh"
+NS20 = "Novena"
+NS21 = "Newton"
+NS22 = "Orchard"
+NS23 = "Somerset"
+NS24 = "Dhoby Ghaut"
+NS25 = "City Hall"
+NS26 = "Raffles Place"
+
+[edges]
+EW13-EW14 = {duration = 2}
+EW14-EW15 = {duration = 2}
+EW15-EW16 = {duration = 2}
+NS15-NS16 = {duration = 3}
+NS16-NS17 = {duration = 4}
+NS17-NS18 = {duration = 2}
+NS18-NS19 = {duration = 2}
+NS19-NS20 = {duration = 3}
+NS20-NS21 = {duration = 2}
+NS21-NS22 = {duration = 3}
+NS22-NS23 = {duration = 2}
+NS23-NS24 = {duration = 2}
+NS24-NS25 = {duration = 3}
+NS25-NS26 = {duration = 2}

@@ -145,6 +145,8 @@ class Config:
             ):
                 if (station_code, next_station_code) == ("BP13", "BP14"):
                     continue  # Special case: No link between BP13 and BP14.
+                if (station_code, next_station_code) == ("NS4", "NS13"):
+                    continue  # Special case: No link between NS4 and NS13
                 adjacency_matrix[station_code][next_station_code] = {
                     "duration": Durations.edges.get(
                         f"{station_code}-{next_station_code}", dict()
