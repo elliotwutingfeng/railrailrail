@@ -224,7 +224,7 @@ BP1-BP2 = {duration = 2}
 BP2-BP3 = {duration = 1}
 BP3-BP4 = {duration = 2}
 BP4-BP5 = {duration = 1}
-BP5-BP6 = {duration = 1}
+BP5-BP6 = {duration = 1, edge_type = "bukit_panjang_main"}
 BP6-BP7 = {duration = 1, edge_type = "bukit_panjang_service_b"}
 BP6-BP13 = {duration = 2, edge_type = "bukit_panjang_service_a"}
 BP7-BP8 = {duration = 2}

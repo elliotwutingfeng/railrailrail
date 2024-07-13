@@ -17,13 +17,303 @@ limitations under the License.
 import types
 from collections import defaultdict
 
-from railrailrail.logger import logger
 from railrailrail.utils import StationUtils
+
+# Yio Chu Kang - Toa Payoh 7 November 1987 phase_1_1
+# Toa Payoh - Outram Park (Direct train service to Outram Park via Raffles Place; City Hall) 12 December 1987 phase_1_2
+# Outram Park - Clementi 12 March 1988 phase_1a
+# Clementi - Lakeside 5 November 1988 phase_2b_1
+# Yio Chu Kang - Yishun 20 December 1988 phase_2b_2
+# Raffles Place - Marina Bay and City Hall - Tanah Merah (Separation of the North-South Line & East-West Line) 4 November 1989 phase_2a_1
+# Tanah Merah - Pasir Ris 16 December 1989 phase_2a_2
+# Jurong East - Choa Chu Kang 10 March 1990 phase_2b_3
+# Lakeside - Boon Lay 6 July 1990 phase_2b_4
+# Choa Chu Kang - Yishun 10 February 1996
+
+# Full closure between Joo Koon and Gul Circle until mid-2018; shuttle buses provided.
 
 
 class RailExpansion:
-    future_stages: types.MappingProxyType = types.MappingProxyType(
+    stages: types.MappingProxyType = types.MappingProxyType(
         {
+            "phase_1_1": (
+                ("NS15", "Yio Chu Kang"),
+                ("NS16", "Ang Mo Kio"),
+                ("NS17", "Bishan"),
+                ("NS18", "Braddell"),
+                ("NS19", "Toa Payoh"),
+            ),  # 7 November 1987
+            "phase_1_2": (
+                ("EW13", "City Hall"),
+                ("EW14", "Raffles Place"),
+                ("EW15", "Tanjong Pagar"),
+                ("EW16", "Outram Park"),
+                ("NS20", "Novena"),
+                ("NS21", "Newton"),
+                ("NS22", "Orchard"),
+                ("NS23", "Somerset"),
+                ("NS24", "Dhoby Ghaut"),
+                ("NS25", "City Hall"),
+                ("NS26", "Raffles Place"),
+            ),  # 12 December 1987
+            "phase_1a": (
+                ("EW17", "Tiong Bahru"),
+                ("EW18", "Redhill"),
+                ("EW19", "Queenstown"),
+                ("EW20", "Commonwealth"),
+                ("EW21", "Buona Vista"),
+                ("EW23", "Clementi"),
+            ),  # 12 March 1988
+            "phase_2b_1": (
+                ("EW24", "Jurong East"),
+                ("EW25", "Chinese Garden"),
+                ("EW26", "Lakeside"),
+            ),  # 5 November 1988
+            "phase_2b_2": (
+                ("NS13", "Yishun"),
+                ("NS14", "Khatib"),
+            ),  # 20 December 1988
+            "phase_2a_1": (
+                ("EW4", "Tanah Merah"),
+                ("EW5", "Bedok"),
+                ("EW6", "Kembangan"),
+                ("EW7", "Eunos"),
+                ("EW8", "Paya Lebar"),
+                ("EW9", "Aljunied"),
+                ("EW10", "Kallang"),
+                ("EW11", "Lavender"),
+                ("EW12", "Bugis"),
+                ("NS27", "Marina Bay"),
+            ),  # 4 November 1989
+            "phase_2a_2": (
+                ("EW1", "Pasir Ris"),
+                ("EW2", "Tampines"),
+                ("EW3", "Simei"),
+            ),  # 16 December 1989
+            "phase_2b_3": (
+                ("NS1", "Jurong East"),
+                ("NS2", "Bukit Batok"),
+                ("NS3", "Bukit Gombak"),
+                ("NS4", "Choa Chu Kang"),
+            ),  # 10 March 1990
+            "phase_2b_4": (("EW27", "Boon Lay"),),  # 6 July 1990
+            "woodlands_extension": (
+                ("NS5", "Yew Tee"),
+                ("NS7", "Kranji"),
+                ("NS8", "Marsiling"),
+                ("NS9", "Woodlands"),
+                ("NS10", "Admiralty"),
+                ("NS11", "Sembawang"),
+            ),  # 10 February 1996
+            "bplrt": (
+                ("BP1", "Choa Chu Kang"),
+                ("BP2", "South View"),
+                ("BP3", "Keat Hong"),
+                ("BP4", "Teck Whye"),
+                ("BP5", "Phoenix"),
+                ("BP6", "Bukit Panjang"),
+                ("BP7", "Petir"),
+                ("BP8", "Pending"),
+                ("BP9", "Bangkit"),
+                ("BP10", "Fajar"),
+                ("BP11", "Segar"),
+                ("BP12", "Jelapang"),
+                ("BP13", "Senja"),
+                ("BP14", "Ten Mile Junction"),
+            ),  # 6 November 1999
+            "ewl_expo": (
+                ("CG", "Tanah Merah"),
+                ("CG1", "Expo"),
+            ),  # 10 January 2001
+            "dover": (("EW22", "Dover"),),  # 18 October 2001
+            "ewl_changi_airport": (("CG2", "Changi Airport"),),  # 8 February 2002
+            "sklrt_east_loop": (
+                ("STC", "Sengkang"),
+                ("SE1", "Compassvale"),
+                ("SE2", "Rumbia"),
+                ("SE3", "Bakau"),
+                ("SE4", "Kangkar"),
+                ("SE5", "Ranggung"),
+            ),  # 18 January 2003
+            "nel": (
+                ("NE1", "HarbourFront"),
+                ("NE3", "Outram Park"),
+                ("NE4", "Chinatown"),
+                ("NE5", "Clarke Quay"),
+                ("NE6", "Dhoby Ghaut"),
+                ("NE7", "Little India"),
+                ("NE8", "Farrer Park"),
+                ("NE9", "Boon Keng"),
+                ("NE10", "Potong Pasir"),
+                ("NE12", "Serangoon"),
+                ("NE13", "Kovan"),
+                ("NE14", "Hougang"),
+                ("NE16", "Sengkang"),
+                ("NE17", "Punggol"),
+            ),  # 20 June 2003
+            "pglrt_east_loop_and_sklrt_west_loop": (
+                ("PTC", "Punggol"),
+                ("PE1", "Cove"),
+                ("PE2", "Meridian"),
+                ("PE3", "Coral Edge"),
+                ("PE4", "Riviera"),
+                ("PE5", "Kadaloor"),
+                ("SW4", "Thanggam"),
+                ("SW5", "Fernvale"),
+                ("SW6", "Layar"),
+                ("SW7", "Tongkang"),
+                ("SW8", "Renjong"),
+            ),  # 29 January 2005
+            "buangkok": (("NE15", "Buangkok"),),  # 15 January 2006
+            "oasis": (("PE6", "Oasis"),),  # 15 June 2007
+            "farmway": (("SW2", "Farmway"),),  # 15 November 2007
+            "ewl_boon_lay_extension": (
+                ("EW28", "Pioneer"),
+                ("EW29", "Joo Koon"),
+            ),  # 28 February 2009
+            "ccl_3": (
+                ("CC12", "Bartley"),
+                ("CC13", "Serangoon"),
+                ("CC14", "Lorong Chuan"),
+                ("CC15", "Bishan"),
+                ("CC16", "Marymount"),
+            ),  # 28 May 2009
+            "ccl_1_and_ccl_2": (
+                ("CC1", "Dhoby Ghaut"),
+                ("CC2", "Bras Basah"),
+                ("CC3", "Esplanade"),
+                ("CC4", "Promenade"),
+                ("CC5", "Nicoll Highway"),
+                ("CC6", "Stadium"),
+                ("CC7", "Mountbatten"),
+                ("CC8", "Dakota"),
+                ("CC9", "Paya Lebar"),
+                ("CC10", "MacPherson"),
+                ("CC11", "Tai Seng"),
+            ),  # 17 April 2010
+            "ten_mile_junction_temporary_closure": (),  # 10 December 2010
+            "woodleigh_and_damai": (
+                ("NE11", "Woodleigh"),
+                ("PE7", "Damai"),
+            ),  # 20 June 2011
+            "ccl_4_and_ccl_5": (
+                ("CC17", "Caldecott"),
+                ("CC19", "Botanic Gardens"),
+                ("CC20", "Farrer Road"),
+                ("CC21", "Holland Village"),
+                ("CC22", "Buona Vista"),
+                ("CC23", "one-north"),
+                ("CC24", "Kent Ridge"),
+                ("CC25", "Haw Par Villa"),
+                ("CC26", "Pasir Panjang"),
+                ("CC27", "Labrador Park"),
+                ("CC28", "Telok Blangah"),
+                ("CC29", "HarbourFront"),
+            ),  # 8 October 2011
+            "ten_mile_junction_reopen": (
+                ("BP14", "Ten Mile Junction"),
+            ),  # 30 December 2011
+            "ccl_e": (
+                ("CE0X", "Stadium"),  # Pseudo station_code
+                ("CE0Y", "Nicoll Highway"),  # Pseudo station_code
+                ("CE0Z", "Promenade"),  # Pseudo station_code
+                ("CE1", "Bayfront"),
+                ("CE2", "Marina Bay"),
+            ),  # 14 January 2012
+            "cheng_lim": (("SW1", "Cheng Lim"),),  # 1 January 2013
+            "dtl_1": (
+                ("DT14", "Bugis"),
+                ("DT15", "Promenade"),
+                ("DT16", "Bayfront"),
+                ("DT17", "Downtown"),
+                ("DT18", "Telok Ayer"),
+                ("DT19", "Chinatown"),
+            ),  # 22 December 2013
+            "pglrt_west_loop": (
+                ("PW5", "Nibong"),
+                ("PW6", "Sumang"),
+                ("PW7", "Soo Teck"),
+            ),  # 29 June 2014
+            "marina_south_pier": (("NS28", "Marina South Pier"),),  # 23 November 2014
+            "kupang": (("SW3", "Kupang"),),  # 27 June 2015
+            "dtl_2": (
+                ("DT1", "Bukit Panjang"),
+                ("DT2", "Cashew"),
+                ("DT3", "Hillview"),
+                ("DT5", "Beauty World"),
+                ("DT6", "King Albert Park"),
+                ("DT7", "Sixth Avenue"),
+                ("DT8", "Tan Kah Kee"),
+                ("DT9", "Botanic Gardens"),
+                ("DT10", "Stevens"),
+                ("DT11", "Newton"),
+                ("DT12", "Little India"),
+                ("DT13", "Rochor"),
+            ),  # 27 December 2015
+            "sam_kee": (("PW1", "Sam Kee"),),  # 29 February 2016
+            "punggol_point": (("PW3", "Punggol Point"),),  # 29 December 2016
+            "samudera": (("PW4", "Samudera"),),  # 31 March 2017
+            "ewl_tuas_extension": (
+                ("EW30", "Gul Circle"),
+                ("EW31", "Tuas Crescent"),
+                ("EW32", "Tuas West Road"),
+                ("EW33", "Tuas Link"),
+            ),  # 18 June 2017
+            "dtl_3": (
+                ("DT20", "Fort Canning"),
+                ("DT21", "Bencoolen"),
+                ("DT22", "Jalan Besar"),
+                ("DT23", "Bendemeer"),
+                ("DT24", "Geylang Bahru"),
+                ("DT25", "Mattar"),
+                ("DT26", "MacPherson"),
+                ("DT27", "Ubi"),
+                ("DT28", "Kaki Bukit"),
+                ("DT29", "Bedok North"),
+                ("DT30", "Bedok Reservoir"),
+                ("DT31", "Tampines West"),
+                ("DT32", "Tampines"),
+                ("DT33", "Tampines East"),
+                ("DT34", "Upper Changi"),
+                ("DT35", "Expo"),
+            ),  # 21 October 2017
+            "ten_mile_junction_permanent_closure": (),  # 13 January 2019
+            "canberra": (("NS12", "Canberra"),),  # 2 November 2019
+            "tel_1": (
+                ("TE1", "Woodlands North"),
+                ("TE2", "Woodlands"),
+                ("TE3", "Woodlands South"),
+            ),  # 31 January 2020
+            "tel_2": (
+                ("TE4", "Springleaf"),
+                ("TE5", "Lentor"),
+                ("TE6", "Mayflower"),
+                ("TE7", "Bright Hill"),
+                ("TE8", "Upper Thomson"),
+                ("TE9", "Caldecott"),
+            ),  # 28 August 2021
+            "tel_3": (
+                ("TE11", "Stevens"),
+                ("TE12", "Napier"),
+                ("TE13", "Orchard Boulevard"),
+                ("TE14", "Orchard"),
+                ("TE15", "Great World"),
+                ("TE16", "Havelock"),
+                ("TE17", "Outram Park"),
+                ("TE18", "Maxwell"),
+                ("TE19", "Shenton Way"),
+                ("TE20", "Marina Bay"),
+                ("TE22", "Gardens by the Bay"),
+            ),  # 13 November 2022
+            "tel_4": (
+                ("TE23", "Tanjong Rhu"),
+                ("TE24", "Katong Park"),
+                ("TE25", "Tanjong Katong"),
+                ("TE26", "Marine Parade"),
+                ("TE27", "Marine Terrace"),
+                ("TE28", "Siglap"),
+                ("TE29", "Bayshore"),
+            ),  # 23 June 2024
             "punggol_coast_extension": (("NE18", "Punggol Coast"),),  # 2024
             "teck_lee": (("PW2", "Teck Lee"),),  # 2024
             "hume": (("DT4", "Hume"),),  # 2025
@@ -119,7 +409,7 @@ class RailExpansion:
         }
     )
 
-    future_stages_defunct: types.MappingProxyType = types.MappingProxyType(
+    stages_defunct: types.MappingProxyType = types.MappingProxyType(
         {
             "ccl_6": (
                 ("CE0X", "Stadium"),  # Pseudo station_code
@@ -128,6 +418,8 @@ class RailExpansion:
                 ("CE1", "Bayfront"),
                 ("CE2", "Marina Bay"),
             ),
+            "ten_mile_junction_temporary_closure": (("BP14", "Ten Mile Junction"),),
+            "ten_mile_junction_permanent_closure": (("BP14", "Ten Mile Junction"),),
             "cg_tel_c": (
                 ("CG2", "Changi Airport"),
                 ("CG1", "Expo"),
@@ -136,33 +428,23 @@ class RailExpansion:
         }
     )
 
-    def __init__(self, stage: str | None = None) -> None:
-        self.new_stations: set[tuple[str, str]] = set()
-        self.defunct_stations: set[tuple[str, str]] = set()
-        if stage not in RailExpansion.future_stages:
+    def __init__(self, stage: str) -> None:
+        self.stations_to_include: set[tuple[str, str]] = set()
+        if stage not in RailExpansion.stages:
             return
         for (
             current_stage,
             current_stage_stations,
-        ) in RailExpansion.future_stages.items():
-            self.new_stations.update(current_stage_stations)
-            if current_stage in RailExpansion.future_stages_defunct:
-                self.defunct_stations.update(
-                    RailExpansion.future_stages_defunct[current_stage]
+        ) in RailExpansion.stages.items():
+            self.stations_to_include.update(current_stage_stations)
+            if current_stage in RailExpansion.stages_defunct:
+                self.stations_to_include.difference_update(
+                    RailExpansion.stages_defunct[current_stage]
                 )
             if (
                 current_stage == stage
             ):  # Add stations from all stages up to and including `stage`.
                 break
-
-    def update_stations(self, stations: set[tuple[str, str]]) -> None:
-        for station_code, station_name in self.new_stations:
-            stations.add((station_code, station_name))
-        for station_code, station_name in self.defunct_stations:
-            try:
-                stations.remove((station_code, station_name))
-            except KeyError:
-                logger.info("Key %s not found", station_code)
 
 
 class WalkingTrainMap:
@@ -210,16 +492,34 @@ class SemiInterchange:
     """
 
     edges: tuple[tuple[str, str, str]] = (
+        ("BP5", "BP6", "bukit_panjang_main"),
         ("BP6", "BP13", "bukit_panjang_service_a"),
         ("BP6", "BP7", "bukit_panjang_service_b"),
-        ("STC", "SW1", "sengkang_west_loop"),
-        ("STC", "SW8", "sengkang_west_loop"),
+        ("BP6", "BP14", "bukit_panjang_service_c"),
+        #
         ("STC", "SE1", "sengkang_east_loop"),
         ("STC", "SE5", "sengkang_east_loop"),
-        ("PTC", "PW1", "punggol_west_loop"),
-        ("PTC", "PW7", "punggol_west_loop"),
+        ("STC", "SW1", "sengkang_west_loop"),
+        (
+            "STC",
+            "SW2",
+            "sengkang_west_loop",
+        ),  # Defunct with SW1 | cheng_lim
+        (
+            "STC",
+            "SW4",
+            "sengkang_west_loop",
+        ),  # Defunct with SW2 | farmway
+        ("STC", "SW8", "sengkang_west_loop"),
+        #
         ("PTC", "PE1", "punggol_east_loop"),
+        ("PTC", "PE5", "punggol_east_loop"),  # Defunct with PE6 | oasis
+        ("PTC", "PE6", "punggol_east_loop"),  # Defunct with PE7 | woodleigh_and_damai
         ("PTC", "PE7", "punggol_east_loop"),
+        ("PTC", "PW1", "punggol_west_loop"),
+        ("PTC", "PW5", "punggol_west_loop"),  # Defunct with PW1 | sam_kee
+        ("PTC", "PW7", "punggol_west_loop"),
+        #
         (
             "CC4",
             "CC5",
@@ -235,6 +535,7 @@ class SemiInterchange:
             "CC34",
             "promenade_south",
         ),
+        #
         ("JS6", "JS7", "bahar_east"),
         ("JS7", "JW1", "bahar_west"),
         ("JS7", "JS8", "bahar_south"),
@@ -248,6 +549,13 @@ class SemiInterchange:
             ("sengkang_east_loop", "sengkang_west_loop"),
             ("bukit_panjang_service_a", "bukit_panjang_service_b"),
             ("bukit_panjang_service_b", "bukit_panjang_service_a"),
+            # Assume Service C always involves transfer at BP6.
+            ("bukit_panjang_service_c", "bukit_panjang_main"),
+            ("bukit_panjang_service_c", "bukit_panjang_service_a"),
+            ("bukit_panjang_service_c", "bukit_panjang_service_b"),
+            ("bukit_panjang_main", "bukit_panjang_service_c"),
+            ("bukit_panjang_service_a", "bukit_panjang_service_c"),
+            ("bukit_panjang_service_b", "bukit_panjang_service_c"),
             ("promenade_south", "promenade_west"),
             ("promenade_west", "promenade_south"),
             ("promenade_east", "promenade_south"),
@@ -316,6 +624,7 @@ class Durations:
         "BP5-BP6": {"duration": 1},
         "BP6-BP7": {"duration": 1},
         "BP6-BP13": {"duration": 2},
+        "BP6-BP14": {"duration": 1},
         "BP7-BP8": {"duration": 2},
         "BP8-BP9": {"duration": 1},
         "BP9-BP10": {"duration": 2},
@@ -444,6 +753,7 @@ class Durations:
         "EW19-EW20": {"duration": 3},
         "EW20-EW21": {"duration": 2},
         "EW21-EW22": {"duration": 3},
+        "EW21-EW23": {"duration": 5},
         "EW22-EW23": {"duration": 2},
         "EW23-EW24": {"duration": 5},
         "EW24-EW25": {"duration": 2},
@@ -487,10 +797,12 @@ class Durations:
         "NE8-NE9": {"duration": 2},
         "NE9-NE10": {"duration": 3},
         "NE10-NE11": {"duration": 1},
+        "NE10-NE12": {"duration": 3},
         "NE11-NE12": {"duration": 2},
         "NE12-NE13": {"duration": 3},
         "NE13-NE14": {"duration": 2},
         "NE14-NE15": {"duration": 2},
+        "NE14-NE16": {"duration": 4},
         "NE15-NE16": {"duration": 2},
         "NE16-NE17": {"duration": 3},
         "NE17-NE18": {"duration": 3},
@@ -508,6 +820,7 @@ class Durations:
         "NS9-NS10": {"duration": 3},
         "NS10-NS11": {"duration": 3},
         "NS11-NS12": {"duration": 3},
+        "NS11-NS13": {"duration": 5},
         "NS12-NS13": {"duration": 3},
         "NS13-NS14": {"duration": 2},
         "NS14-NS15": {"duration": 5},
@@ -530,14 +843,19 @@ class Durations:
         "PE4-PE5": {"duration": 1},
         "PE5-PE6": {"duration": 1},
         "PE6-PE7": {"duration": 1},
-        "PTC-PW1": {"duration": 2},
-        "PTC-PW7": {"duration": 3},
         "PTC-PE1": {"duration": 3},
+        "PTC-PE5": {"duration": 4},
+        "PTC-PE6": {"duration": 3},
         "PTC-PE7": {"duration": 2},
+        "PTC-PW1": {"duration": 2},
+        "PTC-PW5": {"duration": 5},
+        "PTC-PW7": {"duration": 3},
         "PW1-PW2": {"duration": 1},
         "PW1-PW3": {"duration": 2},
+        "PW1-PW5": {"duration": 4},
         "PW2-PW3": {"duration": 1},
         "PW3-PW4": {"duration": 1},
+        "PW3-PW5": {"duration": 2},
         "PW4-PW5": {"duration": 1},
         "PW5-PW6": {"duration": 1},
         "PW6-PW7": {"duration": 1},
@@ -545,12 +863,15 @@ class Durations:
         "SE2-SE3": {"duration": 1},
         "SE3-SE4": {"duration": 1},
         "SE4-SE5": {"duration": 2},
-        "STC-SW1": {"duration": 2},
-        "STC-SW8": {"duration": 3},
         "STC-SE1": {"duration": 2},
         "STC-SE5": {"duration": 3},
+        "STC-SW1": {"duration": 2},
+        "STC-SW2": {"duration": 3},
+        "STC-SW4": {"duration": 5},
+        "STC-SW8": {"duration": 3},
         "SW1-SW2": {"duration": 1},
         "SW2-SW3": {"duration": 1},
+        "SW2-SW4": {"duration": 2},
         "SW3-SW4": {"duration": 1},
         "SW4-SW5": {"duration": 1},
         "SW5-SW6": {"duration": 1},

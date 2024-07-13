@@ -190,40 +190,13 @@ SW5 = "Fernvale"
 SW6 = "Layar"
 SW7 = "Tongkang"
 SW8 = "Renjong"
-TE1 = "Woodlands North"
-TE2 = "Woodlands"
-TE3 = "Woodlands South"
-TE4 = "Springleaf"
-TE5 = "Lentor"
-TE6 = "Mayflower"
-TE7 = "Bright Hill"
-TE8 = "Upper Thomson"
-TE9 = "Caldecott"
-TE11 = "Stevens"
-TE12 = "Napier"
-TE13 = "Orchard Boulevard"
-TE14 = "Orchard"
-TE15 = "Great World"
-TE16 = "Havelock"
-TE17 = "Outram Park"
-TE18 = "Maxwell"
-TE19 = "Shenton Way"
-TE20 = "Marina Bay"
-TE22 = "Gardens by the Bay"
-TE23 = "Tanjong Rhu"
-TE24 = "Katong Park"
-TE25 = "Tanjong Katong"
-TE26 = "Marine Parade"
-TE27 = "Marine Terrace"
-TE28 = "Siglap"
-TE29 = "Bayshore"
 
 [edges]
 BP1-BP2 = {duration = 2}
 BP2-BP3 = {duration = 1}
 BP3-BP4 = {duration = 2}
 BP4-BP5 = {duration = 1}
-BP5-BP6 = {duration = 1}
+BP5-BP6 = {duration = 1, edge_type = "bukit_panjang_main"}
 BP6-BP7 = {duration = 1, edge_type = "bukit_panjang_service_b"}
 BP6-BP13 = {duration = 2, edge_type = "bukit_panjang_service_a"}
 BP7-BP8 = {duration = 2}
@@ -304,7 +277,6 @@ DT18-NS26 = {duration = 5, mode = "walk"}
 DT19-DT20 = {duration = 2}
 DT19-EW14 = {duration = 11, mode = "walk"}
 DT19-NS26 = {duration = 11, mode = "walk"}
-DT19-TE18 = {duration = 10, mode = "walk"}
 DT20-DT21 = {duration = 2}
 DT20-NE5 = {duration = 10, mode = "walk"}
 DT21-DT22 = {duration = 1}
@@ -360,7 +332,6 @@ NE3-NE4 = {duration = 1}
 NE4-EW14 = {duration = 11, mode = "walk"}
 NE4-NE5 = {duration = 2}
 NE4-NS26 = {duration = 11, mode = "walk"}
-NE4-TE18 = {duration = 10, mode = "walk"}
 NE5-EW14 = {duration = 10, mode = "walk"}
 NE5-NE6 = {duration = 3}
 NE5-NS26 = {duration = 10, mode = "walk"}
@@ -436,36 +407,3 @@ SW4-SW5 = {duration = 1}
 SW5-SW6 = {duration = 1}
 SW6-SW7 = {duration = 1}
 SW7-SW8 = {duration = 1}
-TE1-TE2 = {duration = 2}
-TE2-TE3 = {duration = 2}
-TE3-TE4 = {duration = 5}
-TE4-TE5 = {duration = 3}
-TE5-TE6 = {duration = 3}
-TE6-TE7 = {duration = 2}
-TE7-TE8 = {duration = 2}
-TE8-TE9 = {duration = 3}
-TE9-TE11 = {duration = 4}
-TE11-TE12 = {duration = 3}
-TE12-TE13 = {duration = 1}
-TE13-TE14 = {duration = 2}
-TE14-TE15 = {duration = 2}
-TE15-TE16 = {duration = 2}
-TE16-TE17 = {duration = 2}
-TE17-TE18 = {duration = 2}
-TE18-DT18 = {duration = 11, mode = "walk"}
-TE18-EW15 = {duration = 8, mode = "walk"}
-TE18-TE19 = {duration = 1}
-TE19-DT17 = {duration = 6, mode = "walk"}
-TE19-EW14 = {duration = 12, mode = "walk"}
-TE19-EW15 = {duration = 10, mode = "walk"}
-TE19-NS26 = {duration = 12, mode = "walk"}
-TE19-TE20 = {duration = 2}
-TE20-DT17 = {duration = 5, mode = "walk"}
-TE20-TE22 = {duration = 3}
-TE22-TE23 = {duration = 4}
-TE23-TE24 = {duration = 2}
-TE24-TE25 = {duration = 3}
-TE25-TE26 = {duration = 1}
-TE26-TE27 = {duration = 2}
-TE27-TE28 = {duration = 2}
-TE28-TE29 = {duration = 2}

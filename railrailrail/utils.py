@@ -40,7 +40,7 @@ class GeographicUtils:
 class StationUtils:
     @staticmethod
     def to_station_code_components(station_code: str) -> tuple[str, int, str]:
-        """Split station code into its components, namely, line code, station number, and station number
+        """Split station code into its components; line code, station number, and station number
         suffix.
 
         Can be used as a key function for sorting station codes in sequential order.

@@ -16,6 +16,7 @@ BP10 = "Fajar"
 BP11 = "Segar"
 BP12 = "Jelapang"
 BP13 = "Senja"
+BP14 = "Ten Mile Junction"
 CC1 = "Dhoby Ghaut"
 CC2 = "Bras Basah"
 CC3 = "Esplanade"
@@ -44,51 +45,9 @@ CC26 = "Pasir Panjang"
 CC27 = "Labrador Park"
 CC28 = "Telok Blangah"
 CC29 = "HarbourFront"
-CC30 = "Keppel"
-CC31 = "Cantonment"
-CC32 = "Prince Edward Road"
-CC33 = "Marina Bay"
-CC34 = "Bayfront"
 CG = "Tanah Merah"
 CG1 = "Expo"
 CG2 = "Changi Airport"
-DT1 = "Bukit Panjang"
-DT2 = "Cashew"
-DT3 = "Hillview"
-DT4 = "Hume"
-DT5 = "Beauty World"
-DT6 = "King Albert Park"
-DT7 = "Sixth Avenue"
-DT8 = "Tan Kah Kee"
-DT9 = "Botanic Gardens"
-DT10 = "Stevens"
-DT11 = "Newton"
-DT12 = "Little India"
-DT13 = "Rochor"
-DT14 = "Bugis"
-DT15 = "Promenade"
-DT16 = "Bayfront"
-DT17 = "Downtown"
-DT18 = "Telok Ayer"
-DT19 = "Chinatown"
-DT20 = "Fort Canning"
-DT21 = "Bencoolen"
-DT22 = "Jalan Besar"
-DT23 = "Bendemeer"
-DT24 = "Geylang Bahru"
-DT25 = "Mattar"
-DT26 = "MacPherson"
-DT27 = "Ubi"
-DT28 = "Kaki Bukit"
-DT29 = "Bedok North"
-DT30 = "Bedok Reservoir"
-DT31 = "Tampines West"
-DT32 = "Tampines"
-DT33 = "Tampines East"
-DT34 = "Upper Changi"
-DT35 = "Expo"
-DT36 = "Xilin"
-DT37 = "Sungei Bedok"
 EW1 = "Pasir Ris"
 EW2 = "Tampines"
 EW3 = "Simei"
@@ -118,28 +77,6 @@ EW26 = "Lakeside"
 EW27 = "Boon Lay"
 EW28 = "Pioneer"
 EW29 = "Joo Koon"
-EW30 = "Gul Circle"
-EW31 = "Tuas Crescent"
-EW32 = "Tuas West Road"
-EW33 = "Tuas Link"
-JE0 = "Tengah"
-JE1 = "Tengah Plantation"
-JE2 = "Tengah Park"
-JE3 = "Bukit Batok West"
-JE4 = "Toh Guan"
-JE5 = "Jurong East"
-JE6 = "Jurong Town Hall"
-JE7 = "Pandan Reservoir"
-JS1 = "Choa Chu Kang"
-JS2 = "Choa Chu Kang West"
-JS3 = "Tengah"
-JS4 = "Hong Kah"
-JS5 = "Corporation"
-JS6 = "Jurong West"
-JS7 = "Bahar Junction"
-JS8 = "Boon Lay"
-JW1 = "Gek Poh"
-JW2 = "Tawas"
 NE1 = "HarbourFront"
 NE3 = "Outram Park"
 NE4 = "Chinatown"
@@ -156,7 +93,6 @@ NE14 = "Hougang"
 NE15 = "Buangkok"
 NE16 = "Sengkang"
 NE17 = "Punggol"
-NE18 = "Punggol Coast"
 NS1 = "Jurong East"
 NS2 = "Bukit Batok"
 NS3 = "Bukit Gombak"
@@ -167,7 +103,6 @@ NS8 = "Marsiling"
 NS9 = "Woodlands"
 NS10 = "Admiralty"
 NS11 = "Sembawang"
-NS12 = "Canberra"
 NS13 = "Yishun"
 NS14 = "Khatib"
 NS15 = "Yio Chu Kang"
@@ -183,7 +118,6 @@ NS24 = "Dhoby Ghaut"
 NS25 = "City Hall"
 NS26 = "Raffles Place"
 NS27 = "Marina Bay"
-NS28 = "Marina South Pier"
 PE1 = "Cove"
 PE2 = "Meridian"
 PE3 = "Coral Edge"
@@ -192,57 +126,18 @@ PE5 = "Kadaloor"
 PE6 = "Oasis"
 PE7 = "Damai"
 PTC = "Punggol"
-PW1 = "Sam Kee"
-PW2 = "Teck Lee"
-PW3 = "Punggol Point"
-PW4 = "Samudera"
-PW5 = "Nibong"
-PW6 = "Sumang"
-PW7 = "Soo Teck"
 SE1 = "Compassvale"
 SE2 = "Rumbia"
 SE3 = "Bakau"
 SE4 = "Kangkar"
 SE5 = "Ranggung"
 STC = "Sengkang"
-SW1 = "Cheng Lim"
 SW2 = "Farmway"
-SW3 = "Kupang"
 SW4 = "Thanggam"
 SW5 = "Fernvale"
 SW6 = "Layar"
 SW7 = "Tongkang"
 SW8 = "Renjong"
-TE1 = "Woodlands North"
-TE2 = "Woodlands"
-TE3 = "Woodlands South"
-TE4 = "Springleaf"
-TE5 = "Lentor"
-TE6 = "Mayflower"
-TE7 = "Bright Hill"
-TE8 = "Upper Thomson"
-TE9 = "Caldecott"
-TE11 = "Stevens"
-TE12 = "Napier"
-TE13 = "Orchard Boulevard"
-TE14 = "Orchard"
-TE15 = "Great World"
-TE16 = "Havelock"
-TE17 = "Outram Park"
-TE18 = "Maxwell"
-TE19 = "Shenton Way"
-TE20 = "Marina Bay"
-TE22 = "Gardens by the Bay"
-TE22A = "Founders' Memorial"
-TE23 = "Tanjong Rhu"
-TE24 = "Katong Park"
-TE25 = "Tanjong Katong"
-TE26 = "Marine Parade"
-TE27 = "Marine Terrace"
-TE28 = "Siglap"
-TE29 = "Bayshore"
-TE30 = "Bedok South"
-TE31 = "Sungei Bedok"
 
 [edges]
 BP1-BP2 = {duration = 2}
@@ -252,6 +147,7 @@ BP4-BP5 = {duration = 1}
 BP5-BP6 = {duration = 1, edge_type = "bukit_panjang_main"}
 BP6-BP7 = {duration = 1, edge_type = "bukit_panjang_service_b"}
 BP6-BP13 = {duration = 2, edge_type = "bukit_panjang_service_a"}
+BP6-BP14 = {duration = 1, edge_type = "bukit_panjang_service_c"}
 BP7-BP8 = {duration = 2}
 BP8-BP9 = {duration = 1}
 BP9-BP10 = {duration = 2}
@@ -259,20 +155,15 @@ BP10-BP11 = {duration = 1}
 BP11-BP12 = {duration = 1}
 BP12-BP13 = {duration = 2}
 CC1-CC2 = {duration = 3}
-CC1-DT21 = {duration = 5, mode = "walk"}
 CC2-CC3 = {duration = 3}
-CC2-DT14 = {duration = 10, mode = "walk"}
-CC2-DT21 = {duration = 2, mode = "walk"}
 CC2-EW12 = {duration = 10, mode = "walk"}
 CC2-EW13 = {duration = 7, mode = "walk"}
 CC2-NS25 = {duration = 7, mode = "walk"}
 CC3-CC4 = {duration = 3, edge_type = "promenade_west"}
-CC3-DT14 = {duration = 12, mode = "walk"}
 CC3-EW12 = {duration = 12, mode = "walk"}
 CC3-EW13 = {duration = 5, mode = "walk"}
 CC3-NS25 = {duration = 5, mode = "walk"}
 CC4-CC5 = {duration = 6, edge_type = "promenade_east"}
-CC4-CC34 = {duration = 3, edge_type = "promenade_south"}
 CC5-CC6 = {duration = 2}
 CC6-CC7 = {duration = 2}
 CC7-CC8 = {duration = 2}
@@ -296,64 +187,8 @@ CC25-CC26 = {duration = 2}
 CC26-CC27 = {duration = 2}
 CC27-CC28 = {duration = 2}
 CC28-CC29 = {duration = 2}
-CC29-CC30 = {duration = 2}
-CC30-CC31 = {duration = 1}
-CC31-CC32 = {duration = 1}
-CC32-CC33 = {duration = 1}
-CC33-CC34 = {duration = 2}
-CC33-DT17 = {duration = 5, mode = "walk"}
 CG-CG1 = {duration = 3}
 CG1-CG2 = {duration = 4}
-DT1-DT2 = {duration = 2}
-DT2-DT3 = {duration = 2}
-DT3-DT4 = {duration = 2}
-DT4-DT5 = {duration = 3}
-DT5-DT6 = {duration = 2}
-DT6-DT7 = {duration = 2}
-DT7-DT8 = {duration = 2}
-DT8-DT9 = {duration = 2}
-DT9-DT10 = {duration = 2}
-DT10-DT11 = {duration = 2}
-DT11-DT12 = {duration = 3}
-DT12-DT13 = {duration = 1}
-DT12-DT22 = {duration = 10, mode = "walk"}
-DT13-DT14 = {duration = 2}
-DT13-DT21 = {duration = 9, mode = "walk"}
-DT13-DT22 = {duration = 5, mode = "walk"}
-DT14-DT15 = {duration = 2}
-DT15-DT16 = {duration = 2}
-DT16-DT17 = {duration = 2}
-DT17-DT18 = {duration = 1}
-DT17-EW14 = {duration = 7, mode = "walk"}
-DT17-NS26 = {duration = 7, mode = "walk"}
-DT18-DT19 = {duration = 2}
-DT18-EW14 = {duration = 5, mode = "walk"}
-DT18-EW15 = {duration = 8, mode = "walk"}
-DT18-NS26 = {duration = 5, mode = "walk"}
-DT19-DT20 = {duration = 2}
-DT19-EW14 = {duration = 11, mode = "walk"}
-DT19-NS26 = {duration = 11, mode = "walk"}
-DT19-TE18 = {duration = 10, mode = "walk"}
-DT20-DT21 = {duration = 2}
-DT20-NE5 = {duration = 10, mode = "walk"}
-DT21-DT22 = {duration = 1}
-DT22-DT14 = {duration = 9, mode = "walk"}
-DT22-DT23 = {duration = 2}
-DT22-EW12 = {duration = 9, mode = "walk"}
-DT23-DT24 = {duration = 2}
-DT24-DT25 = {duration = 2}
-DT25-DT26 = {duration = 2}
-DT26-DT27 = {duration = 2}
-DT27-DT28 = {duration = 2}
-DT28-DT29 = {duration = 2}
-DT29-DT30 = {duration = 2}
-DT30-DT31 = {duration = 3}
-DT31-DT32 = {duration = 2}
-DT32-DT33 = {duration = 2}
-DT33-DT34 = {duration = 3}
-DT34-DT35 = {duration = 2}
-DT35-DT36 = {duration = 1}
-DT36-DT37 = {duration = 2}
 EW1-EW2 = {duration = 3}
 EW2-EW3 = {duration = 3}
 EW3-EW4 = {duration = 3}
@@ -382,41 +217,17 @@ EW25-EW26 = {duration = 3}
 EW26-EW27 = {duration = 2}
 EW27-EW28 = {duration = 3}
 EW28-EW29 = {duration = 3}
-EW29-EW30 = {duration = 4}
-EW30-EW31 = {duration = 2}
-EW31-EW32 = {duration = 2}
-EW32-EW33 = {duration = 2}
-JE0-JE1 = {duration = 3}
-JE1-JE2 = {duration = 2}
-JE2-JE3 = {duration = 2}
-JE3-JE4 = {duration = 3}
-JE4-JE5 = {duration = 2}
-JE5-JE6 = {duration = 2}
-JE6-JE7 = {duration = 2}
-JS1-JS2 = {duration = 2}
-JS2-JS3 = {duration = 4}
-JS3-JS4 = {duration = 2}
-JS4-JS5 = {duration = 3}
-JS5-JS6 = {duration = 2}
-JS6-JS7 = {duration = 2, edge_type = "bahar_east"}
-JS7-JS8 = {duration = 2, edge_type = "bahar_south"}
-JS7-JW1 = {duration = 2, edge_type = "bahar_west"}
-JW1-JW2 = {duration = 2}
 NE1-NE3 = {duration = 4}
 NE3-NE4 = {duration = 1}
 NE4-EW14 = {duration = 11, mode = "walk"}
 NE4-NE5 = {duration = 2}
 NE4-NS26 = {duration = 11, mode = "walk"}
-NE4-TE18 = {duration = 10, mode = "walk"}
 NE5-EW14 = {duration = 10, mode = "walk"}
 NE5-NE6 = {duration = 3}
 NE5-NS26 = {duration = 10, mode = "walk"}
-NE6-DT21 = {duration = 5, mode = "walk"}
 NE6-NE7 = {duration = 1}
-NE7-DT22 = {duration = 10, mode = "walk"}
 NE7-NE8 = {duration = 1}
 NE8-NE9 = {duration = 2}
-NE9-DT23 = {duration = 10, mode = "walk"}
 NE9-NE10 = {duration = 3}
 NE10-NE11 = {duration = 1}
 NE11-NE12 = {duration = 2}
@@ -425,7 +236,6 @@ NE13-NE14 = {duration = 2}
 NE14-NE15 = {duration = 2}
 NE15-NE16 = {duration = 2}
 NE16-NE17 = {duration = 3}
-NE17-NE18 = {duration = 3}
 NS1-NS2 = {duration = 3}
 NS2-NS3 = {duration = 3}
 NS3-NS4 = {duration = 4}
@@ -435,8 +245,7 @@ NS7-NS8 = {duration = 3}
 NS8-NS9 = {duration = 3}
 NS9-NS10 = {duration = 3}
 NS10-NS11 = {duration = 3}
-NS11-NS12 = {duration = 3}
-NS12-NS13 = {duration = 3}
+NS11-NS13 = {duration = 5}
 NS13-NS14 = {duration = 2}
 NS14-NS15 = {duration = 5}
 NS15-NS16 = {duration = 3}
@@ -448,12 +257,9 @@ NS20-NS21 = {duration = 2}
 NS21-NS22 = {duration = 3}
 NS22-NS23 = {duration = 2}
 NS23-NS24 = {duration = 2}
-NS24-DT21 = {duration = 5, mode = "walk"}
 NS24-NS25 = {duration = 3}
 NS25-NS26 = {duration = 2}
 NS26-NS27 = {duration = 2}
-NS27-DT17 = {duration = 5, mode = "walk"}
-NS27-NS28 = {duration = 2}
 PE1-PE2 = {duration = 1}
 PE2-PE3 = {duration = 1}
 PE3-PE4 = {duration = 1}
@@ -462,62 +268,16 @@ PE5-PE6 = {duration = 1}
 PE6-PE7 = {duration = 1}
 PTC-PE1 = {duration = 3, edge_type = "punggol_east_loop"}
 PTC-PE7 = {duration = 2, edge_type = "punggol_east_loop"}
-PTC-PW1 = {duration = 2, edge_type = "punggol_west_loop"}
-PTC-PW7 = {duration = 3, edge_type = "punggol_west_loop"}
-PW1-PW2 = {duration = 1}
-PW2-PW3 = {duration = 1}
-PW3-PW4 = {duration = 1}
-PW4-PW5 = {duration = 1}
-PW5-PW6 = {duration = 1}
-PW6-PW7 = {duration = 1}
 SE1-SE2 = {duration = 1}
 SE2-SE3 = {duration = 1}
 SE3-SE4 = {duration = 1}
 SE4-SE5 = {duration = 2}
 STC-SE1 = {duration = 2, edge_type = "sengkang_east_loop"}
 STC-SE5 = {duration = 3, edge_type = "sengkang_east_loop"}
-STC-SW1 = {duration = 2, edge_type = "sengkang_west_loop"}
+STC-SW2 = {duration = 3, edge_type = "sengkang_west_loop"}
 STC-SW8 = {duration = 3, edge_type = "sengkang_west_loop"}
-SW1-SW2 = {duration = 1}
-SW2-SW3 = {duration = 1}
-SW3-SW4 = {duration = 1}
+SW2-SW4 = {duration = 2}
 SW4-SW5 = {duration = 1}
 SW5-SW6 = {duration = 1}
 SW6-SW7 = {duration = 1}
 SW7-SW8 = {duration = 1}
-TE1-TE2 = {duration = 2}
-TE2-TE3 = {duration = 2}
-TE3-TE4 = {duration = 5}
-TE4-TE5 = {duration = 3}
-TE5-TE6 = {duration = 3}
-TE6-TE7 = {duration = 2}
-TE7-TE8 = {duration = 2}
-TE8-TE9 = {duration = 3}
-TE9-TE11 = {duration = 4}
-TE11-TE12 = {duration = 3}
-TE12-TE13 = {duration = 1}
-TE13-TE14 = {duration = 2}
-TE14-TE15 = {duration = 2}
-TE15-TE16 = {duration = 2}
-TE16-TE17 = {duration = 2}
-TE17-TE18 = {duration = 2}
-TE18-DT18 = {duration = 11, mode = "walk"}
-TE18-EW15 = {duration = 8, mode = "walk"}
-TE18-TE19 = {duration = 1}
-TE19-DT17 = {duration = 6, mode = "walk"}
-TE19-EW14 = {duration = 12, mode = "walk"}
-TE19-EW15 = {duration = 10, mode = "walk"}
-TE19-NS26 = {duration = 12, mode = "walk"}
-TE19-TE20 = {duration = 2}
-TE20-DT17 = {duration = 5, mode = "walk"}
-TE20-TE22 = {duration = 3}
-TE22-TE22A = {duration = 2}
-TE22A-TE23 = {duration = 2}
-TE23-TE24 = {duration = 2}
-TE24-TE25 = {duration = 3}
-TE25-TE26 = {duration = 1}
-TE26-TE27 = {duration = 2}
-TE27-TE28 = {duration = 2}
-TE28-TE29 = {duration = 2}
-TE29-TE30 = {duration = 1}
-TE30-TE31 = {duration = 1}

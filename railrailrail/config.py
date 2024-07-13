@@ -61,35 +61,35 @@ class Config:
             tomlkit.dump(network, f)
 
     def _get_stations(
-        self, endpoint: str, rail_expansion: RailExpansion | None = None
+        self, endpoint: str, rail_expansion: RailExpansion
     ) -> list[tuple[str, str]]:
-        """Download train station codes and station names.
+        """Generate list of train station codes and station names, sorted by station code in ascending order.
 
         Args:
             endpoint (str): HTTPS address of zipped XLS file containing train station codes and names.
-            rail_expansion (RailExpansion | None): Include stations that have yet to be opened. Defaults to None.
+            rail_expansion (RailExpansion): Switch to a historic or future variant of the network. Defaults to None.
 
         Returns:
             list[tuple[str, str]]: Train stations sorted by station code in ascending order.
             For example, ("CC1", "Dhoby Ghaut"), ("NE6", "Dhoby Ghaut"), ("NS24", "Dhoby Ghaut").
         """
-        with requests.Session() as session:
-            res = session.get(endpoint, timeout=30)
-            res.raise_for_status()
-        with zipfile.ZipFile(io.BytesIO(res.content), "r") as z:
-            excel_bytes = z.read(
-                z.infolist()[0]
-            )  # Zip file should only contain one XLS file.
-            workbook = xlrd.open_workbook(file_contents=excel_bytes)
-            sheet = workbook.sheet_by_index(0)
+        # TODO what should be done with the LTA API?
+        # with requests.Session() as session:
+        #     res = session.get(endpoint, timeout=30)
+        #     res.raise_for_status()
+        # with zipfile.ZipFile(io.BytesIO(res.content), "r") as z:
+        #     excel_bytes = z.read(
+        #         z.infolist()[0]
+        #     )  # Zip file should only contain one XLS file.
+        #     workbook = xlrd.open_workbook(file_contents=excel_bytes)
+        #     sheet = workbook.sheet_by_index(0)
 
-        stations: set[tuple[str, str]] = {
-            (sheet.cell_value(row_idx, 0).strip(), sheet.cell_value(row_idx, 1).strip())
-            for row_idx in range(1, sheet.nrows)
-        }
+        # stations: set[tuple[str, str]] = {
+        #     (sheet.cell_value(row_idx, 0).strip(), sheet.cell_value(row_idx, 1).strip())
+        #     for row_idx in range(1, sheet.nrows)
+        # }
 
-        if isinstance(rail_expansion, RailExpansion):
-            rail_expansion.update_stations(stations)
+        stations: set[tuple[str, str]] = rail_expansion.stations_to_include
 
         # If CG-TEL conversion incomplete, add missing CG station code for EW4 Tanah Merah interchange.
         if any(station[0].startswith("CG") for station in stations):
@@ -143,6 +143,8 @@ class Config:
             for station_code, next_station_code in zip(
                 line_station_codes[:-1], line_station_codes[1:]
             ):
+                if (station_code, next_station_code) == ("BP13", "BP14"):
+                    continue  # Special case: No link between BP13 and BP14.
                 adjacency_matrix[station_code][next_station_code] = {
                     "duration": Durations.edges.get(
                         f"{station_code}-{next_station_code}", dict()
@@ -166,6 +168,18 @@ class Config:
         # most other edges. Currently this only means checking if an edge is
         # adjacent to a semi-interchange.
         for start, end, edge_type in SemiInterchange.edges:
+            # Skip semi-interchange edges made obsolete by new stations.
+            if (start, end) == ("STC", "SW2") and "SW1" in station_codes:
+                continue
+            if (start, end) == ("STC", "SW4") and "SW2" in station_codes:
+                continue
+            if (start, end) == ("PTC", "PE5") and "PE6" in station_codes:
+                continue
+            if (start, end) == ("PTC", "PE6") and "PE7" in station_codes:
+                continue
+            if (start, end) == ("PTC", "PW5") and "PW1" in station_codes:
+                continue
+
             if start in station_codes and end in station_codes:
                 adjacency_matrix[start][end] = {
                     **Durations.edges[f"{start}-{end}"],

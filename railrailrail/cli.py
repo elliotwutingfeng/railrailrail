@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--network",
-        choices=["now"] + list(RailExpansion.future_stages.keys()),
+        choices=["now"] + list(RailExpansion.stages.keys()),
         default="now",
         help="Choose from train network as it appears today (default), or as it would be at any specified future stage.",
     )
@@ -70,6 +70,9 @@ if __name__ == "__main__":
 
     if args.debug:
         logger.setLevel("INFO")
+
+    if args.network == "now":
+        args.network = "tel_4"  # Contemporary train network; to be updated as the real train network expands.
 
     network_path = (
         pathlib.Path(__file__).resolve().parent.parent
@@ -85,7 +88,7 @@ if __name__ == "__main__":
     )
 
     if args.generate_config:
-        config = Config(RailExpansion(args.network))
+        config = Config(RailExpansion(stage=args.network))
         config.update_network_config(network_path)
 
     if args.route:
