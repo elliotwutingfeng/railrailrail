@@ -246,6 +246,7 @@ class RailGraph:
                 total_cost=pathinfo.total_cost - self.transfer_time - self.dwell_time
             )
         if len(pathinfo.nodes) == 2:
+            logger.info("%s", pathinfo)
             return pathinfo
         if any(
             first_2_stations.issubset(interchange) for interchange in self._interchanges
@@ -286,18 +287,24 @@ class RailGraph:
                 StationUtils.to_station_code_components(v)[1] == 0
             )
             at_pseudo_station = u_is_pseudo_station_code or v_is_pseudo_station_code
-            u_ = v if u_is_pseudo_station_code else u
-            v_ = u if v_is_pseudo_station_code else v
-            if status == "at_station":
+            u_ = Terminal.pseudo_stations.get(u, u)
+            v_ = Terminal.pseudo_stations.get(v, v)
+            if status == "walking":
+                if edge_details[2] == "walk":  # Walk to the next station.
+                    steps.pop()  # Remove previous walking step
+                    steps.append(f"Walk to {v_} {self._stations[v_]}")
+                    status = "walking"
+                else:
+                    steps.append(f"Board train towards {v_} {self._stations[v_]}")
+                    status = "in_train"
+            elif status == "at_station":
                 if any(
                     {u, v}.issubset(a) for a in self._interchanges
                 ):  # Interchange transfer.
-                    if at_pseudo_station:
-                        steps.append(f"Switch over at {v_} {self._stations[v_]}")
-                    else:
-                        steps.append(f"Transfer to {v_} {self._stations[v_]}")
+                    steps.append(
+                        f"{'Switch over at' if at_pseudo_station else 'Transfer to'} {v_} {self._stations[v_]}"
+                    )
                 elif edge_details[2] == "walk":  # Walk to the next station.
-                    steps.append(f"Alight at {u_} {self._stations[u_]}")
                     steps.append(f"Walk to {v_} {self._stations[v_]}")
                     status = "walking"
                 elif edge_idx < len(
@@ -311,9 +318,9 @@ class RailGraph:
                 else:  # Board a train.
                     terminal: str | None = Terminal.get_terminal(self._graph, u, v)
                     steps.append(
-                        f"Board train towards {v_} {self._stations[v_]}"  # Unusual terminal.
+                        f"Board train towards {v_} {self._stations[v_]}"  # Unusual terminal. Use next station instead.
                         if terminal is None
-                        else f"Board train towards {Terminal.terminals_with_pseudo_station_codes.get(terminal, terminal)} {self._stations[terminal]}"
+                        else f"Board train towards {Terminal.pseudo_stations.get(terminal, terminal)} {self._stations[terminal]}"
                     )
                     status = "in_train"
             elif status == "in_train":
@@ -321,10 +328,9 @@ class RailGraph:
                     {u, v}.issubset(a) for a in self._interchanges
                 ):  # Interchange transfer.
                     steps.append(f"Alight at {u_} {self._stations[u_]}")
-                    if at_pseudo_station:
-                        steps.append(f"Switch over at {v_} {self._stations[v_]}")
-                    else:
-                        steps.append(f"Transfer to {v_} {self._stations[v_]}")
+                    steps.append(
+                        f"{'Switch over at' if at_pseudo_station else 'Transfer to'} {v_} {self._stations[v_]}"
+                    )
                     status = "at_station"
                 elif edge_details[2] == "walk":  # Walk to the next station.
                     steps.append(f"Alight at {u_} {self._stations[u_]}")
@@ -338,9 +344,8 @@ class RailGraph:
                     steps.append(f"Switch over at {u_} {self._stations[u_]}")
                     steps.append(f"Board train towards {v_} {self._stations[v_]}")
                     status = "in_train"
-            elif status == "walking":
-                steps.append(f"Board train towards {v_} {self._stations[v_]}")
-                status = "in_train"
+        if steps and steps[-1].startswith("Switch over"):
+            steps.pop()
         if status == "in_train":
             steps.append(f"Alight at {v_} {self._stations[v_]}")
         steps.append(

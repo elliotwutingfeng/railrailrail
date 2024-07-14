@@ -584,13 +584,13 @@ class Terminal:
         )
     )
 
-    terminals_with_pseudo_station_codes: types.MappingProxyType = (
-        types.MappingProxyType(
-            {
-                "CE0X": "CC6",
-                "JE0": "JS3",
-            }
-        )
+    pseudo_stations: types.MappingProxyType = types.MappingProxyType(
+        {
+            "CE0X": "CC6",
+            "CE0Y": "CC5",
+            "CE0Z": "CC4",
+            "JE0": "JS3",
+        }
     )
 
     @classmethod
