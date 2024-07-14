@@ -14,15 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import io
 import json
 import pathlib
-import zipfile
 from collections import OrderedDict, defaultdict
 
-import requests
 import tomlkit
-import xlrd
 
 from railrailrail.dataset import (
     Durations,
@@ -34,15 +30,8 @@ from railrailrail.utils import StationUtils
 
 
 class Config:
-    STATION_DATA_ENDPOINT = (
-        "https://datamall.lta.gov.sg/content/dam/datamall/datasets/Geospatial/"
-        "Train%20Station%20Codes%20and%20Chinese%20Names.zip"
-    )
-
     def __init__(self, rail_expansion: RailExpansion) -> None:
-        self.stations: list[tuple[str, str]] = self._get_stations(
-            Config.STATION_DATA_ENDPOINT, rail_expansion
-        )
+        self.stations: list[tuple[str, str]] = self._get_stations(rail_expansion)
         self.station_codes_by_station_name: dict[str, set[str]] = defaultdict(set)
         for station_code, station_name in self.stations:
             self.station_codes_by_station_name[station_name].add(station_code)
@@ -60,53 +49,19 @@ class Config:
         with open(path, "w") as f:
             tomlkit.dump(network, f)
 
-    def _get_stations(
-        self, endpoint: str, rail_expansion: RailExpansion
-    ) -> list[tuple[str, str]]:
+    def _get_stations(self, rail_expansion: RailExpansion) -> list[tuple[str, str]]:
         """Generate list of train station codes and station names, sorted by station code in ascending order.
 
         Args:
-            endpoint (str): HTTPS address of zipped XLS file containing train station codes and names.
             rail_expansion (RailExpansion): Switch to a historic or future variant of the network. Defaults to None.
 
         Returns:
             list[tuple[str, str]]: Train stations sorted by station code in ascending order.
             For example, ("CC1", "Dhoby Ghaut"), ("NE6", "Dhoby Ghaut"), ("NS24", "Dhoby Ghaut").
         """
-        # TODO what should be done with the LTA API?
-        # with requests.Session() as session:
-        #     res = session.get(endpoint, timeout=30)
-        #     res.raise_for_status()
-        # with zipfile.ZipFile(io.BytesIO(res.content), "r") as z:
-        #     excel_bytes = z.read(
-        #         z.infolist()[0]
-        #     )  # Zip file should only contain one XLS file.
-        #     workbook = xlrd.open_workbook(file_contents=excel_bytes)
-        #     sheet = workbook.sheet_by_index(0)
-
-        # stations: set[tuple[str, str]] = {
-        #     (sheet.cell_value(row_idx, 0).strip(), sheet.cell_value(row_idx, 1).strip())
-        #     for row_idx in range(1, sheet.nrows)
-        # }
-
-        stations: set[tuple[str, str]] = rail_expansion.stations_to_include
-
-        # If CG-TEL conversion incomplete, add missing CG station code for EW4 Tanah Merah interchange.
-        if any(station[0].startswith("CG") for station in stations):
-            stations.add(("CG", "Tanah Merah"))
-
-        # If Circle Line Stage 6 is incomplete, add pseudo station codes for Marina Bay - Stadium shuttle service.
-        if any(station[0].startswith("CE") for station in stations):
-            stations.update(
-                {
-                    ("CE0X", "Stadium"),  # Pseudo station_code
-                    ("CE0Y", "Nicoll Highway"),  # Pseudo station_code
-                    ("CE0Z", "Promenade"),  # Pseudo station_code
-                }
-            )
 
         return sorted(
-            stations,
+            rail_expansion.stations_to_include,
             key=lambda station: StationUtils.to_station_code_components(station[0]),
         )
 
