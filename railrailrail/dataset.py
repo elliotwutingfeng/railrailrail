@@ -15,7 +15,8 @@ limitations under the License.
 """
 
 import types
-from collections import defaultdict
+
+from dijkstar import Graph
 
 from railrailrail.utils import StationUtils
 
@@ -33,7 +34,7 @@ from railrailrail.utils import StationUtils
 # Full closure between Joo Koon and Gul Circle until mid-2018; shuttle buses provided.
 
 
-class RailExpansion:
+class Stage:
     stages: types.MappingProxyType = types.MappingProxyType(
         {
             "phase_1_1": (
@@ -429,18 +430,16 @@ class RailExpansion:
     )
 
     def __init__(self, stage: str) -> None:
-        self.stations_to_include: set[tuple[str, str]] = set()
-        if stage not in RailExpansion.stages:
+        self.stations: set[tuple[str, str]] = set()
+        if stage not in Stage.stages:
             return
         for (
             current_stage,
             current_stage_stations,
-        ) in RailExpansion.stages.items():
-            self.stations_to_include.update(current_stage_stations)
-            if current_stage in RailExpansion.stages_defunct:
-                self.stations_to_include.difference_update(
-                    RailExpansion.stages_defunct[current_stage]
-                )
+        ) in Stage.stages.items():
+            self.stations.update(current_stage_stations)
+            if current_stage in Stage.stages_defunct:
+                self.stations.difference_update(Stage.stages_defunct[current_stage])
             if (
                 current_stage == stage
             ):  # Add stations from all stages up to and including `stage`.
@@ -574,10 +573,8 @@ class Terminal:
     lines_with_unusual_terminals = frozenset(
         (
             "BP",
-            "CE",
             "JS",
             "JW",
-            "JE",
             "PTC",
             "PE",
             "PW",
@@ -587,33 +584,51 @@ class Terminal:
         )
     )
 
-    @classmethod
-    def get_terminals(cls, station_codes: set[str]):
-        station_codes_by_line_code = defaultdict(list)
-        for station_code in station_codes:
-            line_code, _, _ = StationUtils.to_station_code_components(station_code)
-            if line_code in cls.lines_with_unusual_terminals:
-                continue  # JS + LRT lines all terminate at a single main station. JW terminates at JS1 Choa Chu Kang.
-            station_codes_by_line_code[line_code].append(station_code)
+    terminals_with_pseudo_station_codes: types.MappingProxyType = (
+        types.MappingProxyType(
+            {
+                "CE0X": "CC6",
+                "JE0": "JS3",
+            }
+        )
+    )
 
-        terminals_by_line_code: dict[str, tuple[str, str]] = dict()
-        for line_code in station_codes_by_line_code:
-            if len(station_codes_by_line_code[line_code]) < 2:
-                raise ValueError("A line must have at least 2 stations.")
-            station_codes_by_line_code[line_code].sort(
-                key=StationUtils.to_station_code_components
+    @classmethod
+    def get_terminal(cls, graph: Graph, start: str, end: str) -> str | None:
+        ascending: bool = (
+            sorted([start, end], key=StationUtils.to_station_code_components)[0]
+            == start
+        )
+        line_code, _, _ = StationUtils.to_station_code_components(start)
+        if line_code in cls.lines_with_unusual_terminals:
+            return None
+        # From start, traverse nodes in ascending or descending order with same line code until dead end is reached.
+        visited: set[str] = set()
+        next_node = start
+        while next_node not in visited:
+            visited.add(next_node)
+            node_and_neighbours = sorted(
+                list(
+                    node
+                    for node in graph.get_incoming(next_node).keys()
+                    if node[:2] == line_code
+                )
+                + [next_node],
+                key=StationUtils.to_station_code_components,
             )
-            terminals_by_line_code[line_code] = (
-                station_codes_by_line_code[line_code][0],
-                station_codes_by_line_code[line_code][-1],
+            next_node_index = node_and_neighbours.index(next_node) + (
+                1 if ascending else -1
             )
-        return terminals_by_line_code
+            if next_node_index < 0 or next_node_index >= len(node_and_neighbours):
+                return next_node
+            next_node = node_and_neighbours[next_node_index]
+        return None  # Cycle is detected.
 
 
 class Durations:
-    """Standard durations for all adjacent rail edges on the same line.
+    """Standard durations for all possible adjacent rail edges on the same line.
     This includes edges that have yet to exist (e.g. NS3 -> NS3A),
-    and edges that will be removed in the future (e.g. NS3 -> NS4).
+    and edges that no longer exist or will be removed in the future (e.g. NS3 -> NS4, BP6 -> BP14).
     """
 
     edges = {

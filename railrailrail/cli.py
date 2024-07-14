@@ -17,7 +17,7 @@ limitations under the License.
 import pathlib
 from argparse import ArgumentParser
 
-from railrailrail.config import Config, RailExpansion
+from railrailrail.config import Config, Stage
 from railrailrail.logger import logger
 from railrailrail.railgraph import RailGraph
 
@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--network",
-        choices=["now"] + list(RailExpansion.stages.keys()),
+        choices=["now"] + list(Stage.stages.keys()),
         default="now",
         help="Choose from train network as it appears today (default), or as it would be at any specified future stage.",
     )
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     )
 
     if args.generate_config:
-        config = Config(RailExpansion(stage=args.network))
+        config = Config(Stage(stage=args.network))
         config.update_network_config(network_path)
 
     if args.route:

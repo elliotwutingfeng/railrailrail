@@ -65,7 +65,6 @@ class RailGraph:
         self.dwell_time = dwell_time
         self._stations = stations
         self._station_coordinates = station_coordinates
-        self._terminals = Terminal.get_terminals(set(stations.keys()))
 
         aggregator: defaultdict[str, set[str]] = defaultdict(set)
         for station_code, station_name in self._stations.items():
@@ -262,20 +261,6 @@ class RailGraph:
         logger.info("%s", pathinfo)
         return pathinfo
 
-    def _get_terminal_ahead(self, u: str, v: str) -> str | None:
-        start_line_code, start_station_number, _ = (
-            StationUtils.to_station_code_components(u)
-        )
-        if start_line_code not in self._terminals:
-            return None
-        return self._terminals[start_line_code][
-            (
-                1
-                if sorted([u, v], key=StationUtils.to_station_code_components)[0] == u
-                else 0
-            )
-        ]
-
     def make_directions(self, pathinfo: PathInfo) -> list[str]:
         """Make step-by-step directions for a given journey.
 
@@ -324,11 +309,11 @@ class RailGraph:
                     steps.append(f"Board train towards {v_} {self._stations[v_]}")
                     status = "in_train"
                 else:  # Board a train.
-                    terminal: str | None = self._get_terminal_ahead(u, v)
+                    terminal: str | None = Terminal.get_terminal(self._graph, u, v)
                     steps.append(
                         f"Board train towards {v_} {self._stations[v_]}"  # Unusual terminal.
                         if terminal is None
-                        else f"Board train towards {terminal} {self._stations[terminal]}"
+                        else f"Board train towards {Terminal.terminals_with_pseudo_station_codes.get(terminal, terminal)} {self._stations[terminal]}"
                     )
                     status = "in_train"
             elif status == "in_train":

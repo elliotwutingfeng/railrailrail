@@ -20,18 +20,13 @@ from collections import OrderedDict, defaultdict
 
 import tomlkit
 
-from railrailrail.dataset import (
-    Durations,
-    RailExpansion,
-    SemiInterchange,
-    WalkingTrainMap,
-)
+from railrailrail.dataset import Durations, SemiInterchange, Stage, WalkingTrainMap
 from railrailrail.utils import StationUtils
 
 
 class Config:
-    def __init__(self, rail_expansion: RailExpansion) -> None:
-        self.stations: list[tuple[str, str]] = self._get_stations(rail_expansion)
+    def __init__(self, stage: Stage) -> None:
+        self.stations: list[tuple[str, str]] = self._get_stations(stage)
         self.station_codes_by_station_name: dict[str, set[str]] = defaultdict(set)
         for station_code, station_name in self.stations:
             self.station_codes_by_station_name[station_name].add(station_code)
@@ -49,11 +44,12 @@ class Config:
         with open(path, "w") as f:
             tomlkit.dump(network, f)
 
-    def _get_stations(self, rail_expansion: RailExpansion) -> list[tuple[str, str]]:
-        """Generate list of train station codes and station names, sorted by station code in ascending order.
+    def _get_stations(self, stage: Stage) -> list[tuple[str, str]]:
+        """Generate list of train station codes and station names operational at a given `stage`,
+        sorted by station code in ascending order.
 
         Args:
-            rail_expansion (RailExpansion): Switch to a historic or future variant of the network. Defaults to None.
+            stage (Stage): Rail network stage to get stations from.
 
         Returns:
             list[tuple[str, str]]: Train stations sorted by station code in ascending order.
@@ -61,7 +57,7 @@ class Config:
         """
 
         return sorted(
-            rail_expansion.stations_to_include,
+            stage.stations,
             key=lambda station: StationUtils.to_station_code_components(station[0]),
         )
 
