@@ -679,18 +679,18 @@ class Terminal:
     @classmethod
     def get_terminal(cls, graph: Graph, start: str, end: str) -> str | None:
         if start == end:
-            raise ValueError(f"start and end must be the same. Got {start} and {end}")
+            raise ValueError(f"start and end must be different. Got {start} and {end}")
         start_line_code, _, _ = StationUtils.to_station_code_components(start)
         end_line_code, _, _ = StationUtils.to_station_code_components(end)
-        if start_line_code != end_line_code:
-            raise ValueError(
-                f"start_line_code and end_line_code must be the same. Got {start_line_code} and {end_line_code}"
-            )
         if start_line_code in cls.__looped_lines or (
             start_line_code == "CC" and "CC34" in graph
         ):
             # Circle Line becomes a looped line at Stage 6.
             return None
+        if start_line_code != end_line_code:
+            raise ValueError(
+                f"start_line_code and end_line_code must be the same. Got {start_line_code} and {end_line_code}"
+            )
         ascending: bool = (
             sorted([start, end], key=StationUtils.to_station_code_components)[0]
             == start
