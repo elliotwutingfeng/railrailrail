@@ -38,8 +38,12 @@ class GeographicUtils:
 
 
 class StationUtils:
-    @staticmethod
-    def to_station_code_components(station_code: str) -> tuple[str, int, str]:
+    @classmethod
+    def __station_code_matcher(cls, station_code: str) -> re.Match[str] | None:
+        return re.match("([A-Z]{2})([0-9]+)([A-Z]*)", station_code)
+
+    @classmethod
+    def to_station_code_components(cls, station_code: str) -> tuple[str, int, str]:
         """Split station code into its components; line code, station number, and station number
         suffix.
 
@@ -69,10 +73,7 @@ class StationUtils:
         ):
             return line_code, station_number, station_number_suffix
 
-        matcher = lambda station_code: re.match(
-            "([A-Z]{2})([0-9]+)([A-Z]*)", station_code
-        )
-        station_code_components_match = matcher(station_code)
+        station_code_components_match = cls.__station_code_matcher(station_code)
         if station_code_components_match is None:
             raise ValueError(f"Invalid station code: {station_code}")
         matcher_groups: tuple[str, str, str] = station_code_components_match.groups("")

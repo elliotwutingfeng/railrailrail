@@ -94,9 +94,7 @@ class RailGraph:
                 if mode != "walk":
                     self._graph_without_walk.add_edge(u, v, edge)
 
-        for (
-            interchange_substations
-        ) in (
+        for interchange_substations in (
             self._interchanges
         ):  # Link up unique pairs of substations on the same interchange station.
             for start, end in combinations(interchange_substations, 2):
@@ -171,7 +169,7 @@ class RailGraph:
         current_station: str,
         next_station: str,
         edge_to_next_station: tuple,
-        edge_to_current_station: tuple,
+        edge_to_current_station: tuple | None,
     ) -> float:
         """Compute time cost of travelling from current station to next station. This cost is
         dynamically adjusted to include additional `self.transfer_time` if the preceding
@@ -181,12 +179,13 @@ class RailGraph:
             current_station (str): Not used.
             next_station (str): Not used.
             edge_to_next_station (tuple): Edge to next station.
-            edge_to_current_station (tuple): Edge to current station.
+            edge_to_current_station (tuple | None): Edge to current station.
 
         Returns:
             float: Time cost in minutes.
         """
         next_travel_time, next_edge_type, next_edge_mode = edge_to_next_station
+        _ = next_edge_mode
         if isinstance(edge_to_current_station, tuple):
             previous_edge_type, previous_edge_mode = (
                 edge_to_current_station[1],
@@ -194,6 +193,7 @@ class RailGraph:
             )
         else:
             previous_edge_type, previous_edge_mode = "", ""
+        _ = previous_edge_mode
 
         cost = next_travel_time + self.dwell_time
         if SemiInterchange.is_semi_interchange_transfer(

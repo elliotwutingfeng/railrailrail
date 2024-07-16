@@ -1,0 +1,33 @@
+name: ci
+
+on: [push, pull_request, workflow_dispatch]
+jobs:
+    test-and-coverage:
+        strategy:
+          matrix:
+            python-version: ['3.12']
+            os: [macos-latest, windows-latest, ubuntu-latest]
+        runs-on: ${{ matrix.os }}
+        steps:
+            - name: checkout repo content
+              uses: actions/checkout@v4
+
+            - name: Check lock file consistency
+              run: |
+                  poetry lock --check
+
+            - name: Install dependencies
+              run: |
+                  poetry install
+
+            - name: Ruff format
+              run: |
+                  poetry run ruff format --check
+
+            - name: Ruff lint
+              run: |
+                  poetry run ruff check
+
+            - name: Test
+              run: |
+                  poetry run pytest -vv --cov=./ --cov-report html

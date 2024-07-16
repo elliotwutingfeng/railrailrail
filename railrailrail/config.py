@@ -76,7 +76,7 @@ class Config:
 
         station_codes_by_line_code: defaultdict[str, OrderedDict[str, None]] = (
             defaultdict(OrderedDict)
-        )
+        )  # Order is important as stations are almost always connected in sequential order.
         for station_code in station_codes:  # Group stations by line
             line_code, _, _ = StationUtils.to_station_code_components(station_code)
             station_codes_by_line_code[line_code][station_code] = None
@@ -97,7 +97,7 @@ class Config:
                 if (station_code, next_station_code) == ("BP13", "BP14"):
                     continue  # Special case: No link between BP13 and BP14.
                 if (station_code, next_station_code) == ("NS4", "NS13"):
-                    continue  # Special case: No link between NS4 and NS13
+                    continue  # Special case: No link between NS4 and NS13.
                 adjacency_matrix[station_code][next_station_code] = {
                     "duration": Durations.edges.get(
                         f"{station_code}-{next_station_code}", dict()
