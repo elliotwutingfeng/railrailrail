@@ -20,7 +20,8 @@ from collections import OrderedDict, defaultdict
 
 import tomlkit
 
-from railrailrail.dataset import Durations, SemiInterchange, Stage, WalkingTrainMap
+from railrailrail.dataset import (Durations, SemiInterchange, Stage,
+                                  WalkingTrainMap)
 from railrailrail.utils import StationUtils
 
 
@@ -34,7 +35,7 @@ class Config:
             self._generate_adjacency_matrix(self.stations)
         )
 
-    def update_network_config(self, path: pathlib.Path) -> None:
+    def update_network_config_file(self, path: pathlib.Path) -> None:
         try:
             with open(path, "rb") as f:
                 network: tomlkit.TOMLDocument = tomlkit.load(f)
@@ -88,7 +89,7 @@ class Config:
         )
         for line_code in station_codes_by_line_code:
             line_station_codes = sorted(
-                station_codes_by_line_code[line_code].keys(),
+                station_codes_by_line_code[line_code],
                 key=StationUtils.to_station_code_components,
             )
             for station_code, next_station_code in zip(

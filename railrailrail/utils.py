@@ -50,6 +50,9 @@ class StationUtils:
         Args:
             station_code (str): Station code to be split up.
 
+        Raises:
+            ValueError: Invalid station code.
+
         Returns:
             tuple[str, int, str]: Separated station components.
             For example ("NS", 3, "A") or ("NS", 4, "").
@@ -58,14 +61,20 @@ class StationUtils:
             station_code,
             0,
             "",
-        )  # Default values for invalid station code.
+        )  # Default values.
+
+        # Check for 2-alphabet or 3-alphabet
+        if len(line_code) in (2, 3) and all(
+            ("A" <= letter <= "Z") for letter in line_code
+        ):
+            return line_code, station_number, station_number_suffix
 
         matcher = lambda station_code: re.match(
-            "([A-Z]+)([0-9]+)([A-Z]*)", station_code
-        )  # Ensure station code matches correct format.
+            "([A-Z]{2})([0-9]+)([A-Z]*)", station_code
+        )
         station_code_components_match = matcher(station_code)
         if station_code_components_match is None:
-            return line_code, station_number, station_number_suffix
+            raise ValueError(f"Invalid station code: {station_code}")
         matcher_groups: tuple[str, str, str] = station_code_components_match.groups("")
         line_code, station_number_str, station_number_suffix = matcher_groups
         station_number = int(station_number_str)

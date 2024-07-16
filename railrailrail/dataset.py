@@ -20,21 +20,29 @@ from dijkstar import Graph
 
 from railrailrail.utils import StationUtils
 
-# Yio Chu Kang - Toa Payoh 7 November 1987 phase_1_1
-# Toa Payoh - Outram Park (Direct train service to Outram Park via Raffles Place; City Hall) 12 December 1987 phase_1_2
-# Outram Park - Clementi 12 March 1988 phase_1a
-# Clementi - Lakeside 5 November 1988 phase_2b_1
-# Yio Chu Kang - Yishun 20 December 1988 phase_2b_2
-# Raffles Place - Marina Bay and City Hall - Tanah Merah (Separation of the North-South Line & East-West Line) 4 November 1989 phase_2a_1
-# Tanah Merah - Pasir Ris 16 December 1989 phase_2a_2
-# Jurong East - Choa Chu Kang 10 March 1990 phase_2b_3
-# Lakeside - Boon Lay 6 July 1990 phase_2b_4
-# Choa Chu Kang - Yishun 10 February 1996
-
-# Full closure between Joo Koon and Gul Circle until mid-2018; shuttle buses provided.
-
 
 class Stage:
+    """MRT/LRT Network phases before BPLRT
+
+    * phase_1_1: NS15 Yio Chu Kang - NS19 Toa Payoh | 7 November 1987
+    * phase_1_2: NS20 Novena - EW16 Outram Park | 12 December 1987
+    * phase_1a: EW17 Tiong Bahru - EW23 Clementi | 12 March 1988
+    * phase_2b_1: EW24 Jurong East - EW26 Lakeside | 5 November 1988
+    * phase_2b_2: NS13 Yishun - NS14 Khatib | 20 December 1988
+    * phase_2a_1: EW 12 Bugis - EW4 Tanah Merah and NS27 Marina Bay | 4 November 1989
+    * phase_2a_2: EW3 Simei - EW1 Pasir Ris | 16 December 1989
+    * phase_2b_3: NS1 Jurong East - NS4 Choa Chu Kang | 10 March 1990
+    * phase_2b_4: EW27 Boon Lay | 6 July 1990
+    * woodlands_extension: NS5 Yew Tee - NS11 Sembawang | 10 February 1996
+
+    Sources
+
+    * Phase 1, 1A | Project to go on line in three stages (The Straits Times, 8 July 1986, Page 8) | https://eresources.nlb.gov.sg/newspapers/digitised/article/straitstimes19860708-1.2.54.13.2
+    * Phase 2A, 2B | MRT seeks design advice for next two phases (The Business Times, 19 May 1984, Page 1) | https://eresources.nlb.gov.sg/newspapers/digitised/article/biztimes19840519-1.2.6
+    * Phase 2B | Last viaduct beam for MRT phase 2B now in place (The Straits Times, 10 January 1988, Page 16) | https://eresources.nlb.gov.sg/newspapers/digitised/article/straitstimes19880110-1.2.22.26
+    * Woodlands Extension | Woodlands extension almost ready (The Straits Times, 4 October 1995, Page 3) | https://eresources.nlb.gov.sg/newspapers/digitised/article/straitstimes19951004-1.2.64.3.2
+    """
+
     stages: types.MappingProxyType = types.MappingProxyType(
         {
             "phase_1_1": (
@@ -432,7 +440,7 @@ class Stage:
     def __init__(self, stage: str) -> None:
         self.stations: set[tuple[str, str]] = set()
         if stage not in Stage.stages:
-            return
+            raise ValueError(f"No such stage: {stage}")
         for (
             current_stage,
             current_stage_stations,
@@ -446,10 +454,10 @@ class Stage:
                 break
 
 
-class WalkingTrainMap:
+class WalkingTrainMapMeta(type):
     """LTA Walking Train Map (WTM)"""
 
-    routes: tuple[tuple[str, str, int]] = (
+    __routes: tuple[tuple[str, str, int]] = (
         ("Bras Basah", "Bencoolen", 2),
         ("Dhoby Ghaut", "Bencoolen", 5),
         ("Esplanade", "City Hall", 5),
@@ -475,6 +483,32 @@ class WalkingTrainMap:
         ("Esplanade", "Bugis", 12),
         ("Shenton Way", "Raffles Place", 12),
     )
+
+    def __new__(cls, name, bases, dct):
+        pairs: set[tuple[str, str]] = set()
+        for station_name_1, station_name_2, duration in cls.__routes:
+            if (
+                station_name_1 == station_name_2
+                or not isinstance(station_name_1, str)
+                or not isinstance(station_name_2, str)
+                or type(duration) not in (float, int)
+                or duration <= 0
+            ):
+                raise AttributeError(
+                    f"Route must be between 2 different names with a positive duration. Got {station_name_1}, {station_name_2}, {duration}"
+                )
+            pair = tuple(sorted([station_name_1, station_name_2]))
+            if pair in pairs:
+                raise AttributeError(
+                    f"Duplicate route not allowed: {station_name_1}, {station_name_2}"
+                )
+            pairs.add(pair)
+        cls.routes = cls.__routes
+        return super().__new__(cls, name, bases, dct)
+
+
+class WalkingTrainMap(metaclass=WalkingTrainMapMeta):
+    pass
 
 
 class SemiInterchange:
@@ -544,8 +578,10 @@ class SemiInterchange:
         (
             ("punggol_west_loop", "punggol_east_loop"),
             ("punggol_east_loop", "punggol_west_loop"),
+            #
             ("sengkang_west_loop", "sengkang_east_loop"),
             ("sengkang_east_loop", "sengkang_west_loop"),
+            #
             ("bukit_panjang_service_a", "bukit_panjang_service_b"),
             ("bukit_panjang_service_b", "bukit_panjang_service_a"),
             # Assume Service C always involves transfer at BP6.
@@ -555,9 +591,11 @@ class SemiInterchange:
             ("bukit_panjang_main", "bukit_panjang_service_c"),
             ("bukit_panjang_service_a", "bukit_panjang_service_c"),
             ("bukit_panjang_service_b", "bukit_panjang_service_c"),
+            #
             ("promenade_south", "promenade_west"),
             ("promenade_west", "promenade_south"),
             ("promenade_east", "promenade_south"),
+            #
             ("bahar_east", "bahar_west"),
             ("bahar_west", "bahar_south"),
             ("bahar_south", "bahar_east"),
@@ -570,19 +608,19 @@ class SemiInterchange:
 
 
 class Terminal:
-    lines_with_unusual_terminals = frozenset(
+    __looped_lines = frozenset(
         (
             "BP",
             "JS",
             "JW",
-            "PTC",
             "PE",
+            "PTC",
             "PW",
-            "STC",
             "SE",
+            "STC",
             "SW",
         )
-    )
+    )  # These lines all terminate at one station like JS1, except for BPLRT (Service A/B -> BP1, Service C -> BP14).
 
     pseudo_stations: types.MappingProxyType = types.MappingProxyType(
         {
@@ -591,27 +629,35 @@ class Terminal:
             "CE0Z": "CC4",
             "JE0": "JS3",
         }
-    )
+    )  # For temporary Circle Line Extension and Jurong Region Line East Branch.
 
     @classmethod
     def get_terminal(cls, graph: Graph, start: str, end: str) -> str | None:
+        if start == end:
+            raise ValueError(f"start and end must be the same. Got {start} and {end}")
+        start_line_code, _, _ = StationUtils.to_station_code_components(start)
+        end_line_code, _, _ = StationUtils.to_station_code_components(end)
+        if start_line_code != end_line_code:
+            raise ValueError(
+                f"start_line_code and end_line_code must be the same. Got {start_line_code} and {end_line_code}"
+            )
+        if start_line_code in cls.__looped_lines or (
+            start_line_code == "CC" and "CC34" in graph
+        ):
+            # Circle Line becomes a looped line at Stage 6.
+            return None
         ascending: bool = (
             sorted([start, end], key=StationUtils.to_station_code_components)[0]
             == start
         )
-        line_code, _, _ = StationUtils.to_station_code_components(start)
-        if line_code in cls.lines_with_unusual_terminals:
-            return None
         # From start, traverse nodes in ascending or descending order with same line code until dead end is reached.
-        visited: set[str] = set()
         next_node = start
-        while next_node not in visited:
-            visited.add(next_node)
+        while True:
             node_and_neighbours = sorted(
                 list(
                     node
-                    for node in graph.get_incoming(next_node).keys()
-                    if node[:2] == line_code
+                    for node in graph.get_incoming(next_node)
+                    if node[:2] == start_line_code
                 )
                 + [next_node],
                 key=StationUtils.to_station_code_components,
@@ -622,314 +668,350 @@ class Terminal:
             if next_node_index < 0 or next_node_index >= len(node_and_neighbours):
                 return next_node
             next_node = node_and_neighbours[next_node_index]
-        return None  # Cycle is detected.
 
 
-class Durations:
+class DurationsMeta(type):
     """Standard durations for all possible adjacent rail edges on the same line.
     This includes edges that have yet to exist (e.g. NS3 -> NS3A),
     and edges that no longer exist or will be removed in the future (e.g. NS3 -> NS4, BP6 -> BP14).
     """
 
-    edges = {
-        "BP1-BP2": {"duration": 2},
-        "BP2-BP3": {"duration": 1},
-        "BP3-BP4": {"duration": 2},
-        "BP4-BP5": {"duration": 1},
-        "BP5-BP6": {"duration": 1},
-        "BP6-BP7": {"duration": 1},
-        "BP6-BP13": {"duration": 2},
-        "BP6-BP14": {"duration": 1},
-        "BP7-BP8": {"duration": 2},
-        "BP8-BP9": {"duration": 1},
-        "BP9-BP10": {"duration": 2},
-        "BP10-BP11": {"duration": 1},
-        "BP11-BP12": {"duration": 1},
-        "BP12-BP13": {"duration": 2},
-        "CC1-CC2": {"duration": 3},
-        "CC2-CC3": {"duration": 3},
-        "CC3-CC4": {"duration": 3},
-        "CC4-CC5": {"duration": 6},
-        "CC4-CC34": {"duration": 3},
-        "CC5-CC6": {"duration": 2},
-        "CC6-CC7": {"duration": 2},
-        "CC7-CC8": {"duration": 2},
-        "CC8-CC9": {"duration": 2},
-        "CC9-CC10": {"duration": 2},
-        "CC10-CC11": {"duration": 2},
-        "CC11-CC12": {"duration": 2},
-        "CC12-CC13": {"duration": 2},
-        "CC13-CC14": {"duration": 2},
-        "CC14-CC15": {"duration": 2},
-        "CC15-CC16": {"duration": 2},
-        "CC16-CC17": {"duration": 2},
-        "CC17-CC18": {"duration": 2},
-        "CC17-CC19": {"duration": 5},
-        "CC18-CC19": {"duration": 4},
-        "CC19-CC20": {"duration": 2},
-        "CC20-CC21": {"duration": 2},
-        "CC21-CC22": {"duration": 2},
-        "CC22-CC23": {"duration": 2},
-        "CC23-CC24": {"duration": 2},
-        "CC24-CC25": {"duration": 2},
-        "CC25-CC26": {"duration": 2},
-        "CC26-CC27": {"duration": 2},
-        "CC27-CC28": {"duration": 2},
-        "CC28-CC29": {"duration": 2},
-        "CC29-CC30": {"duration": 2},
-        "CC30-CC31": {"duration": 1},
-        "CC31-CC32": {"duration": 1},
-        "CC32-CC33": {"duration": 1},
-        "CC33-CC34": {"duration": 2},
-        "CC33-DT17": {"duration": 5},
-        "CE0X-CE0Y": {"duration": 2},
-        "CE0Y-CE0Z": {"duration": 6},
-        "CE0Z-CE1": {"duration": 3},
-        "CE1-CE2": {"duration": 2},
-        "CG-CG1": {"duration": 3},
-        "CG1-CG2": {"duration": 4},
-        "CP1-CP2": {"duration": 4},
-        "CP2-CP3": {"duration": 6},
-        "CP3-CP4": {"duration": 4},
-        "CR1-CR2": {"duration": 4},
-        "CR2-CR3": {"duration": 6},
-        "CR3-CR4": {"duration": 3},
-        "CR4-CR5": {"duration": 3},
-        "CR5-CR6": {"duration": 2},
-        "CR6-CR7": {"duration": 8},
-        "CR7-CR8": {"duration": 2},
-        "CR8-CR9": {"duration": 4},
-        "CR9-CR10": {"duration": 3},
-        "CR10-CR11": {"duration": 3},
-        "CR11-CR12": {"duration": 2},
-        "CR12-CR13": {"duration": 3},
-        "CR13-CR14": {"duration": 9},
-        "CR14-CR15": {"duration": 3},
-        "CR15-CR16": {"duration": 2},
-        "CR16-CR17": {"duration": 4},
-        "CR17-CR18": {"duration": 2},
-        "CR18-CR19": {"duration": 5},
-        "DT-DT1": {"duration": 7},
-        "DT1-DT2": {"duration": 2},
-        "DT2-DT3": {"duration": 2},
-        "DT3-DT4": {"duration": 2},
-        "DT3-DT5": {"duration": 3},
-        "DT4-DT5": {"duration": 3},
-        "DT5-DT6": {"duration": 2},
-        "DT6-DT7": {"duration": 2},
-        "DT7-DT8": {"duration": 2},
-        "DT8-DT9": {"duration": 2},
-        "DT9-DT10": {"duration": 2},
-        "DT10-DT11": {"duration": 2},
-        "DT11-DT12": {"duration": 3},
-        "DT12-DT13": {"duration": 1},
-        "DT13-DT14": {"duration": 2},
-        "DT14-DT15": {"duration": 2},
-        "DT15-DT16": {"duration": 2},
-        "DT16-DT17": {"duration": 2},
-        "DT17-DT18": {"duration": 1},
-        "DT18-DT19": {"duration": 2},
-        "DT19-DT20": {"duration": 2},
-        "DT20-DT21": {"duration": 2},
-        "DT21-DT22": {"duration": 1},
-        "DT22-DT23": {"duration": 2},
-        "DT23-DT24": {"duration": 2},
-        "DT24-DT25": {"duration": 2},
-        "DT25-DT26": {"duration": 2},
-        "DT26-DT27": {"duration": 2},
-        "DT27-DT28": {"duration": 2},
-        "DT28-DT29": {"duration": 2},
-        "DT29-DT30": {"duration": 2},
-        "DT30-DT31": {"duration": 3},
-        "DT31-DT32": {"duration": 2},
-        "DT32-DT33": {"duration": 2},
-        "DT33-DT34": {"duration": 3},
-        "DT34-DT35": {"duration": 2},
-        "DT35-DT36": {"duration": 1},
-        "DT36-DT37": {"duration": 2},
-        "EW1-EW2": {"duration": 3},
-        "EW2-EW3": {"duration": 3},
-        "EW3-EW4": {"duration": 3},
-        "EW4-EW5": {"duration": 3},
-        "EW5-EW6": {"duration": 3},
-        "EW6-EW7": {"duration": 3},
-        "EW7-EW8": {"duration": 2},
-        "EW8-EW9": {"duration": 2},
-        "EW9-EW10": {"duration": 3},
-        "EW10-EW11": {"duration": 2},
-        "EW11-EW12": {"duration": 3},
-        "EW12-EW13": {"duration": 2},
-        "EW13-EW14": {"duration": 2},
-        "EW14-EW15": {"duration": 2},
-        "EW15-EW16": {"duration": 2},
-        "EW16-EW17": {"duration": 3},
-        "EW17-EW18": {"duration": 3},
-        "EW18-EW19": {"duration": 2},
-        "EW19-EW20": {"duration": 3},
-        "EW20-EW21": {"duration": 2},
-        "EW21-EW22": {"duration": 3},
-        "EW21-EW23": {"duration": 5},
-        "EW22-EW23": {"duration": 2},
-        "EW23-EW24": {"duration": 5},
-        "EW24-EW25": {"duration": 2},
-        "EW25-EW26": {"duration": 3},
-        "EW26-EW27": {"duration": 2},
-        "EW27-EW28": {"duration": 3},
-        "EW28-EW29": {"duration": 3},
-        "EW29-EW30": {"duration": 4},
-        "EW30-EW31": {"duration": 2},
-        "EW31-EW32": {"duration": 2},
-        "EW32-EW33": {"duration": 2},
-        "JE0-JE1": {"duration": 3},
-        "JE1-JE2": {"duration": 2},
-        "JE2-JE3": {"duration": 2},
-        "JE3-JE4": {"duration": 3},
-        "JE4-JE5": {"duration": 2},
-        "JE5-JE6": {"duration": 2},
-        "JE6-JE7": {"duration": 2},
-        "JS1-JS2": {"duration": 2},
-        "JS2-JS3": {"duration": 4},
-        "JS3-JS4": {"duration": 2},
-        "JS4-JS5": {"duration": 3},
-        "JS5-JS6": {"duration": 2},
-        "JS6-JS7": {"duration": 2},
-        "JS7-JS8": {"duration": 2},
-        "JS7-JW1": {"duration": 2},
-        "JS8-JS9": {"duration": 2},
-        "JS9-JS10": {"duration": 2},
-        "JS10-JS11": {"duration": 2},
-        "JS11-JS12": {"duration": 2},
-        "JW1-JW2": {"duration": 2},
-        "JW2-JW3": {"duration": 2},
-        "JW3-JW4": {"duration": 2},
-        "JW4-JW5": {"duration": 2},
-        "NE1-NE3": {"duration": 4},
-        "NE3-NE4": {"duration": 1},
-        "NE4-NE5": {"duration": 2},
-        "NE5-NE6": {"duration": 3},
-        "NE6-NE7": {"duration": 1},
-        "NE7-NE8": {"duration": 1},
-        "NE8-NE9": {"duration": 2},
-        "NE9-NE10": {"duration": 3},
-        "NE10-NE11": {"duration": 1},
-        "NE10-NE12": {"duration": 3},
-        "NE11-NE12": {"duration": 2},
-        "NE12-NE13": {"duration": 3},
-        "NE13-NE14": {"duration": 2},
-        "NE14-NE15": {"duration": 2},
-        "NE14-NE16": {"duration": 4},
-        "NE15-NE16": {"duration": 2},
-        "NE16-NE17": {"duration": 3},
-        "NE17-NE18": {"duration": 3},
-        "NS1-NS2": {"duration": 3},
-        "NS2-NS3": {"duration": 3},
-        "NS3-NS3A": {"duration": 2},
-        "NS3-NS4": {"duration": 4},
-        "NS3A-NS4": {"duration": 2},
-        "NS4-NS5": {"duration": 2},
-        "NS5-NS6": {"duration": 3},
-        "NS5-NS7": {"duration": 5},
-        "NS6-NS7": {"duration": 2},
-        "NS7-NS8": {"duration": 3},
-        "NS8-NS9": {"duration": 3},
-        "NS9-NS10": {"duration": 3},
-        "NS10-NS11": {"duration": 3},
-        "NS11-NS12": {"duration": 3},
-        "NS11-NS13": {"duration": 5},
-        "NS12-NS13": {"duration": 3},
-        "NS13-NS14": {"duration": 2},
-        "NS14-NS15": {"duration": 5},
-        "NS15-NS16": {"duration": 3},
-        "NS16-NS17": {"duration": 4},
-        "NS17-NS18": {"duration": 2},
-        "NS18-NS19": {"duration": 2},
-        "NS19-NS20": {"duration": 3},
-        "NS20-NS21": {"duration": 2},
-        "NS21-NS22": {"duration": 3},
-        "NS22-NS23": {"duration": 2},
-        "NS23-NS24": {"duration": 2},
-        "NS24-NS25": {"duration": 3},
-        "NS25-NS26": {"duration": 2},
-        "NS26-NS27": {"duration": 2},
-        "NS27-NS28": {"duration": 2},
-        "PE1-PE2": {"duration": 1},
-        "PE2-PE3": {"duration": 1},
-        "PE3-PE4": {"duration": 1},
-        "PE4-PE5": {"duration": 1},
-        "PE5-PE6": {"duration": 1},
-        "PE6-PE7": {"duration": 1},
-        "PTC-PE1": {"duration": 3},
-        "PTC-PE5": {"duration": 4},
-        "PTC-PE6": {"duration": 3},
-        "PTC-PE7": {"duration": 2},
-        "PTC-PW1": {"duration": 2},
-        "PTC-PW5": {"duration": 5},
-        "PTC-PW7": {"duration": 3},
-        "PW1-PW2": {"duration": 1},
-        "PW1-PW3": {"duration": 2},
-        "PW1-PW5": {"duration": 4},
-        "PW2-PW3": {"duration": 1},
-        "PW3-PW4": {"duration": 1},
-        "PW3-PW5": {"duration": 2},
-        "PW4-PW5": {"duration": 1},
-        "PW5-PW6": {"duration": 1},
-        "PW6-PW7": {"duration": 1},
-        "SE1-SE2": {"duration": 1},
-        "SE2-SE3": {"duration": 1},
-        "SE3-SE4": {"duration": 1},
-        "SE4-SE5": {"duration": 2},
-        "STC-SE1": {"duration": 2},
-        "STC-SE5": {"duration": 3},
-        "STC-SW1": {"duration": 2},
-        "STC-SW2": {"duration": 3},
-        "STC-SW4": {"duration": 5},
-        "STC-SW8": {"duration": 3},
-        "SW1-SW2": {"duration": 1},
-        "SW2-SW3": {"duration": 1},
-        "SW2-SW4": {"duration": 2},
-        "SW3-SW4": {"duration": 1},
-        "SW4-SW5": {"duration": 1},
-        "SW5-SW6": {"duration": 1},
-        "SW6-SW7": {"duration": 1},
-        "SW7-SW8": {"duration": 1},
-        "TE1-TE2": {"duration": 2},
-        "TE2-TE3": {"duration": 2},
-        "TE3-TE4": {"duration": 5},
-        "TE4-TE4A": {"duration": 2},
-        "TE4-TE5": {"duration": 3},
-        "TE4A-TE5": {"duration": 2},
-        "TE5-TE6": {"duration": 3},
-        "TE6-TE7": {"duration": 2},
-        "TE7-TE8": {"duration": 2},
-        "TE8-TE9": {"duration": 3},
-        "TE9-TE10": {"duration": 2},
-        "TE9-TE11": {"duration": 4},
-        "TE10-TE11": {"duration": 2},
-        "TE11-TE12": {"duration": 3},
-        "TE12-TE13": {"duration": 1},
-        "TE13-TE14": {"duration": 2},
-        "TE14-TE15": {"duration": 2},
-        "TE15-TE16": {"duration": 2},
-        "TE16-TE17": {"duration": 2},
-        "TE17-TE18": {"duration": 2},
-        "TE18-TE19": {"duration": 1},
-        "TE19-TE20": {"duration": 2},
-        "TE20-TE21": {"duration": 2},
-        "TE20-TE22": {"duration": 3},
-        "TE21-TE22": {"duration": 1},
-        "TE22-TE22A": {"duration": 2},
-        "TE22-TE23": {"duration": 4},
-        "TE22A-TE23": {"duration": 2},
-        "TE23-TE24": {"duration": 2},
-        "TE24-TE25": {"duration": 3},
-        "TE25-TE26": {"duration": 1},
-        "TE26-TE27": {"duration": 2},
-        "TE27-TE28": {"duration": 2},
-        "TE28-TE29": {"duration": 2},
-        "TE29-TE30": {"duration": 1},
-        "TE30-TE31": {"duration": 1},
-        "TE31-TE32": {"duration": 10},
-        "TE32-TE33": {"duration": 3},
-        "TE33-TE34": {"duration": 4},
-        "TE34-TE35": {"duration": 3},
-    }
+    __edges: tuple = (
+        ("BP1-BP2", ("duration", 2)),
+        ("BP2-BP3", ("duration", 1)),
+        ("BP3-BP4", ("duration", 2)),
+        ("BP4-BP5", ("duration", 1)),
+        ("BP5-BP6", ("duration", 1)),
+        ("BP6-BP7", ("duration", 1)),
+        ("BP6-BP13", ("duration", 2)),
+        ("BP6-BP14", ("duration", 1)),
+        ("BP7-BP8", ("duration", 2)),
+        ("BP8-BP9", ("duration", 1)),
+        ("BP9-BP10", ("duration", 2)),
+        ("BP10-BP11", ("duration", 1)),
+        ("BP11-BP12", ("duration", 1)),
+        ("BP12-BP13", ("duration", 2)),
+        ("CC1-CC2", ("duration", 3)),
+        ("CC2-CC3", ("duration", 3)),
+        ("CC3-CC4", ("duration", 3)),
+        ("CC4-CC5", ("duration", 6)),
+        ("CC4-CC34", ("duration", 3)),
+        ("CC5-CC6", ("duration", 2)),
+        ("CC6-CC7", ("duration", 2)),
+        ("CC7-CC8", ("duration", 2)),
+        ("CC8-CC9", ("duration", 2)),
+        ("CC9-CC10", ("duration", 2)),
+        ("CC10-CC11", ("duration", 2)),
+        ("CC11-CC12", ("duration", 2)),
+        ("CC12-CC13", ("duration", 2)),
+        ("CC13-CC14", ("duration", 2)),
+        ("CC14-CC15", ("duration", 2)),
+        ("CC15-CC16", ("duration", 2)),
+        ("CC16-CC17", ("duration", 2)),
+        ("CC17-CC18", ("duration", 2)),
+        ("CC17-CC19", ("duration", 5)),
+        ("CC18-CC19", ("duration", 4)),
+        ("CC19-CC20", ("duration", 2)),
+        ("CC20-CC21", ("duration", 2)),
+        ("CC21-CC22", ("duration", 2)),
+        ("CC22-CC23", ("duration", 2)),
+        ("CC23-CC24", ("duration", 2)),
+        ("CC24-CC25", ("duration", 2)),
+        ("CC25-CC26", ("duration", 2)),
+        ("CC26-CC27", ("duration", 2)),
+        ("CC27-CC28", ("duration", 2)),
+        ("CC28-CC29", ("duration", 2)),
+        ("CC29-CC30", ("duration", 2)),
+        ("CC30-CC31", ("duration", 1)),
+        ("CC31-CC32", ("duration", 1)),
+        ("CC32-CC33", ("duration", 1)),
+        ("CC33-CC34", ("duration", 2)),
+        ("CC33-DT17", ("duration", 5)),
+        ("CE0X-CE0Y", ("duration", 2)),
+        ("CE0Y-CE0Z", ("duration", 6)),
+        ("CE0Z-CE1", ("duration", 3)),
+        ("CE1-CE2", ("duration", 2)),
+        ("CG-CG1", ("duration", 3)),
+        ("CG1-CG2", ("duration", 4)),
+        ("CP1-CP2", ("duration", 4)),
+        ("CP2-CP3", ("duration", 6)),
+        ("CP3-CP4", ("duration", 4)),
+        ("CR1-CR2", ("duration", 4)),
+        ("CR2-CR3", ("duration", 6)),
+        ("CR3-CR4", ("duration", 3)),
+        ("CR4-CR5", ("duration", 3)),
+        ("CR5-CR6", ("duration", 2)),
+        ("CR6-CR7", ("duration", 8)),
+        ("CR7-CR8", ("duration", 2)),
+        ("CR8-CR9", ("duration", 4)),
+        ("CR9-CR10", ("duration", 3)),
+        ("CR10-CR11", ("duration", 3)),
+        ("CR11-CR12", ("duration", 2)),
+        ("CR12-CR13", ("duration", 3)),
+        ("CR13-CR14", ("duration", 9)),
+        ("CR14-CR15", ("duration", 3)),
+        ("CR15-CR16", ("duration", 2)),
+        ("CR16-CR17", ("duration", 4)),
+        ("CR17-CR18", ("duration", 2)),
+        ("CR18-CR19", ("duration", 5)),
+        ("DT-DT1", ("duration", 7)),
+        ("DT1-DT2", ("duration", 2)),
+        ("DT2-DT3", ("duration", 2)),
+        ("DT3-DT4", ("duration", 2)),
+        ("DT3-DT5", ("duration", 3)),
+        ("DT4-DT5", ("duration", 3)),
+        ("DT5-DT6", ("duration", 2)),
+        ("DT6-DT7", ("duration", 2)),
+        ("DT7-DT8", ("duration", 2)),
+        ("DT8-DT9", ("duration", 2)),
+        ("DT9-DT10", ("duration", 2)),
+        ("DT10-DT11", ("duration", 2)),
+        ("DT11-DT12", ("duration", 3)),
+        ("DT12-DT13", ("duration", 1)),
+        ("DT13-DT14", ("duration", 2)),
+        ("DT14-DT15", ("duration", 2)),
+        ("DT15-DT16", ("duration", 2)),
+        ("DT16-DT17", ("duration", 2)),
+        ("DT17-DT18", ("duration", 1)),
+        ("DT18-DT19", ("duration", 2)),
+        ("DT19-DT20", ("duration", 2)),
+        ("DT20-DT21", ("duration", 2)),
+        ("DT21-DT22", ("duration", 1)),
+        ("DT22-DT23", ("duration", 2)),
+        ("DT23-DT24", ("duration", 2)),
+        ("DT24-DT25", ("duration", 2)),
+        ("DT25-DT26", ("duration", 2)),
+        ("DT26-DT27", ("duration", 2)),
+        ("DT27-DT28", ("duration", 2)),
+        ("DT28-DT29", ("duration", 2)),
+        ("DT29-DT30", ("duration", 2)),
+        ("DT30-DT31", ("duration", 3)),
+        ("DT31-DT32", ("duration", 2)),
+        ("DT32-DT33", ("duration", 2)),
+        ("DT33-DT34", ("duration", 3)),
+        ("DT34-DT35", ("duration", 2)),
+        ("DT35-DT36", ("duration", 1)),
+        ("DT36-DT37", ("duration", 2)),
+        ("EW1-EW2", ("duration", 3)),
+        ("EW2-EW3", ("duration", 3)),
+        ("EW3-EW4", ("duration", 3)),
+        ("EW4-EW5", ("duration", 3)),
+        ("EW5-EW6", ("duration", 3)),
+        ("EW6-EW7", ("duration", 3)),
+        ("EW7-EW8", ("duration", 2)),
+        ("EW8-EW9", ("duration", 2)),
+        ("EW9-EW10", ("duration", 3)),
+        ("EW10-EW11", ("duration", 2)),
+        ("EW11-EW12", ("duration", 3)),
+        ("EW12-EW13", ("duration", 2)),
+        ("EW13-EW14", ("duration", 2)),
+        ("EW14-EW15", ("duration", 2)),
+        ("EW15-EW16", ("duration", 2)),
+        ("EW16-EW17", ("duration", 3)),
+        ("EW17-EW18", ("duration", 3)),
+        ("EW18-EW19", ("duration", 2)),
+        ("EW19-EW20", ("duration", 3)),
+        ("EW20-EW21", ("duration", 2)),
+        ("EW21-EW22", ("duration", 3)),
+        ("EW21-EW23", ("duration", 5)),
+        ("EW22-EW23", ("duration", 2)),
+        ("EW23-EW24", ("duration", 5)),
+        ("EW24-EW25", ("duration", 2)),
+        ("EW25-EW26", ("duration", 3)),
+        ("EW26-EW27", ("duration", 2)),
+        ("EW27-EW28", ("duration", 3)),
+        ("EW28-EW29", ("duration", 3)),
+        ("EW29-EW30", ("duration", 4)),
+        ("EW30-EW31", ("duration", 2)),
+        ("EW31-EW32", ("duration", 2)),
+        ("EW32-EW33", ("duration", 2)),
+        ("JE0-JE1", ("duration", 3)),
+        ("JE1-JE2", ("duration", 2)),
+        ("JE2-JE3", ("duration", 2)),
+        ("JE3-JE4", ("duration", 3)),
+        ("JE4-JE5", ("duration", 2)),
+        ("JE5-JE6", ("duration", 2)),
+        ("JE6-JE7", ("duration", 2)),
+        ("JS1-JS2", ("duration", 2)),
+        ("JS2-JS3", ("duration", 4)),
+        ("JS3-JS4", ("duration", 2)),
+        ("JS4-JS5", ("duration", 3)),
+        ("JS5-JS6", ("duration", 2)),
+        ("JS6-JS7", ("duration", 2)),
+        ("JS7-JS8", ("duration", 2)),
+        ("JS7-JW1", ("duration", 2)),
+        ("JS8-JS9", ("duration", 2)),
+        ("JS9-JS10", ("duration", 2)),
+        ("JS10-JS11", ("duration", 2)),
+        ("JS11-JS12", ("duration", 2)),
+        ("JW1-JW2", ("duration", 2)),
+        ("JW2-JW3", ("duration", 2)),
+        ("JW3-JW4", ("duration", 2)),
+        ("JW4-JW5", ("duration", 2)),
+        ("NE1-NE3", ("duration", 4)),
+        ("NE3-NE4", ("duration", 1)),
+        ("NE4-NE5", ("duration", 2)),
+        ("NE5-NE6", ("duration", 3)),
+        ("NE6-NE7", ("duration", 1)),
+        ("NE7-NE8", ("duration", 1)),
+        ("NE8-NE9", ("duration", 2)),
+        ("NE9-NE10", ("duration", 3)),
+        ("NE10-NE11", ("duration", 1)),
+        ("NE10-NE12", ("duration", 3)),
+        ("NE11-NE12", ("duration", 2)),
+        ("NE12-NE13", ("duration", 3)),
+        ("NE13-NE14", ("duration", 2)),
+        ("NE14-NE15", ("duration", 2)),
+        ("NE14-NE16", ("duration", 4)),
+        ("NE15-NE16", ("duration", 2)),
+        ("NE16-NE17", ("duration", 3)),
+        ("NE17-NE18", ("duration", 3)),
+        ("NS1-NS2", ("duration", 3)),
+        ("NS2-NS3", ("duration", 3)),
+        ("NS3-NS3A", ("duration", 2)),
+        ("NS3-NS4", ("duration", 4)),
+        ("NS3A-NS4", ("duration", 2)),
+        ("NS4-NS5", ("duration", 2)),
+        ("NS5-NS6", ("duration", 3)),
+        ("NS5-NS7", ("duration", 5)),
+        ("NS6-NS7", ("duration", 2)),
+        ("NS7-NS8", ("duration", 3)),
+        ("NS8-NS9", ("duration", 3)),
+        ("NS9-NS10", ("duration", 3)),
+        ("NS10-NS11", ("duration", 3)),
+        ("NS11-NS12", ("duration", 3)),
+        ("NS11-NS13", ("duration", 5)),
+        ("NS12-NS13", ("duration", 3)),
+        ("NS13-NS14", ("duration", 2)),
+        ("NS14-NS15", ("duration", 5)),
+        ("NS15-NS16", ("duration", 3)),
+        ("NS16-NS17", ("duration", 4)),
+        ("NS17-NS18", ("duration", 2)),
+        ("NS18-NS19", ("duration", 2)),
+        ("NS19-NS20", ("duration", 3)),
+        ("NS20-NS21", ("duration", 2)),
+        ("NS21-NS22", ("duration", 3)),
+        ("NS22-NS23", ("duration", 2)),
+        ("NS23-NS24", ("duration", 2)),
+        ("NS24-NS25", ("duration", 3)),
+        ("NS25-NS26", ("duration", 2)),
+        ("NS26-NS27", ("duration", 2)),
+        ("NS27-NS28", ("duration", 2)),
+        ("PE1-PE2", ("duration", 1)),
+        ("PE2-PE3", ("duration", 1)),
+        ("PE3-PE4", ("duration", 1)),
+        ("PE4-PE5", ("duration", 1)),
+        ("PE5-PE6", ("duration", 1)),
+        ("PE6-PE7", ("duration", 1)),
+        ("PTC-PE1", ("duration", 3)),
+        ("PTC-PE5", ("duration", 4)),
+        ("PTC-PE6", ("duration", 3)),
+        ("PTC-PE7", ("duration", 2)),
+        ("PTC-PW1", ("duration", 2)),
+        ("PTC-PW5", ("duration", 5)),
+        ("PTC-PW7", ("duration", 3)),
+        ("PW1-PW2", ("duration", 1)),
+        ("PW1-PW3", ("duration", 2)),
+        ("PW1-PW5", ("duration", 4)),
+        ("PW2-PW3", ("duration", 1)),
+        ("PW3-PW4", ("duration", 1)),
+        ("PW3-PW5", ("duration", 2)),
+        ("PW4-PW5", ("duration", 1)),
+        ("PW5-PW6", ("duration", 1)),
+        ("PW6-PW7", ("duration", 1)),
+        ("SE1-SE2", ("duration", 1)),
+        ("SE2-SE3", ("duration", 1)),
+        ("SE3-SE4", ("duration", 1)),
+        ("SE4-SE5", ("duration", 2)),
+        ("STC-SE1", ("duration", 2)),
+        ("STC-SE5", ("duration", 3)),
+        ("STC-SW1", ("duration", 2)),
+        ("STC-SW2", ("duration", 3)),
+        ("STC-SW4", ("duration", 5)),
+        ("STC-SW8", ("duration", 3)),
+        ("SW1-SW2", ("duration", 1)),
+        ("SW2-SW3", ("duration", 1)),
+        ("SW2-SW4", ("duration", 2)),
+        ("SW3-SW4", ("duration", 1)),
+        ("SW4-SW5", ("duration", 1)),
+        ("SW5-SW6", ("duration", 1)),
+        ("SW6-SW7", ("duration", 1)),
+        ("SW7-SW8", ("duration", 1)),
+        ("TE1-TE2", ("duration", 2)),
+        ("TE2-TE3", ("duration", 2)),
+        ("TE3-TE4", ("duration", 5)),
+        ("TE4-TE4A", ("duration", 2)),
+        ("TE4-TE5", ("duration", 3)),
+        ("TE4A-TE5", ("duration", 2)),
+        ("TE5-TE6", ("duration", 3)),
+        ("TE6-TE7", ("duration", 2)),
+        ("TE7-TE8", ("duration", 2)),
+        ("TE8-TE9", ("duration", 3)),
+        ("TE9-TE10", ("duration", 2)),
+        ("TE9-TE11", ("duration", 4)),
+        ("TE10-TE11", ("duration", 2)),
+        ("TE11-TE12", ("duration", 3)),
+        ("TE12-TE13", ("duration", 1)),
+        ("TE13-TE14", ("duration", 2)),
+        ("TE14-TE15", ("duration", 2)),
+        ("TE15-TE16", ("duration", 2)),
+        ("TE16-TE17", ("duration", 2)),
+        ("TE17-TE18", ("duration", 2)),
+        ("TE18-TE19", ("duration", 1)),
+        ("TE19-TE20", ("duration", 2)),
+        ("TE20-TE21", ("duration", 2)),
+        ("TE20-TE22", ("duration", 3)),
+        ("TE21-TE22", ("duration", 1)),
+        ("TE22-TE22A", ("duration", 2)),
+        ("TE22-TE23", ("duration", 4)),
+        ("TE22A-TE23", ("duration", 2)),
+        ("TE23-TE24", ("duration", 2)),
+        ("TE24-TE25", ("duration", 3)),
+        ("TE25-TE26", ("duration", 1)),
+        ("TE26-TE27", ("duration", 2)),
+        ("TE27-TE28", ("duration", 2)),
+        ("TE28-TE29", ("duration", 2)),
+        ("TE29-TE30", ("duration", 1)),
+        ("TE30-TE31", ("duration", 1)),
+        ("TE31-TE32", ("duration", 10)),
+        ("TE32-TE33", ("duration", 3)),
+        ("TE33-TE34", ("duration", 4)),
+        ("TE34-TE35", ("duration", 3)),
+    )
+
+    def __new__(cls, name, bases, dct):
+        cls.edges = dict()
+        pairs: set[tuple[str, str]] = set()
+        for edge, *details in cls.__edges:
+            # Validate edge format
+            edge_parts = edge.split("-", 2)
+            if len(edge_parts) != 2:
+                raise AttributeError(
+                    "Edge must consist of 2 station codes separated by a single dash '-'"
+                )
+            station_code_1, station_code_2 = edge_parts
+            if station_code_1 == station_code_2:
+                raise AttributeError(f"Edge nodes cannot be the same: {edge}")
+            StationUtils.to_station_code_components(
+                station_code_1
+            )  # Raises ValueError if invalid.
+            StationUtils.to_station_code_components(
+                station_code_2
+            )  # Raises ValueError if invalid.
+
+            # Check for duplicate edges
+            pair = tuple(sorted([station_code_1, station_code_2]))
+            if pair in pairs:
+                raise AttributeError(f"Duplicate edge not allowed: {edge}")
+            pairs.add(pair)
+
+            # Validate edge details
+            edge_details = dict(details)
+            if type(edge_details.get("duration", None)) not in (float, int):
+                raise AttributeError("Edge duration must be int | float.")
+            cls.edges[edge] = edge_details
+        return super().__new__(cls, name, bases, dct)
+
+
+class Durations(metaclass=DurationsMeta):
+    pass

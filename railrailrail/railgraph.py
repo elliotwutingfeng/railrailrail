@@ -295,7 +295,12 @@ class RailGraph:
                     steps.append(f"Walk to {v_} {self._stations[v_]}")
                     status = "walking"
                 else:
-                    steps.append(f"Board train towards {v_} {self._stations[v_]}")
+                    terminal: str | None = Terminal.get_terminal(self._graph, u, v)
+                    steps.append(
+                        f"Board train in direction of {v_} {self._stations[v_]}"  # Unusual terminal. Use next station instead.
+                        if terminal is None
+                        else f"Board train towards terminus {Terminal.pseudo_stations.get(terminal, terminal)} {self._stations[terminal]}"
+                    )
                     status = "in_train"
             elif status == "at_station":
                 if any(
@@ -313,14 +318,19 @@ class RailGraph:
                     pathinfo.edges[edge_idx - 1][1], pathinfo.edges[edge_idx][1]
                 ):  # Semi-interchange transfer
                     steps.append(f"Switch over at {u_} {self._stations[u_]}")
-                    steps.append(f"Board train towards {v_} {self._stations[v_]}")
+                    terminal: str | None = Terminal.get_terminal(self._graph, u, v)
+                    steps.append(
+                        f"Board train in direction of {v_} {self._stations[v_]}"  # Unusual terminal. Use next station instead.
+                        if terminal is None
+                        else f"Board train towards terminus {Terminal.pseudo_stations.get(terminal, terminal)} {self._stations[terminal]}"
+                    )
                     status = "in_train"
                 else:  # Board a train.
                     terminal: str | None = Terminal.get_terminal(self._graph, u, v)
                     steps.append(
-                        f"Board train towards {v_} {self._stations[v_]}"  # Unusual terminal. Use next station instead.
+                        f"Board train in direction of {v_} {self._stations[v_]}"  # Unusual terminal. Use next station instead.
                         if terminal is None
-                        else f"Board train towards {Terminal.pseudo_stations.get(terminal, terminal)} {self._stations[terminal]}"
+                        else f"Board train towards terminus {Terminal.pseudo_stations.get(terminal, terminal)} {self._stations[terminal]}"
                     )
                     status = "in_train"
             elif status == "in_train":
@@ -342,7 +352,12 @@ class RailGraph:
                     pathinfo.edges[edge_idx - 1][1], pathinfo.edges[edge_idx][1]
                 ):  # Semi-interchange transfer
                     steps.append(f"Switch over at {u_} {self._stations[u_]}")
-                    steps.append(f"Board train towards {v_} {self._stations[v_]}")
+                    terminal: str | None = Terminal.get_terminal(self._graph, u, v)
+                    steps.append(
+                        f"Board train in direction of {v_} {self._stations[v_]}"  # Unusual terminal. Use next station instead.
+                        if terminal is None
+                        else f"Board train towards terminus {Terminal.pseudo_stations.get(terminal, terminal)} {self._stations[terminal]}"
+                    )
                     status = "in_train"
         if steps and steps[-1].startswith("Switch over"):
             steps.pop()
