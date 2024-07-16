@@ -29,28 +29,8 @@ from railrailrail.dataset import (
 
 class TestStage(unittest.TestCase):
     def test_stages(self):
-        stations: set[tuple[str, str]] = set()
-        for stage, stage_stations in Stage.stages.items():
-            stage_stations_set = set(stage_stations)
-            stage_defunct_stations_set = set(Stage.stages_defunct.get(stage, ()))
-
-            # Never add and remove the same station at the same stage.
-            assert not stage_stations_set.intersection(stage_defunct_stations_set)
-            # Do not attempt to re-add existing stations
-            assert not stage_stations_set.intersection(stations)
-            # Do not attempt to remove non-existing stations.
-            assert stage_defunct_stations_set.issubset(stations)
-
-            stations.update(stage_stations_set)
-            stations.difference_update(stage_defunct_stations_set)
-
-        # No station code should be paired with more than one name.
-        assert len(stations) == len(
-            set(
-                " ".join([station_code, station_name])
-                for station_code, station_name in stations
-            )
-        )
+        assert Stage.stages
+        assert Stage.stages_defunct
 
 
 class TestWalkingTrainMap(unittest.TestCase):

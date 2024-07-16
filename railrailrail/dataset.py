@@ -21,7 +21,7 @@ from dijkstar import Graph
 from railrailrail.utils import StationUtils
 
 
-class Stage:
+class StageMeta(type):
     """MRT/LRT Network phases before BPLRT
 
     * phase_1_1: NS15 Yio Chu Kang - NS19 Toa Payoh | 7 November 1987
@@ -43,7 +43,7 @@ class Stage:
     * Woodlands Extension | Woodlands extension almost ready (The Straits Times, 4 October 1995, Page 3) | https://eresources.nlb.gov.sg/newspapers/digitised/article/straitstimes19951004-1.2.64.3.2
     """
 
-    stages: types.MappingProxyType = types.MappingProxyType(
+    __stages: types.MappingProxyType = types.MappingProxyType(
         {
             "phase_1_1": (
                 ("NS15", "Yio Chu Kang"),
@@ -418,7 +418,7 @@ class Stage:
         }
     )
 
-    stages_defunct: types.MappingProxyType = types.MappingProxyType(
+    __stages_defunct: types.MappingProxyType = types.MappingProxyType(
         {
             "ccl_6": (
                 ("CE0X", "Stadium"),  # Pseudo station_code
@@ -437,6 +437,51 @@ class Stage:
         }
     )
 
+    def __new__(cls, name, bases, dct):
+        stations: set[tuple[str, str]] = set()
+        for stage, stage_stations in cls.__stages.items():
+            stage_stations_set = set(stage_stations)
+            stage_defunct_stations_set = set(cls.__stages_defunct.get(stage, ()))
+
+            stations_added_and_removed_at_same_stage = stage_stations_set.intersection(
+                stage_defunct_stations_set
+            )
+            if stations_added_and_removed_at_same_stage:
+                raise AttributeError(
+                    f"Never add and remove the same station at the same stage: {stations_added_and_removed_at_same_stage}"
+                )
+            existing_stations_added_again = stage_stations_set.intersection(stations)
+            if existing_stations_added_again:
+                raise AttributeError(
+                    f"Do not attempt to re-add existing stations: {existing_stations_added_again}"
+                )
+            non_existent_stations_to_be_removed = stage_defunct_stations_set.difference(
+                stations
+            )
+            if non_existent_stations_to_be_removed:
+                raise AttributeError(
+                    f"Do not attempt to remove non-existing stations: {non_existent_stations_to_be_removed}"
+                )
+
+            stations.update(stage_stations_set)
+            stations.difference_update(stage_defunct_stations_set)
+
+        if len(stations) != len(
+            set(
+                " ".join([station_code, station_name])
+                for station_code, station_name in stations
+            )
+        ):
+            raise AttributeError(
+                "No station code should be paired with more than one name."
+            )
+
+        cls.stages = cls.__stages
+        cls.stages_defunct = cls.__stages_defunct
+        return super().__new__(cls, name, bases, dct)
+
+
+class Stage(metaclass=StageMeta):
     def __init__(self, stage: str) -> None:
         self.stations: set[tuple[str, str]] = set()
         if stage not in Stage.stages:
@@ -450,7 +495,7 @@ class Stage:
                 self.stations.difference_update(Stage.stages_defunct[current_stage])
             if (
                 current_stage == stage
-            ):  # Add stations from all stages up to and including `stage`.
+            ):  # Add/Remove stations from all stages up to and including `stage`.
                 break
 
 

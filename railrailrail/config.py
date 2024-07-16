@@ -20,8 +20,7 @@ from collections import OrderedDict, defaultdict
 
 import tomlkit
 
-from railrailrail.dataset import (Durations, SemiInterchange, Stage,
-                                  WalkingTrainMap)
+from railrailrail.dataset import Durations, SemiInterchange, Stage, WalkingTrainMap
 from railrailrail.utils import StationUtils
 
 
