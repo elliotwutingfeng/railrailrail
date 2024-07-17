@@ -17,6 +17,7 @@ limitations under the License.
 import csv
 import pathlib
 import tomllib
+import typing
 from collections import defaultdict
 from itertools import combinations
 
@@ -51,9 +52,6 @@ class RailGraph:
             transfer_time (float | int, optional): Time taken to switch lines at an interchange station. Defaults to 7.0.
             dwell_time (float | int, optional): Time taken by train to either drop off
             or pick up passengers at a station. Defaults to 1.0.
-
-        Raises:
-            ValueError: A station cannot belong to more than one interchange.
         """
         if type(transfer_time) not in (float, int) or float(transfer_time) < 0:
             raise ValueError("transfer_time must be non-negative float|int.")
@@ -78,8 +76,6 @@ class RailGraph:
             for station_codes in aggregator.values()
             if len(station_codes) >= 2
         )
-        if sum(map(len, self._interchanges)) != len(set().union(*self._interchanges)):
-            raise ValueError("A station cannot belong to more than one interchange.")
 
         # Undirected Graph allows for different time cost when moving in opposite direction.
         self._graph = Graph(undirected=False)
@@ -168,50 +164,76 @@ class RailGraph:
             float(dwell_time),
         )
 
-    def _cost_func(
-        self,
-        current_station: str,
-        next_station: str,
-        edge_to_next_station: tuple,
-        edge_to_current_station: tuple | None,
-    ) -> float:
-        """Compute time cost of travelling from current station to next station. This cost is
-        dynamically adjusted to include additional `self.transfer_time` if the preceding
-        and succeeding edges imply a sub-interchange transfer. `self.dwell_time` is always added.
+    def _cost_func(self, start: str, end: str) -> typing.Callable[..., float]:
+        def cost_func_aux(
+            current_station: str,
+            next_station: str,
+            edge_to_next_station: tuple,
+            edge_to_current_station: tuple | None,
+        ) -> float:
+            """Compute time cost of travelling from current station to next station.
 
-        Args:
-            current_station (str): Not used.
-            next_station (str): Not used.
-            edge_to_next_station (tuple): Edge to next station.
-            edge_to_current_station (tuple | None): Edge to current station.
+            This cost is dynamically adjusted to include additional transfer time if the preceding
+            and succeeding edges imply a sub-interchange transfer.
 
-        Returns:
-            float: Time cost in minutes.
-        """
-        next_travel_time, next_edge_type, next_edge_mode = edge_to_next_station
-        _ = next_edge_mode
-        if isinstance(edge_to_current_station, tuple):
-            previous_edge_type, previous_edge_mode = (
-                edge_to_current_station[1],
-                edge_to_current_station[2],
-            )
-        else:
-            previous_edge_type, previous_edge_mode = "", ""
-        _ = previous_edge_mode
+            Dwell time is added for every station unless if walking away from the station.
 
-        cost = next_travel_time + self.dwell_time
-        if SemiInterchange.is_semi_interchange_transfer(
-            previous_edge_type, next_edge_type
-        ):
-            cost += self.transfer_time
-        return cost
+            Any transfer time involving the first station or last station of the entire journey will be excluded.
+
+            Additionally, transfers involving last station will also not have any dwell time.
+
+            Args:
+                current_station (str): Current station.
+                next_station (str): Next station.
+                edge_to_next_station (tuple): Edge to next station.
+                edge_to_current_station (tuple | None): Edge to current station.
+
+            Returns:
+                float: Time cost in minutes.
+            """
+            next_travel_time, next_edge_type, next_edge_mode = edge_to_next_station
+
+            if isinstance(edge_to_current_station, tuple):
+                previous_edge_type, previous_edge_mode = (
+                    edge_to_current_station[1],
+                    edge_to_current_station[2],
+                )
+            else:
+                previous_edge_type, previous_edge_mode = "", ""
+            _ = previous_edge_mode
+
+            cost = next_travel_time + self.dwell_time
+            if (
+                next_edge_mode == "walk"
+            ):  # Walking away from station -> Not waiting for train to depart.
+                cost -= self.dwell_time
+
+            if SemiInterchange.is_semi_interchange_transfer(
+                previous_edge_type, next_edge_type
+            ):
+                cost += self.transfer_time
+
+            if current_station == start or next_station == end:
+                if any(
+                    {current_station, next_station}.issubset(interchange)
+                    for interchange in self._interchanges
+                ):  # Exclude transfer time for transfers at start or end of journey.
+                    cost -= self.transfer_time
+                    if (
+                        next_station == end
+                    ):  # Exclude dwell time for transfer at end of journey.
+                        cost -= self.dwell_time
+
+            return cost
+
+        return cost_func_aux
 
     def _get_node_predecessors(self, start: str, end: str, walk: bool = False):
         return single_source_shortest_paths(
             self._graph if walk else self._graph_without_walk,
             start,
             end,
-            cost_func=self._cost_func,
+            cost_func=self._cost_func(start, end),
         )
 
     def find_shortest_path(
@@ -220,9 +242,7 @@ class RailGraph:
         end: str,
         walk: bool = False,
     ) -> PathInfo:
-        """Find shortest path between 2 stations `start` and `end`. Excludes extraneous
-        `self.transfer_time` and `self.dwell_time` if the journey starts and/or ends
-        at interchange stations.
+        """Find shortest path between 2 stations `start` and `end`.
 
         Args:
             start (str): Station code of station to board from.
@@ -230,43 +250,10 @@ class RailGraph:
             walk (bool): Allow station transfers by walking.
 
         Returns:
-            PathInfo: `dijkstar.algorithm.PathInfo` modified with timings modified for
-            journeys that start and/or end at interchange stations.
+            PathInfo: Shortest path between 2 stations `start` and `end`.
         """
         predecessors = self._get_node_predecessors(start, end, walk)
         pathinfo = extract_shortest_path_from_predecessor_list(predecessors, end)
-        # Subtract `self.transfer_time` and `self.dwell_time` for interchange stations
-        # visited at either start or end of journey.
-        first_2_stations: set[str | None] = {None}
-        last_2_stations: set[str | None] = {None}
-        if len(pathinfo.nodes) >= 2:
-            first_2_stations = {pathinfo.nodes[0], pathinfo.nodes[1]}
-            last_2_stations = {pathinfo.nodes[-2], pathinfo.nodes[-1]}
-        if any(
-            last_2_stations.issubset(interchange) for interchange in self._interchanges
-        ):
-            pathinfo.costs[-1] -= self.transfer_time + self.dwell_time
-            pathinfo.edges[-1] = (
-                pathinfo.edges[-1][0] - self.transfer_time,
-                pathinfo.edges[-1][1],
-            )
-            pathinfo = pathinfo._replace(
-                total_cost=pathinfo.total_cost - self.transfer_time - self.dwell_time
-            )
-        if len(pathinfo.nodes) == 2:
-            logger.info("%s", pathinfo)
-            return pathinfo
-        if any(
-            first_2_stations.issubset(interchange) for interchange in self._interchanges
-        ):
-            pathinfo.costs[0] -= self.transfer_time + self.dwell_time
-            pathinfo.edges[0] = (
-                pathinfo.edges[0][0] - self.transfer_time,
-                pathinfo.edges[0][1],
-            )
-            pathinfo = pathinfo._replace(
-                total_cost=pathinfo.total_cost - self.transfer_time - self.dwell_time
-            )
         logger.info("%s", pathinfo)
         return pathinfo
 
