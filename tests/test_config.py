@@ -148,10 +148,7 @@ class TestConfig(unittest.TestCase):
 
     def test_update_network_config_file(self):
         path = pathlib.Path("network_test.toml")
-        mocked_open = self.mocker.patch(
-            "railrailrail.config.open", self.mocker.mock_open()
-        )
-        self.config_tel_3.update_network_config_file(path)
+
         calls = [
             self.mocker.call(path, "rb"),
             self.mocker.call().__enter__(),
@@ -162,4 +159,19 @@ class TestConfig(unittest.TestCase):
             self.mocker.call().write(self.mocker.ANY),
             self.mocker.call().__exit__(None, None, None),
         ]
+        mocked_open = self.mocker.patch(
+            "railrailrail.config.open", self.mocker.mock_open()
+        )
+        self.config_tel_3.update_network_config_file(path)
+        mocked_open.assert_has_calls(calls, any_order=False)
+
+        calls = [
+            self.mocker.call(path, "rb"),
+            self.mocker.call(path, "w"),
+        ]
+        mocked_open = self.mocker.patch(
+            "railrailrail.config.open",
+            side_effect=[OSError, self.mocker.mock_open().return_value],
+        )
+        self.config_tel_3.update_network_config_file(path)
         mocked_open.assert_has_calls(calls, any_order=False)

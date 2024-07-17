@@ -33,6 +33,10 @@ class TestStage(unittest.TestCase):
         assert Stage.stages
         assert Stage.stages_defunct
 
+    def test_bad_stage(self):
+        with pytest.raises(ValueError):
+            Stage("this_is_not_a_real_stage")
+
 
 class TestWalkingTrainMap(unittest.TestCase):
     def test_routes(self):

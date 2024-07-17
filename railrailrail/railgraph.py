@@ -15,6 +15,7 @@ limitations under the License.
 """
 
 import csv
+import math
 import pathlib
 import tomllib
 import typing
@@ -307,9 +308,7 @@ class RailGraph:
                 elif edge_details[2] == "walk":  # Walk to the next station.
                     steps.append(f"Walk to {v_} {self._stations[v_]}")
                     status = "walking"
-                elif edge_idx < len(
-                    pathinfo.edges
-                ) and SemiInterchange.is_semi_interchange_transfer(
+                elif 0 < edge_idx and SemiInterchange.is_semi_interchange_transfer(
                     pathinfo.edges[edge_idx - 1][1], pathinfo.edges[edge_idx][1]
                 ):  # Semi-interchange transfer
                     steps.append(f"Switch over at {u_} {self._stations[u_]}")
@@ -341,9 +340,7 @@ class RailGraph:
                     steps.append(f"Alight at {u_} {self._stations[u_]}")
                     steps.append(f"Walk to {v_} {self._stations[v_]}")
                     status = "walking"
-                elif edge_idx < len(
-                    pathinfo.edges
-                ) and SemiInterchange.is_semi_interchange_transfer(
+                elif 0 < edge_idx and SemiInterchange.is_semi_interchange_transfer(
                     pathinfo.edges[edge_idx - 1][1], pathinfo.edges[edge_idx][1]
                 ):  # Semi-interchange transfer
                     steps.append(f"Switch over at {u_} {self._stations[u_]}")
@@ -358,12 +355,7 @@ class RailGraph:
             steps.pop()
         if status == "in_train":
             steps.append(f"Alight at {v_} {self._stations[v_]}")
-        steps.append(
-            f"""Total duration: {
-                int(pathinfo.total_cost)
-                if pathinfo.total_cost == int(pathinfo.total_cost)
-                else int(pathinfo.total_cost) + 1} minutes"""
-        )
+        steps.append(f"""Total duration: {math.ceil(pathinfo.total_cost)} minutes""")
         path_distance, haversine_distance = self.path_and_haversine_distance(pathinfo)
         steps.append(
             f"Approximate path distance: {path_distance/ 1000 :.1f} km, "

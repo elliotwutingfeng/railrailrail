@@ -21,7 +21,8 @@ from railrailrail.config import Config, Stage
 from railrailrail.logger import logger
 from railrailrail.railgraph import RailGraph
 
-if __name__ == "__main__":
+
+def init_parser():
     parser = ArgumentParser(
         prog="railrailrail",
         description="Find fastest route between any 2 stations on the Singapore rail network.",
@@ -66,6 +67,12 @@ if __name__ == "__main__":
         help="Choose from train network as it appears today (default), or as it would be at any specified future stage.",
     )
     parser.add_argument("--debug", action="store_true", help="Enable debug output.")
+
+    return parser
+
+
+if __name__ == "__main__":
+    parser = init_parser()
     args = parser.parse_args()
 
     if args.debug:
