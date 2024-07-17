@@ -20,8 +20,12 @@ import tomllib
 from collections import defaultdict
 from itertools import combinations
 
-from dijkstar import Graph, find_path
-from dijkstar.algorithm import PathInfo
+from dijkstar import Graph
+from dijkstar.algorithm import (
+    PathInfo,
+    extract_shortest_path_from_predecessor_list,
+    single_source_shortest_paths,
+)
 
 from railrailrail.dataset import SemiInterchange, Terminal
 from railrailrail.logger import logger
@@ -202,6 +206,14 @@ class RailGraph:
             cost += self.transfer_time
         return cost
 
+    def _get_node_predecessors(self, start: str, end: str, walk: bool = False):
+        return single_source_shortest_paths(
+            self._graph if walk else self._graph_without_walk,
+            start,
+            end,
+            cost_func=self._cost_func,
+        )
+
     def find_shortest_path(
         self,
         start: str,
@@ -221,12 +233,8 @@ class RailGraph:
             PathInfo: `dijkstar.algorithm.PathInfo` modified with timings modified for
             journeys that start and/or end at interchange stations.
         """
-        pathinfo = find_path(
-            graph=self._graph if walk else self._graph_without_walk,
-            s=start,
-            d=end,
-            cost_func=self._cost_func,
-        )
+        predecessors = self._get_node_predecessors(start, end, walk)
+        pathinfo = extract_shortest_path_from_predecessor_list(predecessors, end)
         # Subtract `self.transfer_time` and `self.dwell_time` for interchange stations
         # visited at either start or end of journey.
         first_2_stations: set[str | None] = {None}

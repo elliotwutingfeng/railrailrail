@@ -34,16 +34,6 @@ class Config:
             self._generate_adjacency_matrix(self.stations)
         )
 
-    def update_network_config_file(self, path: pathlib.Path) -> None:
-        try:
-            with open(path, "rb") as f:
-                network: tomlkit.TOMLDocument = tomlkit.load(f)
-        except OSError:
-            network: tomlkit.TOMLDocument = tomlkit.TOMLDocument()
-        self._update_network(network, self.stations, self.adjacency_matrix)
-        with open(path, "w") as f:
-            tomlkit.dump(network, f)
-
     def _get_stations(self, stage: Stage) -> list[tuple[str, str]]:
         """Generate list of train station codes and station names operational at a given `stage`,
         sorted by station code in ascending order.
@@ -141,8 +131,9 @@ class Config:
 
         return adjacency_matrix
 
-    def _update_network(
-        self,
+    @classmethod
+    def update_network(
+        cls,
         network: tomlkit.TOMLDocument,
         stations: list[tuple[str, str]],
         adjacency_matrix: defaultdict[str, OrderedDict[str, dict]],
@@ -232,3 +223,13 @@ class Config:
         ):
             updated_adjacency_matrix[edge] = network_adjacency_matrix[edge]
         network["edges"] = updated_adjacency_matrix
+
+    def update_network_config_file(self, path: pathlib.Path) -> None:
+        try:
+            with open(path, "rb") as f:
+                network: tomlkit.TOMLDocument = tomlkit.load(f)
+        except OSError:
+            network: tomlkit.TOMLDocument = tomlkit.TOMLDocument()
+        Config.update_network(network, self.stations, self.adjacency_matrix)
+        with open(path, "w") as f:
+            tomlkit.dump(network, f)

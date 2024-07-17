@@ -16,6 +16,7 @@ limitations under the License.
 
 import unittest
 
+import pytest
 from dijkstar import Graph
 
 from railrailrail.dataset import (
@@ -79,6 +80,14 @@ class TestTerminal(unittest.TestCase):
         graph = Graph(undirected=False)
         graph.add_edge("BP1", "BP2", (1, "", ""))
         assert Terminal.get_terminal(graph, "BP1", "BP2") is None
+
+        # Journeys on lines without loops must start and end on stations with same line code.
+        with pytest.raises(ValueError):
+            Terminal.get_terminal(graph, "EW1", "NS2")
+
+        # Journey cannot start and end at the same station.
+        with pytest.raises(ValueError):
+            Terminal.get_terminal(graph, "EW1", "EW1")
 
 
 class TestDurations(unittest.TestCase):

@@ -24,7 +24,7 @@
 ## Setup
 
 ```bash
-poetry install
+make install
 ```
 
 ## Usage

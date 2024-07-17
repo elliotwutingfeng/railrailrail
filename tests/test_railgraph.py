@@ -247,6 +247,8 @@ class TestRailGraph(unittest.TestCase):
             },
         )
 
+        self.single_node_path = PathInfo(nodes=[""], edges=[], costs=[], total_cost=0)
+
     def test_find_shortest_path(self):
         for trip in self.test_trips:
             pathinfo = self.rail_graph.find_shortest_path(
@@ -263,6 +265,10 @@ class TestRailGraph(unittest.TestCase):
                 self.rail_graph.make_directions(trip["pathinfo"]) == trip["directions"]
             )
 
+        # At least 2 stations needed for journey.
+        with pytest.raises(ValueError):
+            self.rail_graph.make_directions(self.single_node_path)
+
     def test_path_and_haversine_distance(self):
         for trip in self.test_trips:
             expected = trip["path_and_haversine_distance"]
@@ -270,3 +276,7 @@ class TestRailGraph(unittest.TestCase):
             assert all(
                 math.isclose(p[0], p[1]) for p in zip(expected, actual)
             ), f"Expected {expected}. Got {actual}."
+
+        # At least 2 stations needed for journey.
+        with pytest.raises(ValueError):
+            self.rail_graph.path_and_haversine_distance(self.single_node_path)
