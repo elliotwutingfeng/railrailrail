@@ -183,7 +183,7 @@ class TestRailGraph(unittest.TestCase):
                     ],
                     total_cost=56.0,
                 ),
-                "path_and_haversine_distance": (21589.336417276852, 7766.81178008197),
+                "path_and_haversine_distance": (21606.73864874956, 7773.0722715482),
                 "directions": [
                     "Start at TE26 Marine Parade",
                     "Board train towards terminus TE1 Woodlands North",
@@ -302,7 +302,7 @@ class TestRailGraph(unittest.TestCase):
                     ],
                     total_cost=84.0,
                 ),
-                "path_and_haversine_distance": (32547.57447742016, 21919.188739992347),
+                "path_and_haversine_distance": (32573.809671220653, 21936.856851173477),
                 "directions": [
                     "Start at CG1 Expo",
                     "Transfer to DT35 Expo",
@@ -315,7 +315,7 @@ class TestRailGraph(unittest.TestCase):
                     "Board train in direction of BP7 Petir",
                     "Alight at BP10 Fajar",
                     "Total duration: 84 minutes",
-                    "Approximate path distance: 32.5 km, Haversine distance: 21.9 km, Circuity ratio: 1.5",
+                    "Approximate path distance: 32.6 km, Haversine distance: 21.9 km, Circuity ratio: 1.5",
                 ],
             },
         )

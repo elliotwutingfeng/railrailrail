@@ -67,7 +67,7 @@ class Config:
         station_codes_by_line_code: defaultdict[str, OrderedDict[str, None]] = (
             defaultdict(OrderedDict)
         )  # Order is important as stations are almost always connected in sequential order.
-        for station_code in station_codes:  # Group stations by line
+        for station_code in station_codes:  # Group stations by line.
             line_code, _, _ = StationUtils.to_station_code_components(station_code)
             station_codes_by_line_code[line_code][station_code] = None
 
@@ -143,6 +143,7 @@ class Config:
         network["dwell_time"] = network.get("dwell_time", 0.5)
 
         ### stations ###
+
         stations_ = {k: v for (k, v) in stations}
         network_stations = (
             network["stations"] if "stations" in network else tomlkit.table()

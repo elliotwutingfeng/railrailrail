@@ -30,7 +30,7 @@ class TestGeographicUtils(unittest.TestCase):
                     1.354681, 103.776375, 1.2891, 103.8504
                 )
             )
-            == 10998
+            == 11007
         )
 
 

@@ -19,7 +19,11 @@ from math import atan2, cos, radians, sin, sqrt
 
 
 class GeographicUtils:
-    __earth_radius_in_metres = 6373000
+    # Earth radius from World Geodetic System 1984 (WGS 84)
+    # Department of Defense World Geodetic System 1984, Its Definition and Relationships With Local Geodetic Systems
+    # (2014-07-08)
+    # https://earth-info.nga.mil/php/download.php?file=coord-wgs84#.pdf
+    __earth_radius_in_metres = 6378137
 
     @classmethod
     def haversine_distance(
