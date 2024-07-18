@@ -310,14 +310,11 @@ class RailGraph:
                 elif 0 < edge_idx and SemiInterchange.is_semi_interchange_transfer(
                     pathinfo.edges[edge_idx - 1][1], pathinfo.edges[edge_idx][1]
                 ):  # Semi-interchange transfer
-                    steps.append(f"Switch over at {u_} {self._stations[u_]}")
-                    terminal: str | None = Terminal.get_terminal(self._graph, u, v)
-                    steps.append(
-                        f"Board train in direction of {v_} {self._stations[v_]}"  # Unusual terminal. Use next station instead.
-                        if terminal is None
-                        else f"Board train towards terminus {Terminal.pseudo_stations.get(terminal, terminal)} {self._stations[terminal]}"
+                    raise RuntimeError(
+                        "Something is not right; this semi-interchange transfer is also an interchange transfer. "
+                        "Check SemiInterchange class and rail network structure. PathInfo: %s"
+                        % pathinfo
                     )
-                    status = "in_train"
                 else:  # Board a train.
                     terminal: str | None = Terminal.get_terminal(self._graph, u, v)
                     steps.append(
@@ -351,7 +348,7 @@ class RailGraph:
                     )
                     status = "in_train"
         if steps and steps[-1].startswith("Switch over"):
-            steps.pop()
+            steps.pop()  # Special case: Final edge is interchange transfer from pseudo station like JE0 -> JS3.
         if status == "in_train":
             steps.append(f"Alight at {v_} {self._stations[v_]}")
         steps.append(f"""Total duration: {math.ceil(pathinfo.total_cost)} minutes""")
