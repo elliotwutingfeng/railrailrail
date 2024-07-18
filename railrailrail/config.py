@@ -151,13 +151,17 @@ class Config:
         # Mark modified stations with comment
         for station_code, station_name in network_stations.items():
             if station_code in stations_ and station_name != stations_[station_code]:
+                existing_comment = network_stations[station_code].trivia.comment
                 network_stations[station_code].comment(
-                    f"NEW -> {stations_[station_code]}"
+                    f"NEW -> {stations_[station_code]}{' | %s' % existing_comment if existing_comment else ''}"
                 )
 
         # Mark defunct stations with comment
         for defunct_station_code in set(network_stations).difference(stations_):
-            network_stations[defunct_station_code].comment("DEFUNCT")
+            existing_comment = network_stations[defunct_station_code].trivia.comment
+            network_stations[defunct_station_code].comment(
+                f"DEFUNCT{' | %s' % existing_comment if existing_comment else ''}"
+            )
 
         # Add new stations
         for new_station_code in set(stations_).difference(network_stations):
@@ -187,8 +191,11 @@ class Config:
             ):
                 new_edge_details = adjacency_matrix[station_pair_[0]][station_pair_[1]]
                 if edge_details != new_edge_details:  # Shallow dict comparison
+                    existing_comment = network_adjacency_matrix[
+                        station_pair
+                    ].trivia.comment
                     network_adjacency_matrix[station_pair].comment(
-                        f"NEW -> {json.dumps(new_edge_details)}"
+                        f"NEW -> {json.dumps(new_edge_details)}{' | %s' % existing_comment if existing_comment else ''}"
                     )
 
         adjacency_matrix_edges = {
@@ -199,7 +206,10 @@ class Config:
         for defunct_edge in set(network_adjacency_matrix).difference(
             adjacency_matrix_edges
         ):
-            network_adjacency_matrix[defunct_edge].comment("DEFUNCT")
+            existing_comment = network_adjacency_matrix[defunct_edge].trivia.comment
+            network_adjacency_matrix[defunct_edge].comment(
+                f"DEFUNCT{' | %s' % existing_comment if existing_comment else ''}"
+            )
 
         # Add new adjacency matrix entries
         for new_edge in set(adjacency_matrix_edges).difference(

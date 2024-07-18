@@ -122,7 +122,7 @@ class TestConfig(unittest.TestCase):
         assert "EW21-EW22" in network["edges"]
         assert "EW22-EW23" in network["edges"]
         assert "EW21-EW23" in network["edges"]
-        assert network["edges"]["EW21-EW23"].trivia.comment == "# DEFUNCT"
+        assert network["edges"]["EW21-EW23"].trivia.comment == "# DEFUNCT | # NEW"
 
         # Modify existing station and edge details.
         network["stations"]["EW22"] = "Dover Test"
@@ -133,7 +133,9 @@ class TestConfig(unittest.TestCase):
             self.config_dover.adjacency_matrix,
         )
         assert network["stations"]["EW22"].trivia.comment.startswith("# NEW ->")
+        assert network["stations"]["EW22"].trivia.comment.endswith("| # NEW")
         assert network["edges"]["EW21-EW22"].trivia.comment.startswith("# NEW ->")
+        assert network["edges"]["EW21-EW22"].trivia.comment.endswith("| # NEW")
 
         # Defunct station.
         network["stations"]["XY1"] = "Test"

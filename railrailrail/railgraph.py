@@ -137,9 +137,9 @@ class RailGraph:
         station_coordinates = dict()
         with open(coordinates_path, "r") as f:
             csv_reader = csv.reader(f)
-            next(csv_reader)
+            next(csv_reader)  # Skip column headers.
             for row in csv_reader:
-                station_coordinates[row[0]] = (float(row[2]), float(row[3]))
+                station_coordinates[row[0]] = float(row[2]), float(row[3])
 
         # Assign coordinates to missing/future/pseudo station codes.
         equivalent_station_code_pairs = (
