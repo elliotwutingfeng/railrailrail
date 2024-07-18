@@ -31,7 +31,7 @@ class TestConfig:
         self.mocker = mocker
         _ = request
 
-    def setup_method(self) -> None:
+    def setup_method(self):
         self.config_phase_2b_3 = Config(Stage("phase_2b_3"))
         self.config_phase_1_1 = Config(Stage("phase_1_1"))
         self.config_ewl_expo = Config(Stage("ewl_expo"))

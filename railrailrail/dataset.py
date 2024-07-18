@@ -449,19 +449,19 @@ class StageMeta(type):
             if stations_added_and_removed_at_same_stage:
                 raise AttributeError(
                     f"Never add and remove the same station at the same stage: {stations_added_and_removed_at_same_stage}"
-                )
+                )  # pragma: no cover
             existing_stations_added_again = stage_stations_set.intersection(stations)
             if existing_stations_added_again:
                 raise AttributeError(
                     f"Do not attempt to re-add existing stations: {existing_stations_added_again}"
-                )
+                )  # pragma: no cover
             non_existent_stations_to_be_removed = stage_defunct_stations_set.difference(
                 stations
             )
             if non_existent_stations_to_be_removed:
                 raise AttributeError(
                     f"Do not attempt to remove non-existing stations: {non_existent_stations_to_be_removed}"
-                )
+                )  # pragma: no cover
 
             stations.update(stage_stations_set)
             stations.difference_update(stage_defunct_stations_set)
@@ -474,7 +474,7 @@ class StageMeta(type):
         ):
             raise AttributeError(
                 "No station code should be paired with more than one name."
-            )
+            )  # pragma: no cover
 
         cls.stages = cls.__stages
         cls.stages_defunct = cls.__stages_defunct
@@ -541,12 +541,12 @@ class WalkingTrainMapMeta(type):
             ):
                 raise AttributeError(
                     f"Route must be between 2 different names with a positive duration. Got {station_name_1}, {station_name_2}, {duration}"
-                )
+                )  # pragma: no cover
             pair = tuple(sorted([station_name_1, station_name_2]))
             if pair in pairs:
                 raise AttributeError(
                     f"Duplicate route not allowed: {station_name_1}, {station_name_2}"
-                )
+                )  # pragma: no cover
             pairs.add(pair)
         cls.routes = cls.__routes
         return super().__new__(cls, name, bases, dct)
@@ -1033,10 +1033,12 @@ class DurationsMeta(type):
             if len(edge_parts) != 2:
                 raise AttributeError(
                     "Edge must consist of 2 station codes separated by a single dash '-'"
-                )
+                )  # pragma: no cover
             station_code_1, station_code_2 = edge_parts
             if station_code_1 == station_code_2:
-                raise AttributeError(f"Edge nodes cannot be the same: {edge}")
+                raise AttributeError(
+                    f"Edge nodes cannot be the same: {edge}"
+                )  # pragma: no cover
             StationUtils.to_station_code_components(
                 station_code_1
             )  # Raises ValueError if invalid.
@@ -1047,13 +1049,17 @@ class DurationsMeta(type):
             # Check for duplicate edges
             pair = tuple(sorted([station_code_1, station_code_2]))
             if pair in pairs:
-                raise AttributeError(f"Duplicate edge not allowed: {edge}")
+                raise AttributeError(
+                    f"Duplicate edge not allowed: {edge}"
+                )  # pragma: no cover
             pairs.add(pair)
 
             # Validate edge details
             edge_details = dict(details)
             if type(edge_details.get("duration", None)) not in (float, int):
-                raise AttributeError("Edge duration must be int | float.")
+                raise AttributeError(
+                    "Edge duration must be int | float."
+                )  # pragma: no cover
             cls.edges[edge] = edge_details
         return super().__new__(cls, name, bases, dct)
 

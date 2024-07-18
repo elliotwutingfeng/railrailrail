@@ -15,14 +15,15 @@ limitations under the License.
 """
 
 import pathlib
-from argparse import ArgumentParser
+import sys
+from argparse import ArgumentParser, Namespace
 
 from railrailrail.config import Config, Stage
 from railrailrail.logger import logger
 from railrailrail.railgraph import RailGraph
 
 
-def init_parser():
+def parse_args(args: list[str]) -> Namespace:
     parser = ArgumentParser(
         prog="railrailrail",
         description="Find fastest route between any 2 stations on the Singapore rail network.",
@@ -68,18 +69,24 @@ def init_parser():
     )
     parser.add_argument("--debug", action="store_true", help="Enable debug output.")
 
-    return parser
+    parsed_args = parser.parse_args(args)
+
+    if parsed_args.route:
+        if not parsed_args.start or not parsed_args.end:
+            parser.error("the following arguments are required: --start, --end")
+
+    return parsed_args
 
 
-if __name__ == "__main__":
-    parser = init_parser()
-    args = parser.parse_args()
+if __name__ == "__main__":  # pragma: no cover
+    args: Namespace = parse_args(sys.argv[1:])
 
     if args.debug:
         logger.setLevel("INFO")
 
-    if args.network == "now":
-        args.network = "tel_4"  # Contemporary train network; to be updated as the real train network expands.
+    args.network = (
+        "tel_4" if args.network == "now" else args.network
+    )  # Contemporary train network; to be updated as the real train network expands.
 
     network_path = (
         pathlib.Path(__file__).resolve().parent.parent
@@ -99,8 +106,6 @@ if __name__ == "__main__":
         config.update_network_config_file(network_path)
 
     if args.route:
-        if not args.start or not args.end:
-            parser.error("the following arguments are required: --start, --end")
         rail_graph = RailGraph.from_file(network_path, coordinates_path)
         pathinfo = rail_graph.find_shortest_path(
             start=args.start.upper(), end=args.end.upper(), walk=args.walk
