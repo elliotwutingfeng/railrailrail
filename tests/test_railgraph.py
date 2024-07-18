@@ -27,21 +27,13 @@ from railrailrail.railgraph import RailGraph
 class TestRailGraph(unittest.TestCase):
     def setUp(self):
         network_path = (
-            pathlib.Path(__file__).resolve().parent.parent
-            / "config"
-            / "network_tel_4.toml"
+            pathlib.Path(__file__).resolve().parent / "test_network_tel_4.toml"
         )
-        network_path.parent.mkdir(parents=True, exist_ok=True)
-
         coordinates_path = (
-            pathlib.Path(__file__).resolve().parent.parent
-            / "config"
-            / "station_coordinates.csv"
+            pathlib.Path(__file__).resolve().parent / "test_station_coordinates.csv"
         )
         self.rail_graph = RailGraph.from_file(network_path, coordinates_path)
 
-        self.rail_graph.transfer_time = 7
-        self.rail_graph.dwell_time = 0.5
         self.test_trips_short = (
             {
                 "start": "DT3",
