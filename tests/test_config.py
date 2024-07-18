@@ -16,7 +16,6 @@ limitations under the License.
 
 import json
 import pathlib
-import unittest
 from collections import OrderedDict, defaultdict
 
 import pytest
@@ -26,13 +25,13 @@ from railrailrail.config import Config
 from railrailrail.dataset import Stage
 
 
-class TestConfig(unittest.TestCase):
+class TestConfig:
     @pytest.fixture(autouse=True)
     def inject_fixtures(self, request, mocker):
         self.mocker = mocker
         _ = request
 
-    def setUp(self) -> None:
+    def setup_method(self) -> None:
         self.config_phase_2b_3 = Config(Stage("phase_2b_3"))
         self.config_phase_1_1 = Config(Stage("phase_1_1"))
         self.config_ewl_expo = Config(Stage("ewl_expo"))

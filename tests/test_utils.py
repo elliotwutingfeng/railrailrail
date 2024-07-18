@@ -14,14 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import unittest
-
 import pytest
 
 from railrailrail.utils import GeographicUtils, StationUtils
 
 
-class TestGeographicUtils(unittest.TestCase):
+class TestGeographicUtils:
     def test_haversine_distance(self):
         # Bukit Timah Hill Summit to Singapore Parliament House
         assert (
@@ -34,7 +32,7 @@ class TestGeographicUtils(unittest.TestCase):
         )
 
 
-class TestStationUtils(unittest.TestCase):
+class TestStationUtils:
     def test_to_station_code_components(self):
         # Valid station codes
         assert StationUtils.to_station_code_components("NS1") == ("NS", 1, "")

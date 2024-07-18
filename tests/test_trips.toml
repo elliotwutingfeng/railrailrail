@@ -1,0 +1,206 @@
+# Trip test cases
+#
+# "$" represents a station.
+# "$$" represents a chain of multiple stations; chain links can be any mix of types.
+
+trip_0.input = { start = "DT3", end = "DT7", network = "tel_4", walk = false } # $ _ $$ _ $
+trip_1.input = { start = "NS1", end = "EW18", network = "tel_4", walk = false } # $ transfer $$ _ $
+trip_2.input = { start = "NE8", end = "CC13", network = "tel_4", walk = false } # $ _ $$ transfer $
+trip_3.input = { start = "TE16", end = "NS20", network = "tel_4", walk = false } # $ _ $$ transfer $$ _ $
+trip_4.input = { start = "CC3", end = "CE2", network = "tel_4", walk = false } # $ _ $$ semi-transfer $$ _ $
+trip_5.input = { start = "BP7", end = "BP13", network = "tel_4", walk = false } # $ _ $$ semi-transfer $$ _ $
+trip_6.input = { start = "SW1", end = "SE1", network = "tel_4", walk = false } # $ _ $$ semi-transfer $$ _ $
+trip_7.input = { start = "PW1", end = "PE1", network = "tel_4", walk = false } # $ _ $$ semi-transfer $$ _ $
+trip_8.input = { start = "JS3", end = "JS9", network = "jrl_3", walk = false } # $ _ $$ semi-transfer $$ _ $
+trip_9.input = { start = "JS10", end = "JW4", network = "jrl_3", walk = false } # $ _ $$ semi-transfer $$ _ $
+trip_10.input = { start = "JW5", end = "JS5", network = "jrl_3", walk = false } # $ _ $$ semi-transfer $$ _ $
+trip_11.input = { start = "JS2", end = "JW3", network = "jrl_3", walk = false } # $ _ $$ semi-transfer $$ _ $
+trip_12.input = { start = "JW2", end = "JS8", network = "jrl_3", walk = false } # $ _ $$ semi-transfer $$ _ $
+trip_13.input = { start = "JS9", end = "JS1", network = "jrl_3", walk = false } # $ _ $$ semi-transfer $$ _ $
+trip_14.input = { start = "DT21", end = "CC3", network = "tel_4", walk = false } # $ walk $$ _ $
+trip_15.input = { start = "EW13", end = "DT18", network = "tel_4", walk = false } # $ _ $$ walk $
+trip_16.input = { start = "DT23", end = "CC3", network = "tel_4", walk = false } # $ _ $$ walk $$ _ $
+trip_17.input = { start = "NE5", end = "CC2", network = "tel_4", walk = false } # $ _ $$ walk $ walk $
+
+trip_98.input = { start = "TE26", end = "NE14", network = "tel_4", walk = false }
+trip_99.input = { start = "CG1", end = "BP10", network = "tel_4", walk = false }
+
+[trip_0.output]
+nodes = ["DT3", "DT5", "DT6", "DT7"]
+edges = [[3, "", ""], [2, "", ""], [2, "", ""]]
+costs = [3.5, 2.5, 2.5]
+total_cost = 8.5
+path_distance = 5173.455099453123
+haversine_distance = 4801.654366293748
+directions = ["Start at DT3 Hillview", "Board train towards terminus DT35 Expo", "Alight at DT7 Sixth Avenue", "Total duration: 9 minutes", "Approximate path distance: 5.2 km, Haversine distance: 4.8 km, Circuity ratio: 1.1"]
+
+[trip_1.output]
+nodes = ["NS1", "EW24", "EW23", "EW22", "EW21", "EW20", "EW19", "EW18"]
+edges = [[7.0, "", ""], [5, "", ""], [2, "", ""], [3, "", ""], [2, "", ""], [3, "", ""], [2, "", ""]]
+costs = [0.5, 5.5, 2.5, 3.5, 2.5, 3.5, 2.5]
+total_cost = 20.5
+path_distance = 9753.230459335538
+haversine_distance = 9598.31637874688
+directions = ["Start at NS1 Jurong East", "Transfer to EW24 Jurong East", "Board train towards terminus EW1 Pasir Ris", "Alight at EW18 Redhill", "Total duration: 21 minutes", "Approximate path distance: 9.8 km, Haversine distance: 9.6 km, Circuity ratio: 1.0"]
+
+[trip_2.output]
+nodes = ["NE8", "NE9", "NE10", "NE11", "NE12", "CC13"]
+edges = [[2, "", ""], [3, "", ""], [1, "", ""], [2, "", ""], [7.0, "", ""]]
+costs = [2.5, 3.5, 1.5, 2.5, 0.0]
+total_cost = 10.0
+path_distance = 5039.3199658080475
+haversine_distance = 4816.310246459472
+directions = ["Start at NE8 Farrer Park", "Board train towards terminus NE17 Punggol", "Alight at NE12 Serangoon", "Transfer to CC13 Serangoon", "Total duration: 10 minutes", "Approximate path distance: 5.0 km, Haversine distance: 4.8 km, Circuity ratio: 1.0"]
+
+[trip_3.output]
+nodes = ["TE16", "TE15", "TE14", "NS22", "NS21", "NS20"]
+edges = [[2, "", ""], [2, "", ""], [7.0, "", ""], [3, "", ""], [2, "", ""]]
+costs = [2.5, 2.5, 7.5, 3.5, 2.5]
+total_cost = 18.5
+path_distance = 4034.3696346095085
+haversine_distance = 3733.2351914502533
+directions = ["Start at TE16 Havelock", "Board train towards terminus TE1 Woodlands North", "Alight at TE14 Orchard", "Transfer to NS22 Orchard", "Board train towards terminus NS1 Jurong East", "Alight at NS20 Novena", "Total duration: 19 minutes", "Approximate path distance: 4.0 km, Haversine distance: 3.7 km, Circuity ratio: 1.1"]
+
+[trip_4.output]
+nodes = ["CC3", "CC4", "CE0Z", "CE1", "CE2"]
+edges = [[3, "promenade_west", ""], [7.0, "", ""], [3, "", ""], [2, "", ""]]
+costs = [3.5, 7.5, 3.5, 2.5]
+total_cost = 17.0
+path_distance = 2689.723541660079
+haversine_distance = 1938.0839561618743
+directions = ["Start at CC3 Esplanade", "Board train towards terminus CC29 HarbourFront", "Alight at CC4 Promenade", "Switch over at CC4 Promenade", "Board train towards terminus CE2 Marina Bay", "Alight at CE2 Marina Bay", "Total duration: 17 minutes", "Approximate path distance: 2.7 km, Haversine distance: 1.9 km, Circuity ratio: 1.4"]
+
+[trip_5.output]
+nodes = ["BP7", "BP6", "BP13"]
+edges = [[1, "bukit_panjang_service_b", ""], [2, "bukit_panjang_service_a", ""]]
+costs = [1.5, 9.5]
+total_cost = 11.0
+path_distance = 935.4520885929516
+haversine_distance = 730.2156571362957
+directions = ["Start at BP7 Petir", "Board train in direction of BP6 Bukit Panjang", "Switch over at BP6 Bukit Panjang", "Board train in direction of BP13 Senja", "Alight at BP13 Senja", "Total duration: 11 minutes", "Approximate path distance: 0.9 km, Haversine distance: 0.7 km, Circuity ratio: 1.3"]
+
+[trip_6.output]
+nodes = ["SW1", "STC", "SE1"]
+edges = [[2, "sengkang_west_loop", ""], [2, "sengkang_east_loop", ""]]
+costs = [2.5, 9.5]
+total_cost = 12.0
+path_distance = 1198.1893344142484
+haversine_distance = 771.1219739374526
+directions = ["Start at SW1 Cheng Lim", "Board train in direction of STC Sengkang", "Switch over at STC Sengkang", "Board train in direction of SE1 Compassvale", "Alight at SE1 Compassvale", "Total duration: 12 minutes", "Approximate path distance: 1.2 km, Haversine distance: 0.8 km, Circuity ratio: 1.6"]
+
+[trip_7.output]
+nodes = ["PW1", "PTC", "PE1"]
+edges = [[2, "punggol_west_loop", ""], [3, "punggol_east_loop", ""]]
+costs = [2.5, 10.5]
+total_cost = 13.0
+path_distance = 1328.361252870911
+haversine_distance = 1156.8677656152481
+directions = ["Start at PW1 Sam Kee", "Board train in direction of PTC Punggol", "Switch over at PTC Punggol", "Board train in direction of PE1 Cove", "Alight at PE1 Cove", "Total duration: 13 minutes", "Approximate path distance: 1.3 km, Haversine distance: 1.2 km, Circuity ratio: 1.1"]
+
+[trip_8.output]
+nodes = ["JS3", "JS4", "JS5", "JS6", "JS7", "JS8", "JS9"]
+edges = [[2, "", ""], [3, "", ""], [2, "", ""], [2, "bahar_east", ""], [2, "bahar_south", ""], [2, "", ""]]
+costs = [2.5, 3.5, 2.5, 2.5, 2.5, 2.5]
+total_cost = 16.0
+path_distance = 5599.6486785790885
+haversine_distance = 4426.646958920161
+directions = ["Start at JS3 Tengah", "Board train in direction of JS4 Hong Kah", "Alight at JS9 Enterprise", "Total duration: 16 minutes", "Approximate path distance: 5.6 km, Haversine distance: 4.4 km, Circuity ratio: 1.3"]
+
+[trip_9.output]
+nodes = ["JS10", "JS9", "JS8", "JS7", "JW1", "JW2", "JW3", "JW4"]
+edges = [[2, "", ""], [2, "", ""], [2, "bahar_south", ""], [2, "bahar_west", ""], [2, "", ""], [2, "", ""], [2, "", ""]]
+costs = [2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5]
+total_cost = 17.5
+path_distance = 5254.330605722371
+haversine_distance = 4061.5988561779695
+directions = ["Start at JS10 Tukang", "Board train in direction of JS9 Enterprise", "Alight at JW4 Nanyang Crescent", "Total duration: 18 minutes", "Approximate path distance: 5.3 km, Haversine distance: 4.1 km, Circuity ratio: 1.3"]
+
+[trip_10.output]
+nodes = ["JW5", "JW4", "JW3", "JW2", "JW1", "JS7", "JS6", "JS5"]
+edges = [[2, "", ""], [2, "", ""], [2, "", ""], [2, "", ""], [2, "bahar_west", ""], [2, "bahar_east", ""], [2, "", ""]]
+costs = [2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5]
+total_cost = 17.5
+path_distance = 5011.286876026524
+haversine_distance = 4077.895700315041
+directions = ["Start at JW5 Peng Kang Hill", "Board train in direction of JW4 Nanyang Crescent", "Alight at JS5 Corporation", "Total duration: 18 minutes", "Approximate path distance: 5.0 km, Haversine distance: 4.1 km, Circuity ratio: 1.2"]
+
+[trip_11.output]
+nodes = ["JS2", "JS3", "JS4", "JS5", "JS6", "JS7", "JW1", "JW2", "JW3"]
+edges = [[4, "", ""], [2, "", ""], [3, "", ""], [2, "", ""], [2, "bahar_east", ""], [2, "bahar_west", ""], [2, "", ""], [2, "", ""]]
+costs = [4.5, 2.5, 3.5, 2.5, 2.5, 9.5, 2.5, 2.5]
+total_cost = 30.0
+path_distance = 7779.373579750568
+haversine_distance = 6574.958744047826
+directions = ["Start at JS2 Choa Chu Kang West", "Board train in direction of JS3 Tengah", "Switch over at JS7 Bahar Junction", "Board train in direction of JW1 Gek Poh", "Alight at JW3 Nanyang Gateway", "Total duration: 30 minutes", "Approximate path distance: 7.8 km, Haversine distance: 6.6 km, Circuity ratio: 1.2"]
+
+[trip_12.output]
+nodes = ["JW2", "JW1", "JS7", "JS8"]
+edges = [[2, "", ""], [2, "bahar_west", ""], [2, "bahar_south", ""]]
+costs = [2.5, 2.5, 9.5]
+total_cost = 14.5
+path_distance = 2183.4541407233537
+haversine_distance = 2053.7194078034836
+directions = ["Start at JW2 Tawas", "Board train in direction of JW1 Gek Poh", "Switch over at JS7 Bahar Junction", "Board train in direction of JS8 Boon Lay", "Alight at JS8 Boon Lay", "Total duration: 15 minutes", "Approximate path distance: 2.2 km, Haversine distance: 2.1 km, Circuity ratio: 1.1"]
+
+[trip_13.output]
+nodes = ["JS9", "JS8", "JS7", "JS6", "JS5", "JS4", "JS3", "JS2", "JS1"]
+edges = [[2, "", ""], [2, "bahar_south", ""], [2, "bahar_east", ""], [2, "", ""], [3, "", ""], [2, "", ""], [4, "", ""], [2, "", ""]]
+costs = [2.5, 2.5, 9.5, 2.5, 3.5, 2.5, 4.5, 2.5]
+total_cost = 30.0
+path_distance = 8250.534977357678
+haversine_distance = 7073.363101652284
+directions = ["Start at JS9 Enterprise", "Board train in direction of JS8 Boon Lay", "Switch over at JS7 Bahar Junction", "Board train in direction of JS6 Jurong West", "Alight at JS1 Choa Chu Kang", "Total duration: 30 minutes", "Approximate path distance: 8.3 km, Haversine distance: 7.1 km, Circuity ratio: 1.2"]
+
+[trip_14.output]
+nodes = ["DT21", "DT20", "DT19", "DT18", "DT17", "DT16", "DT15", "CC4", "CC3"]
+edges = [[2, "", ""], [2, "", ""], [2, "", ""], [1, "", ""], [2, "", ""], [2, "", ""], [7.0, "", ""], [3, "promenade_west", ""]]
+costs = [2.5, 2.5, 2.5, 1.5, 2.5, 2.5, 7.5, 3.5]
+total_cost = 25.0
+path_distance = 5625.8857612181355
+haversine_distance = 787.2463268423562
+directions = ["Start at DT21 Bencoolen", "Board train towards terminus DT1 Bukit Panjang", "Alight at DT15 Promenade", "Transfer to CC4 Promenade", "Board train towards terminus CC1 Dhoby Ghaut", "Alight at CC3 Esplanade", "Total duration: 25 minutes", "Approximate path distance: 5.6 km, Haversine distance: 0.8 km, Circuity ratio: 7.1"]
+
+[trip_15.output]
+nodes = ["EW13", "EW12", "DT14", "DT15", "DT16", "DT17", "DT18"]
+edges = [[2, "", ""], [7.0, "", ""], [2, "", ""], [2, "", ""], [2, "", ""], [1, "", ""]]
+costs = [2.5, 7.5, 2.5, 2.5, 2.5, 1.5]
+total_cost = 19.0
+path_distance = 4477.679472108222
+haversine_distance = 1286.6871339919255
+directions = ["Start at EW13 City Hall", "Board train towards terminus EW1 Pasir Ris", "Alight at EW12 Bugis", "Transfer to DT14 Bugis", "Board train towards terminus DT35 Expo", "Alight at DT18 Telok Ayer", "Total duration: 19 minutes", "Approximate path distance: 4.5 km, Haversine distance: 1.3 km, Circuity ratio: 3.5"]
+
+[trip_16.output]
+nodes = ["DT23", "DT22", "DT21", "DT20", "DT19", "DT18", "DT17", "DT16", "DT15", "CC4", "CC3"]
+edges = [[2, "", ""], [1, "", ""], [2, "", ""], [2, "", ""], [2, "", ""], [1, "", ""], [2, "", ""], [2, "", ""], [7.0, "", ""], [3, "promenade_west", ""]]
+costs = [2.5, 1.5, 2.5, 2.5, 2.5, 1.5, 2.5, 2.5, 7.5, 3.5]
+total_cost = 29.0
+path_distance = 7788.35023411561
+haversine_distance = 2395.085216477964
+directions = ["Start at DT23 Bendemeer", "Board train towards terminus DT1 Bukit Panjang", "Alight at DT15 Promenade", "Transfer to CC4 Promenade", "Board train towards terminus CC1 Dhoby Ghaut", "Alight at CC3 Esplanade", "Total duration: 29 minutes", "Approximate path distance: 7.8 km, Haversine distance: 2.4 km, Circuity ratio: 3.3"]
+
+[trip_17.output]
+nodes = ["NE5", "NE6", "CC1", "CC2"]
+edges = [[3, "", ""], [7.0, "", ""], [3, "", ""]]
+costs = [3.5, 7.5, 3.5]
+total_cost = 14.5
+path_distance = 1928.9505315759666
+haversine_distance = 1048.6397897137483
+directions = ["Start at NE5 Clarke Quay", "Board train towards terminus NE17 Punggol", "Alight at NE6 Dhoby Ghaut", "Transfer to CC1 Dhoby Ghaut", "Board train towards terminus CC29 HarbourFront", "Alight at CC2 Bras Basah", "Total duration: 15 minutes", "Approximate path distance: 1.9 km, Haversine distance: 1.0 km, Circuity ratio: 1.8"]
+
+[trip_98.output]
+nodes = ["TE26", "TE25", "TE24", "TE23", "TE22", "TE20", "TE19", "TE18", "TE17", "NE3", "NE4", "NE5", "NE6", "NE7", "NE8", "NE9", "NE10", "NE11", "NE12", "NE13", "NE14"]
+edges = [[1, "", ""], [3, "", ""], [2, "", ""], [4, "", ""], [3, "", ""], [2, "", ""], [1, "", ""], [2, "", ""], [7.0, "", ""], [1, "", ""], [2, "", ""], [3, "", ""], [1, "", ""], [1, "", ""], [2, "", ""], [3, "", ""], [1, "", ""], [2, "", ""], [3, "", ""], [2, "", ""]]
+costs = [1.5, 3.5, 2.5, 4.5, 3.5, 2.5, 1.5, 2.5, 7.5, 1.5, 2.5, 3.5, 1.5, 1.5, 2.5, 3.5, 1.5, 2.5, 3.5, 2.5]
+total_cost = 56.0
+path_distance = 21606.73864874956
+haversine_distance = 7773.0722715482
+directions = ["Start at TE26 Marine Parade", "Board train towards terminus TE1 Woodlands North", "Alight at TE17 Outram Park", "Transfer to NE3 Outram Park", "Board train towards terminus NE17 Punggol", "Alight at NE14 Hougang", "Total duration: 56 minutes", "Approximate path distance: 21.6 km, Haversine distance: 7.8 km, Circuity ratio: 2.8"]
+
+[trip_99.output]
+nodes = ["CG1", "CG", "EW4", "EW5", "EW6", "EW7", "EW8", "EW9", "EW10", "EW11", "EW12", "DT14", "DT13", "DT12", "DT11", "DT10", "DT9", "DT8", "DT7", "DT6", "DT5", "DT3", "DT2", "DT1", "BP6", "BP7", "BP8", "BP9", "BP10"]
+edges = [[3, "", ""], [7.0, "", ""], [3, "", ""], [3, "", ""], [3, "", ""], [2, "", ""], [2, "", ""], [3, "", ""], [2, "", ""], [3, "", ""], [7.0, "", ""], [2, "", ""], [1, "", ""], [3, "", ""], [2, "", ""], [2, "", ""], [2, "", ""], [2, "", ""], [2, "", ""], [2, "", ""], [3, "", ""], [2, "", ""], [2, "", ""], [7.0, "", ""], [1, "bukit_panjang_service_b", ""], [2, "", ""], [1, "", ""], [2, "", ""]]
+costs = [3.5, 7.5, 3.5, 3.5, 3.5, 2.5, 2.5, 3.5, 2.5, 3.5, 7.5, 2.5, 1.5, 3.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 3.5, 2.5, 2.5, 7.5, 1.5, 2.5, 1.5, 2.5]
+total_cost = 90.0
+path_distance = 29757.43164584365
+haversine_distance = 21936.856851173477
+directions = ["Start at CG1 Expo", "Board train towards terminus CG Tanah Merah", "Alight at CG Tanah Merah", "Switch over at EW4 Tanah Merah", "Board train towards terminus EW33 Tuas Link", "Alight at EW12 Bugis", "Transfer to DT14 Bugis", "Board train towards terminus DT1 Bukit Panjang", "Alight at DT1 Bukit Panjang", "Transfer to BP6 Bukit Panjang", "Board train in direction of BP7 Petir", "Alight at BP10 Fajar", "Total duration: 90 minutes", "Approximate path distance: 29.8 km, Haversine distance: 21.9 km, Circuity ratio: 1.4"]

@@ -14,8 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import unittest
-
 import pytest
 from dijkstar import Graph
 
@@ -28,7 +26,7 @@ from railrailrail.dataset import (
 )
 
 
-class TestStage(unittest.TestCase):
+class TestStage:
     def test_stages(self):
         assert Stage.stages
         assert Stage.stages_defunct
@@ -38,12 +36,12 @@ class TestStage(unittest.TestCase):
             Stage("this_is_not_a_real_stage")
 
 
-class TestWalkingTrainMap(unittest.TestCase):
+class TestWalkingTrainMap:
     def test_routes(self):
         assert WalkingTrainMap.routes
 
 
-class TestSemiInterchange(unittest.TestCase):
+class TestSemiInterchange:
     def test_is_semi_interchange_transfer(self):
         assert SemiInterchange.is_semi_interchange_transfer("bahar_east", "bahar_west")
         assert not SemiInterchange.is_semi_interchange_transfer(
@@ -51,7 +49,7 @@ class TestSemiInterchange(unittest.TestCase):
         )
 
 
-class TestTerminal(unittest.TestCase):
+class TestTerminal:
     def test_get_terminal(self):
         graph = Graph(undirected=False)
         edge_node_pairs = (
@@ -94,6 +92,6 @@ class TestTerminal(unittest.TestCase):
             Terminal.get_terminal(graph, "EW1", "EW1")
 
 
-class TestDurations(unittest.TestCase):
+class TestDurations:
     def test_edges(self):
         assert Durations.edges

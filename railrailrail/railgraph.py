@@ -174,14 +174,13 @@ class RailGraph:
         ) -> float:
             """Compute time cost of travelling from current station to next station.
 
-            This cost is dynamically adjusted to include additional transfer time if the preceding
-            and succeeding edges imply a sub-interchange transfer.
+            Transfer time is added if the preceding and succeeding edges imply a sub-interchange transfer.
 
             Dwell time is added for every station unless if walking away from the station.
 
             Any transfer time involving the first station or last station of the entire journey will be excluded.
 
-            Additionally, transfers involving last station will also not have any dwell time.
+            Transfers involving last station will also not have any dwell time.
 
             Args:
                 current_station (str): Current station.
