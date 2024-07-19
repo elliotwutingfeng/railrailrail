@@ -244,14 +244,24 @@ class RailGraph:
     ) -> PathInfo:
         """Find shortest path between 2 stations `start` and `end`.
 
+        Pseudo station codes like "CE0Y" are considered invalid.
+
         Args:
             start (str): Station code of station to board from.
             end (str): Station code of station to alight from.
             walk (bool): Allow station transfers by walking.
 
+        Raises:
+            ValueError: Invalid station code.
+
         Returns:
             PathInfo: Shortest path between 2 stations `start` and `end`.
         """
+        for station_code in (start, end):
+            _, station_number, _ = StationUtils.to_station_code_components(station_code)
+            if station_number == 0:
+                raise ValueError(f"Invalid station code: {station_code}")
+
         predecessors = self._get_node_predecessors(start, end, walk)
         pathinfo = extract_shortest_path_from_predecessor_list(predecessors, end)
         logger.info("%s", pathinfo)

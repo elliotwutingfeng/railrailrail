@@ -716,11 +716,10 @@ class Terminal:
 
 
 class DurationsMeta(type):
-    """Standard durations for all possible adjacent rail edges on the same line.
-    This includes edges that have yet to exist (e.g. NS3 -> NS3A),
-    and edges that no longer exist or will be removed in the future (e.g. NS3 -> NS4, BP6 -> BP14).
-    """
+    """Standard duration presets."""
 
+    # All possible adjacent rail edges on the same line. This includes edges that have yet to exist (e.g. NS3 -> NS3A),
+    # and edges that no longer exist or will be removed in the future (e.g. BP6 -> BP14, NS3 -> NS4).
     __edges: tuple = (
         ("BP1-BP2", ("duration", 2)),
         ("BP2-BP3", ("duration", 1)),
@@ -1024,6 +1023,63 @@ class DurationsMeta(type):
         ("TE34-TE35", ("duration", 3)),
     )
 
+    # Transfers at all possible interchanges, including defunct and future interchanges.
+    __interchange_transfers: tuple = (
+        ("Ang Mo Kio", 7),
+        ("Bayfront", 4),
+        ("Bishan", 7),
+        ("Boon Lay", 7),
+        ("Botanic Gardens", 7),
+        ("Bright Hill", 7),
+        ("Bugis", 7),
+        ("Bukit Panjang", 7),
+        ("Buona Vista", 7),
+        ("Caldecott", 7),
+        ("Changi Airport Terminal 5", 7),
+        ("Chinatown", 7),
+        ("Choa Chu Kang", 7),
+        ("City Hall", 7),
+        ("Clementi", 7),
+        ("Dhoby Ghaut", 7),
+        ("Expo", 7),
+        ("HarbourFront", 7),
+        ("Hougang", 7),
+        ("Jurong East", 7),
+        ("King Albert Park", 7),
+        ("Little India", 7),
+        ("MacPherson", 7),
+        ("Marina Bay", 7),
+        ("Newton", 7),
+        ("Nicoll Highway", 7),  # Interchange for ccl_e
+        ("Orchard", 7),
+        ("Outram Park", 7),
+        ("Pasir Ris", 7),
+        ("Paya Lebar", 7),
+        ("Promenade", 7),
+        ("Punggol", 7),
+        ("Raffles Place", 7),
+        ("Riviera", 7),
+        ("Sengkang", 7),
+        ("Serangoon", 7),
+        ("Stadium", 7),  # Interchange for ccl_e
+        ("Stevens", 7),
+        ("Sungei Bedok", 7),
+        ("Sungei Kadut", 7),
+        ("Tampines", 10),
+        ("Tanah Merah", 7),
+        ("Tengah", 7),
+        ("Woodlands", 7),
+    )
+
+    # Transfers at all possible semi-interchanges, including defunct and future semi-interchanges.
+    __semi_interchange_transfers: tuple = (
+        ("Bahar Junction", 7),
+        ("Bukit Panjang", 6),
+        ("Promenade", 7),
+        ("Punggol", 7),
+        ("Sengkang", 7),
+    )
+
     def __new__(cls, name, bases, dct):
         cls.edges = dict()
         pairs: set[tuple[str, str]] = set()
@@ -1061,6 +1117,21 @@ class DurationsMeta(type):
                     "Edge duration must be int | float."
                 )  # pragma: no cover
             cls.edges[edge] = edge_details
+
+        cls.interchange_transfers = {
+            station_name: duration
+            for station_name, duration in cls.__interchange_transfers
+        }
+        if len(cls.interchange_transfers) != len(cls.__interchange_transfers):
+            raise AttributeError("Duplicate station names are not allowed.")
+
+        cls.semi_interchange_transfers = {
+            station_name: duration
+            for station_name, duration in cls.__semi_interchange_transfers
+        }
+        if len(cls.semi_interchange_transfers) != len(cls.__semi_interchange_transfers):
+            raise AttributeError("Duplicate station names are not allowed.")
+
         return super().__new__(cls, name, bases, dct)
 
 

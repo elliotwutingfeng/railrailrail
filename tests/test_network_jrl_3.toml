@@ -2,6 +2,11 @@ schema = 1
 transfer_time = 7
 dwell_time = 0.5
 
+# BP1-BP2 = {duration = 2, dwell_time_asc = 0.5, dwell_time_desc = 0.5}
+
+# [transfers]
+# "Choa Chu Kang" = {duration = 8}
+
 [stations]
 BP1 = "Choa Chu Kang"
 BP2 = "South View"

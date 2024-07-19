@@ -138,6 +138,22 @@ class Config:
         stations: list[tuple[str, str]],
         adjacency_matrix: defaultdict[str, OrderedDict[str, dict]],
     ) -> None:
+        """Replace contents of `network` configuration in-place
+        with `stations` and `adjacency_matrix`.
+
+        - Newly added entries are marked as NEW.
+        - Entries to be modified will have their new content added as an inline-comment.
+        - Entries made defunct will be marked as DEFUNCT with an inline-comment.
+        - Existing comments are preserved.
+
+        Args:
+            network (tomlkit.TOMLDocument): Network configuration to be updated.
+            stations (list[tuple[str, str]]): After the update, `network` should only have
+            these stations.
+            adjacency_matrix (defaultdict[str, OrderedDict[str, dict]]): After the update,
+            `network` should only have these adjacency matrix edges.
+        """
+
         network["schema"] = network.get("schema", 1)
         network["transfer_time"] = network.get("transfer_time", 7)
         network["dwell_time"] = network.get("dwell_time", 0.5)
@@ -236,6 +252,12 @@ class Config:
         network["edges"] = updated_adjacency_matrix
 
     def update_network_config_file(self, path: pathlib.Path) -> None:
+        """Overwrites contents of network file at `path` with updated
+        network data. See `Config.update_network`.
+
+        Args:
+            path (pathlib.Path): Path to network file.
+        """
         try:
             with open(path, "rb") as f:
                 network: tomlkit.TOMLDocument = tomlkit.load(f)

@@ -16,8 +16,11 @@ limitations under the License.
 
 import pathlib
 import math
+import pandas as pd
 import pytest
 import tomllib
+import tomlkit
+import warnings
 from dijkstar.algorithm import NoPathError, PathInfo
 
 from railrailrail.railgraph import RailGraph
@@ -26,19 +29,41 @@ from railrailrail.railgraph import RailGraph
 class TestRailGraph:
     def setup_method(self):
         coordinates_path = (
+            pathlib.Path(__file__).resolve().parent.parent
+            / "config"
+            / "station_coordinates.csv"
+        )
+
+        test_coordinates_path = (
             pathlib.Path(__file__).resolve().parent / "test_station_coordinates.csv"
         )
+
+        # Warn if content in coordinates_path and test_coordinates_path are different.
+        # Different order of rows does not count as different.
+        coordinates_csv = pd.read_csv(coordinates_path)
+        coordinates_csv = coordinates_csv.sort_values(list(coordinates_csv.columns))
+        test_coordinates_csv = pd.read_csv(test_coordinates_path)
+        test_coordinates_csv = test_coordinates_csv.sort_values(
+            list(test_coordinates_csv.columns)
+        )
+
+        if not coordinates_csv.equals(test_coordinates_csv):
+            warnings.warn(
+                "Coordinates file at %s is different from test coordinates file at %s"
+                % (coordinates_path, test_coordinates_path)
+            )
+
         with open(
             pathlib.Path(__file__).resolve().parent / "test_trips.toml", "rb"
         ) as f:
             self.trips: dict = tomllib.load(f)
         for trip in self.trips:
-            network_path = (
+            test_network_path = (
                 pathlib.Path(__file__).resolve().parent
                 / f"test_network_{self.trips[trip]["input"]["network"]}.toml"
             )
             self.trips[trip]["rail_graph"] = RailGraph.from_file(
-                network_path, coordinates_path
+                test_network_path, test_coordinates_path
             )
             self.trips[trip]["pathinfo"] = PathInfo(
                 nodes=self.trips[trip]["output"]["nodes"],
@@ -125,7 +150,7 @@ class TestRailGraph:
             ), f"{start}-{end} | Expected {expected_pathinfo.total_cost}. Got {actual_pathinfo.total_cost}."
 
             with pytest.raises(NoPathError):
-                rail_graph.find_shortest_path("AA", "BB")
+                rail_graph.find_shortest_path("AA1", "BB2")
 
     def test_make_directions(self):
         for trip, trip_details in self.trips.items():
@@ -160,3 +185,44 @@ class TestRailGraph:
             # At least 2 stations needed for journey.
             with pytest.raises(ValueError):
                 rail_graph.path_and_haversine_distance(self.single_node_path)
+
+
+def generate_test_trips():  # pragma: no cover
+    """Helper function to re-generate test trips for test_trips.toml"""
+
+    with open(pathlib.Path(__file__).resolve().parent / "test_trips.toml", "rb") as f:
+        trips = tomllib.load(f)
+
+    data_ = dict()
+    for trip, trip_details in trips.items():
+        network = trip_details["input"]["network"]
+        start = trip_details["input"]["start"]
+        end = trip_details["input"]["end"]
+        walk = trip_details["input"]["walk"]
+        rail_graph = RailGraph.from_file(
+            f"tests/test_network_{network}.toml", "tests/test_station_coordinates.csv"
+        )
+        pathinfo = rail_graph.find_shortest_path(start, end, walk)
+        path_distance, haversine_distance = rail_graph.path_and_haversine_distance(
+            pathinfo
+        )
+        data_[trip] = dict()
+        data = data_[trip]
+        data["nodes"] = pathinfo.nodes
+        data["edges"] = pathinfo.edges
+        data["costs"] = pathinfo.costs
+        data["total_cost"] = pathinfo.total_cost
+        data["path_distance"] = path_distance
+        data["haversine_distance"] = haversine_distance
+        data["directions"] = rail_graph.make_directions(pathinfo)
+
+    rows = []
+    for row in tomlkit.dumps(data_).split("\n"):
+        if row.startswith("[trip_") and row.endswith("]"):
+            row = row.removesuffix("]") + ".output]"
+        rows.append(row)
+    print("\n".join(rows))
+
+
+if __name__ == "__main__":  # pragma: no cover
+    generate_test_trips()
