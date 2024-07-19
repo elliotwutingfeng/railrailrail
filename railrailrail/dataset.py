@@ -482,7 +482,7 @@ class StageMeta(type):
 
 
 class Stage(metaclass=StageMeta):
-    def __init__(self, stage: str) -> None:
+    def __init__(self, stage: str):
         self.stations: set[tuple[str, str]] = set()
         if stage not in Stage.stages:
             raise ValueError(f"No such stage: {stage}")
@@ -500,7 +500,10 @@ class Stage(metaclass=StageMeta):
 
 
 class WalkingTrainMapMeta(type):
-    """LTA Walking Train Map (WTM)"""
+    """LTA Walking Train Map (WTM)
+
+    https://www.lta.gov.sg/content/dam/ltagov/who_we_are/statistics_and_publications/pdf/connect_nov_2018_fa_12nov.pdf
+    """
 
     __routes: tuple[tuple[str, str, int]] = (
         ("Bras Basah", "Bencoolen", 2),
@@ -691,7 +694,7 @@ class Terminal:
             raise ValueError(
                 f"start_line_code and end_line_code must be the same. Got {start_line_code} and {end_line_code}"
             )
-        ascending: bool = (
+        is_ascending: bool = (
             sorted([start, end], key=StationUtils.to_station_code_components)[0]
             == start
         )
@@ -708,7 +711,7 @@ class Terminal:
                 key=StationUtils.to_station_code_components,
             )
             next_node_index = node_and_neighbours.index(next_node) + (
-                1 if ascending else -1
+                1 if is_ascending else -1
             )
             if next_node_index < 0 or next_node_index >= len(node_and_neighbours):
                 return next_node
@@ -1024,60 +1027,66 @@ class DurationsMeta(type):
     )
 
     # Transfers at all possible interchanges, including defunct and future interchanges.
+    # Estimates based on walking time + waiting time (5 min for MRT / 6 min for LRT).
+    #
+    # Rule of thumb for future interchanges
+    # elevated/elevated -> 7 min
+    # underground/underground -> 9 min
+    # underground/elevated -> 12 min
     __interchange_transfers: tuple = (
-        ("Ang Mo Kio", 7),
-        ("Bayfront", 4),
-        ("Bishan", 7),
-        ("Boon Lay", 7),
-        ("Botanic Gardens", 7),
-        ("Bright Hill", 7),
-        ("Bugis", 7),
-        ("Bukit Panjang", 7),
-        ("Buona Vista", 7),
-        ("Caldecott", 7),
-        ("Changi Airport Terminal 5", 7),
+        ("Ang Mo Kio", 10),
+        ("Bayfront", 6),
+        ("Bishan", 8),
+        ("Boon Lay", 10),
+        ("Botanic Gardens", 8),
+        ("Bright Hill", 9),
+        ("Bugis", 9),
+        ("Bukit Panjang", 10),
+        ("Buona Vista", 8),
+        ("Caldecott", 9),
+        ("Changi Airport Terminal 5", 9),
         ("Chinatown", 7),
         ("Choa Chu Kang", 7),
-        ("City Hall", 7),
-        ("Clementi", 7),
-        ("Dhoby Ghaut", 7),
-        ("Expo", 7),
+        ("City Hall", 6),
+        ("Clementi", 12),
+        ("Dhoby Ghaut", 8),
+        ("Expo", 8),
         ("HarbourFront", 7),
-        ("Hougang", 7),
+        ("Hougang", 9),
         ("Jurong East", 7),
-        ("King Albert Park", 7),
-        ("Little India", 7),
-        ("MacPherson", 7),
-        ("Marina Bay", 7),
-        ("Newton", 7),
-        ("Nicoll Highway", 7),  # Interchange for ccl_e
-        ("Orchard", 7),
-        ("Outram Park", 7),
-        ("Pasir Ris", 7),
-        ("Paya Lebar", 7),
+        ("King Albert Park", 9),
+        ("Little India", 8),
+        ("MacPherson", 6),
+        ("Marina Bay", 10),
+        ("Newton", 9),
+        ("Nicoll Highway", 6),  # Interchange for ccl_e
+        ("Orchard", 8),
+        ("Outram Park", 8),
+        ("Pasir Ris", 12),
+        ("Paya Lebar", 8),
         ("Promenade", 7),
         ("Punggol", 7),
-        ("Raffles Place", 7),
-        ("Riviera", 7),
+        ("Raffles Place", 6),
+        ("Riviera", 12),
         ("Sengkang", 7),
-        ("Serangoon", 7),
-        ("Stadium", 7),  # Interchange for ccl_e
+        ("Serangoon", 8),
+        ("Stadium", 6),  # Interchange for ccl_e
         ("Stevens", 7),
-        ("Sungei Bedok", 7),
-        ("Sungei Kadut", 7),
-        ("Tampines", 10),
+        ("Sungei Bedok", 9),
+        ("Sungei Kadut", 12),
+        ("Tampines", 12),
         ("Tanah Merah", 7),
-        ("Tengah", 7),
-        ("Woodlands", 7),
+        ("Tengah", 6),
+        ("Woodlands", 9),
     )
 
     # Transfers at all possible semi-interchanges, including defunct and future semi-interchanges.
     __semi_interchange_transfers: tuple = (
-        ("Bahar Junction", 7),
-        ("Bukit Panjang", 6),
+        ("Bahar Junction", 6),
+        ("Bukit Panjang", 7),
         ("Promenade", 7),
-        ("Punggol", 7),
-        ("Sengkang", 7),
+        ("Punggol", 6),
+        ("Sengkang", 6),
     )
 
     def __new__(cls, name, bases, dct):

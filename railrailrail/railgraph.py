@@ -14,20 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+from __future__ import annotations
+
 import csv
+import itertools
 import math
 import pathlib
 import tomllib
 import typing
 from collections import defaultdict
-from itertools import combinations
 
 from dijkstar import Graph
-from dijkstar.algorithm import (
-    PathInfo,
-    extract_shortest_path_from_predecessor_list,
-    single_source_shortest_paths,
-)
+from dijkstar.algorithm import PathInfo, find_path
 
 from railrailrail.dataset import SemiInterchange, Terminal
 from railrailrail.logger import logger
@@ -41,15 +39,16 @@ class RailGraph:
         self,
         edges: list[tuple[str, str, dict]],
         stations: dict[str, str],
-        station_coordinates: dict,
+        station_coordinates: dict[str, tuple[float, float]],
         transfer_time: float | int = 7.0,
         dwell_time: float | int = 1.0,
-    ) -> None:
+    ):
         """Setup rail network graph
 
         Args:
             edges (list[tuple[str, str, dict]]): Duration between every adjacent pair of stations from the same line.
             stations (dict[str, str]): Map of station codes to station names.
+            station_coordinates (dict[str, tuple[float, float]]): Map of station codes to station latitude and longitude.
             transfer_time (float | int, optional): Time taken to switch lines at an interchange station. Defaults to 7.0.
             dwell_time (float | int, optional): Time taken by train to either drop off
             or pick up passengers at a station. Defaults to 1.0.
@@ -98,14 +97,28 @@ class RailGraph:
         for interchange_substations in (
             self._interchanges
         ):  # Link up unique pairs of substations on the same interchange station.
-            for start, end in combinations(interchange_substations, 2):
+            for start, end in itertools.combinations(interchange_substations, 2):
                 self._graph.add_edge(start, end, (transfer_time, "", ""))
                 self._graph.add_edge(end, start, (transfer_time, "", ""))
                 self._graph_without_walk.add_edge(start, end, (transfer_time, "", ""))
                 self._graph_without_walk.add_edge(end, start, (transfer_time, "", ""))
 
     @classmethod
-    def from_file(cls, network_path: pathlib.Path, coordinates_path: pathlib.Path):
+    def from_file(
+        cls, network_path: pathlib.Path, coordinates_path: pathlib.Path
+    ) -> RailGraph:
+        """Setup rail network graph from network configuration file.
+
+        Args:
+            network_path (pathlib.Path): Path to network configuration file.
+            coordinates_path (pathlib.Path): Path to station coordinates file.
+
+        Raises:
+            ValueError: Invalid config file.
+
+        Returns:
+            RailGraph: Rail network graph.
+        """
         with open(network_path, "rb") as f:
             network = tomllib.load(f)
 
@@ -178,9 +191,10 @@ class RailGraph:
 
             Dwell time is added for every station unless if walking away from the station.
 
-            Any transfer time involving the first station or last station of the entire journey will be excluded.
+            Any transfer time involving the `start` station
+            or `end` station of the entire journey will be excluded.
 
-            Transfers involving last station will also not have any dwell time.
+            Transfers involving `end` station will also not have any dwell time.
 
             Args:
                 current_station (str): Current station.
@@ -228,14 +242,6 @@ class RailGraph:
 
         return cost_func_aux
 
-    def _get_node_predecessors(self, start: str, end: str, walk: bool = False):
-        return single_source_shortest_paths(
-            self._graph if walk else self._graph_without_walk,
-            start,
-            end,
-            cost_func=self._cost_func(start, end),
-        )
-
     def find_shortest_path(
         self,
         start: str,
@@ -247,8 +253,8 @@ class RailGraph:
         Pseudo station codes like "CE0Y" are considered invalid.
 
         Args:
-            start (str): Station code of station to board from.
-            end (str): Station code of station to alight from.
+            start (str): Station code of station to start from.
+            end (str): Station code of station to arrive at.
             walk (bool): Allow station transfers by walking.
 
         Raises:
@@ -262,8 +268,12 @@ class RailGraph:
             if station_number == 0:
                 raise ValueError(f"Invalid station code: {station_code}")
 
-        predecessors = self._get_node_predecessors(start, end, walk)
-        pathinfo = extract_shortest_path_from_predecessor_list(predecessors, end)
+        pathinfo = find_path(
+            self._graph if walk else self._graph_without_walk,
+            start,
+            end,
+            cost_func=self._cost_func(start, end),
+        )
         logger.info("%s", pathinfo)
         return pathinfo
 
@@ -370,7 +380,22 @@ class RailGraph:
         )
         return steps
 
-    def path_and_haversine_distance(self, pathinfo: PathInfo):
+    def path_and_haversine_distance(self, pathinfo: PathInfo) -> tuple[float, float]:
+        """Estimated path distance and haversine (great-circle) distance between origin station and
+        destination station.
+
+        The path distance returned by this method is a rough estimate made by
+        treating paths between adjacent stations as haversine (great-circle) paths.
+
+        Args:
+            pathinfo (PathInfo): Journey path information.
+
+        Raises:
+            ValueError: At least 2 stations needed for journey.
+
+        Returns:
+            tuple[float, float]: Path distance and Haversine distance between origin station and destination station.
+        """
         nodes = pathinfo.nodes
         if len(nodes) < 2:
             raise ValueError("At least 2 stations needed for journey.")

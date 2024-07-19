@@ -188,7 +188,10 @@ class TestRailGraph:
 
 
 def generate_test_trips():  # pragma: no cover
-    """Helper function to re-generate test trips for test_trips.toml"""
+    """Helper function to re-generate test trips for test_trips.toml
+
+    Generated test cases are printed to stdout.
+    """
 
     with open(pathlib.Path(__file__).resolve().parent / "test_trips.toml", "rb") as f:
         trips = tomllib.load(f)
@@ -225,4 +228,4 @@ def generate_test_trips():  # pragma: no cover
 
 
 if __name__ == "__main__":  # pragma: no cover
-    generate_test_trips()
+    generate_test_trips()  # Run this file `test_railgraph.py` to print updated test cases to stdout.

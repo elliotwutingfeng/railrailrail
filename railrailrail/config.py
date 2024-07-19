@@ -25,7 +25,7 @@ from railrailrail.utils import StationUtils
 
 
 class Config:
-    def __init__(self, stage: Stage) -> None:
+    def __init__(self, stage: Stage):
         self.stations: list[tuple[str, str]] = self._get_stations(stage)
         self.station_codes_by_station_name: dict[str, set[str]] = defaultdict(set)
         for station_code, station_name in self.stations:
@@ -243,20 +243,19 @@ class Config:
         updated_adjacency_matrix = tomlkit.table()
         for edge in sorted(
             network_adjacency_matrix,
-            key=lambda x: (
-                StationUtils.to_station_code_components(x.split("-", 1)[0]),
-                StationUtils.to_station_code_components(x.split("-", 1)[1]),
+            key=lambda pair: tuple(
+                map(StationUtils.to_station_code_components, pair.split("-", 1))
             ),
         ):
             updated_adjacency_matrix[edge] = network_adjacency_matrix[edge]
         network["edges"] = updated_adjacency_matrix
 
     def update_network_config_file(self, path: pathlib.Path) -> None:
-        """Overwrites contents of network file at `path` with updated
+        """Overwrite contents of network configuration file at `path` with updated
         network data. See `Config.update_network`.
 
         Args:
-            path (pathlib.Path): Path to network file.
+            path (pathlib.Path): Path to network configuration file.
         """
         try:
             with open(path, "rb") as f:
