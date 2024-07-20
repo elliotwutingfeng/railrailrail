@@ -84,16 +84,24 @@ class RailGraph:
 
         for segment in segments:
             start, end, segment_details = segment
+            for station_code in (start, end):
+                if station_code not in self._stations:
+                    raise ValueError(
+                        f"Station {station_code} in segment {segment} does not have a name."
+                    )
+
             duration = segment_details.get("duration", None)
             if (type(duration) not in (float, int)) or not (1 <= float(duration) <= 19):
                 raise ValueError("duration must be number in range 1-19")
+
             edge_type = segment_details.get("edge_type", "")
             mode = segment_details.get("mode", "")
-            segment = (duration, edge_type, mode)
+
+            edge = (duration, edge_type, mode)
             for u, v in [(start, end), (end, start)]:
-                self._graph.add_edge(u, v, segment)
+                self._graph.add_edge(u, v, edge)
                 if mode != "walk":
-                    self._graph_without_walk.add_edge(u, v, segment)
+                    self._graph_without_walk.add_edge(u, v, edge)
 
         for interchange_substations in (
             self._interchanges
@@ -123,6 +131,9 @@ class RailGraph:
         with open(network_path, "rb") as f:
             network = tomllib.load(f)
 
+        schema = network.get("schema", None)
+        if schema != 1:
+            raise ValueError("Invalid config file: 'schema' must be 1.")
         stations = network.get("stations", None)
         if not isinstance(stations, dict) or not stations:
             raise ValueError("Invalid config file: 'stations' must not be empty.")
