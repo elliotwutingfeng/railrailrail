@@ -505,7 +505,7 @@ class WalkingTrainMapMeta(type):
     https://www.lta.gov.sg/content/dam/ltagov/who_we_are/statistics_and_publications/pdf/connect_nov_2018_fa_12nov.pdf
     """
 
-    __segments: tuple[tuple[str, str, int]] = (
+    __routes: tuple[tuple[str, str, int]] = (
         ("Bras Basah", "Bencoolen", 2),
         ("Dhoby Ghaut", "Bencoolen", 5),
         ("Esplanade", "City Hall", 5),
@@ -534,7 +534,7 @@ class WalkingTrainMapMeta(type):
 
     def __new__(cls, name, bases, dct):
         pairs: set[tuple[str, str]] = set()
-        for station_name_1, station_name_2, duration in cls.__segments:
+        for station_name_1, station_name_2, duration in cls.__routes:
             if (
                 station_name_1 == station_name_2
                 or not isinstance(station_name_1, str)
@@ -551,7 +551,7 @@ class WalkingTrainMapMeta(type):
                     f"Duplicate route not allowed: {station_name_1}, {station_name_2}"
                 )  # pragma: no cover
             pairs.add(pair)
-        cls.segments = cls.__segments
+        cls.routes = cls.__routes
         return super().__new__(cls, name, bases, dct)
 
 

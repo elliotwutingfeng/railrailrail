@@ -100,7 +100,7 @@ class Config:
                 }
 
         # Add walking paths from LTA Walking Train Map (WTM)
-        for start_station_name, end_station_name, duration in WalkingTrainMap.segments:
+        for start_station_name, end_station_name, duration in WalkingTrainMap.routes:
             for start_station_code in self.station_codes_by_station_name[
                 start_station_name
             ]:
