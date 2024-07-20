@@ -160,7 +160,7 @@ class Config:
         """
 
         network["schema"] = network.get("schema", 1)
-        network["transfer_time"] = network.get("transfer_time", 7)
+        network["default_transfer_time"] = network.get("default_transfer_time", 7)
         network["default_dwell_time_asc"] = network.get("default_dwell_time_asc", 0.5)
         network["default_dwell_time_desc"] = network.get("default_dwell_time_desc", 0.5)
 

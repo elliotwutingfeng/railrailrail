@@ -98,7 +98,7 @@ class TestConfig:
             self.config_phase_1_1.adjacency_matrix,
         )
         assert tomlkit.dumps(network) == (
-            "schema = 1\ntransfer_time = 7\ndefault_dwell_time_asc = 0.5\ndefault_dwell_time_desc = 0.5\n\n"
+            "schema = 1\ndefault_transfer_time = 7\ndefault_dwell_time_asc = 0.5\ndefault_dwell_time_desc = 0.5\n\n"
             '[stations]\nNS15 = "Yio Chu Kang" # NEW\n'
             'NS16 = "Ang Mo Kio" # NEW\nNS17 = "Bishan" # NEW\nNS18 = "Braddell" # NEW\nNS19 = "Toa Payoh" # NEW\n\n'
             "[segments]\nNS15-NS16 = {duration = 3} # NEW\nNS16-NS17 = {duration = 4} # NEW\n"
