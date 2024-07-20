@@ -559,16 +559,16 @@ class WalkingTrainMap(metaclass=WalkingTrainMapMeta):
     pass
 
 
-class SemiInterchange:
-    """A semi-interchange is a station that is positioned between different sections of the
+class ConditionalInterchange:
+    """A conditional interchange is a station that is positioned between different sections of the
     same line that are not directly connected to each other. For example, STC Sengkang is the
-    semi-interchange for the Sengkang LRT East Loop and Sengkang LRT West Loop.
+    conditional interchange for the Sengkang LRT East Loop and Sengkang LRT West Loop.
 
-    A semi-interchange behaves as an interchange only when previous edge and next edge are of specific types
+    A conditional interchange behaves as an interchange only when previous edge and next edge are of specific types
     as outlined in `edge pairs`. For example, there will be an interchange transfer when
     moving from "bahar_east" to "bahar_west", but not from "bahar_west" to "bahar_east".
 
-    Nearly all edges adjacent to a semi-interchange are non-sequential,
+    Nearly all edges adjacent to a conditional interchange are non-sequential,
     except for BP6-BP7, JS6-JS7, JS7-JS8 which are sequential.
     """
 
@@ -651,7 +651,9 @@ class SemiInterchange:
     )
 
     @classmethod
-    def is_semi_interchange_transfer(cls, previous_edge_type: str, next_edge_type: str):
+    def is_conditional_interchange_transfer(
+        cls, previous_edge_type: str, next_edge_type: str
+    ):
         return (previous_edge_type, next_edge_type) in cls.edge_pairs
 
 
@@ -1080,8 +1082,8 @@ class DurationsMeta(type):
         ("Woodlands", 9),
     )
 
-    # Transfers at all possible semi-interchanges, including defunct and future semi-interchanges.
-    __semi_interchange_transfers: tuple = (
+    # Transfers at all possible conditional interchanges, including defunct and future conditional interchanges.
+    __conditional_interchange_transfers: tuple = (
         ("Bahar Junction", 6),
         ("Bukit Panjang", 7),
         ("Promenade", 7),
@@ -1134,11 +1136,13 @@ class DurationsMeta(type):
         if len(cls.interchange_transfers) != len(cls.__interchange_transfers):
             raise AttributeError("Duplicate station names are not allowed.")
 
-        cls.semi_interchange_transfers = {
+        cls.conditional_interchange_transfers = {
             station_name: duration
-            for station_name, duration in cls.__semi_interchange_transfers
+            for station_name, duration in cls.__conditional_interchange_transfers
         }
-        if len(cls.semi_interchange_transfers) != len(cls.__semi_interchange_transfers):
+        if len(cls.conditional_interchange_transfers) != len(
+            cls.__conditional_interchange_transfers
+        ):
             raise AttributeError("Duplicate station names are not allowed.")
 
         return super().__new__(cls, name, bases, dct)

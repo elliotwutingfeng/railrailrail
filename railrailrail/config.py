@@ -20,7 +20,12 @@ from collections import OrderedDict, defaultdict
 
 import tomlkit
 
-from railrailrail.dataset import Durations, SemiInterchange, Stage, WalkingTrainMap
+from railrailrail.dataset import (
+    ConditionalInterchange,
+    Durations,
+    Stage,
+    WalkingTrainMap,
+)
 from railrailrail.utils import StationUtils
 
 
@@ -109,9 +114,9 @@ class Config:
 
         # Mark edges that need to be treated differently from
         # most other edges. Currently this only means checking if an edge is
-        # adjacent to a semi-interchange.
-        for start, end, edge_type in SemiInterchange.edges:
-            # Skip semi-interchange edges made obsolete by new stations.
+        # adjacent to a conditional interchange.
+        for start, end, edge_type in ConditionalInterchange.edges:
+            # Skip conditional interchange edges made obsolete by new stations.
             if (start, end) == ("STC", "SW2") and "SW1" in station_codes:
                 continue
             if (start, end) == ("STC", "SW4") and "SW2" in station_codes:

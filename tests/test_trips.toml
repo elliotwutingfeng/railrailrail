@@ -7,16 +7,16 @@ trip_0.input = { start = "DT3", end = "DT7", network = "tel_4", walk = false } #
 trip_1.input = { start = "NS1", end = "EW18", network = "tel_4", walk = false } # $ transfer $$ _ $
 trip_2.input = { start = "NE8", end = "CC13", network = "tel_4", walk = false } # $ _ $$ transfer $
 trip_3.input = { start = "TE16", end = "NS20", network = "tel_4", walk = false } # $ _ $$ transfer $$ _ $
-trip_4.input = { start = "CC3", end = "CE2", network = "tel_4", walk = false } # $ _ $$ semi-transfer $$ _ $
-trip_5.input = { start = "BP7", end = "BP13", network = "tel_4", walk = false } # $ _ $$ semi-transfer $$ _ $
-trip_6.input = { start = "SW1", end = "SE1", network = "tel_4", walk = false } # $ _ $$ semi-transfer $$ _ $
-trip_7.input = { start = "PW1", end = "PE1", network = "tel_4", walk = false } # $ _ $$ semi-transfer $$ _ $
-trip_8.input = { start = "JS3", end = "JS9", network = "jrl_3", walk = false } # $ _ $$ semi-transfer $$ _ $
-trip_9.input = { start = "JS10", end = "JW4", network = "jrl_3", walk = false } # $ _ $$ semi-transfer $$ _ $
-trip_10.input = { start = "JW5", end = "JS5", network = "jrl_3", walk = false } # $ _ $$ semi-transfer $$ _ $
-trip_11.input = { start = "JS2", end = "JW3", network = "jrl_3", walk = false } # $ _ $$ semi-transfer $$ _ $
-trip_12.input = { start = "JW2", end = "JS8", network = "jrl_3", walk = false } # $ _ $$ semi-transfer $$ _ $
-trip_13.input = { start = "JS9", end = "JS1", network = "jrl_3", walk = false } # $ _ $$ semi-transfer $$ _ $
+trip_4.input = { start = "CC3", end = "CE2", network = "tel_4", walk = false } # $ _ $$ conditional transfer $$ _ $
+trip_5.input = { start = "BP7", end = "BP13", network = "tel_4", walk = false } # $ _ $$ conditional transfer $$ _ $
+trip_6.input = { start = "SW1", end = "SE1", network = "tel_4", walk = false } # $ _ $$ conditional transfer $$ _ $
+trip_7.input = { start = "PW1", end = "PE1", network = "tel_4", walk = false } # $ _ $$ conditional transfer $$ _ $
+trip_8.input = { start = "JS3", end = "JS9", network = "jrl_3", walk = false } # $ _ $$ conditional transfer $$ _ $
+trip_9.input = { start = "JS10", end = "JW4", network = "jrl_3", walk = false } # $ _ $$ conditional transfer $$ _ $
+trip_10.input = { start = "JW5", end = "JS5", network = "jrl_3", walk = false } # $ _ $$ conditional transfer $$ _ $
+trip_11.input = { start = "JS2", end = "JW3", network = "jrl_3", walk = false } # $ _ $$ conditional transfer $$ _ $
+trip_12.input = { start = "JW2", end = "JS8", network = "jrl_3", walk = false } # $ _ $$ conditional transfer $$ _ $
+trip_13.input = { start = "JS9", end = "JS1", network = "jrl_3", walk = false } # $ _ $$ conditional transfer $$ _ $
 trip_14.input = { start = "DT21", end = "CC3", network = "tel_4", walk = true } # $ walk $$ _ $
 trip_15.input = { start = "EW13", end = "DT18", network = "tel_4", walk = true } # $ _ $$ walk $
 trip_16.input = { start = "DT23", end = "CC3", network = "tel_4", walk = true } # $ _ $$ walk $$ _ $

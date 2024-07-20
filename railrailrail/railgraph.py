@@ -27,7 +27,7 @@ from collections import defaultdict
 from dijkstar import Graph
 from dijkstar.algorithm import PathInfo, find_path
 
-from railrailrail.dataset import SemiInterchange, Terminal
+from railrailrail.dataset import ConditionalInterchange, Terminal
 from railrailrail.logger import logger
 from railrailrail.utils import GeographicUtils, StationUtils
 
@@ -222,7 +222,7 @@ class RailGraph:
             ):  # Walking away from station -> Not waiting for train to depart.
                 cost -= self.dwell_time
 
-            if SemiInterchange.is_semi_interchange_transfer(
+            if ConditionalInterchange.is_conditional_interchange_transfer(
                 previous_edge_type, next_edge_type
             ):
                 cost += self.transfer_time
@@ -327,12 +327,15 @@ class RailGraph:
                 elif edge_details[2] == "walk":  # Walk to the next station.
                     steps.append(f"Walk to {v_} {self._stations[v_]}")
                     status = "walking"
-                elif 0 < edge_idx and SemiInterchange.is_semi_interchange_transfer(
-                    pathinfo.edges[edge_idx - 1][1], pathinfo.edges[edge_idx][1]
-                ):  # Semi-interchange transfer
+                elif (
+                    0 < edge_idx
+                    and ConditionalInterchange.is_conditional_interchange_transfer(
+                        pathinfo.edges[edge_idx - 1][1], pathinfo.edges[edge_idx][1]
+                    )
+                ):  # Conditional interchange transfer
                     raise RuntimeError(
-                        "Something is not right; this semi-interchange transfer is also an interchange transfer. "
-                        "Check SemiInterchange class and rail network structure. PathInfo: %s"
+                        "Something is not right; this conditional interchange transfer is also an interchange transfer. "
+                        "Check ConditionalInterchange class and rail network structure. PathInfo: %s"
                         % pathinfo
                     )
                 else:  # Board a train.
@@ -356,9 +359,12 @@ class RailGraph:
                     steps.append(f"Alight at {u_} {self._stations[u_]}")
                     steps.append(f"Walk to {v_} {self._stations[v_]}")
                     status = "walking"
-                elif 0 < edge_idx and SemiInterchange.is_semi_interchange_transfer(
-                    pathinfo.edges[edge_idx - 1][1], pathinfo.edges[edge_idx][1]
-                ):  # Semi-interchange transfer
+                elif (
+                    0 < edge_idx
+                    and ConditionalInterchange.is_conditional_interchange_transfer(
+                        pathinfo.edges[edge_idx - 1][1], pathinfo.edges[edge_idx][1]
+                    )
+                ):  # Conditional interchange transfer
                     steps.append(f"Switch over at {u_} {self._stations[u_]}")
                     terminal: str | None = Terminal.get_terminal(self._graph, u, v)
                     steps.append(

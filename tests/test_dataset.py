@@ -18,8 +18,8 @@ import pytest
 from dijkstar import Graph
 
 from railrailrail.dataset import (
+    ConditionalInterchange,
     Durations,
-    SemiInterchange,
     Stage,
     Terminal,
     WalkingTrainMap,
@@ -41,10 +41,12 @@ class TestWalkingTrainMap:
         assert WalkingTrainMap.routes
 
 
-class TestSemiInterchange:
-    def test_is_semi_interchange_transfer(self):
-        assert SemiInterchange.is_semi_interchange_transfer("bahar_east", "bahar_west")
-        assert not SemiInterchange.is_semi_interchange_transfer(
+class TestConditionalInterchange:
+    def test_is_conditional_interchange_transfer(self):
+        assert ConditionalInterchange.is_conditional_interchange_transfer(
+            "bahar_east", "bahar_west"
+        )
+        assert not ConditionalInterchange.is_conditional_interchange_transfer(
             "bahar_west", "bahar_east"
         )
 
