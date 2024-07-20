@@ -38,8 +38,8 @@ class TestStationUtils:
         assert StationUtils.to_station_code_components("NS1") == ("NS", 1, "")
         assert StationUtils.to_station_code_components("NS3A") == ("NS", 3, "A")
         assert StationUtils.to_station_code_components("TE22A") == ("TE", 22, "A")
-        assert StationUtils.to_station_code_components("CG") == ("CG", 0, "")
-        assert StationUtils.to_station_code_components("STC") == ("STC", 0, "")
+        assert StationUtils.to_station_code_components("CG") == ("CG", -1, "")
+        assert StationUtils.to_station_code_components("STC") == ("STC", -1, "")
 
         # Invalid station codes
         with pytest.raises(ValueError):

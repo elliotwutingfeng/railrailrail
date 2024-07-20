@@ -277,8 +277,8 @@ class RailGraph:
         """
         for station_code in (start, end):
             _, station_number, _ = StationUtils.to_station_code_components(station_code)
-            if station_number == 0:
-                raise ValueError(f"Invalid station code: {station_code}")
+            if station_number == 0:  # Reject pseudo station codes.
+                raise ValueError(f"Pseudo station code not allowed: {station_code}")
 
         pathinfo = find_path(
             self._graph if walk else self._graph_without_walk,

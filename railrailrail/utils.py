@@ -80,7 +80,7 @@ class StationUtils:
         """
         line_code, station_number, station_number_suffix = (
             station_code,
-            0,
+            -1,
             "",
         )  # Default values.
 
