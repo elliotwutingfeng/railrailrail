@@ -81,7 +81,8 @@ class TestRailGraph:
                 stations=dict(),
                 station_coordinates=dict(),
                 transfer_time="",
-                dwell_time="",
+                default_dwell_time_asc="",
+                default_dwell_time_desc="",
             )
         with pytest.raises(ValueError):
             RailGraph(
@@ -89,7 +90,8 @@ class TestRailGraph:
                 stations=dict(),
                 station_coordinates=dict(),
                 transfer_time=0,
-                dwell_time="",
+                default_dwell_time_asc="",
+                default_dwell_time_desc="",
             )
         with pytest.raises(ValueError):
             RailGraph(
@@ -97,7 +99,8 @@ class TestRailGraph:
                 stations=dict(),
                 station_coordinates=dict(),
                 transfer_time=0,
-                dwell_time=0,
+                default_dwell_time_asc=0,
+                default_dwell_time_desc=0,
             )
         with pytest.raises(ValueError):
             RailGraph(
@@ -105,7 +108,8 @@ class TestRailGraph:
                 stations={"EX1": ["Easy"]},
                 station_coordinates=dict(),
                 transfer_time=0,
-                dwell_time=0,
+                default_dwell_time_asc=0,
+                default_dwell_time_desc=0,
             )
         with pytest.raises(ValueError):
             RailGraph(
@@ -115,7 +119,8 @@ class TestRailGraph:
                 stations={"EX1": "Easy", "HX1": "How"},
                 station_coordinates=dict(),
                 transfer_time=0,
-                dwell_time=0,
+                default_dwell_time_asc=0,
+                default_dwell_time_desc=0,
             )
 
     def test_find_shortest_path(self):

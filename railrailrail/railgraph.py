@@ -41,7 +41,8 @@ class RailGraph:
         stations: dict[str, str],
         station_coordinates: dict[str, tuple[float, float]],
         transfer_time: float | int = 7.0,
-        dwell_time: float | int = 1.0,
+        default_dwell_time_asc: float | int = 0.5,
+        default_dwell_time_desc: float | int = 0.5,
     ):
         """Setup rail network graph
 
@@ -51,13 +52,23 @@ class RailGraph:
             stations (dict[str, str]): Map of station codes to station names.
             station_coordinates (dict[str, tuple[float, float]]): Map of station codes to station latitude and longitude.
             transfer_time (float | int, optional): Time taken to switch lines at an interchange station. Defaults to 7.0.
-            dwell_time (float | int, optional): Time taken by train to either drop off
-            or pick up passengers at a station. Defaults to 1.0.
+            default_dwell_time_asc (float | int, optional): Time taken by train to either drop off
+            or pick up passengers at a station; in direction of ascending station codes. Defaults to 0.5.
+            default_dwell_time_desc (float | int, optional): Time taken by train to either drop off
+            or pick up passengers at a station in direction of descending station codes. Defaults to 0.5.
         """
         if type(transfer_time) not in (float, int) or float(transfer_time) < 0:
             raise ValueError("transfer_time must be non-negative float|int.")
-        if type(dwell_time) not in (float, int) or float(dwell_time) < 0:
-            raise ValueError("dwell_time must be non-negative float|int.")
+        if (
+            type(default_dwell_time_asc) not in (float, int)
+            or float(default_dwell_time_asc) < 0
+        ):
+            raise ValueError("default_dwell_time_asc must be non-negative float|int.")
+        if (
+            type(default_dwell_time_desc) not in (float, int)
+            or float(default_dwell_time_desc) < 0
+        ):
+            raise ValueError("default_dwell_time_desc must be non-negative float|int.")
         if not isinstance(stations, dict) or not stations:
             raise ValueError("stations must be dict and not empty.")
         for k, v in stations.items():
@@ -65,7 +76,8 @@ class RailGraph:
                 raise ValueError("stations must be dict[str, str]")
 
         self.transfer_time = transfer_time
-        self.dwell_time = dwell_time
+        self.default_dwell_time_asc = default_dwell_time_asc
+        self.default_dwell_time_desc = default_dwell_time_desc
         self._stations = stations
         self._station_coordinates = station_coordinates
 
@@ -140,9 +152,16 @@ class RailGraph:
         transfer_time = network.get("transfer_time", None)
         if type(transfer_time) not in (float, int):
             raise ValueError("Invalid config file: 'transfer_time' must be float|int.")
-        dwell_time = network.get("dwell_time", None)
-        if type(dwell_time) not in (float, int):
-            raise ValueError("Invalid config file: 'dwell_time'  must be float|int.")
+        default_dwell_time_asc = network.get("default_dwell_time_asc", None)
+        if type(default_dwell_time_asc) not in (float, int):
+            raise ValueError(
+                "Invalid config file: 'default_dwell_time_asc'  must be float|int."
+            )
+        default_dwell_time_desc = network.get("default_dwell_time_desc", None)
+        if type(default_dwell_time_desc) not in (float, int):
+            raise ValueError(
+                "Invalid config file: 'default_dwell_time_desc'  must be float|int."
+            )
         segments = network.get("segments", None)
         if not isinstance(segments, dict) or not segments:
             raise ValueError("Invalid config file: 'segments' must not be empty.")
@@ -187,7 +206,8 @@ class RailGraph:
             stations,
             station_coordinates,
             float(transfer_time),
-            float(dwell_time),
+            float(default_dwell_time_asc),
+            float(default_dwell_time_desc),
         )
 
     def _cost_func(self, start: str, end: str) -> typing.Callable[..., float]:
@@ -217,6 +237,19 @@ class RailGraph:
             Returns:
                 float: Time cost in minutes.
             """
+            station_codes_in_ascending_order = (
+                sorted(
+                    (current_station, next_station),
+                    key=StationUtils.to_station_code_components,
+                )[0]
+                == current_station
+            )
+            dwell_time = (
+                self.default_dwell_time_asc
+                if station_codes_in_ascending_order
+                else self.default_dwell_time_desc
+            )
+
             next_travel_time, next_edge_type, next_edge_mode = edge_to_next_station
 
             if isinstance(edge_to_current_station, tuple):
@@ -228,11 +261,11 @@ class RailGraph:
                 previous_edge_type, previous_edge_mode = "", ""
             _ = previous_edge_mode
 
-            cost = next_travel_time + self.dwell_time
+            cost = next_travel_time
             if (
                 next_edge_mode == "walk"
             ):  # Walking away from station -> Not waiting for train to depart.
-                cost -= self.dwell_time
+                dwell_time = 0
 
             if ConditionalInterchange.is_conditional_interchange_transfer(
                 previous_edge_type, next_edge_type
@@ -248,9 +281,9 @@ class RailGraph:
                     if (
                         next_station == end
                     ):  # Exclude dwell time for transfer at end of journey.
-                        cost -= self.dwell_time
+                        dwell_time = 0
 
-            return cost
+            return cost + dwell_time
 
         return cost_func_aux
 

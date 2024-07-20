@@ -1,12 +1,15 @@
 schema = 1
 transfer_time = 7
-dwell_time = 0.5
+default_dwell_time_asc = 0.5
+default_dwell_time_desc = 0.5
 
 # BP1-BP2 = {duration = 2, dwell_time_asc = 0.5, dwell_time_desc = 0.5}
 
 # [transfers]
 # BP1-NS4 = {duration = 8}
 # NS4-BP1 = {duration = 8}
+
+# [conditional_interchanges]
 
 [stations]
 BP1 = "Choa Chu Kang"

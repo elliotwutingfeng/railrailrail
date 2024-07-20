@@ -1,6 +1,7 @@
 schema = 1
 transfer_time = 7
-dwell_time = 0.5
+default_dwell_time_asc = 0.5
+default_dwell_time_desc = 0.5
 
 [stations]
 EW1 = "Pasir Ris"
