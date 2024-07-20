@@ -282,7 +282,7 @@ TE33 = "Changi Airport"
 TE34 = "Expo"
 TE35 = "Tanah Merah"
 
-[edges]
+[segments]
 BP1-BP2 = {duration = 2}
 BP2-BP3 = {duration = 1}
 BP3-BP4 = {duration = 2}

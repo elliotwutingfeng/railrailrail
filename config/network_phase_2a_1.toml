@@ -41,7 +41,7 @@ NS25 = "City Hall"
 NS26 = "Raffles Place"
 NS27 = "Marina Bay"
 
-[edges]
+[segments]
 EW4-EW5 = {duration = 3}
 EW5-EW6 = {duration = 3}
 EW6-EW7 = {duration = 3}

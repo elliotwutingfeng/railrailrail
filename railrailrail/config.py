@@ -94,13 +94,13 @@ class Config:
                 if (station_code, next_station_code) == ("NS4", "NS13"):
                     continue  # Special case: No link between NS4 and NS13.
                 adjacency_matrix[station_code][next_station_code] = {
-                    "duration": Durations.edges.get(
+                    "duration": Durations.segments.get(
                         f"{station_code}-{next_station_code}", dict()
                     ).get("duration", 0)
                 }
 
         # Add walking paths from LTA Walking Train Map (WTM)
-        for start_station_name, end_station_name, duration in WalkingTrainMap.routes:
+        for start_station_name, end_station_name, duration in WalkingTrainMap.segments:
             for start_station_code in self.station_codes_by_station_name[
                 start_station_name
             ]:
@@ -112,11 +112,11 @@ class Config:
                         "mode": "walk",
                     }
 
-        # Mark edges that need to be treated differently from
-        # most other edges. Currently this only means checking if an edge is
+        # Mark segments that need to be treated differently from
+        # most other segments. Currently this only means checking if a segment is
         # adjacent to a conditional interchange.
-        for start, end, edge_type in ConditionalInterchange.edges:
-            # Skip conditional interchange edges made obsolete by new stations.
+        for start, end, edge_type in ConditionalInterchange.segments:
+            # Skip conditional interchange segments made obsolete by new stations.
             if (start, end) == ("STC", "SW2") and "SW1" in station_codes:
                 continue
             if (start, end) == ("STC", "SW4") and "SW2" in station_codes:
@@ -130,7 +130,7 @@ class Config:
 
             if start in station_codes and end in station_codes:
                 adjacency_matrix[start][end] = {
-                    **Durations.edges[f"{start}-{end}"],
+                    **Durations.segments[f"{start}-{end}"],
                     "edge_type": edge_type,
                 }
 
@@ -156,7 +156,7 @@ class Config:
             stations (list[tuple[str, str]]): After the update, `network` should only have
             these stations.
             adjacency_matrix (defaultdict[str, OrderedDict[str, dict]]): After the update,
-            `network` should only have these adjacency matrix edges.
+            `network` should only have these adjacency matrix segments.
         """
 
         network["schema"] = network.get("schema", 1)
@@ -201,59 +201,61 @@ class Config:
         ### adjacency matrix ###
 
         network_adjacency_matrix = (
-            network["edges"] if "edges" in network else tomlkit.table()
+            network["segments"] if "segments" in network else tomlkit.table()
         )
 
-        # Mark modified edges with comment
-        for station_pair, edge_details in network_adjacency_matrix.items():
+        # Mark modified segments with comment
+        for station_pair, segment_details in network_adjacency_matrix.items():
             station_pair_ = station_pair.split("-", 1)
             if (
                 station_pair_[0] in adjacency_matrix
                 and station_pair_[1] in adjacency_matrix[station_pair_[0]]
             ):
-                new_edge_details = adjacency_matrix[station_pair_[0]][station_pair_[1]]
-                if edge_details != new_edge_details:  # Shallow dict comparison
+                new_segment_details = adjacency_matrix[station_pair_[0]][
+                    station_pair_[1]
+                ]
+                if segment_details != new_segment_details:  # Shallow dict comparison
                     existing_comment = network_adjacency_matrix[
                         station_pair
                     ].trivia.comment
                     network_adjacency_matrix[station_pair].comment(
-                        f"NEW -> {json.dumps(new_edge_details)}{' | %s' % existing_comment if existing_comment else ''}"
+                        f"NEW -> {json.dumps(new_segment_details)}{' | %s' % existing_comment if existing_comment else ''}"
                     )
 
-        adjacency_matrix_edges = {
+        adjacency_matrix_segments = {
             f"{a}-{b}" for a in adjacency_matrix for b in adjacency_matrix[a]
         }
 
         # Mark defunct adjacency matrix entries with comment
-        for defunct_edge in set(network_adjacency_matrix).difference(
-            adjacency_matrix_edges
+        for defunct_segment in set(network_adjacency_matrix).difference(
+            adjacency_matrix_segments
         ):
-            existing_comment = network_adjacency_matrix[defunct_edge].trivia.comment
-            network_adjacency_matrix[defunct_edge].comment(
+            existing_comment = network_adjacency_matrix[defunct_segment].trivia.comment
+            network_adjacency_matrix[defunct_segment].comment(
                 f"DEFUNCT{' | %s' % existing_comment if existing_comment else ''}"
             )
 
         # Add new adjacency matrix entries
-        for new_edge in set(adjacency_matrix_edges).difference(
+        for new_segment in set(adjacency_matrix_segments).difference(
             network_adjacency_matrix
         ):
-            vertices = new_edge.split("-", 1)
+            vertices = new_segment.split("-", 1)
             start, end = vertices[0], vertices[1]
             it = tomlkit.inline_table()
             it.update(adjacency_matrix[start][end])
-            network_adjacency_matrix[new_edge] = it
-            network_adjacency_matrix[new_edge].comment("NEW")
+            network_adjacency_matrix[new_segment] = it
+            network_adjacency_matrix[new_segment].comment("NEW")
 
         # Sort adjacency matrix entries
         updated_adjacency_matrix = tomlkit.table()
-        for edge in sorted(
+        for segment in sorted(
             network_adjacency_matrix,
             key=lambda pair: tuple(
                 map(StationUtils.to_station_code_components, pair.split("-", 1))
             ),
         ):
-            updated_adjacency_matrix[edge] = network_adjacency_matrix[edge]
-        network["edges"] = updated_adjacency_matrix
+            updated_adjacency_matrix[segment] = network_adjacency_matrix[segment]
+        network["segments"] = updated_adjacency_matrix
 
     def update_network_config_file(self, path: pathlib.Path) -> None:
         """Overwrite contents of network configuration file at `path` with updated

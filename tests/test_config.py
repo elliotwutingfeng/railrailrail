@@ -100,7 +100,7 @@ class TestConfig:
         assert tomlkit.dumps(network) == (
             'schema = 1\ntransfer_time = 7\ndwell_time = 0.5\n\n[stations]\nNS15 = "Yio Chu Kang" # NEW\n'
             'NS16 = "Ang Mo Kio" # NEW\nNS17 = "Bishan" # NEW\nNS18 = "Braddell" # NEW\nNS19 = "Toa Payoh" # NEW\n\n'
-            "[edges]\nNS15-NS16 = {duration = 3} # NEW\nNS16-NS17 = {duration = 4} # NEW\n"
+            "[segments]\nNS15-NS16 = {duration = 3} # NEW\nNS16-NS17 = {duration = 4} # NEW\n"
             "NS17-NS18 = {duration = 2} # NEW\nNS18-NS19 = {duration = 2} # NEW\n"
         )
 
@@ -111,21 +111,21 @@ class TestConfig:
             self.config_ewl_expo.stations,
             self.config_ewl_expo.adjacency_matrix,
         )
-        assert "EW21-EW22" not in network["edges"]
-        assert "EW22-EW23" not in network["edges"]
+        assert "EW21-EW22" not in network["segments"]
+        assert "EW22-EW23" not in network["segments"]
         Config.update_network(
             network,
             self.config_dover.stations,
             self.config_dover.adjacency_matrix,
         )
-        assert "EW21-EW22" in network["edges"]
-        assert "EW22-EW23" in network["edges"]
-        assert "EW21-EW23" in network["edges"]
-        assert network["edges"]["EW21-EW23"].trivia.comment == "# DEFUNCT | # NEW"
+        assert "EW21-EW22" in network["segments"]
+        assert "EW22-EW23" in network["segments"]
+        assert "EW21-EW23" in network["segments"]
+        assert network["segments"]["EW21-EW23"].trivia.comment == "# DEFUNCT | # NEW"
 
-        # Modify existing station and edge details.
+        # Modify existing station and segment details.
         network["stations"]["EW22"] = "Dover Test"
-        network["edges"]["EW21-EW22"]["duration"] = 42
+        network["segments"]["EW21-EW22"]["duration"] = 42
         Config.update_network(
             network,
             self.config_dover.stations,
@@ -133,19 +133,19 @@ class TestConfig:
         )
         assert network["stations"]["EW22"].trivia.comment.startswith("# NEW ->")
         assert network["stations"]["EW22"].trivia.comment.endswith("| # NEW")
-        assert network["edges"]["EW21-EW22"].trivia.comment.startswith("# NEW ->")
-        assert network["edges"]["EW21-EW22"].trivia.comment.endswith("| # NEW")
+        assert network["segments"]["EW21-EW22"].trivia.comment.startswith("# NEW ->")
+        assert network["segments"]["EW21-EW22"].trivia.comment.endswith("| # NEW")
 
         # Defunct station.
         network["stations"]["XY1"] = "Test"
-        network["edges"]["EW21-XY1"] = {"duration": 5}
+        network["segments"]["EW21-XY1"] = {"duration": 5}
         Config.update_network(
             network,
             self.config_dover.stations,
             self.config_dover.adjacency_matrix,
         )
         assert network["stations"]["XY1"].trivia.comment == "# DEFUNCT"
-        assert network["edges"]["EW21-XY1"].trivia.comment == "# DEFUNCT"
+        assert network["segments"]["EW21-XY1"].trivia.comment == "# DEFUNCT"
 
     def test_update_network_config_file(self):
         path = pathlib.Path("network_test.toml")

@@ -31,7 +31,7 @@ NS24 = "Dhoby Ghaut"
 NS25 = "City Hall"
 NS26 = "Raffles Place"
 
-[edges]
+[segments]
 EW13-EW14 = {duration = 2}
 EW14-EW15 = {duration = 2}
 EW15-EW16 = {duration = 2}

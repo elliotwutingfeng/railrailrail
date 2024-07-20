@@ -211,7 +211,7 @@ TE19 = "Shenton Way"
 TE20 = "Marina Bay"
 TE22 = "Gardens by the Bay"
 
-[edges]
+[segments]
 BP1-BP2 = {duration = 2}
 BP2-BP3 = {duration = 1}
 BP3-BP4 = {duration = 2}

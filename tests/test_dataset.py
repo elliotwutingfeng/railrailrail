@@ -37,8 +37,8 @@ class TestStage:
 
 
 class TestWalkingTrainMap:
-    def test_routes(self):
-        assert WalkingTrainMap.routes
+    def test_segments(self):
+        assert WalkingTrainMap.segments
 
 
 class TestConditionalInterchange:
@@ -95,5 +95,5 @@ class TestTerminal:
 
 
 class TestDurations:
-    def test_edges(self):
-        assert Durations.edges
+    def test_segments(self):
+        assert Durations.segments

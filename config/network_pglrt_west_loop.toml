@@ -154,7 +154,7 @@ SW6 = "Layar"
 SW7 = "Tongkang"
 SW8 = "Renjong"
 
-[edges]
+[segments]
 BP1-BP2 = {duration = 2}
 BP2-BP3 = {duration = 1}
 BP3-BP4 = {duration = 2}

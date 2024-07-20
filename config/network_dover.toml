@@ -72,7 +72,7 @@ NS25 = "City Hall"
 NS26 = "Raffles Place"
 NS27 = "Marina Bay"
 
-[edges]
+[segments]
 BP1-BP2 = {duration = 2}
 BP2-BP3 = {duration = 1}
 BP3-BP4 = {duration = 2}

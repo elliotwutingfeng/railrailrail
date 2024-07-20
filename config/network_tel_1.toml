@@ -194,7 +194,7 @@ TE1 = "Woodlands North"
 TE2 = "Woodlands"
 TE3 = "Woodlands South"
 
-[edges]
+[segments]
 BP1-BP2 = {duration = 2}
 BP2-BP3 = {duration = 1}
 BP3-BP4 = {duration = 2}

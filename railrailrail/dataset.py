@@ -505,7 +505,7 @@ class WalkingTrainMapMeta(type):
     https://www.lta.gov.sg/content/dam/ltagov/who_we_are/statistics_and_publications/pdf/connect_nov_2018_fa_12nov.pdf
     """
 
-    __routes: tuple[tuple[str, str, int]] = (
+    __segments: tuple[tuple[str, str, int]] = (
         ("Bras Basah", "Bencoolen", 2),
         ("Dhoby Ghaut", "Bencoolen", 5),
         ("Esplanade", "City Hall", 5),
@@ -534,7 +534,7 @@ class WalkingTrainMapMeta(type):
 
     def __new__(cls, name, bases, dct):
         pairs: set[tuple[str, str]] = set()
-        for station_name_1, station_name_2, duration in cls.__routes:
+        for station_name_1, station_name_2, duration in cls.__segments:
             if (
                 station_name_1 == station_name_2
                 or not isinstance(station_name_1, str)
@@ -551,7 +551,7 @@ class WalkingTrainMapMeta(type):
                     f"Duplicate route not allowed: {station_name_1}, {station_name_2}"
                 )  # pragma: no cover
             pairs.add(pair)
-        cls.routes = cls.__routes
+        cls.segments = cls.__segments
         return super().__new__(cls, name, bases, dct)
 
 
@@ -564,15 +564,15 @@ class ConditionalInterchange:
     same line that are not directly connected to each other. For example, STC Sengkang is the
     conditional interchange for the Sengkang LRT East Loop and Sengkang LRT West Loop.
 
-    A conditional interchange behaves as an interchange only when previous edge and next edge are of specific types
-    as outlined in `edge pairs`. For example, there will be an interchange transfer when
+    A conditional interchange behaves as an interchange only when previous segment and next segment are of specific types
+    as outlined in `segment_pairs`. For example, there will be an interchange transfer when
     moving from "bahar_east" to "bahar_west", but not from "bahar_west" to "bahar_east".
 
-    Nearly all edges adjacent to a conditional interchange are non-sequential,
+    Nearly all segments adjacent to a conditional interchange are non-sequential,
     except for BP6-BP7, JS6-JS7, JS7-JS8 which are sequential.
     """
 
-    edges: tuple[tuple[str, str, str]] = (
+    segments: tuple[tuple[str, str, str]] = (
         ("BP5", "BP6", "bukit_panjang_main"),
         ("BP6", "BP13", "bukit_panjang_service_a"),
         ("BP6", "BP7", "bukit_panjang_service_b"),
@@ -622,7 +622,7 @@ class ConditionalInterchange:
         ("JS7", "JS8", "bahar_south"),
     )
 
-    edge_pairs: frozenset[tuple[str, str]] = frozenset(
+    segment_pairs: frozenset[tuple[str, str]] = frozenset(
         (
             ("punggol_west_loop", "punggol_east_loop"),
             ("punggol_east_loop", "punggol_west_loop"),
@@ -654,7 +654,7 @@ class ConditionalInterchange:
     def is_conditional_interchange_transfer(
         cls, previous_edge_type: str, next_edge_type: str
     ):
-        return (previous_edge_type, next_edge_type) in cls.edge_pairs
+        return (previous_edge_type, next_edge_type) in cls.segment_pairs
 
 
 class Terminal:
@@ -723,9 +723,10 @@ class Terminal:
 class DurationsMeta(type):
     """Standard duration presets."""
 
-    # All possible adjacent rail edges on the same line. This includes edges that have yet to exist (e.g. NS3 -> NS3A),
-    # and edges that no longer exist or will be removed in the future (e.g. BP6 -> BP14, NS3 -> NS4).
-    __edges: tuple = (
+    # All possible rail segments between any 2 adjacent stations on the same line.
+    # This includes segments that have yet to exist (e.g. NS3 -> NS3A),
+    # and segments that no longer exist or will be removed in the future (e.g. BP6 -> BP14, NS3 -> NS4).
+    __segments: tuple = (
         ("BP1-BP2", ("duration", 2)),
         ("BP2-BP3", ("duration", 1)),
         ("BP3-BP4", ("duration", 2)),
@@ -1092,19 +1093,19 @@ class DurationsMeta(type):
     )
 
     def __new__(cls, name, bases, dct):
-        cls.edges = dict()
+        cls.segments = dict()
         pairs: set[tuple[str, str]] = set()
-        for edge, *details in cls.__edges:
-            # Validate edge format
-            edge_parts = edge.split("-", 2)
-            if len(edge_parts) != 2:
+        for segment, *details in cls.__segments:
+            # Validate segment format
+            segment_parts = segment.split("-", 2)
+            if len(segment_parts) != 2:
                 raise AttributeError(
-                    "Edge must consist of 2 station codes separated by a single dash '-'"
+                    "Segment must consist of 2 station codes separated by a single dash '-'"
                 )  # pragma: no cover
-            station_code_1, station_code_2 = edge_parts
+            station_code_1, station_code_2 = segment_parts
             if station_code_1 == station_code_2:
                 raise AttributeError(
-                    f"Edge nodes cannot be the same: {edge}"
+                    f"Segment nodes cannot be the same: {segment}"
                 )  # pragma: no cover
             StationUtils.to_station_code_components(
                 station_code_1
@@ -1113,21 +1114,21 @@ class DurationsMeta(type):
                 station_code_2
             )  # Raises ValueError if invalid.
 
-            # Check for duplicate edges
+            # Check for duplicate segments
             pair = tuple(sorted([station_code_1, station_code_2]))
             if pair in pairs:
                 raise AttributeError(
-                    f"Duplicate edge not allowed: {edge}"
+                    f"Duplicate segment not allowed: {segment}"
                 )  # pragma: no cover
             pairs.add(pair)
 
-            # Validate edge details
-            edge_details = dict(details)
-            if type(edge_details.get("duration", None)) not in (float, int):
+            # Validate segment details
+            segment_details = dict(details)
+            if type(segment_details.get("duration", None)) not in (float, int):
                 raise AttributeError(
-                    "Edge duration must be int | float."
+                    "Segment duration must be int | float."
                 )  # pragma: no cover
-            cls.edges[edge] = edge_details
+            cls.segments[segment] = segment_details
 
         cls.interchange_transfers = {
             station_name: duration

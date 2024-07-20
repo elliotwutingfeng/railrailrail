@@ -37,7 +37,7 @@ class RailGraph:
 
     def __init__(
         self,
-        edges: list[tuple[str, str, dict]],
+        segments: list[tuple[str, str, dict]],
         stations: dict[str, str],
         station_coordinates: dict[str, tuple[float, float]],
         transfer_time: float | int = 7.0,
@@ -46,7 +46,8 @@ class RailGraph:
         """Setup rail network graph
 
         Args:
-            edges (list[tuple[str, str, dict]]): Duration between every adjacent pair of stations from the same line.
+            segments (list[tuple[str, str, dict]]): Every adjacent pair of stations directly connected to each
+            other either by rail (same line), or by walking.
             stations (dict[str, str]): Map of station codes to station names.
             station_coordinates (dict[str, tuple[float, float]]): Map of station codes to station latitude and longitude.
             transfer_time (float | int, optional): Time taken to switch lines at an interchange station. Defaults to 7.0.
@@ -81,18 +82,18 @@ class RailGraph:
         self._graph = Graph(undirected=False)
         self._graph_without_walk = Graph(undirected=False)
 
-        for edge in edges:
-            start, end, edge_details = edge
-            duration = edge_details.get("duration", None)
+        for segment in segments:
+            start, end, segment_details = segment
+            duration = segment_details.get("duration", None)
             if (type(duration) not in (float, int)) or not (1 <= float(duration) <= 19):
                 raise ValueError("duration must be number in range 1-19")
-            edge_type = edge_details.get("edge_type", "")
-            mode = edge_details.get("mode", "")
-            edge = (duration, edge_type, mode)
+            edge_type = segment_details.get("edge_type", "")
+            mode = segment_details.get("mode", "")
+            segment = (duration, edge_type, mode)
             for u, v in [(start, end), (end, start)]:
-                self._graph.add_edge(u, v, edge)
+                self._graph.add_edge(u, v, segment)
                 if mode != "walk":
-                    self._graph_without_walk.add_edge(u, v, edge)
+                    self._graph_without_walk.add_edge(u, v, segment)
 
         for interchange_substations in (
             self._interchanges
@@ -131,21 +132,21 @@ class RailGraph:
         dwell_time = network.get("dwell_time", None)
         if type(dwell_time) not in (float, int):
             raise ValueError("Invalid config file: 'dwell_time'  must be float|int.")
-        edges = network.get("edges", None)
-        if not isinstance(edges, dict) or not edges:
-            raise ValueError("Invalid config file: 'edges' must not be empty.")
+        segments = network.get("segments", None)
+        if not isinstance(segments, dict) or not segments:
+            raise ValueError("Invalid config file: 'segments' must not be empty.")
 
-        edges_: list[tuple[str, str, dict]] = []
-        for edge, edge_details in edges.items():
-            vertices = edge.split("-", 2)
+        segments_: list[tuple[str, str, dict]] = []
+        for segment, segment_details in segments.items():
+            vertices = segment.split("-", 2)
             if len(vertices) != 2:
                 raise ValueError(
-                    f"Invalid config file: Edge must be in format 'AB1-AB2'. Got {edge}."
+                    f"Invalid config file: Segment must be in format 'AB1-AB2'. Got {segment}."
                 )
             start, end = vertices[0], vertices[1]
-            if not isinstance(edge_details, dict):
-                raise ValueError("Invalid config file: Edge details must be a dict.")
-            edges_.append((start, end, edge_details))
+            if not isinstance(segment_details, dict):
+                raise ValueError("Invalid config file: Segment details must be a dict.")
+            segments_.append((start, end, segment_details))
 
         station_coordinates = dict()
         with open(coordinates_path, "r") as f:
@@ -171,7 +172,7 @@ class RailGraph:
             station_coordinates[code1] = station_coordinates[code2]
 
         return cls(
-            edges_,
+            segments_,
             stations,
             station_coordinates,
             float(transfer_time),
