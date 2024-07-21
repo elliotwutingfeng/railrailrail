@@ -113,7 +113,7 @@ class TestRailGraph:
             )
         with pytest.raises(ValueError):
             RailGraph(
-                segments={("EX1", "HX1"): {"duration": 20}},
+                segments={("EX1", "HX1"): {"duration": 999999}},
                 transfers=dict(),
                 stations={"EX1": "Easy", "HX1": "How"},
                 station_coordinates=dict(),
@@ -134,22 +134,16 @@ class TestRailGraph:
                 expected_pathinfo.nodes == actual_pathinfo.nodes
             ), f"{start}-{end} | Expected {expected_pathinfo.nodes}. Got {actual_pathinfo.nodes}."
 
-            assert (  # TODO Edges may contain floats. Use math.isclose for float elements.
+            assert (
                 expected_pathinfo.edges == actual_pathinfo.edges
             ), f"{start}-{end} | Expected {expected_pathinfo.edges}. Got {actual_pathinfo.edges}."
 
             assert (
-                len(expected_pathinfo.costs) == len(actual_pathinfo.costs)
-                and all(
-                    math.isclose(a, b, rel_tol=0.01)
-                    for (a, b) in zip(expected_pathinfo.costs, actual_pathinfo.costs)
-                )
+                expected_pathinfo.costs == actual_pathinfo.costs
             ), f"{start}-{end} | Expected {expected_pathinfo.costs}. Got {actual_pathinfo.costs}."
 
-            assert math.isclose(
-                expected_pathinfo.total_cost,
-                actual_pathinfo.total_cost,
-                rel_tol=0.01,
+            assert (
+                expected_pathinfo.total_cost == actual_pathinfo.total_cost
             ), f"{start}-{end} | Expected {expected_pathinfo.total_cost}. Got {actual_pathinfo.total_cost}."
 
             with pytest.raises(NoPathError):

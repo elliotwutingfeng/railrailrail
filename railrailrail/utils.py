@@ -55,11 +55,9 @@ class GeographicUtils:
 
 
 class StationUtils:
-    ___match_expr: re.Pattern[str] = re.compile("^([A-Z]{2})([0-9]+)([A-Z]?)$")
-
-    @classmethod
-    def __station_code_matcher(cls, station_code: str) -> re.Match[str] | None:
-        return cls.___match_expr.match(station_code)
+    ___match_expr: re.Pattern[str] = re.compile(
+        r"^([A-Z]{2})([0-9]|[1-9][0-9]?)([A-Z]?)$", re.ASCII
+    )
 
     @classmethod
     def to_station_code_components(cls, station_code: str) -> tuple[str, int, str]:
@@ -86,7 +84,7 @@ class StationUtils:
         ):
             return station_code, -1, ""
 
-        station_code_components_match = cls.__station_code_matcher(station_code)
+        station_code_components_match = cls.___match_expr.match(station_code)
         if station_code_components_match is None:
             raise ValueError(f"Invalid station code: {station_code}")
         matcher_groups: tuple[str, str, str] = station_code_components_match.groups(

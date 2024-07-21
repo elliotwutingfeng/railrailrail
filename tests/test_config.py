@@ -42,47 +42,47 @@ class TestConfig:
         expected_phase_2b_3_segment_adjacency_matrix = defaultdict(
             OrderedDict[str, dict],
             {
-                "EW1": OrderedDict({"EW2": {"duration": 3}}),
-                "EW2": OrderedDict({"EW3": {"duration": 3}}),
-                "EW3": OrderedDict({"EW4": {"duration": 3}}),
-                "EW4": OrderedDict({"EW5": {"duration": 3}}),
-                "EW5": OrderedDict({"EW6": {"duration": 3}}),
-                "EW6": OrderedDict({"EW7": {"duration": 3}}),
-                "EW7": OrderedDict({"EW8": {"duration": 2}}),
-                "EW8": OrderedDict({"EW9": {"duration": 2}}),
-                "EW9": OrderedDict({"EW10": {"duration": 3}}),
-                "EW10": OrderedDict({"EW11": {"duration": 2}}),
-                "EW11": OrderedDict({"EW12": {"duration": 3}}),
-                "EW12": OrderedDict({"EW13": {"duration": 2}}),
-                "EW13": OrderedDict({"EW14": {"duration": 2}}),
-                "EW14": OrderedDict({"EW15": {"duration": 2}}),
-                "EW15": OrderedDict({"EW16": {"duration": 2}}),
-                "EW16": OrderedDict({"EW17": {"duration": 3}}),
-                "EW17": OrderedDict({"EW18": {"duration": 3}}),
-                "EW18": OrderedDict({"EW19": {"duration": 2}}),
-                "EW19": OrderedDict({"EW20": {"duration": 3}}),
-                "EW20": OrderedDict({"EW21": {"duration": 2}}),
-                "EW21": OrderedDict({"EW23": {"duration": 5}}),
-                "EW23": OrderedDict({"EW24": {"duration": 5}}),
-                "EW24": OrderedDict({"EW25": {"duration": 2}}),
-                "EW25": OrderedDict({"EW26": {"duration": 3}}),
-                "NS1": OrderedDict({"NS2": {"duration": 3}}),
-                "NS2": OrderedDict({"NS3": {"duration": 3}}),
-                "NS3": OrderedDict({"NS4": {"duration": 4}}),
-                "NS13": OrderedDict({"NS14": {"duration": 2}}),
-                "NS14": OrderedDict({"NS15": {"duration": 5}}),
-                "NS15": OrderedDict({"NS16": {"duration": 3}}),
-                "NS16": OrderedDict({"NS17": {"duration": 4}}),
-                "NS17": OrderedDict({"NS18": {"duration": 2}}),
-                "NS18": OrderedDict({"NS19": {"duration": 2}}),
-                "NS19": OrderedDict({"NS20": {"duration": 3}}),
-                "NS20": OrderedDict({"NS21": {"duration": 2}}),
-                "NS21": OrderedDict({"NS22": {"duration": 3}}),
-                "NS22": OrderedDict({"NS23": {"duration": 2}}),
-                "NS23": OrderedDict({"NS24": {"duration": 2}}),
-                "NS24": OrderedDict({"NS25": {"duration": 3}}),
-                "NS25": OrderedDict({"NS26": {"duration": 2}}),
-                "NS26": OrderedDict({"NS27": {"duration": 2}}),
+                "EW1": OrderedDict({"EW2": {"duration": 180}}),
+                "EW2": OrderedDict({"EW3": {"duration": 180}}),
+                "EW3": OrderedDict({"EW4": {"duration": 180}}),
+                "EW4": OrderedDict({"EW5": {"duration": 180}}),
+                "EW5": OrderedDict({"EW6": {"duration": 180}}),
+                "EW6": OrderedDict({"EW7": {"duration": 180}}),
+                "EW7": OrderedDict({"EW8": {"duration": 120}}),
+                "EW8": OrderedDict({"EW9": {"duration": 120}}),
+                "EW9": OrderedDict({"EW10": {"duration": 180}}),
+                "EW10": OrderedDict({"EW11": {"duration": 120}}),
+                "EW11": OrderedDict({"EW12": {"duration": 180}}),
+                "EW12": OrderedDict({"EW13": {"duration": 120}}),
+                "EW13": OrderedDict({"EW14": {"duration": 120}}),
+                "EW14": OrderedDict({"EW15": {"duration": 120}}),
+                "EW15": OrderedDict({"EW16": {"duration": 120}}),
+                "EW16": OrderedDict({"EW17": {"duration": 180}}),
+                "EW17": OrderedDict({"EW18": {"duration": 180}}),
+                "EW18": OrderedDict({"EW19": {"duration": 120}}),
+                "EW19": OrderedDict({"EW20": {"duration": 180}}),
+                "EW20": OrderedDict({"EW21": {"duration": 120}}),
+                "EW21": OrderedDict({"EW23": {"duration": 300}}),
+                "EW23": OrderedDict({"EW24": {"duration": 300}}),
+                "EW24": OrderedDict({"EW25": {"duration": 120}}),
+                "EW25": OrderedDict({"EW26": {"duration": 180}}),
+                "NS1": OrderedDict({"NS2": {"duration": 180}}),
+                "NS2": OrderedDict({"NS3": {"duration": 180}}),
+                "NS3": OrderedDict({"NS4": {"duration": 240}}),
+                "NS13": OrderedDict({"NS14": {"duration": 120}}),
+                "NS14": OrderedDict({"NS15": {"duration": 300}}),
+                "NS15": OrderedDict({"NS16": {"duration": 180}}),
+                "NS16": OrderedDict({"NS17": {"duration": 240}}),
+                "NS17": OrderedDict({"NS18": {"duration": 120}}),
+                "NS18": OrderedDict({"NS19": {"duration": 120}}),
+                "NS19": OrderedDict({"NS20": {"duration": 180}}),
+                "NS20": OrderedDict({"NS21": {"duration": 120}}),
+                "NS21": OrderedDict({"NS22": {"duration": 180}}),
+                "NS22": OrderedDict({"NS23": {"duration": 120}}),
+                "NS23": OrderedDict({"NS24": {"duration": 120}}),
+                "NS24": OrderedDict({"NS25": {"duration": 180}}),
+                "NS25": OrderedDict({"NS26": {"duration": 120}}),
+                "NS26": OrderedDict({"NS27": {"duration": 120}}),
             },
         )
         assert json.dumps(
@@ -93,12 +93,12 @@ class TestConfig:
         expected_phase_2b_3_transfer_adjacency_matrix = defaultdict(
             OrderedDict[str, dict],
             {
-                "EW13": OrderedDict({"NS25": {"duration": 6}}),
-                "EW14": OrderedDict({"NS26": {"duration": 6}}),
-                "EW24": OrderedDict({"NS1": {"duration": 7}}),
-                "NS1": OrderedDict({"EW24": {"duration": 7}}),
-                "NS25": OrderedDict({"EW13": {"duration": 6}}),
-                "NS26": OrderedDict({"EW14": {"duration": 6}}),
+                "EW13": OrderedDict({"NS25": {"duration": 360}}),
+                "EW14": OrderedDict({"NS26": {"duration": 360}}),
+                "EW24": OrderedDict({"NS1": {"duration": 420}}),
+                "NS1": OrderedDict({"EW24": {"duration": 420}}),
+                "NS25": OrderedDict({"EW13": {"duration": 360}}),
+                "NS26": OrderedDict({"EW14": {"duration": 360}}),
             },
         )
         assert json.dumps(
@@ -110,11 +110,11 @@ class TestConfig:
         network = tomlkit.TOMLDocument()
         self.config_phase_1_1.update_network(network)
         assert tomlkit.dumps(network) == (
-            "schema = 1\ndefault_transfer_time = 7\ndefault_dwell_time = 0.5\n\n"
+            "schema = 1\ndefault_transfer_time = 420\ndefault_dwell_time = 30\n\n"
             '[stations]\nNS15 = "Yio Chu Kang" # NEW\n'
             'NS16 = "Ang Mo Kio" # NEW\nNS17 = "Bishan" # NEW\nNS18 = "Braddell" # NEW\nNS19 = "Toa Payoh" # NEW\n\n'
-            "[segments]\nNS15-NS16 = {duration = 3} # NEW\nNS16-NS17 = {duration = 4} # NEW\n"
-            "NS17-NS18 = {duration = 2} # NEW\nNS18-NS19 = {duration = 2} # NEW\n\n[transfers]\n"
+            "[segments]\nNS15-NS16 = {duration = 180} # NEW\nNS16-NS17 = {duration = 240} # NEW\n"
+            "NS17-NS18 = {duration = 120} # NEW\nNS18-NS19 = {duration = 120} # NEW\n\n[transfers]\n"
         )
 
         # Add Expo station.
@@ -143,7 +143,7 @@ class TestConfig:
 
         # Defunct station.
         network["stations"]["XY1"] = "Test"
-        network["segments"]["EW21-XY1"] = {"duration": 5}
+        network["segments"]["EW21-XY1"] = {"duration": 300}
         self.config_dover.update_network(network)
         assert network["stations"]["XY1"].trivia.comment == "# DEFUNCT"
         assert network["segments"]["EW21-XY1"].trivia.comment == "# DEFUNCT"

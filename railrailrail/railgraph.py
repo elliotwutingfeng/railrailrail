@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import csv
 import itertools
-import math
 import pathlib
 import tomllib
 import typing
@@ -36,14 +35,17 @@ from railrailrail.utils import GeographicUtils, StationUtils
 class RailGraph:
     """Graph for calculating shortest route and time cost between any 2 stations."""
 
+    __minimum_duration = 1
+    __maximum_duration = 3600  # 3600 seconds = 1 hour
+
     def __init__(
         self,
         segments: dict[tuple[str, str], dict],
         transfers: dict[tuple[str, str], dict],
         stations: dict[str, str],
         station_coordinates: dict[str, tuple[float, float]],
-        default_transfer_time: float | int = 7.0,
-        default_dwell_time: float | int = 0.5,
+        default_transfer_time: int = 420,
+        default_dwell_time: int = 30,
     ):
         """Setup rail network graph.
 
@@ -53,19 +55,13 @@ class RailGraph:
             transfers (dict[tuple[str, str], dict]): Every pair of stations that belong to the same interchange.
             stations (dict[str, str]): Map of station codes to station names.
             station_coordinates (dict[str, tuple[float, float]]): Map of station codes to station latitude and longitude.
-            default_transfer_time (float | int, optional): Time taken to switch lines at an interchange station. Defaults to 7.0.
-            default_dwell_time (float | int, optional): Time taken by train to either drop off or pick up passengers at a station. Defaults to 0.5.
+            default_transfer_time (int, optional): Time taken to switch lines at an interchange station in seconds. Defaults to 420.
+            default_dwell_time (int, optional): Time taken by train to either drop off or pick up passengers at a station in seconds. Defaults to 30.
         """
-        if (
-            type(default_transfer_time) not in (float, int)
-            or float(default_transfer_time) < 0
-        ):
-            raise ValueError("default_transfer_time must be non-negative float|int.")
-        if (
-            type(default_dwell_time) not in (float, int)
-            or float(default_dwell_time) < 0
-        ):
-            raise ValueError("default_dwell_time must be non-negative float|int.")
+        if type(default_transfer_time) is not int or default_transfer_time < 0:
+            raise ValueError("default_transfer_time must be non-negative int.")
+        if type(default_dwell_time) is not int or default_dwell_time < 0:
+            raise ValueError("default_dwell_time must be non-negative int.")
         if not isinstance(stations, dict) or not stations:
             raise ValueError("stations must be dict and not empty.")
         for k, v in stations.items():
@@ -101,8 +97,12 @@ class RailGraph:
                     )
 
             duration = segment_details.get("duration", None)
-            if (type(duration) not in (float, int)) or not (1 <= float(duration) <= 19):
-                raise ValueError("duration must be number in range 1-19")
+            if (type(duration) is not int) or not (
+                self.__minimum_duration <= duration <= self.__maximum_duration
+            ):
+                raise ValueError(
+                    f"duration must be number in range {self.__minimum_duration}-{self.__maximum_duration}"
+                )
 
             edge_type = segment_details.get("edge_type", "")
             mode = segment_details.get("mode", "")
@@ -127,10 +127,12 @@ class RailGraph:
                         "mode": "",
                     }
                 duration = self.transfers[(start, end)].get("duration", None)
-                if (type(duration) not in (float, int)) or not (
-                    1 <= float(duration) <= 19
+                if (type(duration) is not int) or not (
+                    self.__minimum_duration <= duration <= self.__maximum_duration
                 ):
-                    raise ValueError("duration must be number in range 1-19")
+                    raise ValueError(
+                        f"duration must be number in range {self.__minimum_duration}-{self.__maximum_duration}"
+                    )
                 edge_type = self.transfers[(start, end)].get("edge_type", "")
                 mode = self.transfers[(start, end)].get("mode", "")
 
@@ -165,15 +167,13 @@ class RailGraph:
         if not isinstance(stations, dict) or not stations:
             raise ValueError("Invalid config file: 'stations' must not be empty.")
         default_transfer_time = network.get("default_transfer_time", None)
-        if type(default_transfer_time) not in (float, int):
+        if type(default_transfer_time) is not int:
             raise ValueError(
-                "Invalid config file: 'default_transfer_time' must be float|int."
+                "Invalid config file: 'default_transfer_time' must be int."
             )
         default_dwell_time = network.get("default_dwell_time", None)
-        if type(default_dwell_time) not in (float, int):
-            raise ValueError(
-                "Invalid config file: 'default_dwell_time'  must be float|int."
-            )
+        if type(default_dwell_time) is not int:
+            raise ValueError("Invalid config file: 'default_dwell_time'  must be int.")
 
         segments = network.get("segments", None)
         if not isinstance(segments, dict) or not segments:
@@ -239,17 +239,17 @@ class RailGraph:
             transfers_,
             stations,
             station_coordinates,
-            float(default_transfer_time),
-            float(default_dwell_time),
+            default_transfer_time,
+            default_dwell_time,
         )
 
-    def _cost_func(self, start: str, end: str) -> typing.Callable[..., float]:
+    def _cost_func(self, start: str, end: str) -> typing.Callable[..., int]:
         def cost_func_aux(
             current_station: str,
             next_station: str,
             edge_to_next_station: tuple,
             edge_to_current_station: tuple | None,
-        ) -> float:
+        ) -> int:
             """Compute time cost of travelling from current station to next station.
 
             Transfer time is added if the preceding and succeeding edges imply a sub-interchange transfer.
@@ -268,7 +268,7 @@ class RailGraph:
                 edge_to_current_station (tuple | None): Edge to current station.
 
             Returns:
-                float: Time cost in minutes.
+                int: Time cost in seconds.
             """
             # station_codes_in_ascending_order = StationUtils.to_station_code_components(
             #     current_station
@@ -454,7 +454,9 @@ class RailGraph:
             steps.pop()  # Special case: Final edge is interchange transfer from pseudo station like JE0 -> JS3.
         if status == "in_train":
             steps.append(f"Alight at {v_} {self._stations[v_]}")
-        steps.append(f"""Total duration: {math.ceil(pathinfo.total_cost)} minutes""")
+        steps.append(
+            f"""Total duration: {pathinfo.total_cost // 60} minutes {pathinfo.total_cost % 60} seconds"""
+        )
         path_distance, haversine_distance = self.path_and_haversine_distance(pathinfo)
         steps.append(
             f"Approximate path distance: {path_distance/ 1000 :.1f} km, "

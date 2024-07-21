@@ -102,7 +102,9 @@ class Config:
                 adjacency_matrix[station_code][next_station_code] = {
                     "duration": Durations.segments.get(
                         f"{station_code}-{next_station_code}", dict()
-                    ).get("duration", 0)
+                    ).get(
+                        "duration", 0
+                    )  # Invalid zero value, to be manually updated by user.
                 }
 
         # Add walking paths from LTA Walking Train Map (WTM)
@@ -260,8 +262,8 @@ class Config:
         """
 
         network["schema"] = network.get("schema", 1)
-        network["default_transfer_time"] = network.get("default_transfer_time", 7)
-        network["default_dwell_time"] = network.get("default_dwell_time", 0.5)
+        network["default_transfer_time"] = network.get("default_transfer_time", 420)
+        network["default_dwell_time"] = network.get("default_dwell_time", 30)
 
         ### stations ###
 
