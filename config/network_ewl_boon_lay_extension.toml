@@ -156,12 +156,12 @@ EW27-EW28 = {duration = 180}
 EW28-EW29 = {duration = 180}
 NE1-NE3 = {duration = 240}
 NE3-NE4 = {duration = 60}
-NE4-EW14 = {duration = 11, mode = "walk"}
+NE4-EW14 = {duration = 660, mode = "walk"}
 NE4-NE5 = {duration = 120}
-NE4-NS26 = {duration = 11, mode = "walk"}
-NE5-EW14 = {duration = 10, mode = "walk"}
+NE4-NS26 = {duration = 660, mode = "walk"}
+NE5-EW14 = {duration = 600, mode = "walk"}
 NE5-NE6 = {duration = 180}
-NE5-NS26 = {duration = 10, mode = "walk"}
+NE5-NS26 = {duration = 600, mode = "walk"}
 NE6-NE7 = {duration = 60}
 NE7-NE8 = {duration = 60}
 NE8-NE9 = {duration = 120}

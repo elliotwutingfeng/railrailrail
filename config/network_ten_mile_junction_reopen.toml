@@ -156,13 +156,13 @@ BP11-BP12 = {duration = 60}
 BP12-BP13 = {duration = 120}
 CC1-CC2 = {duration = 180}
 CC2-CC3 = {duration = 180}
-CC2-EW12 = {duration = 10, mode = "walk"}
-CC2-EW13 = {duration = 7, mode = "walk"}
-CC2-NS25 = {duration = 7, mode = "walk"}
+CC2-EW12 = {duration = 600, mode = "walk"}
+CC2-EW13 = {duration = 420, mode = "walk"}
+CC2-NS25 = {duration = 420, mode = "walk"}
 CC3-CC4 = {duration = 180, edge_type = "promenade_west"}
-CC3-EW12 = {duration = 12, mode = "walk"}
-CC3-EW13 = {duration = 5, mode = "walk"}
-CC3-NS25 = {duration = 5, mode = "walk"}
+CC3-EW12 = {duration = 720, mode = "walk"}
+CC3-EW13 = {duration = 300, mode = "walk"}
+CC3-NS25 = {duration = 300, mode = "walk"}
 CC4-CC5 = {duration = 360, edge_type = "promenade_east"}
 CC5-CC6 = {duration = 120}
 CC6-CC7 = {duration = 120}
@@ -219,12 +219,12 @@ EW27-EW28 = {duration = 180}
 EW28-EW29 = {duration = 180}
 NE1-NE3 = {duration = 240}
 NE3-NE4 = {duration = 60}
-NE4-EW14 = {duration = 11, mode = "walk"}
+NE4-EW14 = {duration = 660, mode = "walk"}
 NE4-NE5 = {duration = 120}
-NE4-NS26 = {duration = 11, mode = "walk"}
-NE5-EW14 = {duration = 10, mode = "walk"}
+NE4-NS26 = {duration = 660, mode = "walk"}
+NE5-EW14 = {duration = 600, mode = "walk"}
 NE5-NE6 = {duration = 180}
-NE5-NS26 = {duration = 10, mode = "walk"}
+NE5-NS26 = {duration = 600, mode = "walk"}
 NE6-NE7 = {duration = 60}
 NE7-NE8 = {duration = 60}
 NE8-NE9 = {duration = 120}

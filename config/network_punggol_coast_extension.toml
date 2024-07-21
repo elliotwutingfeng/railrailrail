@@ -234,18 +234,18 @@ BP10-BP11 = {duration = 60}
 BP11-BP12 = {duration = 60}
 BP12-BP13 = {duration = 120}
 CC1-CC2 = {duration = 180}
-CC1-DT21 = {duration = 5, mode = "walk"}
+CC1-DT21 = {duration = 300, mode = "walk"}
 CC2-CC3 = {duration = 180}
-CC2-DT14 = {duration = 10, mode = "walk"}
-CC2-DT21 = {duration = 2, mode = "walk"}
-CC2-EW12 = {duration = 10, mode = "walk"}
-CC2-EW13 = {duration = 7, mode = "walk"}
-CC2-NS25 = {duration = 7, mode = "walk"}
+CC2-DT14 = {duration = 600, mode = "walk"}
+CC2-DT21 = {duration = 120, mode = "walk"}
+CC2-EW12 = {duration = 600, mode = "walk"}
+CC2-EW13 = {duration = 420, mode = "walk"}
+CC2-NS25 = {duration = 420, mode = "walk"}
 CC3-CC4 = {duration = 180, edge_type = "promenade_west"}
-CC3-DT14 = {duration = 12, mode = "walk"}
-CC3-EW12 = {duration = 12, mode = "walk"}
-CC3-EW13 = {duration = 5, mode = "walk"}
-CC3-NS25 = {duration = 5, mode = "walk"}
+CC3-DT14 = {duration = 720, mode = "walk"}
+CC3-EW12 = {duration = 720, mode = "walk"}
+CC3-EW13 = {duration = 300, mode = "walk"}
+CC3-NS25 = {duration = 300, mode = "walk"}
 CC4-CC5 = {duration = 360, edge_type = "promenade_east"}
 CC5-CC6 = {duration = 120}
 CC6-CC7 = {duration = 120}
@@ -274,7 +274,7 @@ CE0X-CE0Y = {duration = 120}
 CE0Y-CE0Z = {duration = 360}
 CE0Z-CE1 = {duration = 180}
 CE1-CE2 = {duration = 120}
-CE2-DT17 = {duration = 5, mode = "walk"}
+CE2-DT17 = {duration = 300, mode = "walk"}
 CG-CG1 = {duration = 180}
 CG1-CG2 = {duration = 240}
 DT1-DT2 = {duration = 120}
@@ -288,30 +288,30 @@ DT9-DT10 = {duration = 120}
 DT10-DT11 = {duration = 120}
 DT11-DT12 = {duration = 180}
 DT12-DT13 = {duration = 60}
-DT12-DT22 = {duration = 10, mode = "walk"}
+DT12-DT22 = {duration = 600, mode = "walk"}
 DT13-DT14 = {duration = 120}
-DT13-DT21 = {duration = 9, mode = "walk"}
-DT13-DT22 = {duration = 5, mode = "walk"}
+DT13-DT21 = {duration = 540, mode = "walk"}
+DT13-DT22 = {duration = 300, mode = "walk"}
 DT14-DT15 = {duration = 120}
 DT15-DT16 = {duration = 120}
 DT16-DT17 = {duration = 120}
 DT17-DT18 = {duration = 60}
-DT17-EW14 = {duration = 7, mode = "walk"}
-DT17-NS26 = {duration = 7, mode = "walk"}
+DT17-EW14 = {duration = 420, mode = "walk"}
+DT17-NS26 = {duration = 420, mode = "walk"}
 DT18-DT19 = {duration = 120}
-DT18-EW14 = {duration = 5, mode = "walk"}
-DT18-EW15 = {duration = 8, mode = "walk"}
-DT18-NS26 = {duration = 5, mode = "walk"}
+DT18-EW14 = {duration = 300, mode = "walk"}
+DT18-EW15 = {duration = 480, mode = "walk"}
+DT18-NS26 = {duration = 300, mode = "walk"}
 DT19-DT20 = {duration = 120}
-DT19-EW14 = {duration = 11, mode = "walk"}
-DT19-NS26 = {duration = 11, mode = "walk"}
-DT19-TE18 = {duration = 10, mode = "walk"}
+DT19-EW14 = {duration = 660, mode = "walk"}
+DT19-NS26 = {duration = 660, mode = "walk"}
+DT19-TE18 = {duration = 600, mode = "walk"}
 DT20-DT21 = {duration = 120}
-DT20-NE5 = {duration = 10, mode = "walk"}
+DT20-NE5 = {duration = 600, mode = "walk"}
 DT21-DT22 = {duration = 60}
-DT22-DT14 = {duration = 9, mode = "walk"}
+DT22-DT14 = {duration = 540, mode = "walk"}
 DT22-DT23 = {duration = 120}
-DT22-EW12 = {duration = 9, mode = "walk"}
+DT22-EW12 = {duration = 540, mode = "walk"}
 DT23-DT24 = {duration = 120}
 DT24-DT25 = {duration = 120}
 DT25-DT26 = {duration = 120}
@@ -358,19 +358,19 @@ EW31-EW32 = {duration = 120}
 EW32-EW33 = {duration = 120}
 NE1-NE3 = {duration = 240}
 NE3-NE4 = {duration = 60}
-NE4-EW14 = {duration = 11, mode = "walk"}
+NE4-EW14 = {duration = 660, mode = "walk"}
 NE4-NE5 = {duration = 120}
-NE4-NS26 = {duration = 11, mode = "walk"}
-NE4-TE18 = {duration = 10, mode = "walk"}
-NE5-EW14 = {duration = 10, mode = "walk"}
+NE4-NS26 = {duration = 660, mode = "walk"}
+NE4-TE18 = {duration = 600, mode = "walk"}
+NE5-EW14 = {duration = 600, mode = "walk"}
 NE5-NE6 = {duration = 180}
-NE5-NS26 = {duration = 10, mode = "walk"}
-NE6-DT21 = {duration = 5, mode = "walk"}
+NE5-NS26 = {duration = 600, mode = "walk"}
+NE6-DT21 = {duration = 300, mode = "walk"}
 NE6-NE7 = {duration = 60}
-NE7-DT22 = {duration = 10, mode = "walk"}
+NE7-DT22 = {duration = 600, mode = "walk"}
 NE7-NE8 = {duration = 60}
 NE8-NE9 = {duration = 120}
-NE9-DT23 = {duration = 10, mode = "walk"}
+NE9-DT23 = {duration = 600, mode = "walk"}
 NE9-NE10 = {duration = 180}
 NE10-NE11 = {duration = 60}
 NE11-NE12 = {duration = 120}
@@ -402,11 +402,11 @@ NS20-NS21 = {duration = 120}
 NS21-NS22 = {duration = 180}
 NS22-NS23 = {duration = 120}
 NS23-NS24 = {duration = 120}
-NS24-DT21 = {duration = 5, mode = "walk"}
+NS24-DT21 = {duration = 300, mode = "walk"}
 NS24-NS25 = {duration = 180}
 NS25-NS26 = {duration = 120}
 NS26-NS27 = {duration = 120}
-NS27-DT17 = {duration = 5, mode = "walk"}
+NS27-DT17 = {duration = 300, mode = "walk"}
 NS27-NS28 = {duration = 120}
 PE1-PE2 = {duration = 60}
 PE2-PE3 = {duration = 60}
@@ -454,15 +454,15 @@ TE14-TE15 = {duration = 120}
 TE15-TE16 = {duration = 120}
 TE16-TE17 = {duration = 120}
 TE17-TE18 = {duration = 120}
-TE18-DT18 = {duration = 11, mode = "walk"}
-TE18-EW15 = {duration = 8, mode = "walk"}
+TE18-DT18 = {duration = 660, mode = "walk"}
+TE18-EW15 = {duration = 480, mode = "walk"}
 TE18-TE19 = {duration = 60}
-TE19-DT17 = {duration = 6, mode = "walk"}
-TE19-EW14 = {duration = 12, mode = "walk"}
-TE19-EW15 = {duration = 10, mode = "walk"}
-TE19-NS26 = {duration = 12, mode = "walk"}
+TE19-DT17 = {duration = 360, mode = "walk"}
+TE19-EW14 = {duration = 720, mode = "walk"}
+TE19-EW15 = {duration = 600, mode = "walk"}
+TE19-NS26 = {duration = 720, mode = "walk"}
 TE19-TE20 = {duration = 120}
-TE20-DT17 = {duration = 5, mode = "walk"}
+TE20-DT17 = {duration = 300, mode = "walk"}
 TE20-TE22 = {duration = 180}
 TE22-TE23 = {duration = 240}
 TE23-TE24 = {duration = 120}
