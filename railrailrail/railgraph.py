@@ -205,8 +205,10 @@ class RailGraph:
             segments_.append((start, end, segment_details))
 
         transfers = network.get("transfers", None)
-        if not isinstance(transfers, dict) or not transfers:
-            raise ValueError("Invalid config file: 'transfers' must not be empty.")
+        if not isinstance(transfers, dict):
+            raise ValueError(
+                "Invalid config file: 'transfers' key must exist, even if there are no values."
+            )
 
         transfers_: list[tuple[str, str, dict]] = []
         for transfer, transfer_details in transfers.items():
