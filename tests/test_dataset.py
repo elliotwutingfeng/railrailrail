@@ -17,13 +17,11 @@ limitations under the License.
 import pytest
 from dijkstar import Graph
 
-from railrailrail.dataset import (
-    ConditionalInterchange,
-    Durations,
-    Stage,
-    Terminal,
-    WalkingTrainMap,
-)
+from railrailrail.dataset.conditional_interchange import ConditionalInterchange
+from railrailrail.dataset.durations import Durations
+from railrailrail.dataset.stage import Stage
+from railrailrail.dataset.terminal import Terminal
+from railrailrail.dataset.walking_train_map import WalkingTrainMap
 
 
 class TestStage:

@@ -27,7 +27,8 @@ from collections import defaultdict
 from dijkstar import Graph
 from dijkstar.algorithm import PathInfo, find_path
 
-from railrailrail.dataset import ConditionalInterchange, Terminal
+from railrailrail.dataset.conditional_interchange import ConditionalInterchange
+from railrailrail.dataset.terminal import Terminal
 from railrailrail.logger import logger
 from railrailrail.utils import GeographicUtils, StationUtils
 

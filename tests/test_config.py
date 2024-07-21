@@ -22,7 +22,7 @@ import pytest
 import tomlkit
 
 from railrailrail.config import Config
-from railrailrail.dataset import Stage
+from railrailrail.dataset.stage import Stage
 
 
 class TestConfig:

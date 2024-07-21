@@ -22,12 +22,10 @@ from collections import OrderedDict, defaultdict
 
 import tomlkit
 
-from railrailrail.dataset import (
-    ConditionalInterchange,
-    Durations,
-    Stage,
-    WalkingTrainMap,
-)
+from railrailrail.dataset.conditional_interchange import ConditionalInterchange
+from railrailrail.dataset.durations import Durations
+from railrailrail.dataset.stage import Stage
+from railrailrail.dataset.walking_train_map import WalkingTrainMap
 from railrailrail.utils import StationUtils
 
 
