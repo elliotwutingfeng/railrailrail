@@ -38,8 +38,8 @@ class RailGraph:
 
     def __init__(
         self,
-        segments: list[tuple[str, str, dict]],
-        transfers: list[tuple[str, str, dict]],
+        segments: dict[tuple[str, str], dict],
+        transfers: dict[tuple[str, str], dict],
         stations: dict[str, str],
         station_coordinates: dict[str, tuple[float, float]],
         default_transfer_time: float | int = 7.0,
@@ -49,9 +49,9 @@ class RailGraph:
         """Setup rail network graph.
 
         Args:
-            segments (list[tuple[str, str, dict]]): Every adjacent pair of stations directly connected to each
+            segments (dict[tuple[str, str], dict]): Every adjacent pair of stations directly connected to each
             other either by rail (same line), or by walking.
-            transfers (list[tuple[str, str, dict]]): Every pair of stations that belong to the same interchange.
+            transfers (dict[tuple[str, str], dict]): Every pair of stations that belong to the same interchange.
             stations (dict[str, str]): Map of station codes to station names.
             station_coordinates (dict[str, tuple[float, float]]): Map of station codes to station latitude and longitude.
             default_transfer_time (float | int, optional): Time taken to switch lines at an interchange station. Defaults to 7.0.
@@ -81,11 +81,12 @@ class RailGraph:
             if type(k) is not str or type(v) is not str:
                 raise ValueError("stations must be dict[str, str]")
 
+        self.transfers = transfers
+        self._stations = stations
+        self._station_coordinates = station_coordinates
         self.default_transfer_time = default_transfer_time
         self.default_dwell_time_asc = default_dwell_time_asc
         self.default_dwell_time_desc = default_dwell_time_desc
-        self._stations = stations
-        self._station_coordinates = station_coordinates
 
         interchange_station_codes_by_station_name: defaultdict[str, set[str]] = (
             defaultdict(set)
@@ -102,12 +103,11 @@ class RailGraph:
         self._graph = Graph(undirected=False)
         self._graph_without_walk_segments = Graph(undirected=False)
 
-        for segment in segments:
-            start, end, segment_details = segment
+        for (start, end), segment_details in segments.items():
             for station_code in (start, end):
                 if station_code not in self._stations:
                     raise ValueError(
-                        f"Station {station_code} in segment {segment} does not have a name."
+                        f"Station {station_code} in segment {start}-{end} does not have a name."
                     )
 
             duration = segment_details.get("duration", None)
@@ -123,28 +123,30 @@ class RailGraph:
                 if mode != "walk":
                     self._graph_without_walk_segments.add_edge(u, v, edge)
 
-        transfers_map: dict[tuple[str, str], dict] = {
-            (start, end): transfer_details
-            for (start, end, transfer_details) in transfers
-        }
         for interchange_substations in (
             self._interchanges
         ):  # Link up unique pairs of substations on the same interchange station.
             for start, end in itertools.permutations(interchange_substations, 2):
-                transfer_details = transfers_map.get((start, end), dict())
-                if not transfer_details:
+                if (start, end) not in self.transfers:
                     warnings.warn(
                         f"{start}-{end} not found in [transfers], using default transfer details."
                     )
-                transfer_time = transfer_details.get(
-                    "duration", self.default_transfer_time
-                )
-                edge_type = transfer_details.get("edge_type", "")
-                mode = transfer_details.get("mode", "")
+                    self.transfers[(start, end)] = {
+                        "duration": self.default_transfer_time,
+                        "edge_type": "",
+                        "mode": "",
+                    }
+                duration = self.transfers[(start, end)].get("duration", None)
+                if (type(duration) not in (float, int)) or not (
+                    1 <= float(duration) <= 19
+                ):
+                    raise ValueError("duration must be number in range 1-19")
+                edge_type = self.transfers[(start, end)].get("edge_type", "")
+                mode = self.transfers[(start, end)].get("mode", "")
 
-                self._graph.add_edge(start, end, (transfer_time, edge_type, mode))
+                self._graph.add_edge(start, end, (duration, edge_type, mode))
                 self._graph_without_walk_segments.add_edge(
-                    start, end, (transfer_time, edge_type, mode)
+                    start, end, (duration, edge_type, mode)
                 )
 
     @classmethod
@@ -192,17 +194,17 @@ class RailGraph:
         if not isinstance(segments, dict) or not segments:
             raise ValueError("Invalid config file: 'segments' must not be empty.")
 
-        segments_: list[tuple[str, str, dict]] = []
+        segments_ = dict()
         for segment, segment_details in segments.items():
             vertices = segment.split("-", 2)
             if len(vertices) != 2:
                 raise ValueError(
                     f"Invalid config file: Segment must be in format 'AB1-AB2'. Got {segment}."
                 )
-            start, end = vertices[0], vertices[1]
             if not isinstance(segment_details, dict):
                 raise ValueError("Invalid config file: Segment details must be a dict.")
-            segments_.append((start, end, segment_details))
+            start, end = vertices[0], vertices[1]
+            segments_[(start, end)] = segment_details
 
         transfers = network.get("transfers", None)
         if not isinstance(transfers, dict):
@@ -210,19 +212,19 @@ class RailGraph:
                 "Invalid config file: 'transfers' key must exist, even if there are no values."
             )
 
-        transfers_: list[tuple[str, str, dict]] = []
+        transfers_ = dict()
         for transfer, transfer_details in transfers.items():
             vertices = transfer.split("-", 2)
             if len(vertices) != 2:
                 raise ValueError(
                     f"Invalid config file: Transfer must be in format 'AB1-AB2'. Got {transfer}."
                 )
-            start, end = vertices[0], vertices[1]
             if not isinstance(transfer_details, dict):
                 raise ValueError(
                     "Invalid config file: Transfer details must be a dict."
                 )
-            transfers_.append((start, end, transfer_details))
+            start, end = vertices[0], vertices[1]
+            transfers_[(start, end)] = transfer_details
 
         station_coordinates = dict()
         with open(coordinates_path, "r") as f:
@@ -324,9 +326,8 @@ class RailGraph:
                 cost += self.default_transfer_time  # TODO Use network config timing.
 
             if current_station == start or next_station == end:
-                if any(
-                    {current_station, next_station}.issubset(interchange)
-                    for interchange in self._interchanges
+                if (
+                    (current_station, next_station) in self.transfers
                 ):  # Exclude transfer time for transfers at start or end of journey.
                     cost -= next_travel_time
                     if (
@@ -402,7 +403,9 @@ class RailGraph:
             v_ = Terminal.pseudo_stations.get(v, v)
             if status == "walking":
                 if edge_details[2] == "walk":  # Walk to the next station.
-                    steps.pop()  # Remove previous walking step
+                    # Replace previous walking step with this walking step, effectively merging both steps into one step.
+                    # Instead of A -> walk -> B -> walk -> C, do A -> walk -> C instead.
+                    steps.pop()
                     steps.append(f"Walk to {v_} {self._stations[v_]}")
                     status = "walking"
                 else:
@@ -414,9 +417,7 @@ class RailGraph:
                     )
                     status = "in_train"
             elif status == "at_station":
-                if any(
-                    {u, v}.issubset(a) for a in self._interchanges
-                ):  # Interchange transfer.
+                if (u, v) in self.transfers:  # Interchange transfer.
                     steps.append(
                         f"{'Switch over at' if at_pseudo_station else 'Transfer to'} {v_} {self._stations[v_]}"
                     )
@@ -443,9 +444,7 @@ class RailGraph:
                     )
                     status = "in_train"
             elif status == "in_train":
-                if any(
-                    {u, v}.issubset(a) for a in self._interchanges
-                ):  # Interchange transfer.
+                if (u, v) in self.transfers:  # Interchange transfer.
                     steps.append(f"Alight at {u_} {self._stations[u_]}")
                     steps.append(
                         f"{'Switch over at' if at_pseudo_station else 'Transfer to'} {v_} {self._stations[v_]}"

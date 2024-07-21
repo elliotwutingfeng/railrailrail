@@ -77,8 +77,8 @@ class TestRailGraph:
     def test_init(self):
         with pytest.raises(ValueError):
             RailGraph(
-                segments=[],
-                transfers=[],
+                segments=dict(),
+                transfers=dict(),
                 stations=dict(),
                 station_coordinates=dict(),
                 default_transfer_time="",
@@ -87,8 +87,8 @@ class TestRailGraph:
             )
         with pytest.raises(ValueError):
             RailGraph(
-                segments=[],
-                transfers=[],
+                segments=dict(),
+                transfers=dict(),
                 stations=dict(),
                 station_coordinates=dict(),
                 default_transfer_time=0,
@@ -97,8 +97,8 @@ class TestRailGraph:
             )
         with pytest.raises(ValueError):
             RailGraph(
-                segments=[],
-                transfers=[],
+                segments=dict(),
+                transfers=dict(),
                 stations=dict(),
                 station_coordinates=dict(),
                 default_transfer_time=0,
@@ -107,8 +107,8 @@ class TestRailGraph:
             )
         with pytest.raises(ValueError):
             RailGraph(
-                segments=[],
-                transfers=[],
+                segments=dict(),
+                transfers=dict(),
                 stations={"EX1": ["Easy"]},
                 station_coordinates=dict(),
                 default_transfer_time=0,
@@ -117,10 +117,8 @@ class TestRailGraph:
             )
         with pytest.raises(ValueError):
             RailGraph(
-                segments=[
-                    ("EX1", "HX1", {"duration": 20}),
-                ],
-                transfers=[],
+                segments={("EX1", "HX1"): {"duration": 20}},
+                transfers=dict(),
                 stations={"EX1": "Easy", "HX1": "How"},
                 station_coordinates=dict(),
                 default_transfer_time=0,
