@@ -59,8 +59,8 @@ class RailGraph:
             default_transfer_time (int, optional): Time taken to switch lines at an interchange station in seconds. Defaults to 420.
             default_dwell_time (int, optional): Time taken by train to either drop off or pick up passengers at a station in seconds. Defaults to 30.
         """
-        if type(default_transfer_time) is not int or default_transfer_time < 0:
-            raise ValueError("default_transfer_time must be non-negative int.")
+        if type(default_transfer_time) is not int or default_transfer_time < 1:
+            raise ValueError("default_transfer_time must be positive int.")
         if type(default_dwell_time) is not int or default_dwell_time < 0:
             raise ValueError("default_dwell_time must be non-negative int.")
         if not isinstance(stations, dict) or not stations:
@@ -102,7 +102,7 @@ class RailGraph:
                 self.__minimum_duration <= duration <= self.__maximum_duration
             ):
                 raise ValueError(
-                    f"duration must be number in range {self.__minimum_duration}-{self.__maximum_duration}"
+                    f"Segment duration must be number in range {self.__minimum_duration}-{self.__maximum_duration}"
                 )
 
             edge_type = segment_details.get("edge_type", "")
@@ -132,7 +132,7 @@ class RailGraph:
                     self.__minimum_duration <= duration <= self.__maximum_duration
                 ):
                     raise ValueError(
-                        f"duration must be number in range {self.__minimum_duration}-{self.__maximum_duration}"
+                        f"Transfer duration must be number in range {self.__minimum_duration}-{self.__maximum_duration}"
                     )
                 edge_type = self.transfers[(start, end)].get("edge_type", "")
                 mode = self.transfers[(start, end)].get("mode", "")
