@@ -22,7 +22,9 @@ from railrailrail.utils import StationUtils
 
 
 class StageMeta(type):
-    """MRT/LRT Network phases before BPLRT
+    """Stations added and/or removed at every stage of the MRT/LRT network.
+
+    MRT/LRT Network phases before BPLRT
 
     * phase_1_1: NS15 Yio Chu Kang - NS19 Toa Payoh | 7 November 1987
     * phase_1_2: NS20 Novena - EW16 Outram Park | 12 December 1987
@@ -483,9 +485,17 @@ class StageMeta(type):
 
 class Stage(metaclass=StageMeta):
     def __init__(self, stage: str):
-        self.stations: set[tuple[str, str]] = set()
+        """Setup `Stage` with stations operational as of given `stage`.
+
+        Args:
+            stage (str): Rail network Stage codename. Must be in `Stage.stages`.
+
+        Raises:
+            ValueError: No such stage.
+        """
         if stage not in Stage.stages:
             raise ValueError(f"No such stage: {stage}")
+        self.stations: set[tuple[str, str]] = set()
         for (
             current_stage,
             current_stage_stations,
@@ -564,8 +574,8 @@ class ConditionalInterchange:
     same line that are not directly connected to each other. For example, STC Sengkang is the
     conditional interchange for the Sengkang LRT East Loop and Sengkang LRT West Loop.
 
-    A conditional interchange behaves as an interchange only when previous segment and next segment are of specific types
-    as outlined in `segment_pairs`. For example, there will be an interchange transfer when
+    A conditional interchange behaves as an interchange only when previous segment and next segment are
+    of specific types as outlined in `segment_pairs`. For example, there will be an interchange transfer when
     moving from "bahar_east" to "bahar_west", but not from "bahar_west" to "bahar_east".
 
     Nearly all segments adjacent to a conditional interchange are non-sequential,
@@ -622,6 +632,7 @@ class ConditionalInterchange:
         ("JS7", "JS8", "bahar_south"),
     )
 
+    # TODO change to dict that maps pairs to transfer durations.
     segment_pairs: frozenset[tuple[str, str]] = frozenset(
         (
             ("punggol_west_loop", "punggol_east_loop"),
@@ -653,7 +664,7 @@ class ConditionalInterchange:
     @classmethod
     def is_conditional_interchange_transfer(
         cls, previous_edge_type: str, next_edge_type: str
-    ):
+    ) -> bool:  # TODO this should return (bool, float) where float is transfer duration
         return (previous_edge_type, next_edge_type) in cls.segment_pairs
 
 
@@ -1032,6 +1043,9 @@ class DurationsMeta(type):
     # Transfers at all possible interchanges, including defunct and future interchanges.
     # Estimates based on walking time + waiting time (5 min for MRT / 6 min for LRT).
     #
+    # As a simplification, treat transfer time in both directions as equal.
+    # TODO: Update in the future when more direction-specific transfer time is available.
+    #
     # Rule of thumb for future interchanges
     # elevated/elevated -> 7 min
     # underground/underground -> 9 min
@@ -1084,6 +1098,10 @@ class DurationsMeta(type):
     )
 
     # Transfers at all possible conditional interchanges, including defunct and future conditional interchanges.
+    #
+    # As a simplification, treat transfer time in both directions as equal.
+    # TODO: Update in the future when more direction-specific transfer time is available.
+    #
     __conditional_interchange_transfers: tuple = (
         ("Bahar Junction", 6),
         ("Bukit Panjang", 7),

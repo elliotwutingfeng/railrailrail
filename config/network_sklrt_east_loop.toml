@@ -153,3 +153,15 @@ SE3-SE4 = {duration = 1}
 SE4-SE5 = {duration = 2}
 STC-SE1 = {duration = 2, edge_type = "sengkang_east_loop"}
 STC-SE5 = {duration = 3, edge_type = "sengkang_east_loop"}
+
+[transfers]
+BP1-NS4 = {duration = 7}
+CG-EW4 = {duration = 7}
+EW4-CG = {duration = 7}
+EW13-NS25 = {duration = 6}
+EW14-NS26 = {duration = 6}
+EW24-NS1 = {duration = 7}
+NS1-EW24 = {duration = 7}
+NS4-BP1 = {duration = 7}
+NS25-EW13 = {duration = 6}
+NS26-EW14 = {duration = 6}

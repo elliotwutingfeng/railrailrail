@@ -58,3 +58,9 @@ NS22-NS23 = {duration = 2}
 NS23-NS24 = {duration = 2}
 NS24-NS25 = {duration = 3}
 NS25-NS26 = {duration = 2}
+
+[transfers]
+EW13-NS25 = {duration = 6}
+EW14-NS26 = {duration = 6}
+NS25-EW13 = {duration = 6}
+NS26-EW14 = {duration = 6}

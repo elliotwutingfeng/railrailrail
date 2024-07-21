@@ -38,8 +38,8 @@ class TestConfig:
         self.config_dover = Config(Stage("dover"))
         self.config_tel_3 = Config(Stage("tel_3"))
 
-    def test_adjacency_matrix(self):
-        expected_phase_2b_3_adjacency_matrix = defaultdict(
+    def test_segment_adjacency_matrix(self):
+        expected_phase_2b_3_segment_adjacency_matrix = defaultdict(
             OrderedDict[str, dict],
             {
                 "EW1": OrderedDict({"EW2": {"duration": 3}}),
@@ -85,9 +85,25 @@ class TestConfig:
                 "NS26": OrderedDict({"NS27": {"duration": 2}}),
             },
         )
-        assert json.dumps(self.config_phase_2b_3.adjacency_matrix) == json.dumps(
-            expected_phase_2b_3_adjacency_matrix
+        assert json.dumps(
+            self.config_phase_2b_3.segment_adjacency_matrix
+        ) == json.dumps(expected_phase_2b_3_segment_adjacency_matrix)
+
+    def test_transfer_adjacency_matrix(self):
+        expected_phase_2b_3_transfer_adjacency_matrix = defaultdict(
+            OrderedDict[str, dict],
+            {
+                "EW13": OrderedDict({"NS25": {"duration": 6}}),
+                "EW14": OrderedDict({"NS26": {"duration": 6}}),
+                "EW24": OrderedDict({"NS1": {"duration": 7}}),
+                "NS1": OrderedDict({"EW24": {"duration": 7}}),
+                "NS25": OrderedDict({"EW13": {"duration": 6}}),
+                "NS26": OrderedDict({"EW14": {"duration": 6}}),
+            },
         )
+        assert json.dumps(
+            self.config_phase_2b_3.transfer_adjacency_matrix
+        ) == json.dumps(expected_phase_2b_3_transfer_adjacency_matrix)
 
     def test_update_network(self):
         # Updated from blank slate; everything is NEW.
@@ -95,29 +111,36 @@ class TestConfig:
         Config.update_network(
             network,
             self.config_phase_1_1.stations,
-            self.config_phase_1_1.adjacency_matrix,
+            self.config_phase_1_1.segment_adjacency_matrix,
+            self.config_phase_1_1.transfer_adjacency_matrix,
         )
         assert tomlkit.dumps(network) == (
             "schema = 1\ndefault_transfer_time = 7\ndefault_dwell_time_asc = 0.5\ndefault_dwell_time_desc = 0.5\n\n"
             '[stations]\nNS15 = "Yio Chu Kang" # NEW\n'
             'NS16 = "Ang Mo Kio" # NEW\nNS17 = "Bishan" # NEW\nNS18 = "Braddell" # NEW\nNS19 = "Toa Payoh" # NEW\n\n'
             "[segments]\nNS15-NS16 = {duration = 3} # NEW\nNS16-NS17 = {duration = 4} # NEW\n"
-            "NS17-NS18 = {duration = 2} # NEW\nNS18-NS19 = {duration = 2} # NEW\n"
+            "NS17-NS18 = {duration = 2} # NEW\nNS18-NS19 = {duration = 2} # NEW\n\n[transfers]\n"
         )
 
-        # Add Dover infill station.
+        # Add Expo station.
         network = tomlkit.TOMLDocument()
         Config.update_network(
             network,
             self.config_ewl_expo.stations,
-            self.config_ewl_expo.adjacency_matrix,
+            self.config_ewl_expo.segment_adjacency_matrix,
+            self.config_ewl_expo.transfer_adjacency_matrix,
         )
+        assert "CG-EW4" in network["transfers"]
+        assert "EW4-CG" in network["transfers"]
         assert "EW21-EW22" not in network["segments"]
         assert "EW22-EW23" not in network["segments"]
+
+        # Add Dover infill station.
         Config.update_network(
             network,
             self.config_dover.stations,
-            self.config_dover.adjacency_matrix,
+            self.config_dover.segment_adjacency_matrix,
+            self.config_dover.transfer_adjacency_matrix,
         )
         assert "EW21-EW22" in network["segments"]
         assert "EW22-EW23" in network["segments"]
@@ -130,7 +153,8 @@ class TestConfig:
         Config.update_network(
             network,
             self.config_dover.stations,
-            self.config_dover.adjacency_matrix,
+            self.config_dover.segment_adjacency_matrix,
+            self.config_dover.transfer_adjacency_matrix,
         )
         assert network["stations"]["EW22"].trivia.comment.startswith("# NEW ->")
         assert network["stations"]["EW22"].trivia.comment.endswith("| # NEW")
@@ -143,10 +167,24 @@ class TestConfig:
         Config.update_network(
             network,
             self.config_dover.stations,
-            self.config_dover.adjacency_matrix,
+            self.config_dover.segment_adjacency_matrix,
+            self.config_dover.transfer_adjacency_matrix,
         )
         assert network["stations"]["XY1"].trivia.comment == "# DEFUNCT"
         assert network["segments"]["EW21-XY1"].trivia.comment == "# DEFUNCT"
+
+        # Defunct transfers
+        network["transfers"]["BP1-NS4"].trivia.comment = ""
+        Config.update_network(
+            network,
+            self.config_phase_2b_3.stations,
+            self.config_phase_2b_3.segment_adjacency_matrix,
+            self.config_phase_2b_3.transfer_adjacency_matrix,
+        )
+        assert network["transfers"]["BP1-NS4"].trivia.comment == "# DEFUNCT"
+        assert network["transfers"]["NS4-BP1"].trivia.comment == "# DEFUNCT | # NEW"
+        assert network["transfers"]["CG-EW4"].trivia.comment == "# DEFUNCT | # NEW"
+        assert network["transfers"]["EW4-CG"].trivia.comment == "# DEFUNCT | # NEW"
 
     def test_update_network_config_file(self):
         path = pathlib.Path("network_test.toml")

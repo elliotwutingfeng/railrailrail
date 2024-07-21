@@ -137,3 +137,15 @@ NS23-NS24 = {duration = 2}
 NS24-NS25 = {duration = 3}
 NS25-NS26 = {duration = 2}
 NS26-NS27 = {duration = 2}
+
+[transfers]
+BP1-NS4 = {duration = 7}
+CG-EW4 = {duration = 7}
+EW4-CG = {duration = 7}
+EW13-NS25 = {duration = 6}
+EW14-NS26 = {duration = 6}
+EW24-NS1 = {duration = 7}
+NS1-EW24 = {duration = 7}
+NS4-BP1 = {duration = 7}
+NS25-EW13 = {duration = 6}
+NS26-EW14 = {duration = 6}

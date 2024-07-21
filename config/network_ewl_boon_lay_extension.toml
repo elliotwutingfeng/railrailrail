@@ -217,3 +217,23 @@ SW4-SW5 = {duration = 1}
 SW5-SW6 = {duration = 1}
 SW6-SW7 = {duration = 1}
 SW7-SW8 = {duration = 1}
+
+[transfers]
+BP1-NS4 = {duration = 7}
+CG-EW4 = {duration = 7}
+EW4-CG = {duration = 7}
+EW13-NS25 = {duration = 6}
+EW14-NS26 = {duration = 6}
+EW16-NE3 = {duration = 8}
+EW24-NS1 = {duration = 7}
+NE3-EW16 = {duration = 8}
+NE6-NS24 = {duration = 8}
+NE16-STC = {duration = 7}
+NE17-PTC = {duration = 7}
+NS1-EW24 = {duration = 7}
+NS4-BP1 = {duration = 7}
+NS24-NE6 = {duration = 8}
+NS25-EW13 = {duration = 6}
+NS26-EW14 = {duration = 6}
+PTC-NE17 = {duration = 7}
+STC-NE16 = {duration = 7}

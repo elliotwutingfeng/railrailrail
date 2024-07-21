@@ -14,8 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+import itertools
 import json
 import pathlib
+import warnings
 from collections import OrderedDict, defaultdict
 
 import tomlkit
@@ -31,20 +33,26 @@ from railrailrail.utils import StationUtils
 
 class Config:
     def __init__(self, stage: Stage):
-        self.stations: list[tuple[str, str]] = self._get_stations(stage)
+        """Setup network `Config` based on `stage`.
+
+        Args:
+            stage (Stage): Rail network stage.
+        """
+        self.stage = stage
+        self.stations: list[tuple[str, str]] = self._get_stations()
         self.station_codes_by_station_name: dict[str, set[str]] = defaultdict(set)
         for station_code, station_name in self.stations:
             self.station_codes_by_station_name[station_name].add(station_code)
-        self.adjacency_matrix: defaultdict[str, OrderedDict[str, dict]] = (
-            self._generate_adjacency_matrix(self.stations)
+        self.segment_adjacency_matrix: defaultdict[str, OrderedDict[str, dict]] = (
+            self._generate_segment_adjacency_matrix()
+        )
+        self.transfer_adjacency_matrix: defaultdict[str, OrderedDict[str, dict]] = (
+            self._generate_transfer_adjacency_matrix()
         )
 
-    def _get_stations(self, stage: Stage) -> list[tuple[str, str]]:
-        """Generate list of train station codes and station names operational at a given `stage`,
+    def _get_stations(self) -> list[tuple[str, str]]:
+        """Generate list of operational train station codes and station names,
         sorted by station code in ascending order.
-
-        Args:
-            stage (Stage): Rail network stage to get stations from.
 
         Returns:
             list[tuple[str, str]]: Train stations sorted by station code in ascending order.
@@ -52,22 +60,20 @@ class Config:
         """
 
         return sorted(
-            stage.stations,
+            self.stage.stations,
             key=lambda station: StationUtils.to_station_code_components(station[0]),
         )
 
-    def _generate_adjacency_matrix(
-        self, stations: list[tuple[str, str]]
+    def _generate_segment_adjacency_matrix(
+        self,
     ) -> defaultdict[str, OrderedDict[str, dict]]:
-        """Create an travel time adjacency matrix for all stations on the network.
-
-        Args:
-            stations (list[tuple[str, str]]): List of station code/station name pairs.
+        """Create an travel time adjacency matrix for all segments between stations with different names
+        on the network.
 
         Returns:
             defaultdict[str, OrderedDict[str, dict]]: Travel time adjacency matrix.
         """
-        station_codes: list[str] = [station_code for station_code, _ in stations]
+        station_codes: list[str] = [station_code for station_code, _ in self.stations]
 
         station_codes_by_line_code: defaultdict[str, OrderedDict[str, None]] = (
             defaultdict(OrderedDict)
@@ -136,75 +142,60 @@ class Config:
 
         return adjacency_matrix
 
-    @classmethod
-    def update_network(
-        cls,
-        network: tomlkit.TOMLDocument,
-        stations: list[tuple[str, str]],
-        adjacency_matrix: defaultdict[str, OrderedDict[str, dict]],
-    ) -> None:
-        """Replace contents of `network` configuration in-place
-        with `stations` and `adjacency_matrix`.
+    def _generate_transfer_adjacency_matrix(
+        self,
+    ) -> defaultdict[str, OrderedDict[str, dict]]:
+        """Create an travel time adjacency matrix for all transfers between stations with same names
+        on the network.
 
-        - Newly added entries are marked as NEW.
-        - Entries to be modified will have their new content added as an inline-comment.
-        - Entries made defunct will be marked as DEFUNCT with an inline-comment.
-        - Existing comments are preserved.
-
-        Args:
-            network (tomlkit.TOMLDocument): Network configuration to be updated.
-            stations (list[tuple[str, str]]): After the update, `network` should only have
-            these stations.
-            adjacency_matrix (defaultdict[str, OrderedDict[str, dict]]): After the update,
-            `network` should only have these adjacency matrix segments.
+        Returns:
+            defaultdict[str, OrderedDict[str, dict]]: Travel time adjacency matrix.
         """
-
-        network["schema"] = network.get("schema", 1)
-        network["default_transfer_time"] = network.get("default_transfer_time", 7)
-        network["default_dwell_time_asc"] = network.get("default_dwell_time_asc", 0.5)
-        network["default_dwell_time_desc"] = network.get("default_dwell_time_desc", 0.5)
-
-        ### stations ###
-
-        stations_ = {k: v for (k, v) in stations}
-        network_stations = (
-            network["stations"] if "stations" in network else tomlkit.table()
+        interchange_station_codes_by_station_name: defaultdict[str, set[str]] = (
+            defaultdict(set)
         )
-
-        # Mark modified stations with comment
-        for station_code, station_name in network_stations.items():
-            if station_code in stations_ and station_name != stations_[station_code]:
-                existing_comment = network_stations[station_code].trivia.comment
-                network_stations[station_code].comment(
-                    f"NEW -> {stations_[station_code]}{' | %s' % existing_comment if existing_comment else ''}"
+        for station_code, station_name in self.stations:
+            interchange_station_codes_by_station_name[station_name].add(station_code)
+        interchanges: dict[str, set[str]] = {
+            station_name: station_codes
+            for (
+                station_name,
+                station_codes,
+            ) in interchange_station_codes_by_station_name.items()
+            if len(station_codes) >= 2
+        }
+        adjacency_matrix: defaultdict[str, OrderedDict[str, dict]] = defaultdict(
+            OrderedDict
+        )
+        pairs = []
+        for station_name, station_codes in interchanges.items():
+            if station_name in Durations.interchange_transfers:
+                for start, end in itertools.combinations(station_codes, 2):
+                    # As a simplification, treat transfer time in both directions as equal.
+                    # TODO: Update in the future when more direction-specific transfer time is available.
+                    pairs.append((start, end, station_name))
+                    pairs.append((end, start, station_name))
+            else:
+                warnings.warn(
+                    f"No transfer durations available for station {station_name}."
                 )
-
-        # Mark defunct stations with comment
-        for defunct_station_code in set(network_stations).difference(stations_):
-            existing_comment = network_stations[defunct_station_code].trivia.comment
-            network_stations[defunct_station_code].comment(
-                f"DEFUNCT{' | %s' % existing_comment if existing_comment else ''}"
+        pairs.sort(
+            key=lambda station_codes: (
+                StationUtils.to_station_code_components(station_codes[0]),
+                StationUtils.to_station_code_components(station_codes[1]),
             )
-
-        # Add new stations
-        for new_station_code in set(stations_).difference(network_stations):
-            network_stations[new_station_code] = stations_[new_station_code]
-            network_stations[new_station_code].comment("NEW")
-
-        # Sort stations
-        updated_stations = tomlkit.table()
-        for station_code in sorted(
-            network_stations, key=StationUtils.to_station_code_components
-        ):
-            updated_stations[station_code] = network_stations[station_code]
-        network["stations"] = updated_stations
-
-        ### adjacency matrix ###
-
-        network_adjacency_matrix = (
-            network["segments"] if "segments" in network else tomlkit.table()
         )
+        for start, end, station_name in pairs:
+            duration = Durations.interchange_transfers[station_name]
+            adjacency_matrix[start][end] = {"duration": duration}
+        return adjacency_matrix
 
+    @classmethod
+    def __get_updated_network_adjacency_matrix(
+        cls,
+        network_adjacency_matrix: tomlkit.items.Table,
+        adjacency_matrix: defaultdict[str, OrderedDict[str, dict]],
+    ) -> tomlkit.items.Table:
         # Mark modified segments with comment
         for station_pair, segment_details in network_adjacency_matrix.items():
             station_pair_ = station_pair.split("-", 1)
@@ -248,15 +239,97 @@ class Config:
             network_adjacency_matrix[new_segment].comment("NEW")
 
         # Sort adjacency matrix entries
-        updated_adjacency_matrix = tomlkit.table()
+        updated_network_adjacency_matrix = tomlkit.table()
         for segment in sorted(
             network_adjacency_matrix,
             key=lambda pair: tuple(
                 map(StationUtils.to_station_code_components, pair.split("-", 1))
             ),
         ):
-            updated_adjacency_matrix[segment] = network_adjacency_matrix[segment]
-        network["segments"] = updated_adjacency_matrix
+            updated_network_adjacency_matrix[segment] = network_adjacency_matrix[
+                segment
+            ]
+        return updated_network_adjacency_matrix
+
+    @classmethod
+    def update_network(
+        cls,
+        network: tomlkit.TOMLDocument,
+        stations: list[tuple[str, str]],
+        segment_adjacency_matrix: defaultdict[str, OrderedDict[str, dict]],
+        transfer_adjacency_matrix: defaultdict[str, OrderedDict[str, dict]],
+    ) -> None:
+        """Replace contents of `network` configuration in-place
+        with stations, segments, and transfers.
+
+        - Newly added entries are marked as NEW.
+        - Entries to be modified will have their new content added as an inline-comment.
+        - Entries made defunct will be marked as DEFUNCT with an inline-comment.
+        - Existing comments are preserved.
+
+        Args:
+            network (tomlkit.TOMLDocument): Network configuration to be updated.
+            stations (list[tuple[str, str]]): After the update, `network` should only have
+            these stations.
+            segment_adjacency_matrix (defaultdict[str, OrderedDict[str, dict]]): After the update,
+            `network` should only have these segments.
+            transfer_adjacency_matrix (defaultdict[str, OrderedDict[str, dict]]): After the update,
+            `network` should only have these transfers.
+        """
+
+        network["schema"] = network.get("schema", 1)
+        network["default_transfer_time"] = network.get("default_transfer_time", 7)
+        network["default_dwell_time_asc"] = network.get("default_dwell_time_asc", 0.5)
+        network["default_dwell_time_desc"] = network.get("default_dwell_time_desc", 0.5)
+
+        ### stations ###
+
+        stations_ = {k: v for (k, v) in stations}
+        network_stations = (
+            network["stations"] if "stations" in network else tomlkit.table()
+        )
+
+        # Mark modified stations with comment
+        for station_code, station_name in network_stations.items():
+            if station_code in stations_ and station_name != stations_[station_code]:
+                existing_comment = network_stations[station_code].trivia.comment
+                network_stations[station_code].comment(
+                    f"NEW -> {stations_[station_code]}{' | %s' % existing_comment if existing_comment else ''}"
+                )
+
+        # Mark defunct stations with comment
+        for defunct_station_code in set(network_stations).difference(stations_):
+            existing_comment = network_stations[defunct_station_code].trivia.comment
+            network_stations[defunct_station_code].comment(
+                f"DEFUNCT{' | %s' % existing_comment if existing_comment else ''}"
+            )
+
+        # Add new stations
+        for new_station_code in set(stations_).difference(network_stations):
+            network_stations[new_station_code] = stations_[new_station_code]
+            network_stations[new_station_code].comment("NEW")
+
+        # Sort stations
+        updated_stations = tomlkit.table()
+        for station_code in sorted(
+            network_stations, key=StationUtils.to_station_code_components
+        ):
+            updated_stations[station_code] = network_stations[station_code]
+        network["stations"] = updated_stations
+
+        ### segment adjacency matrix ###
+
+        network["segments"] = cls.__get_updated_network_adjacency_matrix(
+            network["segments"] if "segments" in network else tomlkit.table(),
+            segment_adjacency_matrix,
+        )
+
+        ### transfer adjacency matrix ###
+
+        network["transfers"] = cls.__get_updated_network_adjacency_matrix(
+            network["transfers"] if "transfers" in network else tomlkit.table(),
+            transfer_adjacency_matrix,
+        )
 
     def update_network_config_file(self, path: pathlib.Path) -> None:
         """Overwrite contents of network configuration file at `path` with updated
@@ -270,6 +343,11 @@ class Config:
                 network: tomlkit.TOMLDocument = tomlkit.load(f)
         except OSError:
             network: tomlkit.TOMLDocument = tomlkit.TOMLDocument()
-        Config.update_network(network, self.stations, self.adjacency_matrix)
+        Config.update_network(
+            network,
+            self.stations,
+            self.segment_adjacency_matrix,
+            self.transfer_adjacency_matrix,
+        )
         with open(path, "w") as f:
             tomlkit.dump(network, f)

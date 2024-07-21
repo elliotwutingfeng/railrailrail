@@ -22,6 +22,7 @@ import math
 import pathlib
 import tomllib
 import typing
+import warnings
 from collections import defaultdict
 
 from dijkstar import Graph
@@ -38,17 +39,19 @@ class RailGraph:
     def __init__(
         self,
         segments: list[tuple[str, str, dict]],
+        transfers: list[tuple[str, str, dict]],
         stations: dict[str, str],
         station_coordinates: dict[str, tuple[float, float]],
         default_transfer_time: float | int = 7.0,
         default_dwell_time_asc: float | int = 0.5,
         default_dwell_time_desc: float | int = 0.5,
     ):
-        """Setup rail network graph
+        """Setup rail network graph.
 
         Args:
             segments (list[tuple[str, str, dict]]): Every adjacent pair of stations directly connected to each
             other either by rail (same line), or by walking.
+            transfers (list[tuple[str, str, dict]]): Every pair of stations that belong to the same interchange.
             stations (dict[str, str]): Map of station codes to station names.
             station_coordinates (dict[str, tuple[float, float]]): Map of station codes to station latitude and longitude.
             default_transfer_time (float | int, optional): Time taken to switch lines at an interchange station. Defaults to 7.0.
@@ -84,18 +87,20 @@ class RailGraph:
         self._stations = stations
         self._station_coordinates = station_coordinates
 
-        aggregator: defaultdict[str, set[str]] = defaultdict(set)
+        interchange_station_codes_by_station_name: defaultdict[str, set[str]] = (
+            defaultdict(set)
+        )
         for station_code, station_name in self._stations.items():
-            aggregator[station_name].add(station_code)
+            interchange_station_codes_by_station_name[station_name].add(station_code)
         self._interchanges: tuple[set[str]] = tuple(
             station_codes
-            for station_codes in aggregator.values()
+            for station_codes in interchange_station_codes_by_station_name.values()
             if len(station_codes) >= 2
         )
 
         # Undirected Graph allows for different time cost when moving in opposite direction.
         self._graph = Graph(undirected=False)
-        self._graph_without_walk = Graph(undirected=False)
+        self._graph_without_walk_segments = Graph(undirected=False)
 
         for segment in segments:
             start, end, segment_details = segment
@@ -116,19 +121,30 @@ class RailGraph:
             for u, v in [(start, end), (end, start)]:
                 self._graph.add_edge(u, v, edge)
                 if mode != "walk":
-                    self._graph_without_walk.add_edge(u, v, edge)
+                    self._graph_without_walk_segments.add_edge(u, v, edge)
 
+        transfers_map: dict[tuple[str, str], dict] = {
+            (start, end): transfer_details
+            for (start, end, transfer_details) in transfers
+        }
         for interchange_substations in (
             self._interchanges
         ):  # Link up unique pairs of substations on the same interchange station.
-            for start, end in itertools.combinations(interchange_substations, 2):
-                self._graph.add_edge(start, end, (default_transfer_time, "", ""))
-                self._graph.add_edge(end, start, (default_transfer_time, "", ""))
-                self._graph_without_walk.add_edge(
-                    start, end, (default_transfer_time, "", "")
+            for start, end in itertools.permutations(interchange_substations, 2):
+                transfer_details = transfers_map.get((start, end), dict())
+                if not transfer_details:
+                    warnings.warn(
+                        f"{start}-{end} not found in [transfers], using default transfer details."
+                    )
+                transfer_time = transfer_details.get(
+                    "duration", self.default_transfer_time
                 )
-                self._graph_without_walk.add_edge(
-                    end, start, (default_transfer_time, "", "")
+                edge_type = transfer_details.get("edge_type", "")
+                mode = transfer_details.get("mode", "")
+
+                self._graph.add_edge(start, end, (transfer_time, edge_type, mode))
+                self._graph_without_walk_segments.add_edge(
+                    start, end, (transfer_time, edge_type, mode)
                 )
 
     @classmethod
@@ -171,6 +187,7 @@ class RailGraph:
             raise ValueError(
                 "Invalid config file: 'default_dwell_time_desc'  must be float|int."
             )
+
         segments = network.get("segments", None)
         if not isinstance(segments, dict) or not segments:
             raise ValueError("Invalid config file: 'segments' must not be empty.")
@@ -186,6 +203,24 @@ class RailGraph:
             if not isinstance(segment_details, dict):
                 raise ValueError("Invalid config file: Segment details must be a dict.")
             segments_.append((start, end, segment_details))
+
+        transfers = network.get("transfers", None)
+        if not isinstance(transfers, dict) or not transfers:
+            raise ValueError("Invalid config file: 'transfers' must not be empty.")
+
+        transfers_: list[tuple[str, str, dict]] = []
+        for transfer, transfer_details in transfers.items():
+            vertices = transfer.split("-", 2)
+            if len(vertices) != 2:
+                raise ValueError(
+                    f"Invalid config file: Transfer must be in format 'AB1-AB2'. Got {transfer}."
+                )
+            start, end = vertices[0], vertices[1]
+            if not isinstance(transfer_details, dict):
+                raise ValueError(
+                    "Invalid config file: Transfer details must be a dict."
+                )
+            transfers_.append((start, end, transfer_details))
 
         station_coordinates = dict()
         with open(coordinates_path, "r") as f:
@@ -212,6 +247,7 @@ class RailGraph:
 
         return cls(
             segments_,
+            transfers_,
             stations,
             station_coordinates,
             float(default_transfer_time),
@@ -262,12 +298,16 @@ class RailGraph:
             next_travel_time, next_edge_type, next_edge_mode = edge_to_next_station
 
             if isinstance(edge_to_current_station, tuple):
-                previous_edge_type, previous_edge_mode = (
-                    edge_to_current_station[1],
-                    edge_to_current_station[2],
+                previous_edge_duration, previous_edge_type, previous_edge_mode = (
+                    edge_to_current_station
                 )
             else:
-                previous_edge_type, previous_edge_mode = "", ""
+                previous_edge_duration, previous_edge_type, previous_edge_mode = (
+                    0,
+                    "",
+                    "",
+                )
+            _ = previous_edge_duration
             _ = previous_edge_mode
 
             cost = next_travel_time
@@ -279,14 +319,14 @@ class RailGraph:
             if ConditionalInterchange.is_conditional_interchange_transfer(
                 previous_edge_type, next_edge_type
             ):
-                cost += self.default_transfer_time
+                cost += self.default_transfer_time  # TODO Use network config timing.
 
             if current_station == start or next_station == end:
                 if any(
                     {current_station, next_station}.issubset(interchange)
                     for interchange in self._interchanges
                 ):  # Exclude transfer time for transfers at start or end of journey.
-                    cost -= self.default_transfer_time
+                    cost -= next_travel_time
                     if (
                         next_station == end
                     ):  # Exclude dwell time for transfer at end of journey.
@@ -323,7 +363,7 @@ class RailGraph:
                 raise ValueError(f"Pseudo station code not allowed: {station_code}")
 
         pathinfo = find_path(
-            self._graph if walk else self._graph_without_walk,
+            self._graph if walk else self._graph_without_walk_segments,
             start,
             end,
             cost_func=self._cost_func(start, end),
