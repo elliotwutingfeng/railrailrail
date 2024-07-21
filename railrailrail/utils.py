@@ -55,9 +55,11 @@ class GeographicUtils:
 
 
 class StationUtils:
+    ___match_expr: re.Pattern[str] = re.compile("^([A-Z]{2})([0-9]+)([A-Z]?)$")
+
     @classmethod
     def __station_code_matcher(cls, station_code: str) -> re.Match[str] | None:
-        return re.match("([A-Z]{2})([0-9]+)([A-Z]*)", station_code)
+        return cls.___match_expr.match(station_code)
 
     @classmethod
     def to_station_code_components(cls, station_code: str) -> tuple[str, int, str]:
@@ -78,22 +80,18 @@ class StationUtils:
             tuple[str, int, str]: Separated station components.
             For example ("NS", 3, "A") or ("NS", 4, "").
         """
-        line_code, station_number, station_number_suffix = (
-            station_code,
-            -1,
-            "",
-        )  # Default values.
-
         # Check for 2-alphabet or 3-alphabet
-        if len(line_code) in (2, 3) and all(
-            ("A" <= letter <= "Z") for letter in line_code
+        if len(station_code) in (2, 3) and all(
+            ("A" <= letter <= "Z") for letter in station_code
         ):
-            return line_code, station_number, station_number_suffix
+            return station_code, -1, ""
 
         station_code_components_match = cls.__station_code_matcher(station_code)
         if station_code_components_match is None:
             raise ValueError(f"Invalid station code: {station_code}")
-        matcher_groups: tuple[str, str, str] = station_code_components_match.groups("")
+        matcher_groups: tuple[str, str, str] = station_code_components_match.groups(
+            default=""
+        )
         line_code, station_number_str, station_number_suffix = matcher_groups
         station_number = int(station_number_str)
         return line_code, station_number, station_number_suffix

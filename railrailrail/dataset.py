@@ -707,10 +707,9 @@ class Terminal:
             raise ValueError(
                 f"start_line_code and end_line_code must be the same. Got {start_line_code} and {end_line_code}"
             )
-        is_ascending: bool = (
-            sorted([start, end], key=StationUtils.to_station_code_components)[0]
-            == start
-        )
+        is_ascending: bool = StationUtils.to_station_code_components(
+            start
+        ) < StationUtils.to_station_code_components(end)
         # From start, traverse nodes in ascending or descending order with same line code until dead end is reached.
         next_node = start
         while True:

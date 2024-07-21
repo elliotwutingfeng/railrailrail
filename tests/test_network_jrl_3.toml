@@ -1,7 +1,6 @@
 schema = 1
 default_transfer_time = 7
-default_dwell_time_asc = 0.5
-default_dwell_time_desc = 0.5
+default_dwell_time = 0.5
 
 # BP1-BP2 = {duration = 2, dwell_time_asc = 1, dwell_time_desc = 0.5}
 
