@@ -196,71 +196,59 @@ class Config:
         network_adjacency_matrix: tomlkit.items.Table,
         adjacency_matrix: defaultdict[str, OrderedDict[str, dict]],
     ) -> tomlkit.items.Table:
-        # Mark modified segments with comment
-        for station_pair, segment_details in network_adjacency_matrix.items():
+        # Mark modified edges with comment
+        for station_pair, edge_details in network_adjacency_matrix.items():
             station_pair_ = station_pair.split("-", 1)
             if (
                 station_pair_[0] in adjacency_matrix
                 and station_pair_[1] in adjacency_matrix[station_pair_[0]]
             ):
-                new_segment_details = adjacency_matrix[station_pair_[0]][
-                    station_pair_[1]
-                ]
-                if segment_details != new_segment_details:  # Shallow dict comparison
+                new_edge_details = adjacency_matrix[station_pair_[0]][station_pair_[1]]
+                if edge_details != new_edge_details:  # Shallow dict comparison
                     existing_comment = network_adjacency_matrix[
                         station_pair
                     ].trivia.comment
                     network_adjacency_matrix[station_pair].comment(
-                        f"NEW -> {json.dumps(new_segment_details)}{' | %s' % existing_comment if existing_comment else ''}"
+                        f"NEW -> {json.dumps(new_edge_details)}{' | %s' % existing_comment if existing_comment else ''}"
                     )
 
-        adjacency_matrix_segments = {
+        adjacency_matrix_edges = {
             f"{a}-{b}" for a in adjacency_matrix for b in adjacency_matrix[a]
         }
 
         # Mark defunct adjacency matrix entries with comment
-        for defunct_segment in set(network_adjacency_matrix).difference(
-            adjacency_matrix_segments
+        for defunct_edge in set(network_adjacency_matrix).difference(
+            adjacency_matrix_edges
         ):
-            existing_comment = network_adjacency_matrix[defunct_segment].trivia.comment
-            network_adjacency_matrix[defunct_segment].comment(
+            existing_comment = network_adjacency_matrix[defunct_edge].trivia.comment
+            network_adjacency_matrix[defunct_edge].comment(
                 f"DEFUNCT{' | %s' % existing_comment if existing_comment else ''}"
             )
 
         # Add new adjacency matrix entries
-        for new_segment in set(adjacency_matrix_segments).difference(
+        for new_edge in set(adjacency_matrix_edges).difference(
             network_adjacency_matrix
         ):
-            vertices = new_segment.split("-", 1)
+            vertices = new_edge.split("-", 1)
             start, end = vertices[0], vertices[1]
             it = tomlkit.inline_table()
             it.update(adjacency_matrix[start][end])
-            network_adjacency_matrix[new_segment] = it
-            network_adjacency_matrix[new_segment].comment("NEW")
+            network_adjacency_matrix[new_edge] = it
+            network_adjacency_matrix[new_edge].comment("NEW")
 
         # Sort adjacency matrix entries
         updated_network_adjacency_matrix = tomlkit.table()
-        for segment in sorted(
+        for edge in sorted(
             network_adjacency_matrix,
             key=lambda pair: tuple(
                 map(StationUtils.to_station_code_components, pair.split("-", 1))
             ),
         ):
-            updated_network_adjacency_matrix[segment] = network_adjacency_matrix[
-                segment
-            ]
+            updated_network_adjacency_matrix[edge] = network_adjacency_matrix[edge]
         return updated_network_adjacency_matrix
 
-    @classmethod
-    def update_network(
-        cls,
-        network: tomlkit.TOMLDocument,
-        stations: list[tuple[str, str]],
-        segment_adjacency_matrix: defaultdict[str, OrderedDict[str, dict]],
-        transfer_adjacency_matrix: defaultdict[str, OrderedDict[str, dict]],
-    ) -> None:
-        """Replace contents of `network` configuration in-place
-        with stations, segments, and transfers.
+    def update_network(self, network: tomlkit.TOMLDocument) -> None:
+        """Update contents of `network` configuration in-place.
 
         - Newly added entries are marked as NEW.
         - Entries to be modified will have their new content added as an inline-comment.
@@ -269,12 +257,6 @@ class Config:
 
         Args:
             network (tomlkit.TOMLDocument): Network configuration to be updated.
-            stations (list[tuple[str, str]]): After the update, `network` should only have
-            these stations.
-            segment_adjacency_matrix (defaultdict[str, OrderedDict[str, dict]]): After the update,
-            `network` should only have these segments.
-            transfer_adjacency_matrix (defaultdict[str, OrderedDict[str, dict]]): After the update,
-            `network` should only have these transfers.
         """
 
         network["schema"] = network.get("schema", 1)
@@ -284,7 +266,7 @@ class Config:
 
         ### stations ###
 
-        stations_ = {k: v for (k, v) in stations}
+        stations_ = {k: v for (k, v) in self.stations}
         network_stations = (
             network["stations"] if "stations" in network else tomlkit.table()
         )
@@ -317,23 +299,19 @@ class Config:
             updated_stations[station_code] = network_stations[station_code]
         network["stations"] = updated_stations
 
-        ### segment adjacency matrix ###
-
-        network["segments"] = cls.__get_updated_network_adjacency_matrix(
+        network["segments"] = self.__get_updated_network_adjacency_matrix(
             network["segments"] if "segments" in network else tomlkit.table(),
-            segment_adjacency_matrix,
-        )
+            self.segment_adjacency_matrix,
+        )  # segments
 
-        ### transfer adjacency matrix ###
-
-        network["transfers"] = cls.__get_updated_network_adjacency_matrix(
+        network["transfers"] = self.__get_updated_network_adjacency_matrix(
             network["transfers"] if "transfers" in network else tomlkit.table(),
-            transfer_adjacency_matrix,
-        )
+            self.transfer_adjacency_matrix,
+        )  # transfers
 
     def update_network_config_file(self, path: pathlib.Path) -> None:
         """Overwrite contents of network configuration file at `path` with updated
-        network data. See `Config.update_network`.
+        network data.
 
         Args:
             path (pathlib.Path): Path to network configuration file.
@@ -343,11 +321,6 @@ class Config:
                 network: tomlkit.TOMLDocument = tomlkit.load(f)
         except OSError:
             network: tomlkit.TOMLDocument = tomlkit.TOMLDocument()
-        Config.update_network(
-            network,
-            self.stations,
-            self.segment_adjacency_matrix,
-            self.transfer_adjacency_matrix,
-        )
+        self.update_network(network)
         with open(path, "w") as f:
             tomlkit.dump(network, f)

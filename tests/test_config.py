@@ -108,12 +108,7 @@ class TestConfig:
     def test_update_network(self):
         # Updated from blank slate; everything is NEW.
         network = tomlkit.TOMLDocument()
-        Config.update_network(
-            network,
-            self.config_phase_1_1.stations,
-            self.config_phase_1_1.segment_adjacency_matrix,
-            self.config_phase_1_1.transfer_adjacency_matrix,
-        )
+        self.config_phase_1_1.update_network(network)
         assert tomlkit.dumps(network) == (
             "schema = 1\ndefault_transfer_time = 7\ndefault_dwell_time_asc = 0.5\ndefault_dwell_time_desc = 0.5\n\n"
             '[stations]\nNS15 = "Yio Chu Kang" # NEW\n'
@@ -124,24 +119,14 @@ class TestConfig:
 
         # Add Expo station.
         network = tomlkit.TOMLDocument()
-        Config.update_network(
-            network,
-            self.config_ewl_expo.stations,
-            self.config_ewl_expo.segment_adjacency_matrix,
-            self.config_ewl_expo.transfer_adjacency_matrix,
-        )
+        self.config_ewl_expo.update_network(network)
         assert "CG-EW4" in network["transfers"]
         assert "EW4-CG" in network["transfers"]
         assert "EW21-EW22" not in network["segments"]
         assert "EW22-EW23" not in network["segments"]
 
         # Add Dover infill station.
-        Config.update_network(
-            network,
-            self.config_dover.stations,
-            self.config_dover.segment_adjacency_matrix,
-            self.config_dover.transfer_adjacency_matrix,
-        )
+        self.config_dover.update_network(network)
         assert "EW21-EW22" in network["segments"]
         assert "EW22-EW23" in network["segments"]
         assert "EW21-EW23" in network["segments"]
@@ -150,12 +135,7 @@ class TestConfig:
         # Modify existing station and segment details.
         network["stations"]["EW22"] = "Dover Test"
         network["segments"]["EW21-EW22"]["duration"] = 42
-        Config.update_network(
-            network,
-            self.config_dover.stations,
-            self.config_dover.segment_adjacency_matrix,
-            self.config_dover.transfer_adjacency_matrix,
-        )
+        self.config_dover.update_network(network)
         assert network["stations"]["EW22"].trivia.comment.startswith("# NEW ->")
         assert network["stations"]["EW22"].trivia.comment.endswith("| # NEW")
         assert network["segments"]["EW21-EW22"].trivia.comment.startswith("# NEW ->")
@@ -164,23 +144,13 @@ class TestConfig:
         # Defunct station.
         network["stations"]["XY1"] = "Test"
         network["segments"]["EW21-XY1"] = {"duration": 5}
-        Config.update_network(
-            network,
-            self.config_dover.stations,
-            self.config_dover.segment_adjacency_matrix,
-            self.config_dover.transfer_adjacency_matrix,
-        )
+        self.config_dover.update_network(network)
         assert network["stations"]["XY1"].trivia.comment == "# DEFUNCT"
         assert network["segments"]["EW21-XY1"].trivia.comment == "# DEFUNCT"
 
         # Defunct transfers
         network["transfers"]["BP1-NS4"].trivia.comment = ""
-        Config.update_network(
-            network,
-            self.config_phase_2b_3.stations,
-            self.config_phase_2b_3.segment_adjacency_matrix,
-            self.config_phase_2b_3.transfer_adjacency_matrix,
-        )
+        self.config_phase_2b_3.update_network(network)
         assert network["transfers"]["BP1-NS4"].trivia.comment == "# DEFUNCT"
         assert network["transfers"]["NS4-BP1"].trivia.comment == "# DEFUNCT | # NEW"
         assert network["transfers"]["CG-EW4"].trivia.comment == "# DEFUNCT | # NEW"
