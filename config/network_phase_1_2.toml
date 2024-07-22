@@ -21,23 +21,23 @@ NS25 = "City Hall"
 NS26 = "Raffles Place"
 
 [segments]
-EW13-EW14 = {duration = 120}
-EW14-EW15 = {duration = 120}
-EW15-EW16 = {duration = 120}
-NS15-NS16 = {duration = 180}
-NS16-NS17 = {duration = 240}
-NS17-NS18 = {duration = 120}
-NS18-NS19 = {duration = 120}
-NS19-NS20 = {duration = 180}
-NS20-NS21 = {duration = 120}
-NS21-NS22 = {duration = 180}
-NS22-NS23 = {duration = 120}
-NS23-NS24 = {duration = 120}
-NS24-NS25 = {duration = 180}
-NS25-NS26 = {duration = 120}
+EW13-EW14 = {duration = 120, dwell_time_asc = 60, dwell_time_desc = 45}
+EW14-EW15 = {duration = 120, dwell_time_asc = 45, dwell_time_desc = 28}
+EW15-EW16 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 60}
+NS15-NS16 = {duration = 180, dwell_time_asc = 60, dwell_time_desc = 28}
+NS16-NS17 = {duration = 240, dwell_time_asc = 28, dwell_time_desc = 28}
+NS17-NS18 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+NS18-NS19 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+NS19-NS20 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+NS20-NS21 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+NS21-NS22 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+NS22-NS23 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+NS23-NS24 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+NS24-NS25 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 45}
+NS25-NS26 = {duration = 120, dwell_time_asc = 45, dwell_time_desc = 60}
 
 [transfers]
-EW13-NS25 = {duration = 360}
-EW14-NS26 = {duration = 360}
-NS25-EW13 = {duration = 360}
-NS26-EW14 = {duration = 360}
+EW13-NS25 = {duration = 0}
+EW14-NS26 = {duration = 0}
+NS25-EW13 = {duration = 0}
+NS26-EW14 = {duration = 0}

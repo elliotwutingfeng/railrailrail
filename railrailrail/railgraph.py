@@ -21,8 +21,6 @@ import itertools
 import pathlib
 import tomllib
 import typing
-import warnings
-from collections import defaultdict
 
 from dijkstar import Graph
 from dijkstar.algorithm import PathInfo, find_path
@@ -36,7 +34,7 @@ from railrailrail.utils import GeographicUtils, StationUtils
 class RailGraph:
     """Graph for calculating shortest route and time cost between any 2 stations."""
 
-    __minimum_duration = 1
+    __minimum_duration = 0
     __maximum_duration = 3600  # 3600 seconds = 1 hour
 
     def __init__(
@@ -59,8 +57,8 @@ class RailGraph:
             default_transfer_time (int, optional): Time taken to switch lines at an interchange station in seconds. Defaults to 420.
             default_dwell_time (int, optional): Time taken by train to either drop off or pick up passengers at a station in seconds. Defaults to 30.
         """
-        if type(default_transfer_time) is not int or default_transfer_time < 1:
-            raise ValueError("default_transfer_time must be positive int.")
+        if type(default_transfer_time) is not int or default_transfer_time < 0:
+            raise ValueError("default_transfer_time must be non-negative int.")
         if type(default_dwell_time) is not int or default_dwell_time < 0:
             raise ValueError("default_dwell_time must be non-negative int.")
         if not isinstance(stations, dict) or not stations:
@@ -75,16 +73,7 @@ class RailGraph:
         self.default_transfer_time = default_transfer_time
         self.default_dwell_time = default_dwell_time
 
-        interchange_station_codes_by_station_name: defaultdict[str, set[str]] = (
-            defaultdict(set)
-        )
-        for station_code, station_name in self._stations.items():
-            interchange_station_codes_by_station_name[station_name].add(station_code)
-        self._interchanges: tuple[set[str]] = tuple(
-            station_codes
-            for station_codes in interchange_station_codes_by_station_name.values()
-            if len(station_codes) >= 2
-        )
+        self._interchanges = StationUtils.get_interchanges(self._stations)
 
         # Undirected Graph allows for different time cost when moving in opposite direction.
         self._graph = Graph(undirected=False)
@@ -107,8 +96,10 @@ class RailGraph:
 
             edge_type = segment_details.get("edge_type", "")
             mode = segment_details.get("mode", "")
+            dwell_time_asc = segment_details.get("dwell_time_asc", 0)
+            dwell_time_desc = segment_details.get("dwell_time_asc", 0)
 
-            edge = (duration, edge_type, mode)
+            edge = (duration, edge_type, mode, dwell_time_asc, dwell_time_desc)
             for u, v in [(start, end), (end, start)]:
                 self._graph.add_edge(u, v, edge)
                 if mode != "walk":
@@ -119,28 +110,26 @@ class RailGraph:
         ):  # Link up unique pairs of substations on the same interchange station.
             for start, end in itertools.permutations(interchange_substations, 2):
                 if (start, end) not in self.transfers:
-                    warnings.warn(
-                        f"{start}-{end} not found in [transfers], using default transfer details."
-                    )
-                    self.transfers[(start, end)] = {
-                        "duration": self.default_transfer_time,
-                        "edge_type": "",
-                        "mode": "",
-                    }
-                duration = self.transfers[(start, end)].get("duration", None)
+                    raise ValueError(f"{start}-{end} not found in [transfers].")
+                transfer_details = self.transfers[(start, end)]
+                duration = transfer_details.get("duration", None)
                 if (type(duration) is not int) or not (
                     self.__minimum_duration <= duration <= self.__maximum_duration
                 ):
                     raise ValueError(
                         f"Transfer duration must be number in range {self.__minimum_duration}-{self.__maximum_duration}"
                     )
-                edge_type = self.transfers[(start, end)].get("edge_type", "")
-                mode = self.transfers[(start, end)].get("mode", "")
-
-                self._graph.add_edge(start, end, (duration, edge_type, mode))
-                self._graph_without_walk_segments.add_edge(
-                    start, end, (duration, edge_type, mode)
+                edge_type = transfer_details.get("edge_type", "")
+                mode = transfer_details.get("mode", "")
+                dwell_time_asc = transfer_details.get(
+                    "dwell_time_asc", self.default_dwell_time
                 )
+                dwell_time_desc = transfer_details.get(
+                    "dwell_time_asc", self.default_dwell_time
+                )
+                edge = (duration, edge_type, mode, dwell_time_asc, dwell_time_desc)
+                self._graph.add_edge(start, end, edge)
+                self._graph_without_walk_segments.add_edge(start, end, edge)
 
     @classmethod
     def from_file(
@@ -271,31 +260,44 @@ class RailGraph:
             Returns:
                 int: Time cost in seconds.
             """
-            # station_codes_in_ascending_order = StationUtils.to_station_code_components(
-            #     current_station
-            # ) < StationUtils.to_station_code_components(next_station)
-            # # TODO evaluate this only if asc and desc are different.
-            # dwell_time = (
-            #     self.default_dwell_time
-            #     if station_codes_in_ascending_order
-            #     else self.default_dwell_time
-            # )
-            dwell_time = self.default_dwell_time
+            (
+                next_travel_time,
+                next_edge_type,
+                next_edge_mode,
+                next_dwell_time_asc,
+                next_dwell_time_desc,
+            ) = edge_to_next_station
 
-            next_travel_time, next_edge_type, next_edge_mode = edge_to_next_station
+            dwell_time = (
+                next_dwell_time_asc
+                if (
+                    next_dwell_time_asc == next_dwell_time_desc
+                    or StationUtils.to_station_code_components(current_station)
+                    < StationUtils.to_station_code_components(next_station)
+                )
+                else next_dwell_time_desc
+            )
 
             if isinstance(edge_to_current_station, tuple):
-                previous_edge_duration, previous_edge_type, previous_edge_mode = (
-                    edge_to_current_station
-                )
+                (
+                    previous_edge_duration,
+                    previous_edge_type,
+                    previous_edge_mode,
+                    previous_dwell_time_asc,
+                    previous_dwell_time_desc,
+                ) = edge_to_current_station
             else:
-                previous_edge_duration, previous_edge_type, previous_edge_mode = (
-                    0,
-                    "",
-                    "",
-                )
+                (
+                    previous_edge_duration,
+                    previous_edge_type,
+                    previous_edge_mode,
+                    previous_dwell_time_asc,
+                    previous_dwell_time_desc,
+                ) = (0, "", "", 0, 0)
             _ = previous_edge_duration
             _ = previous_edge_mode
+            _ = previous_dwell_time_asc
+            _ = previous_dwell_time_desc
 
             cost = next_travel_time
             if (

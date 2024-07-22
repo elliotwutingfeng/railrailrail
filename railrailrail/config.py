@@ -24,6 +24,7 @@ import tomlkit
 
 from railrailrail.dataset.conditional_interchange import ConditionalInterchange
 from railrailrail.dataset.durations import Durations
+from railrailrail.dataset.dwell_time import DwellTime
 from railrailrail.dataset.stage import Stage
 from railrailrail.dataset.walking_train_map import WalkingTrainMap
 from railrailrail.utils import StationUtils
@@ -65,18 +66,20 @@ class Config:
     def _generate_segment_adjacency_matrix(
         self,
     ) -> defaultdict[str, OrderedDict[str, dict]]:
-        """Create an travel time adjacency matrix for all segments between stations with different names
+        """Create an travel time / dwell time adjacency matrix for all segments between stations with different names
         on the network.
 
         Returns:
             defaultdict[str, OrderedDict[str, dict]]: Travel time adjacency matrix.
         """
-        station_codes: list[str] = [station_code for station_code, _ in self.stations]
+        stations: dict[str, str] = {
+            station_code: station_name for station_code, station_name in self.stations
+        }
 
         station_codes_by_line_code: defaultdict[str, OrderedDict[str, None]] = (
             defaultdict(OrderedDict)
         )  # Order is important as stations are almost always connected in sequential order.
-        for station_code in station_codes:  # Group stations by line.
+        for station_code in stations:  # Group stations by line.
             line_code, _, _ = StationUtils.to_station_code_components(station_code)
             station_codes_by_line_code[line_code][station_code] = None
 
@@ -101,9 +104,29 @@ class Config:
                     "duration": Durations.segments.get(
                         f"{station_code}-{next_station_code}", dict()
                     ).get(
-                        "duration", 0
-                    )  # Invalid zero value, to be manually updated by user.
+                        "duration", -1
+                    ),  # Invalid negative value, to be manually updated by user.
                 }
+
+        # Add dwell time for each rail segment.
+        terminal_station_codes: set[str] = StationUtils.get_terminals(adjacency_matrix)
+        interchange_station_codes: set[str] = set().union(
+            *StationUtils.get_interchanges(stations)
+        )
+        for station_code in adjacency_matrix:
+            for next_station_code in adjacency_matrix[station_code]:
+                dwell_time_asc, dwell_time_desc = DwellTime.get_dwell_time(
+                    terminal_station_codes,
+                    interchange_station_codes,
+                    station_code,
+                    next_station_code,
+                )
+                adjacency_matrix[station_code][next_station_code].update(
+                    {
+                        "dwell_time_asc": dwell_time_asc,
+                        "dwell_time_desc": dwell_time_desc,
+                    }
+                )
 
         # Add walking paths from LTA Walking Train Map (WTM)
         for start_station_name, end_station_name, duration in WalkingTrainMap.routes:
@@ -116,28 +139,43 @@ class Config:
                     adjacency_matrix[start_station_code][end_station_code] = {
                         "duration": duration,
                         "mode": "walk",
-                    }
+                        "dwell_time_asc": 0,
+                        "dwell_time_desc": 0,
+                    }  # No dwell time for walking routes.
 
         # Mark segments that need to be treated differently from
         # most other segments. Currently this only means checking if a segment is
         # adjacent to a conditional interchange.
-        for start, end, edge_type in ConditionalInterchange.segments:
+        for (
+            start,
+            end,
+            edge_type,
+            conditional_interchange,
+        ) in ConditionalInterchange.segments:
             # Skip conditional interchange segments made obsolete by new stations.
-            if (start, end) == ("STC", "SW2") and "SW1" in station_codes:
+            if (start, end) == ("STC", "SW2") and "SW1" in stations:
                 continue
-            if (start, end) == ("STC", "SW4") and "SW2" in station_codes:
+            if (start, end) == ("STC", "SW4") and "SW2" in stations:
                 continue
-            if (start, end) == ("PTC", "PE5") and "PE6" in station_codes:
+            if (start, end) == ("PTC", "PE5") and "PE6" in stations:
                 continue
-            if (start, end) == ("PTC", "PE6") and "PE7" in station_codes:
+            if (start, end) == ("PTC", "PE6") and "PE7" in stations:
                 continue
-            if (start, end) == ("PTC", "PW5") and "PW1" in station_codes:
+            if (start, end) == ("PTC", "PW5") and "PW1" in stations:
                 continue
 
-            if start in station_codes and end in station_codes:
+            if start in stations and end in stations:
+                dwell_time_asc, dwell_time_desc = DwellTime.get_dwell_time(
+                    terminal_station_codes,
+                    interchange_station_codes.union(set([conditional_interchange])),
+                    start,
+                    end,
+                )
                 adjacency_matrix[start][end] = {
                     **Durations.segments[f"{start}-{end}"],
                     "edge_type": edge_type,
+                    "dwell_time_asc": dwell_time_asc,
+                    "dwell_time_desc": dwell_time_desc,
                 }
 
         return adjacency_matrix
@@ -188,6 +226,23 @@ class Config:
         for start, end, station_name in pairs:
             duration = Durations.interchange_transfers[station_name]
             adjacency_matrix[start][end] = {"duration": duration}
+
+        is_ewl_open: bool = (
+            "EW12",
+            "Bugis",
+        ) in self.stations  # Special case: Check if EWL is open.
+        if not is_ewl_open:
+            for start, end in (
+                ("EW13", "NS25"),
+                ("NS25", "EW13"),
+                ("EW14", "NS26"),
+                ("NS26", "EW14"),
+            ):
+                if adjacency_matrix.get(start, dict()).get(end, dict()):
+                    adjacency_matrix[start][end] = {
+                        "duration": 0
+                    }  # Zero transfer time before EWL opening.
+
         return adjacency_matrix
 
     @classmethod

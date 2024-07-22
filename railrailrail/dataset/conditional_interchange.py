@@ -28,54 +28,40 @@ class ConditionalInterchange:
     except for BP6-BP7, JS6-JS7, JS7-JS8 which are sequential.
     """
 
-    segments: tuple[tuple[str, str, str]] = (
-        ("BP5", "BP6", "bukit_panjang_main"),
-        ("BP6", "BP13", "bukit_panjang_service_a"),
-        ("BP6", "BP7", "bukit_panjang_service_b"),
-        ("BP6", "BP14", "bukit_panjang_service_c"),
+    # (start, end, edge_type, conditional_interchange)
+    segments: tuple[tuple[str, str, str, str]] = (
+        ("BP5", "BP6", "bukit_panjang_main", "BP6"),
+        ("BP6", "BP13", "bukit_panjang_service_a", "BP6"),
+        ("BP6", "BP7", "bukit_panjang_service_b", "BP6"),
+        ("BP6", "BP14", "bukit_panjang_service_c", "BP6"),
         #
-        ("STC", "SE1", "sengkang_east_loop"),
-        ("STC", "SE5", "sengkang_east_loop"),
-        ("STC", "SW1", "sengkang_west_loop"),
-        (
-            "STC",
-            "SW2",
-            "sengkang_west_loop",
-        ),  # Defunct with SW1 | cheng_lim
-        (
-            "STC",
-            "SW4",
-            "sengkang_west_loop",
-        ),  # Defunct with SW2 | farmway
-        ("STC", "SW8", "sengkang_west_loop"),
+        ("STC", "SE1", "sengkang_east_loop", "STC"),
+        ("STC", "SE5", "sengkang_east_loop", "STC"),
+        ("STC", "SW1", "sengkang_west_loop", "STC"),
+        ("STC", "SW2", "sengkang_west_loop", "STC"),  # Defunct with SW1 | cheng_lim
+        ("STC", "SW4", "sengkang_west_loop", "STC"),  # Defunct with SW2 | farmway
+        ("STC", "SW8", "sengkang_west_loop", "STC"),
         #
-        ("PTC", "PE1", "punggol_east_loop"),
-        ("PTC", "PE5", "punggol_east_loop"),  # Defunct with PE6 | oasis
-        ("PTC", "PE6", "punggol_east_loop"),  # Defunct with PE7 | woodleigh_and_damai
-        ("PTC", "PE7", "punggol_east_loop"),
-        ("PTC", "PW1", "punggol_west_loop"),
-        ("PTC", "PW5", "punggol_west_loop"),  # Defunct with PW1 | sam_kee
-        ("PTC", "PW7", "punggol_west_loop"),
+        ("PTC", "PE1", "punggol_east_loop", "PTC"),
+        ("PTC", "PE5", "punggol_east_loop", "PTC"),  # Defunct with PE6 | oasis
+        (
+            "PTC",
+            "PE6",
+            "punggol_east_loop",
+            "PTC",
+        ),  # Defunct with PE7 | woodleigh_and_damai
+        ("PTC", "PE7", "punggol_east_loop", "PTC"),
+        ("PTC", "PW1", "punggol_west_loop", "PTC"),
+        ("PTC", "PW5", "punggol_west_loop", "PTC"),  # Defunct with PW1 | sam_kee
+        ("PTC", "PW7", "punggol_west_loop", "PTC"),
         #
-        (
-            "CC4",
-            "CC5",
-            "promenade_east",
-        ),
-        (
-            "CC3",
-            "CC4",
-            "promenade_west",
-        ),
-        (
-            "CC4",
-            "CC34",
-            "promenade_south",
-        ),
+        ("CC4", "CC5", "promenade_east", "CC4"),
+        ("CC3", "CC4", "promenade_west", "CC4"),
+        ("CC4", "CC34", "promenade_south", "CC4"),
         #
-        ("JS6", "JS7", "bahar_east"),
-        ("JS7", "JW1", "bahar_west"),
-        ("JS7", "JS8", "bahar_south"),
+        ("JS6", "JS7", "bahar_east", "JS7"),
+        ("JS7", "JW1", "bahar_west", "JS7"),
+        ("JS7", "JS8", "bahar_south", "JS7"),
     )
 
     # TODO change to dict that maps pairs to transfer durations.

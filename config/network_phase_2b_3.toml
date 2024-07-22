@@ -49,47 +49,47 @@ NS26 = "Raffles Place"
 NS27 = "Marina Bay"
 
 [segments]
-EW1-EW2 = {duration = 180}
-EW2-EW3 = {duration = 180}
-EW3-EW4 = {duration = 180}
-EW4-EW5 = {duration = 180}
-EW5-EW6 = {duration = 180}
-EW6-EW7 = {duration = 180}
-EW7-EW8 = {duration = 120}
-EW8-EW9 = {duration = 120}
-EW9-EW10 = {duration = 180}
-EW10-EW11 = {duration = 120}
-EW11-EW12 = {duration = 180}
-EW12-EW13 = {duration = 120}
-EW13-EW14 = {duration = 120}
-EW14-EW15 = {duration = 120}
-EW15-EW16 = {duration = 120}
-EW16-EW17 = {duration = 180}
-EW17-EW18 = {duration = 180}
-EW18-EW19 = {duration = 120}
-EW19-EW20 = {duration = 180}
-EW20-EW21 = {duration = 120}
-EW21-EW23 = {duration = 300}
-EW23-EW24 = {duration = 300}
-EW24-EW25 = {duration = 120}
-EW25-EW26 = {duration = 180}
-NS1-NS2 = {duration = 180}
-NS2-NS3 = {duration = 180}
-NS3-NS4 = {duration = 240}
-NS13-NS14 = {duration = 120}
-NS14-NS15 = {duration = 300}
-NS15-NS16 = {duration = 180}
-NS16-NS17 = {duration = 240}
-NS17-NS18 = {duration = 120}
-NS18-NS19 = {duration = 120}
-NS19-NS20 = {duration = 180}
-NS20-NS21 = {duration = 120}
-NS21-NS22 = {duration = 180}
-NS22-NS23 = {duration = 120}
-NS23-NS24 = {duration = 120}
-NS24-NS25 = {duration = 180}
-NS25-NS26 = {duration = 120}
-NS26-NS27 = {duration = 120}
+EW1-EW2 = {duration = 180, dwell_time_asc = 60, dwell_time_desc = 28}
+EW2-EW3 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+EW3-EW4 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+EW4-EW5 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+EW5-EW6 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+EW6-EW7 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+EW7-EW8 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+EW8-EW9 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+EW9-EW10 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+EW10-EW11 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+EW11-EW12 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+EW12-EW13 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 45}
+EW13-EW14 = {duration = 120, dwell_time_asc = 45, dwell_time_desc = 45}
+EW14-EW15 = {duration = 120, dwell_time_asc = 45, dwell_time_desc = 28}
+EW15-EW16 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+EW16-EW17 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+EW17-EW18 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+EW18-EW19 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+EW19-EW20 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+EW20-EW21 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+EW21-EW23 = {duration = 300, dwell_time_asc = 28, dwell_time_desc = 28}
+EW23-EW24 = {duration = 300, dwell_time_asc = 28, dwell_time_desc = 45}
+EW24-EW25 = {duration = 120, dwell_time_asc = 45, dwell_time_desc = 28}
+EW25-EW26 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 60}
+NS1-NS2 = {duration = 180, dwell_time_asc = 60, dwell_time_desc = 28}
+NS2-NS3 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+NS3-NS4 = {duration = 240, dwell_time_asc = 28, dwell_time_desc = 60}
+NS13-NS14 = {duration = 120, dwell_time_asc = 60, dwell_time_desc = 28}
+NS14-NS15 = {duration = 300, dwell_time_asc = 28, dwell_time_desc = 28}
+NS15-NS16 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+NS16-NS17 = {duration = 240, dwell_time_asc = 28, dwell_time_desc = 28}
+NS17-NS18 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+NS18-NS19 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+NS19-NS20 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+NS20-NS21 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+NS21-NS22 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+NS22-NS23 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+NS23-NS24 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+NS24-NS25 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 45}
+NS25-NS26 = {duration = 120, dwell_time_asc = 45, dwell_time_desc = 45}
+NS26-NS27 = {duration = 120, dwell_time_asc = 45, dwell_time_desc = 60}
 
 [transfers]
 EW13-NS25 = {duration = 360}

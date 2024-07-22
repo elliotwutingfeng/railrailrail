@@ -10,9 +10,9 @@ NS18 = "Braddell"
 NS19 = "Toa Payoh"
 
 [segments]
-NS15-NS16 = {duration = 180}
-NS16-NS17 = {duration = 240}
-NS17-NS18 = {duration = 120}
-NS18-NS19 = {duration = 120}
+NS15-NS16 = {duration = 180, dwell_time_asc = 60, dwell_time_desc = 28}
+NS16-NS17 = {duration = 240, dwell_time_asc = 28, dwell_time_desc = 28}
+NS17-NS18 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+NS18-NS19 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 60}
 
 [transfers]
