@@ -61,8 +61,10 @@ class Config:
 
         return sorted(
             self.stage.stations,
-            key=lambda station: Station.to_station_code_components(
-                station.station_code
+            key=lambda station: (
+                station.line_code,
+                station.station_number,
+                station.station_number_suffix,
             ),
         )
 

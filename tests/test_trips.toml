@@ -29,7 +29,7 @@ trip_99.input = { start = "CG1", end = "BP10", network = "tel_4", walk = false }
 
 [trip_0.output]
 nodes = ["DT3", "DT5", "DT6", "DT7"]
-edges = [[180, "", "", 28, 28], [120, "", "", 28, 28], [120, "", "", 28, 28]]
+edges = [[180, "", "", 28], [120, "", "", 28], [120, "", "", 28]]
 costs = [208, 148, 148]
 total_cost = 504
 path_distance = 5173.455099453123
@@ -38,7 +38,7 @@ directions = ["Start at DT3 Hillview", "Board train towards terminus DT35 Expo",
 
 [trip_1.output]
 nodes = ["NS1", "EW24", "EW23", "EW22", "EW21", "EW20", "EW19", "EW18"]
-edges = [[420, "", "", 30, 30], [300, "", "", 28, 28], [120, "", "", 28, 28], [180, "", "", 45, 45], [120, "", "", 28, 28], [180, "", "", 28, 28], [120, "", "", 28, 28]]
+edges = [[420, "", "", 30], [300, "", "", 28], [120, "", "", 28], [180, "", "", 45], [120, "", "", 28], [180, "", "", 28], [120, "", "", 28]]
 costs = [30, 328, 148, 225, 148, 208, 148]
 total_cost = 1235
 path_distance = 9753.230459335538
@@ -47,7 +47,7 @@ directions = ["Start at NS1 Jurong East", "Transfer to EW24 Jurong East", "Board
 
 [trip_2.output]
 nodes = ["NE8", "NE9", "NE10", "NE11", "NE12", "CC13"]
-edges = [[120, "", "", 28, 28], [180, "", "", 28, 28], [60, "", "", 28, 28], [120, "", "", 28, 28], [480, "", "", 30, 30]]
+edges = [[120, "", "", 28], [180, "", "", 28], [60, "", "", 28], [120, "", "", 28], [480, "", "", 30]]
 costs = [148, 208, 88, 148, 0]
 total_cost = 592
 path_distance = 5039.3199658080475
@@ -56,7 +56,7 @@ directions = ["Start at NE8 Farrer Park", "Board train towards terminus NE17 Pun
 
 [trip_3.output]
 nodes = ["TE16", "TE15", "TE14", "NS22", "NS21", "NS20"]
-edges = [[120, "", "", 28, 28], [120, "", "", 45, 45], [480, "", "", 30, 30], [180, "", "", 45, 45], [120, "", "", 28, 28]]
+edges = [[120, "", "", 28], [120, "", "", 45], [480, "", "", 30], [180, "", "", 45], [120, "", "", 28]]
 costs = [148, 165, 510, 225, 148]
 total_cost = 1196
 path_distance = 4034.3696346095085
@@ -65,7 +65,7 @@ directions = ["Start at TE16 Havelock", "Board train towards terminus TE1 Woodla
 
 [trip_4.output]
 nodes = ["CC3", "CC4", "CE0Z", "CE1", "CE2"]
-edges = [[180, "promenade_west", "", 28, 28], [420, "", "", 30, 30], [180, "", "", 45, 45], [120, "", "", 45, 45]]
+edges = [[180, "promenade_west", "", 28], [420, "", "", 30], [180, "", "", 45], [120, "", "", 45]]
 costs = [208, 450, 225, 165]
 total_cost = 1048
 path_distance = 2689.723541660079
@@ -74,7 +74,7 @@ directions = ["Start at CC3 Esplanade", "Board train towards terminus CC29 Harbo
 
 [trip_5.output]
 nodes = ["BP7", "BP6", "BP13"]
-edges = [[60, "bukit_panjang_service_b", "", 45, 45], [120, "bukit_panjang_service_a", "", 45, 45]]
+edges = [[60, "bukit_panjang_service_b", "", 45], [120, "bukit_panjang_service_a", "", 45]]
 costs = [105, 585]
 total_cost = 690
 path_distance = 935.4520885929516
@@ -83,7 +83,7 @@ directions = ["Start at BP7 Petir", "Board train in direction of BP6 Bukit Panja
 
 [trip_6.output]
 nodes = ["SW1", "STC", "SE1"]
-edges = [[120, "sengkang_west_loop", "", 45, 45], [120, "sengkang_east_loop", "", 60, 60]]
+edges = [[120, "sengkang_west_loop", "", 45], [120, "sengkang_east_loop", "", 60]]
 costs = [165, 600]
 total_cost = 765
 path_distance = 1198.1893344142484
@@ -92,7 +92,7 @@ directions = ["Start at SW1 Cheng Lim", "Board train in direction of STC Sengkan
 
 [trip_7.output]
 nodes = ["PW1", "PTC", "PE1"]
-edges = [[120, "punggol_west_loop", "", 45, 45], [180, "punggol_east_loop", "", 60, 60]]
+edges = [[120, "punggol_west_loop", "", 45], [180, "punggol_east_loop", "", 60]]
 costs = [165, 660]
 total_cost = 825
 path_distance = 1328.361252870911
@@ -101,7 +101,7 @@ directions = ["Start at PW1 Sam Kee", "Board train in direction of PTC Punggol",
 
 [trip_8.output]
 nodes = ["JS3", "JS4", "JS5", "JS6", "JS7", "JS8", "JS9"]
-edges = [[120, "", "", 45, 45], [180, "", "", 28, 28], [120, "", "", 28, 28], [120, "bahar_east", "", 28, 28], [120, "bahar_south", "", 45, 45], [120, "", "", 45, 45]]
+edges = [[120, "", "", 45], [180, "", "", 28], [120, "", "", 28], [120, "bahar_east", "", 28], [120, "bahar_south", "", 45], [120, "", "", 45]]
 costs = [165, 208, 148, 148, 165, 165]
 total_cost = 999
 path_distance = 5587.270716723145
@@ -110,7 +110,7 @@ directions = ["Start at JS3 Tengah", "Board train in direction of JS4 Hong Kah",
 
 [trip_9.output]
 nodes = ["JS10", "JS9", "JS8", "JS7", "JW1", "JW2", "JW3", "JW4"]
-edges = [[120, "", "", 28, 28], [120, "", "", 45, 45], [120, "bahar_south", "", 45, 45], [120, "bahar_west", "", 45, 45], [120, "", "", 60, 60], [120, "", "", 28, 28], [120, "", "", 28, 28]]
+edges = [[120, "", "", 28], [120, "", "", 45], [120, "bahar_south", "", 45], [120, "bahar_west", "", 45], [120, "", "", 60], [120, "", "", 28], [120, "", "", 28]]
 costs = [148, 165, 165, 165, 180, 148, 148]
 total_cost = 1119
 path_distance = 5368.6577506626
@@ -119,7 +119,7 @@ directions = ["Start at JS10 Tukang", "Board train in direction of JS9 Enterpris
 
 [trip_10.output]
 nodes = ["JW5", "JW4", "JW3", "JW2", "JW1", "JS7", "JS6", "JS5"]
-edges = [[120, "", "", 28, 28], [120, "", "", 28, 28], [120, "", "", 28, 28], [120, "", "", 60, 60], [120, "bahar_west", "", 45, 45], [120, "bahar_east", "", 28, 28], [120, "", "", 28, 28]]
+edges = [[120, "", "", 28], [120, "", "", 28], [120, "", "", 28], [120, "", "", 60], [120, "bahar_west", "", 45], [120, "bahar_east", "", 28], [120, "", "", 28]]
 costs = [148, 148, 148, 180, 165, 148, 148]
 total_cost = 1085
 path_distance = 4936.472613208142
@@ -128,7 +128,7 @@ directions = ["Start at JW5 Peng Kang Hill", "Board train in direction of JW4 Na
 
 [trip_11.output]
 nodes = ["JS2", "JS3", "JS4", "JS5", "JS6", "JS7", "JW1", "JW2", "JW3"]
-edges = [[240, "", "", 28, 28], [120, "", "", 45, 45], [180, "", "", 28, 28], [120, "", "", 28, 28], [120, "bahar_east", "", 28, 28], [120, "bahar_west", "", 45, 45], [120, "", "", 60, 60], [120, "", "", 28, 28]]
+edges = [[240, "", "", 28], [120, "", "", 45], [180, "", "", 28], [120, "", "", 28], [120, "bahar_east", "", 28], [120, "bahar_west", "", 45], [120, "", "", 60], [120, "", "", 28]]
 costs = [268, 165, 208, 148, 148, 585, 180, 148]
 total_cost = 1850
 path_distance = 7745.924757399062
@@ -137,7 +137,7 @@ directions = ["Start at JS2 Choa Chu Kang West", "Board train in direction of JS
 
 [trip_12.output]
 nodes = ["JW2", "JW1", "JS7", "JS8"]
-edges = [[120, "", "", 60, 60], [120, "bahar_west", "", 45, 45], [120, "bahar_south", "", 45, 45]]
+edges = [[120, "", "", 60], [120, "bahar_west", "", 45], [120, "bahar_south", "", 45]]
 costs = [180, 165, 585]
 total_cost = 930
 path_distance = 2252.77328961629
@@ -146,7 +146,7 @@ directions = ["Start at JW2 Tawas", "Board train in direction of JW1 Gek Poh", "
 
 [trip_13.output]
 nodes = ["JS9", "JS8", "JS7", "JS6", "JS5", "JS4", "JS3", "JS2", "JS1"]
-edges = [[120, "", "", 45, 45], [120, "bahar_south", "", 45, 45], [120, "bahar_east", "", 28, 28], [120, "", "", 28, 28], [180, "", "", 28, 28], [120, "", "", 45, 45], [240, "", "", 28, 28], [120, "", "", 60, 60]]
+edges = [[120, "", "", 45], [120, "bahar_south", "", 45], [120, "bahar_east", "", 28], [120, "", "", 28], [180, "", "", 28], [120, "", "", 45], [240, "", "", 28], [120, "", "", 60]]
 costs = [165, 165, 568, 148, 208, 165, 268, 180]
 total_cost = 1867
 path_distance = 8217.505638941899
@@ -155,7 +155,7 @@ directions = ["Start at JS9 Enterprise", "Board train in direction of JS8 Boon L
 
 [trip_14.output]
 nodes = ["DT21", "CC2", "CC3"]
-edges = [[120, "", "walk", 0, 0], [180, "", "", 28, 28]]
+edges = [[120, "", "walk", 0], [180, "", "", 28]]
 costs = [120, 208]
 total_cost = 328
 path_distance = 838.6498466504873
@@ -164,7 +164,7 @@ directions = ["Start at DT21 Bencoolen", "Walk to CC2 Bras Basah", "Board train 
 
 [trip_15.output]
 nodes = ["EW13", "EW14", "DT18"]
-edges = [[120, "", "", 45, 45], [300, "", "walk", 0, 0]]
+edges = [[120, "", "", 45], [300, "", "walk", 0]]
 costs = [165, 300]
 total_cost = 465
 path_distance = 1376.6317817777601
@@ -173,7 +173,7 @@ directions = ["Start at EW13 City Hall", "Board train towards terminus EW33 Tuas
 
 [trip_16.output]
 nodes = ["DT23", "DT22", "DT21", "CC2", "CC3"]
-edges = [[120, "", "", 28, 28], [60, "", "", 28, 28], [120, "", "walk", 0, 0], [180, "", "", 28, 28]]
+edges = [[120, "", "", 28], [60, "", "", 28], [120, "", "walk", 0], [180, "", "", 28]]
 costs = [148, 88, 120, 208]
 total_cost = 564
 path_distance = 3001.1143195479626
@@ -182,7 +182,7 @@ directions = ["Start at DT23 Bendemeer", "Board train towards terminus DT1 Bukit
 
 [trip_17.output]
 nodes = ["NE5", "NE6", "DT21", "CC2"]
-edges = [[180, "", "", 28, 28], [300, "", "walk", 0, 0], [120, "", "walk", 0, 0]]
+edges = [[180, "", "", 28], [300, "", "walk", 0], [120, "", "walk", 0]]
 costs = [208, 300, 120]
 total_cost = 628
 path_distance = 2045.6381323781065
@@ -191,7 +191,7 @@ directions = ["Start at NE5 Clarke Quay", "Board train towards terminus NE17 Pun
 
 [trip_96.output]
 nodes = ["EW23", "EW24", "NS1", "NS2", "NS3", "NS4", "BP1", "BP2", "BP3", "BP4", "BP5", "BP6", "BP14"]
-edges = [[300, "", "", 28, 28], [420, "", "", 30, 30], [180, "", "", 60, 60], [180, "", "", 28, 28], [240, "", "", 28, 28], [420, "", "", 30, 30], [120, "", "", 60, 60], [60, "", "", 28, 28], [120, "", "", 28, 28], [60, "", "", 28, 28], [60, "bukit_panjang_main", "", 28, 28], [60, "bukit_panjang_service_c", "", 45, 45]]
+edges = [[300, "", "", 28], [420, "", "", 30], [180, "", "", 60], [180, "", "", 28], [240, "", "", 28], [420, "", "", 30], [120, "", "", 60], [60, "", "", 28], [120, "", "", 28], [60, "", "", 28], [60, "bukit_panjang_main", "", 28], [60, "bukit_panjang_service_c", "", 45]]
 costs = [328, 450, 240, 208, 268, 450, 180, 88, 148, 88, 88, 525]
 total_cost = 3061
 path_distance = 12486.851289560651
@@ -200,7 +200,7 @@ directions = ["Start at EW23 Clementi", "Board train towards terminus EW27 Boon 
 
 [trip_97.output]
 nodes = ["JE5", "JE4", "JE3", "JE2", "JE1", "JE0", "JS3"]
-edges = [[120, "", "", 28, 28], [180, "", "", 28, 28], [120, "", "", 28, 28], [120, "", "", 28, 28], [180, "", "", 60, 60], [360, "", "", 30, 30]]
+edges = [[120, "", "", 28], [180, "", "", 28], [120, "", "", 28], [120, "", "", 28], [180, "", "", 60], [360, "", "", 30]]
 costs = [148, 208, 148, 148, 240, 0]
 total_cost = 892
 path_distance = 4043.269864606911
@@ -209,7 +209,7 @@ directions = ["Start at JE5 Jurong East", "Board train towards terminus JS3 Teng
 
 [trip_98.output]
 nodes = ["TE26", "TE25", "TE24", "TE23", "TE22", "TE20", "TE19", "TE18", "TE17", "NE3", "NE4", "NE5", "NE6", "NE7", "NE8", "NE9", "NE10", "NE11", "NE12", "NE13", "NE14"]
-edges = [[60, "", "", 28, 28], [180, "", "", 28, 28], [120, "", "", 28, 28], [240, "", "", 28, 28], [180, "", "", 45, 45], [120, "", "", 28, 28], [60, "", "", 28, 28], [120, "", "", 45, 45], [480, "", "", 30, 30], [60, "", "", 45, 45], [120, "", "", 45, 45], [180, "", "", 28, 28], [60, "", "", 45, 45], [60, "", "", 45, 45], [120, "", "", 28, 28], [180, "", "", 28, 28], [60, "", "", 28, 28], [120, "", "", 28, 28], [180, "", "", 45, 45], [120, "", "", 28, 28]]
+edges = [[60, "", "", 28], [180, "", "", 28], [120, "", "", 28], [240, "", "", 28], [180, "", "", 45], [120, "", "", 28], [60, "", "", 28], [120, "", "", 45], [480, "", "", 30], [60, "", "", 45], [120, "", "", 45], [180, "", "", 28], [60, "", "", 45], [60, "", "", 45], [120, "", "", 28], [180, "", "", 28], [60, "", "", 28], [120, "", "", 28], [180, "", "", 45], [120, "", "", 28]]
 costs = [88, 208, 148, 268, 225, 148, 88, 165, 510, 105, 165, 208, 105, 105, 148, 208, 88, 148, 225, 148]
 total_cost = 3501
 path_distance = 21606.73864874956
@@ -218,7 +218,7 @@ directions = ["Start at TE26 Marine Parade", "Board train towards terminus TE1 W
 
 [trip_99.output]
 nodes = ["CG1", "CG", "EW4", "EW5", "EW6", "EW7", "EW8", "EW9", "EW10", "EW11", "EW12", "DT14", "DT13", "DT12", "DT11", "DT10", "DT9", "DT8", "DT7", "DT6", "DT5", "DT3", "DT2", "DT1", "BP6", "BP7", "BP8", "BP9", "BP10"]
-edges = [[180, "", "", 60, 60], [420, "", "", 30, 30], [180, "", "", 45, 45], [180, "", "", 28, 28], [180, "", "", 28, 28], [120, "", "", 28, 28], [120, "", "", 45, 45], [180, "", "", 28, 28], [120, "", "", 28, 28], [180, "", "", 28, 28], [540, "", "", 30, 30], [120, "", "", 28, 28], [60, "", "", 45, 45], [180, "", "", 45, 45], [120, "", "", 45, 45], [120, "", "", 45, 45], [120, "", "", 28, 28], [120, "", "", 28, 28], [120, "", "", 28, 28], [120, "", "", 28, 28], [180, "", "", 28, 28], [120, "", "", 28, 28], [120, "", "", 60, 60], [600, "", "", 30, 30], [60, "bukit_panjang_service_b", "", 45, 45], [120, "", "", 28, 28], [60, "", "", 28, 28], [120, "", "", 28, 28]]
+edges = [[180, "", "", 60], [420, "", "", 30], [180, "", "", 45], [180, "", "", 28], [180, "", "", 28], [120, "", "", 28], [120, "", "", 45], [180, "", "", 28], [120, "", "", 28], [180, "", "", 28], [540, "", "", 30], [120, "", "", 28], [60, "", "", 45], [180, "", "", 45], [120, "", "", 45], [120, "", "", 45], [120, "", "", 28], [120, "", "", 28], [120, "", "", 28], [120, "", "", 28], [180, "", "", 28], [120, "", "", 28], [120, "", "", 60], [600, "", "", 30], [60, "bukit_panjang_service_b", "", 45], [120, "", "", 28], [60, "", "", 28], [120, "", "", 28]]
 costs = [240, 450, 225, 208, 208, 148, 165, 208, 148, 208, 570, 148, 105, 225, 165, 165, 148, 148, 148, 148, 208, 148, 180, 630, 105, 148, 88, 148]
 total_cost = 5833
 path_distance = 29757.43164584365

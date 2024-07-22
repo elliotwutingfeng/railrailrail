@@ -103,11 +103,29 @@ class RailGraph:
             dwell_time_asc = segment_details.get("dwell_time_asc", 0)
             dwell_time_desc = segment_details.get("dwell_time_asc", 0)
 
-            edge = (duration, edge_type, mode, dwell_time_asc, dwell_time_desc)
-            for u, v in [(start, end), (end, start)]:
-                self._graph.add_edge(u, v, edge)
-                if mode != "walk":
-                    self._graph_without_walk_segments.add_edge(u, v, edge)
+            is_ascending: bool = Station.to_station_code_components(
+                start
+            ) < Station.to_station_code_components(end)
+
+            edge = (
+                duration,
+                edge_type,
+                mode,
+                dwell_time_asc if is_ascending else dwell_time_desc,
+            )
+            self._graph.add_edge(start, end, edge)
+            if mode != "walk":
+                self._graph_without_walk_segments.add_edge(start, end, edge)
+
+            edge = (
+                duration,
+                edge_type,
+                mode,
+                dwell_time_desc if is_ascending else dwell_time_asc,
+            )
+            self._graph.add_edge(end, start, edge)
+            if mode != "walk":
+                self._graph_without_walk_segments.add_edge(end, start, edge)
 
         for interchange_substations in (
             self._interchanges
@@ -135,7 +153,18 @@ class RailGraph:
                 dwell_time_desc = transfer_details.get(
                     "dwell_time_asc", self.default_dwell_time
                 )
-                edge = (duration, edge_type, mode, dwell_time_asc, dwell_time_desc)
+
+                is_ascending: bool = (
+                    start.line_code,
+                    start.station_number,
+                    start.station_number_suffix,
+                ) < (end.line_code, end.station_number, end.station_number_suffix)
+                edge = (
+                    duration,
+                    edge_type,
+                    mode,
+                    dwell_time_asc if is_ascending else dwell_time_desc,
+                )
                 self._graph.add_edge(start.station_code, end.station_code, edge)
                 self._graph_without_walk_segments.add_edge(
                     start.station_code, end.station_code, edge
@@ -274,40 +303,28 @@ class RailGraph:
                 next_travel_time,
                 next_edge_type,
                 next_edge_mode,
-                next_dwell_time_asc,
-                next_dwell_time_desc,
+                next_dwell_time,
             ) = edge_to_next_station
 
-            dwell_time = (
-                next_dwell_time_asc
-                if (
-                    next_dwell_time_asc == next_dwell_time_desc
-                    or Station.to_station_code_components(current_station)
-                    < Station.to_station_code_components(next_station)
-                )
-                else next_dwell_time_desc
-            )
+            dwell_time = next_dwell_time
 
             if isinstance(edge_to_current_station, tuple):
                 (
                     previous_edge_duration,
                     previous_edge_type,
                     previous_edge_mode,
-                    previous_dwell_time_asc,
-                    previous_dwell_time_desc,
+                    previous_dwell_time,
                 ) = edge_to_current_station
             else:
                 (
                     previous_edge_duration,
                     previous_edge_type,
                     previous_edge_mode,
-                    previous_dwell_time_asc,
-                    previous_dwell_time_desc,
-                ) = (0, "", "", 0, 0)
+                    previous_dwell_time,
+                ) = (0, "", "", 0)
             _ = previous_edge_duration
             _ = previous_edge_mode
-            _ = previous_dwell_time_asc
-            _ = previous_dwell_time_desc
+            _ = previous_dwell_time
 
             cost = next_travel_time
             if (
