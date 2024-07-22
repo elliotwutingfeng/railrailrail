@@ -28,7 +28,7 @@ class ConditionalInterchange:
     except for BP6-BP7, JS6-JS7, JS7-JS8 which are sequential.
     """
 
-    # (start, end, edge_type, conditional_interchange)
+    # (start, end, edge_type, conditional_interchange_station_code)
     segments: tuple[tuple[str, str, str, str]] = (
         ("BP5", "BP6", "bukit_panjang_main", "BP6"),
         ("BP6", "BP13", "bukit_panjang_service_a", "BP6"),
