@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from railrailrail.utils import StationUtils
+from railrailrail.dataset.station import Station
 
 
 class DwellTime:
@@ -46,12 +46,10 @@ class DwellTime:
         Returns:
             tuple[int, int]: Direction-specific dwell times; ascending and descending order of station codes.
         """
-        current_station_code_components = StationUtils.to_station_code_components(
+        current_station_code_components = Station.to_station_code_components(
             current_station
         )
-        next_station_code_components = StationUtils.to_station_code_components(
-            next_station
-        )
+        next_station_code_components = Station.to_station_code_components(next_station)
         is_ascending: bool = (
             current_station_code_components < next_station_code_components
         )

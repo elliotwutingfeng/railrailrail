@@ -14,8 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import re
-from collections import OrderedDict, defaultdict
 from math import atan2, cos, radians, sin, sqrt
 
 
@@ -53,99 +51,3 @@ class GeographicUtils:
         c = 2 * atan2(sqrt(a), sqrt(1 - a))
 
         return cls.__earth_radius_in_metres * c
-
-
-class StationUtils:
-    ___match_expr: re.Pattern[str] = re.compile(
-        r"^([A-Z]{2})([0-9]|[1-9][0-9]?)([A-Z]?)$", re.ASCII
-    )
-
-    @classmethod
-    def to_station_code_components(cls, station_code: str) -> tuple[str, int, str]:
-        """Split station code into its components; line code, station number, and station number
-        suffix.
-
-        Can be used as a key function for sorting station codes in sequential order.
-
-        Supports station codes with alphabetical suffixes like NS3 -> NS3A -> NS4.
-
-        Args:
-            station_code (str): Station code to be split up.
-
-        Raises:
-            ValueError: Invalid station code.
-
-        Returns:
-            tuple[str, int, str]: Separated station components.
-            For example ("NS", 3, "A") or ("NS", 4, "").
-        """
-        # Check for 2-alphabet or 3-alphabet
-        if len(station_code) in (2, 3) and all(
-            ("A" <= letter <= "Z") for letter in station_code
-        ):
-            return station_code, -1, ""
-
-        station_code_components_match = cls.___match_expr.match(station_code)
-        if station_code_components_match is None:
-            raise ValueError(f"Invalid station code: {station_code}")
-        matcher_groups: tuple[str, str, str] = station_code_components_match.groups(
-            default=""
-        )
-        line_code, station_number_str, station_number_suffix = matcher_groups
-        station_number = int(station_number_str)
-        return line_code, station_number, station_number_suffix
-
-    @classmethod
-    def get_interchanges(cls, stations: dict[str, str]) -> tuple[set[str]]:
-        """Group station codes by interchange. Non-interchange station codes are excluded.
-
-        Args:
-            stations (dict[str, str]): Map of station codes to station names.
-
-        Returns:
-            tuple[set[str]]: Station codes grouped by interchange.
-        """
-        interchange_station_codes_by_station_name: defaultdict[str, set[str]] = (
-            defaultdict(set)
-        )
-        for station_code, station_name in stations.items():
-            interchange_station_codes_by_station_name[station_name].add(station_code)
-        interchanges: tuple[set[str]] = tuple(
-            station_codes
-            for station_codes in interchange_station_codes_by_station_name.values()
-            if len(station_codes) >= 2
-        )
-        return interchanges
-
-    @classmethod
-    def get_terminals(
-        cls, adjacency_matrix: defaultdict[str, OrderedDict[str, dict]]
-    ) -> set[str]:
-        """Identify terminal stations from a uni-directional adjacency matrix by counting their neighbours.
-        Stations with purely alphabetic station codes will be identified as terminals.
-
-        Args:
-            adjacency_matrix (defaultdict[str, OrderedDict[str, dict]]): Uni-directional adjacency matrix
-            of station codes linked in ascending order.
-
-        Returns:
-            set[str]: Terminal station codes.
-        """
-        terminals: set[str] = set()
-
-        bi_directional_adjacency_matrix = defaultdict(OrderedDict)
-        for station_code in adjacency_matrix:
-            for next_station_code in adjacency_matrix[station_code]:
-                bi_directional_adjacency_matrix[station_code][next_station_code] = None
-                bi_directional_adjacency_matrix[next_station_code][station_code] = None
-
-        for station_code, neighbours in bi_directional_adjacency_matrix.items():
-            # Stations with less than 2 neighbours are terminals.
-            # Stations with purely alphabetic station codes will be identified as terminals.
-            if (
-                len(neighbours) < 2
-                or cls.to_station_code_components(station_code)[1] == -1
-            ):
-                terminals.add(station_code)
-
-        return terminals

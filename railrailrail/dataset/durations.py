@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from railrailrail.utils import StationUtils
+from railrailrail.dataset.station import Station
 
 
 class DurationsMeta(type):
@@ -411,10 +411,10 @@ class DurationsMeta(type):
                 raise AttributeError(
                     f"Segment nodes cannot be the same: {segment}"
                 )  # pragma: no cover
-            StationUtils.to_station_code_components(
+            Station.to_station_code_components(
                 station_code_1
             )  # Raises ValueError if invalid.
-            StationUtils.to_station_code_components(
+            Station.to_station_code_components(
                 station_code_2
             )  # Raises ValueError if invalid.
 

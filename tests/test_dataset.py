@@ -20,6 +20,7 @@ from dijkstar import Graph
 from railrailrail.dataset.conditional_interchange import ConditionalInterchange
 from railrailrail.dataset.durations import Durations
 from railrailrail.dataset.stage import Stage
+from railrailrail.dataset.station import Station
 from railrailrail.dataset.terminal import Terminal
 from railrailrail.dataset.walking_train_map import WalkingTrainMap
 
@@ -95,3 +96,33 @@ class TestTerminal:
 class TestDurations:
     def test_segments(self):
         assert Durations.segments
+
+
+class TestStation:
+    def test_to_station_code_components(self):
+        # Valid station codes
+        assert Station.to_station_code_components("NS1") == ("NS", 1, "")
+        assert Station.to_station_code_components("NS3A") == ("NS", 3, "A")
+        assert Station.to_station_code_components("TE22A") == ("TE", 22, "A")
+        assert Station.to_station_code_components("CG") == ("CG", -1, "")
+        assert Station.to_station_code_components("STC") == ("STC", -1, "")
+
+        # Invalid station codes
+        with pytest.raises(ValueError):
+            Station.to_station_code_components("")
+        with pytest.raises(ValueError):
+            Station.to_station_code_components("1")
+        with pytest.raises(ValueError):
+            Station.to_station_code_components("1A")
+        with pytest.raises(ValueError):
+            Station.to_station_code_components("A")
+        with pytest.raises(ValueError):
+            Station.to_station_code_components("A1")
+        with pytest.raises(ValueError):
+            Station.to_station_code_components("A1A")
+        with pytest.raises(ValueError):
+            Station.to_station_code_components("XYZ0")
+        with pytest.raises(ValueError):
+            Station.to_station_code_components("XYZ1")
+        with pytest.raises(ValueError):
+            Station.to_station_code_components("XYZ1A")

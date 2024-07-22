@@ -18,7 +18,7 @@ import types
 
 from dijkstar import Graph
 
-from railrailrail.utils import StationUtils
+from railrailrail.dataset.station import Station
 
 
 class Terminal:
@@ -49,8 +49,8 @@ class Terminal:
     def get_terminal(cls, graph: Graph, start: str, end: str) -> str | None:
         if start == end:
             raise ValueError(f"start and end must be different. Got {start} and {end}")
-        start_station_code_components = StationUtils.to_station_code_components(start)
-        end_station_code_components = StationUtils.to_station_code_components(end)
+        start_station_code_components = Station.to_station_code_components(start)
+        end_station_code_components = Station.to_station_code_components(end)
         start_line_code, _, _ = start_station_code_components
         end_line_code, _, _ = end_station_code_components
         if start_line_code in cls.__looped_lines or (
@@ -73,7 +73,7 @@ class Terminal:
                     if node[:2] == start_line_code
                 )
                 + [next_node],
-                key=StationUtils.to_station_code_components,
+                key=Station.to_station_code_components,
             )
             next_node_index = node_and_neighbours.index(next_node) + (
                 1 if is_ascending else -1

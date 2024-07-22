@@ -26,8 +26,8 @@ from railrailrail.dataset.conditional_interchange import ConditionalInterchange
 from railrailrail.dataset.durations import Durations
 from railrailrail.dataset.dwell_time import DwellTime
 from railrailrail.dataset.stage import Stage
+from railrailrail.dataset.station import Station
 from railrailrail.dataset.walking_train_map import WalkingTrainMap
-from railrailrail.utils import StationUtils
 
 
 class Config:
@@ -38,10 +38,12 @@ class Config:
             stage (Stage): Rail network stage.
         """
         self.stage = stage
-        self.stations: list[tuple[str, str]] = self._get_stations()
+        self.stations: list[Station] = self._get_stations()
         self.station_codes_by_station_name: dict[str, set[str]] = defaultdict(set)
-        for station_code, station_name in self.stations:
-            self.station_codes_by_station_name[station_name].add(station_code)
+        for station in self.stations:
+            self.station_codes_by_station_name[station.station_name].add(
+                station.station_code
+            )
         self.segment_adjacency_matrix: defaultdict[str, OrderedDict[str, dict]] = (
             self._generate_segment_adjacency_matrix()
         )
@@ -49,18 +51,19 @@ class Config:
             self._generate_transfer_adjacency_matrix()
         )
 
-    def _get_stations(self) -> list[tuple[str, str]]:
+    def _get_stations(self) -> list[Station]:
         """Generate list of operational train station codes and station names,
         sorted by station code in ascending order.
 
         Returns:
-            list[tuple[str, str]]: Train stations sorted by station code in ascending order.
-            For example, ("CC1", "Dhoby Ghaut"), ("NE6", "Dhoby Ghaut"), ("NS24", "Dhoby Ghaut").
+            list[Station]: Train stations sorted by station code in ascending order.
         """
 
         return sorted(
             self.stage.stations,
-            key=lambda station: StationUtils.to_station_code_components(station[0]),
+            key=lambda station: Station.to_station_code_components(
+                station.station_code
+            ),
         )
 
     def _generate_segment_adjacency_matrix(
@@ -73,14 +76,14 @@ class Config:
             defaultdict[str, OrderedDict[str, dict]]: Travel time adjacency matrix.
         """
         stations: dict[str, str] = {
-            station_code: station_name for station_code, station_name in self.stations
+            station.station_code: station.station_name for station in self.stations
         }
 
         station_codes_by_line_code: defaultdict[str, OrderedDict[str, None]] = (
             defaultdict(OrderedDict)
         )  # Order is important as stations are almost always connected in sequential order.
         for station_code in stations:  # Group stations by line.
-            line_code, _, _ = StationUtils.to_station_code_components(station_code)
+            line_code, _, _ = Station.to_station_code_components(station_code)
             station_codes_by_line_code[line_code][station_code] = None
 
         # Uni-directionally link up all adjacent stations on same line based on the fact that most adjacent stations
@@ -91,7 +94,7 @@ class Config:
         for line_code in station_codes_by_line_code:
             line_station_codes = sorted(
                 station_codes_by_line_code[line_code],
-                key=StationUtils.to_station_code_components,
+                key=Station.to_station_code_components,
             )
             for station_code, next_station_code in zip(
                 line_station_codes[:-1], line_station_codes[1:]
@@ -109,10 +112,11 @@ class Config:
                 }
 
         # Add dwell time for each rail segment.
-        terminal_station_codes: set[str] = StationUtils.get_terminals(adjacency_matrix)
-        interchange_station_codes: set[str] = set().union(
-            *StationUtils.get_interchanges(stations)
-        )
+        terminal_station_codes: set[str] = Station.get_terminals(adjacency_matrix)
+        interchange_station_codes: set[str] = {
+            station.station_code
+            for station in set().union(*Station.get_interchanges(self.stations))
+        }
         for station_code in adjacency_matrix:
             for next_station_code in adjacency_matrix[station_code]:
                 dwell_time_asc, dwell_time_desc = DwellTime.get_dwell_time(
@@ -192,8 +196,10 @@ class Config:
         interchange_station_codes_by_station_name: defaultdict[str, set[str]] = (
             defaultdict(set)
         )
-        for station_code, station_name in self.stations:
-            interchange_station_codes_by_station_name[station_name].add(station_code)
+        for station in self.stations:
+            interchange_station_codes_by_station_name[station.station_name].add(
+                station.station_code
+            )
         interchanges: dict[str, set[str]] = {
             station_name: station_codes
             for (
@@ -219,8 +225,8 @@ class Config:
                 )
         pairs.sort(
             key=lambda station_codes: (
-                StationUtils.to_station_code_components(station_codes[0]),
-                StationUtils.to_station_code_components(station_codes[1]),
+                Station.to_station_code_components(station_codes[0]),
+                Station.to_station_code_components(station_codes[1]),
             )
         )
         for start, end, station_name in pairs:
@@ -228,9 +234,8 @@ class Config:
             adjacency_matrix[start][end] = {"duration": duration}
 
         is_ewl_open: bool = (
-            "EW12",
-            "Bugis",
-        ) in self.stations  # Special case: Check if EWL is open.
+            Station("EW12", "Bugis") in self.stations
+        )  # Special case: Check if EWL is open.
         if not is_ewl_open:
             for start, end in (
                 ("EW13", "NS25"),
@@ -296,7 +301,7 @@ class Config:
         for edge in sorted(
             network_adjacency_matrix,
             key=lambda pair: tuple(
-                map(StationUtils.to_station_code_components, pair.split("-", 1))
+                map(Station.to_station_code_components, pair.split("-", 1))
             ),
         ):
             updated_network_adjacency_matrix[edge] = network_adjacency_matrix[edge]
@@ -320,7 +325,9 @@ class Config:
 
         ### stations ###
 
-        stations_ = {k: v for (k, v) in self.stations}
+        stations_ = {
+            station.station_code: station.station_name for station in self.stations
+        }
         network_stations = (
             network["stations"] if "stations" in network else tomlkit.table()
         )
@@ -348,7 +355,7 @@ class Config:
         # Sort stations
         updated_stations = tomlkit.table()
         for station_code in sorted(
-            network_stations, key=StationUtils.to_station_code_components
+            network_stations, key=Station.to_station_code_components
         ):
             updated_stations[station_code] = network_stations[station_code]
         network["stations"] = updated_stations
