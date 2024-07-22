@@ -404,9 +404,10 @@ class RailGraph:
         for edge_idx, (u, v, edge_details) in enumerate(
             zip(pathinfo.nodes[:-1], pathinfo.nodes[1:], pathinfo.edges)
         ):
-            u_is_pseudo_station_code = Station.to_station_code_components(u)[1] == 0
-            v_is_pseudo_station_code = Station.to_station_code_components(v)[1] == 0
-            at_pseudo_station = u_is_pseudo_station_code or v_is_pseudo_station_code
+            at_pseudo_station = (
+                self._stations[u].is_pseudo_station_code
+                or self._stations[v].is_pseudo_station_code
+            )
             u_ = Terminal.pseudo_stations.get(u, u)
             v_ = Terminal.pseudo_stations.get(v, v)
             if status == "walking":
