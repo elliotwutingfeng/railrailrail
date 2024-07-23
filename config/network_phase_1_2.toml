@@ -3,8 +3,6 @@ default_transfer_time = 420
 default_dwell_time = 30
 
 [stations]
-EW13 = "City Hall"
-EW14 = "Raffles Place"
 EW15 = "Tanjong Pagar"
 EW16 = "Outram Park"
 NS15 = "Yio Chu Kang"
@@ -21,9 +19,8 @@ NS25 = "City Hall"
 NS26 = "Raffles Place"
 
 [segments]
-EW13-EW14 = {duration = 120, dwell_time_asc = 60, dwell_time_desc = 45}
-EW14-EW15 = {duration = 120, dwell_time_asc = 45, dwell_time_desc = 28}
 EW15-EW16 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 60}
+EW15-NS26 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 NS15-NS16 = {duration = 180, dwell_time_asc = 60, dwell_time_desc = 28}
 NS16-NS17 = {duration = 240, dwell_time_asc = 28, dwell_time_desc = 28}
 NS17-NS18 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
@@ -33,11 +30,7 @@ NS20-NS21 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 NS21-NS22 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
 NS22-NS23 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 NS23-NS24 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-NS24-NS25 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 45}
-NS25-NS26 = {duration = 120, dwell_time_asc = 45, dwell_time_desc = 60}
+NS24-NS25 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+NS25-NS26 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 
 [transfers]
-EW13-NS25 = {duration = 0}
-EW14-NS26 = {duration = 0}
-NS25-EW13 = {duration = 0}
-NS26-EW14 = {duration = 0}

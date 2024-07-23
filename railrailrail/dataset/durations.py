@@ -154,6 +154,10 @@ class DurationsMeta(type):
         ("EW13-EW14", ("duration", 120)),
         ("EW14-EW15", ("duration", 120)),
         ("EW15-EW16", ("duration", 120)),
+        (
+            "EW15-NS26",
+            ("duration", 120),
+        ),  # Same as EW14-EW15. Only used before EWL opening.
         ("EW16-EW17", ("duration", 180)),
         ("EW17-EW18", ("duration", 180)),
         ("EW18-EW19", ("duration", 120)),

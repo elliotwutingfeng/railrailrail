@@ -85,6 +85,9 @@ class Terminal:
         ):
             # Circle Line becomes a looped line at Stage 6.
             return None
+        if "EW14" not in graph and "EW15" in graph and "NS26" in graph:
+            # EWL still part of NSL.
+            return None
         if start_line_code != end_line_code:
             raise ValueError(
                 f"start_line_code and end_line_code must be the same. Got {start_line_code} and {end_line_code}"

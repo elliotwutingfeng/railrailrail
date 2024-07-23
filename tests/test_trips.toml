@@ -22,6 +22,7 @@ trip_15.input = { start = "EW13", end = "DT18", network = "tel_4", walk = true }
 trip_16.input = { start = "DT23", end = "CC3", network = "tel_4", walk = true } # $ _ $$ walk $$ _ $
 trip_17.input = { start = "NE5", end = "CC2", network = "tel_4", walk = true } # $ _ $$ walk $ walk $
 
+trip_94.input = { start = "NS22", end = "EW24", network = "phase_2b_2", walk = false }
 trip_95.input = { start = "SE3", end = "SE5", network = "sklrt_east_loop", walk = false }
 trip_96.input = { start = "EW23", end = "BP14", network = "bplrt", walk = false }
 trip_97.input = { start = "JE5", end = "JS3", network = "jrl_3", walk = false }
@@ -189,6 +190,15 @@ total_cost = 628
 path_distance = 2045.6381323781065
 haversine_distance = 1048.6397897137483
 directions = ["Start at NE5 Clarke Quay", "Board train towards terminus NE17 Punggol", "Alight at NE6 Dhoby Ghaut", "Walk to CC2 Bras Basah", "Total duration: 10 minutes 28 seconds", "Approximate path distance: 2.0 km, Haversine distance: 1.0 km, Circuity ratio: 2.0"]
+
+[trip_94.output]
+nodes = ["NS22", "NS23", "NS24", "NS25", "NS26", "EW15", "EW16", "EW17", "EW18", "EW19", "EW20", "EW21", "EW23", "EW24"]
+edges = [[120, "", "", 28], [120, "", "", 28], [180, "", "", 28], [120, "", "", 28], [120, "", "", 28], [120, "", "", 28], [180, "", "", 28], [180, "", "", 28], [120, "", "", 28], [180, "", "", 28], [120, "", "", 28], [300, "", "", 28], [300, "", "", 28]]
+costs = [148, 148, 208, 148, 148, 148, 208, 208, 148, 208, 148, 328, 328]
+total_cost = 2524
+path_distance = 17995.83554968076
+haversine_distance = 10525.059570575633
+directions = ["Start at NS22 Orchard", "Board train in direction of NS23 Somerset", "Alight at EW24 Jurong East", "Total duration: 42 minutes 4 seconds", "Approximate path distance: 18.0 km, Haversine distance: 10.5 km, Circuity ratio: 1.7"]
 
 [trip_95.output]
 nodes = ["SE3", "SE4", "SE5"]

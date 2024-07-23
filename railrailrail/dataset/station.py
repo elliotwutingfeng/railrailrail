@@ -23,6 +23,18 @@ from collections import defaultdict
 
 
 class StationUtils:
+    missing_station_codes: types.MappingProxyType[str, str] = types.MappingProxyType(
+        {"CG": "EW4"}
+    )
+    succeeding_station_codes: types.MappingProxyType[str, str] = types.MappingProxyType(
+        {
+            "TE33": "CG2",
+            "TE34": "CG1",
+            "TE35": "EW4",
+            "CC33": "CE2",
+            "CC34": "CE1",
+        }
+    )
     pseudo_station_codes: types.MappingProxyType[str, str] = types.MappingProxyType(
         {
             "CE0X": "CC6",
@@ -30,7 +42,7 @@ class StationUtils:
             "CE0Z": "CC4",
             "JE0": "JS3",
         }
-    )  # For temporary Circle Line Extension and Jurong Region Line East Branch.
+    )  # For temporary Circle Line Extension, and Jurong Region Line East Branch.
 
     match_expr: re.Pattern[str] = re.compile(
         r"^([A-Z]{2})([0-9]|[1-9][0-9]?)([A-Z]?)$", re.ASCII
@@ -51,17 +63,16 @@ class Station:
     has_pseudo_station_code: bool = dataclasses.field(compare=False, init=False)
 
     # Missing/future/pseudo station codes.
-    equivalent_station_code_pairs = (
-        ("CG", "EW4"),
-        ("TE33", "CG2"),
-        ("TE34", "CG1"),
-        ("TE35", "EW4"),
-        ("CC33", "CE2"),
-        ("CC34", "CE1"),
-        ("CE0X", "CC6"),
-        ("CE0Y", "CC5"),
-        ("CE0Z", "CC4"),
-        ("JE0", "JS3"),
+    equivalent_station_code_pairs: tuple[tuple[str, str]] = dataclasses.field(
+        compare=False,
+        default=tuple(
+            (k, v)
+            for k, v in {
+                **StationUtils.missing_station_codes,
+                **StationUtils.succeeding_station_codes,
+                **StationUtils.pseudo_station_codes,
+            }.items()
+        ),
     )
 
     def __post_init__(self):

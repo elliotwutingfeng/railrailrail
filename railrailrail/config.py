@@ -120,6 +120,21 @@ class Config:
                     ),  # Invalid negative value, to be manually updated by user.
                 }
 
+        if (
+            "EW14" not in station_code_to_station
+            and "EW15" in station_code_to_station
+            and "NS26" in station_code_to_station
+        ):
+            # EWL still part of NSL.
+            station_code, next_station_code = "EW15", "NS26"
+            adjacency_matrix[station_code][next_station_code] = {
+                "duration": Durations.segments.get(
+                    f"{station_code}-{next_station_code}", dict()
+                ).get(
+                    "duration", -1
+                ),  # Invalid negative value, to be manually updated by user.
+            }
+
         # Add dwell time for each rail segment.
         terminal_station_codes: set[str] = Terminal.get_terminals(adjacency_matrix)
         interchange_station_codes: set[str] = {
@@ -241,21 +256,6 @@ class Config:
         for start, end, station_name in pairs:
             duration = Durations.interchange_transfers[station_name]
             adjacency_matrix[start][end] = {"duration": duration}
-
-        is_ewl_open: bool = (
-            Station("EW12", "Bugis") in self.stations
-        )  # Special case: Check if EWL is open.
-        if not is_ewl_open:
-            for start, end in (
-                ("EW13", "NS25"),
-                ("NS25", "EW13"),
-                ("EW14", "NS26"),
-                ("NS26", "EW14"),
-            ):
-                if adjacency_matrix.get(start, dict()).get(end, dict()):
-                    adjacency_matrix[start][end] = {
-                        "duration": 0
-                    }  # Zero transfer time before EWL opening.
 
         return adjacency_matrix
 

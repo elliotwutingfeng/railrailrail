@@ -54,8 +54,6 @@ class StageMeta(type):
                 Station("NS19", "Toa Payoh"),
             ),  # 7 November 1987
             "phase_1_2": (
-                Station("EW13", "City Hall"),
-                Station("EW14", "Raffles Place"),
                 Station("EW15", "Tanjong Pagar"),
                 Station("EW16", "Outram Park"),
                 Station("NS20", "Novena"),
@@ -93,6 +91,8 @@ class StageMeta(type):
                 Station("EW10", "Kallang"),
                 Station("EW11", "Lavender"),
                 Station("EW12", "Bugis"),
+                Station("EW13", "City Hall"),  # EWL section.
+                Station("EW14", "Raffles Place"),  # EWL section.
                 Station("NS27", "Marina Bay"),
             ),  # 4 November 1989
             "phase_2a_2": (
