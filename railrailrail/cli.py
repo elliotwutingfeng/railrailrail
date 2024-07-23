@@ -108,6 +108,8 @@ if __name__ == "__main__":  # pragma: no cover
     if args.route:
         rail_graph = RailGraph.from_file(network_path, coordinates_path)
         pathinfo = rail_graph.find_shortest_path(
-            start=args.start.upper(), end=args.end.upper(), walk=args.walk
+            start_station_code=args.start.upper(),
+            end_station_code=args.end.upper(),
+            walk=args.walk,
         )
         print("\n".join(rail_graph.make_directions(pathinfo)))

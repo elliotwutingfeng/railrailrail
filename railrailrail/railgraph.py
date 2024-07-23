@@ -29,7 +29,7 @@ from railrailrail.dataset.conditional_interchange import ConditionalInterchange
 from railrailrail.dataset.station import Station
 from railrailrail.dataset.terminal import Terminal
 from railrailrail.logger import logger
-from railrailrail.utils import GeographicUtils
+from railrailrail.utils import Coordinates
 
 
 class RailGraph:
@@ -38,12 +38,23 @@ class RailGraph:
     __minimum_duration = 0
     __maximum_duration = 3600  # 3600 seconds = 1 hour
 
+    def __check_graph_params(self, stations, default_transfer_time, default_dwell_time):
+        if type(default_transfer_time) is not int or default_transfer_time < 0:
+            raise ValueError("default_transfer_time must be non-negative int.")
+        if type(default_dwell_time) is not int or default_dwell_time < 0:
+            raise ValueError("default_dwell_time must be non-negative int.")
+        if not isinstance(stations, dict) or not stations:
+            raise ValueError("stations must be non-empty dict.")
+        for k, v in stations.items():
+            if type(k) is not str or type(v) is not str:
+                raise ValueError("stations must be dict[str, str]")
+
     def __init__(
         self,
         segments: dict[tuple[str, str], dict],
         transfers: dict[tuple[str, str], dict],
         stations: dict[str, str],
-        station_coordinates: dict[str, tuple[float, float]],
+        station_coordinates: dict[str, Coordinates],
         default_transfer_time: int = 420,
         default_dwell_time: int = 30,
     ):
@@ -54,22 +65,14 @@ class RailGraph:
             other either by rail (same line), or by walking.
             transfers (dict[tuple[str, str], dict]): Every pair of stations that belong to the same interchange.
             stations (dict[str, str]): Map of station codes to station names.
-            station_coordinates (dict[str, tuple[float, float]]): Map of station codes to station latitude and longitude.
+            station_coordinates (dict[str, Coordinates]): Map of station codes to station latitude and longitude.
             default_transfer_time (int, optional): Time taken to switch lines at an interchange station in seconds. Defaults to 420.
             default_dwell_time (int, optional): Time taken by train to either drop off or pick up passengers at a station in seconds. Defaults to 30.
         """
-        if type(default_transfer_time) is not int or default_transfer_time < 0:
-            raise ValueError("default_transfer_time must be non-negative int.")
-        if type(default_dwell_time) is not int or default_dwell_time < 0:
-            raise ValueError("default_dwell_time must be non-negative int.")
-        if not isinstance(stations, dict) or not stations:
-            raise ValueError("stations must be dict and not empty.")
-        for k, v in stations.items():
-            if type(k) is not str or type(v) is not str:
-                raise ValueError("stations must be dict[str, str]")
+        self.__check_graph_params(stations, default_transfer_time, default_dwell_time)
 
         self.transfers = transfers
-        self._stations = {
+        self._station_code_to_station = {
             station_code: Station(station_code, station_name)
             for station_code, station_name in stations.items()
         }
@@ -77,15 +80,13 @@ class RailGraph:
         self.default_transfer_time = default_transfer_time
         self.default_dwell_time = default_dwell_time
 
-        self._interchanges = Station.get_interchanges(list(self._stations.values()))
-
         # Undirected Graph allows for different time cost when moving in opposite direction.
         self._graph = Graph(undirected=False)
         self._graph_without_walk_segments = Graph(undirected=False)
 
         for (start, end), segment_details in segments.items():
             for station_code in (start, end):
-                if station_code not in self._stations:
+                if station_code not in self._station_code_to_station:
                     raise ValueError(
                         f"Station {station_code} in segment {start}-{end} does not have a name."
                     )
@@ -126,6 +127,10 @@ class RailGraph:
             self._graph.add_edge(end, start, edge)
             if mode != "walk":
                 self._graph_without_walk_segments.add_edge(end, start, edge)
+
+        self._interchanges = Station.get_interchanges(
+            list(self._station_code_to_station.values())
+        )
 
         for interchange_substations in (
             self._interchanges
@@ -240,27 +245,15 @@ class RailGraph:
             start, end = vertices[0], vertices[1]
             transfers_[(start, end)] = transfer_details
 
-        station_coordinates = dict()
+        station_coordinates: dict[str, Coordinates] = dict()
         with open(coordinates_path, "r") as f:
             csv_reader = csv.reader(f)
             next(csv_reader)  # Skip column headers.
             for row in csv_reader:
-                station_coordinates[row[0]] = float(row[2]), float(row[3])
+                station_coordinates[row[0]] = Coordinates(float(row[2]), float(row[3]))
 
         # Assign coordinates to missing/future/pseudo station codes.
-        equivalent_station_code_pairs = (
-            ("CG", "EW4"),
-            ("TE33", "CG2"),
-            ("TE34", "CG1"),
-            ("TE35", "EW4"),
-            ("CC33", "CE2"),
-            ("CC34", "CE1"),
-            ("CE0X", "CC6"),
-            ("CE0Y", "CC5"),
-            ("CE0Z", "CC4"),
-            ("JE0", "JS3"),
-        )
-        for code1, code2 in equivalent_station_code_pairs:
+        for code1, code2 in Station.equivalent_station_code_pairs:
             station_coordinates[code1] = station_coordinates[code2]
 
         return cls(
@@ -300,7 +293,7 @@ class RailGraph:
                 int: Time cost in seconds.
             """
             (
-                next_travel_time,
+                next_edge_duration,
                 next_edge_type,
                 next_edge_mode,
                 next_dwell_time,
@@ -326,7 +319,7 @@ class RailGraph:
             _ = previous_edge_mode
             _ = previous_dwell_time
 
-            cost = next_travel_time
+            cost = next_edge_duration
             if (
                 next_edge_mode == "walk"
             ):  # Walking away from station -> Not waiting for train to depart.
@@ -341,7 +334,7 @@ class RailGraph:
                 if (
                     (current_station, next_station) in self.transfers
                 ):  # Exclude transfer time for transfers at start or end of journey.
-                    cost -= next_travel_time
+                    cost -= next_edge_duration
                     if (
                         next_station == end
                     ):  # Exclude dwell time for transfer at end of journey.
@@ -353,8 +346,8 @@ class RailGraph:
 
     def find_shortest_path(
         self,
-        start: str,
-        end: str,
+        start_station_code: str,
+        end_station_code: str,
         walk: bool = False,
     ) -> PathInfo:
         """Find shortest path between 2 stations `start` and `end`.
@@ -362,8 +355,8 @@ class RailGraph:
         Pseudo station codes like "CE0Y" are considered invalid.
 
         Args:
-            start (str): Station code of station to start from.
-            end (str): Station code of station to arrive at.
+            start_station_code (str): Station code of station to start from.
+            end_station_code (str): Station code of station to arrive at.
             walk (bool): Allow station transfers by walking.
 
         Raises:
@@ -372,16 +365,18 @@ class RailGraph:
         Returns:
             PathInfo: Shortest path between 2 stations `start` and `end`.
         """
-        for station_code in (start, end):
-            _, station_number, _ = Station.to_station_code_components(station_code)
-            if station_number == 0:  # Reject pseudo station codes.
+        for station_code in (start_station_code, end_station_code):
+            station = self._station_code_to_station.get(station_code, None)
+            if station is None:
+                raise ValueError(f"Station code not found: {station_code}")
+            if station.has_pseudo_station_code:
                 raise ValueError(f"Pseudo station code not allowed: {station_code}")
 
         pathinfo = find_path(
             self._graph if walk else self._graph_without_walk_segments,
-            start,
-            end,
-            cost_func=self._cost_func(start, end),
+            start_station_code,
+            end_station_code,
+            cost_func=self._cost_func(start_station_code, end_station_code),
         )
         logger.info("%s", pathinfo)
         return pathinfo
@@ -399,39 +394,62 @@ class RailGraph:
             raise ValueError("At least 2 stations needed for journey.")
         status = "at_station"  # at_station | in_train | walking
         steps: list[str] = [
-            f"Start at {self._stations[pathinfo.nodes[0]].full_station_name}"
+            f"Start at {self._station_code_to_station[pathinfo.nodes[0]].full_station_name}"
         ]
-        for edge_idx, (u, v, edge_details) in enumerate(
-            zip(pathinfo.nodes[:-1], pathinfo.nodes[1:], pathinfo.edges)
-        ):
+        for edge_idx, (
+            current_station_code,
+            next_station_code,
+            edge_details,
+        ) in enumerate(zip(pathinfo.nodes[:-1], pathinfo.nodes[1:], pathinfo.edges)):
+            current_station = self._station_code_to_station[current_station_code]
+            next_station = self._station_code_to_station[next_station_code]
             at_pseudo_station = (
-                self._stations[u].has_pseudo_station_code
-                or self._stations[v].has_pseudo_station_code
+                current_station.has_pseudo_station_code
+                or next_station.has_pseudo_station_code
             )
-            u_ = self._stations[u].real_station_code
-            v_ = self._stations[v].real_station_code
+            current_station_full_name = current_station.full_station_name
+            next_station_full_name = next_station.full_station_name
+
+            def get_terminal_full_station_name() -> str | None:
+                terminal_station: Station | None = self._station_code_to_station.get(
+                    Terminal.get_terminal(
+                        self._graph, current_station_code, next_station_code
+                    ),
+                    None,
+                )
+                return (
+                    None
+                    if terminal_station is None
+                    else terminal_station.full_station_name
+                )
+
             if status == "walking":
                 if edge_details[2] == "walk":  # Walk to the next station.
                     # Replace previous walking step with this walking step, effectively merging both steps into one step.
                     # Instead of A -> walk -> B -> walk -> C, do A -> walk -> C instead.
                     steps.pop()
-                    steps.append(f"Walk to {self._stations[v_].full_station_name}")
+                    steps.append(f"Walk to {next_station_full_name}")
                     status = "walking"
                 else:
-                    terminal: str | None = Terminal.get_terminal(self._graph, u, v)
+                    terminal_full_station_name: str | None = (
+                        get_terminal_full_station_name()
+                    )
                     steps.append(
-                        f"Board train in direction of {self._stations[v_].full_station_name}"  # Unusual terminal. Use next station instead.
-                        if terminal is None
-                        else f"Board train towards terminus {self._stations[terminal].full_station_name}"
+                        f"Board train in direction of {next_station_full_name}"  # Unusual terminal. Use next station instead.
+                        if terminal_full_station_name is None
+                        else f"Board train towards terminus {terminal_full_station_name}"
                     )
                     status = "in_train"
             elif status == "at_station":
-                if (u, v) in self.transfers:  # Interchange transfer.
+                if (
+                    current_station_code,
+                    next_station_code,
+                ) in self.transfers:  # Interchange transfer.
                     steps.append(
-                        f"{'Switch over at' if at_pseudo_station else 'Transfer to'} {self._stations[v_].full_station_name}"
+                        f"{'Switch over at' if at_pseudo_station else 'Transfer to'} {next_station_full_name}"
                     )
                 elif edge_details[2] == "walk":  # Walk to the next station.
-                    steps.append(f"Walk to {self._stations[v_].full_station_name}")
+                    steps.append(f"Walk to {next_station_full_name}")
                     status = "walking"
                 elif (
                     0 < edge_idx
@@ -445,23 +463,28 @@ class RailGraph:
                         % pathinfo
                     )
                 else:  # Board a train.
-                    terminal: str | None = Terminal.get_terminal(self._graph, u, v)
+                    terminal_full_station_name: str | None = (
+                        get_terminal_full_station_name()
+                    )
                     steps.append(
-                        f"Board train in direction of {self._stations[v_].full_station_name}"  # Unusual terminal. Use next station instead.
-                        if terminal is None
-                        else f"Board train towards terminus {self._stations[terminal].full_station_name}"
+                        f"Board train in direction of {next_station_full_name}"  # Unusual terminal. Use next station instead.
+                        if terminal_full_station_name is None
+                        else f"Board train towards terminus {terminal_full_station_name}"
                     )
                     status = "in_train"
             elif status == "in_train":
-                if (u, v) in self.transfers:  # Interchange transfer.
-                    steps.append(f"Alight at {self._stations[u_].full_station_name}")
+                if (
+                    current_station_code,
+                    next_station_code,
+                ) in self.transfers:  # Interchange transfer.
+                    steps.append(f"Alight at {current_station_full_name}")
                     steps.append(
-                        f"{'Switch over at' if at_pseudo_station else 'Transfer to'} {self._stations[v_].full_station_name}"
+                        f"{'Switch over at' if at_pseudo_station else 'Transfer to'} {next_station_full_name}"
                     )
                     status = "at_station"
                 elif edge_details[2] == "walk":  # Walk to the next station.
-                    steps.append(f"Alight at {self._stations[u_].full_station_name}")
-                    steps.append(f"Walk to {self._stations[v_].full_station_name}")
+                    steps.append(f"Alight at {current_station_full_name}")
+                    steps.append(f"Walk to {next_station_full_name}")
                     status = "walking"
                 elif (
                     0 < edge_idx
@@ -469,20 +492,20 @@ class RailGraph:
                         pathinfo.edges[edge_idx - 1][1], pathinfo.edges[edge_idx][1]
                     )
                 ):  # Conditional interchange transfer
-                    steps.append(
-                        f"Switch over at {self._stations[u_].full_station_name}"
+                    steps.append(f"Switch over at {current_station_full_name}")
+                    terminal_full_station_name: str | None = (
+                        get_terminal_full_station_name()
                     )
-                    terminal: str | None = Terminal.get_terminal(self._graph, u, v)
                     steps.append(
-                        f"Board train in direction of {self._stations[v_].full_station_name}"  # Unusual terminal. Use next station instead.
-                        if terminal is None
-                        else f"Board train towards terminus {self._stations[terminal].full_station_name}"
+                        f"Board train in direction of {next_station_full_name}"  # Unusual terminal. Use next station instead.
+                        if terminal_full_station_name is None
+                        else f"Board train towards terminus {terminal_full_station_name}"
                     )
                     status = "in_train"
         if steps and steps[-1].startswith("Switch over"):
             steps.pop()  # Special case: Final edge is interchange transfer from pseudo station like JE0 -> JS3.
         if status == "in_train":
-            steps.append(f"Alight at {self._stations[v_].full_station_name}")
+            steps.append(f"Alight at {next_station_full_name}")
         steps.append(
             f"""Total duration: {pathinfo.total_cost // 60} minutes {pathinfo.total_cost % 60} seconds"""
         )
@@ -513,16 +536,15 @@ class RailGraph:
         nodes = pathinfo.nodes
         if len(nodes) < 2:
             raise ValueError("At least 2 stations needed for journey.")
-        lat1, lon1 = self._station_coordinates[nodes[0]]
-        lat2, lon2 = self._station_coordinates[nodes[-1]]
-        haversine_distance: float = GeographicUtils.haversine_distance(
-            lat1, lon1, lat2, lon2
+        haversine_distance: float = Coordinates.haversine_distance(
+            self._station_coordinates[nodes[0]], self._station_coordinates[nodes[-1]]
         )
         path_distance: float = 0
         for current_node, next_node in zip(nodes[:-1], nodes[1:]):
-            lat1, lon1 = self._station_coordinates[current_node]
-            lat2, lon2 = self._station_coordinates[next_node]
-            path_distance += GeographicUtils.haversine_distance(lat1, lon1, lat2, lon2)
+            path_distance += Coordinates.haversine_distance(
+                self._station_coordinates[current_node],
+                self._station_coordinates[next_node],
+            )
 
         logger.info(
             "Approximate path distance: %.3f km, Haversine distance: %.3f km, Circuity ratio: %.2f",

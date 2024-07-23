@@ -22,35 +22,52 @@ import types
 from collections import OrderedDict, defaultdict
 
 
-class StationUtils:
-    pseudo_station_codes: types.MappingProxyType[str, str] = types.MappingProxyType(
-        {
-            "CE0X": "CC6",
-            "CE0Y": "CC5",
-            "CE0Z": "CC4",
-            "JE0": "JS3",
-        }
-    )  # For temporary Circle Line Extension and Jurong Region Line East Branch.
-
-
 @dataclasses.dataclass(frozen=True)
 class Station:
     station_code: str
     station_name: str
 
-    real_station_code: str = dataclasses.field(init=False)
-    full_station_name: str = dataclasses.field(init=False)
-    line_code: str = dataclasses.field(init=False)
-    station_number: int = dataclasses.field(init=False)
-    station_number_suffix: str = dataclasses.field(init=False)
-    has_pseudo_station_code: bool = dataclasses.field(init=False)
+    # The following fields are excluded from hashing.
+    real_station_code: str = dataclasses.field(compare=False, init=False)
+    full_station_name: str = dataclasses.field(compare=False, init=False)
+    line_code: str = dataclasses.field(compare=False, init=False)
+    station_number: int = dataclasses.field(compare=False, init=False)
+    station_number_suffix: str = dataclasses.field(compare=False, init=False)
+    has_pseudo_station_code: bool = dataclasses.field(compare=False, init=False)
 
-    ___match_expr: re.Pattern[str] = re.compile(
-        r"^([A-Z]{2})([0-9]|[1-9][0-9]?)([A-Z]?)$", re.ASCII
+    ___match_expr: re.Pattern[str] = dataclasses.field(
+        compare=False,
+        default=re.compile(r"^([A-Z]{2})([0-9]|[1-9][0-9]?)([A-Z]?)$", re.ASCII),
+    )
+
+    pseudo_station_codes: types.MappingProxyType[str, str] = dataclasses.field(
+        compare=False,
+        default=types.MappingProxyType(
+            {
+                "CE0X": "CC6",
+                "CE0Y": "CC5",
+                "CE0Z": "CC4",
+                "JE0": "JS3",
+            }
+        ),
+    )  # For temporary Circle Line Extension and Jurong Region Line East Branch.
+
+    # Missing/future/pseudo station codes.
+    equivalent_station_code_pairs = (
+        ("CG", "EW4"),
+        ("TE33", "CG2"),
+        ("TE34", "CG1"),
+        ("TE35", "EW4"),
+        ("CC33", "CE2"),
+        ("CC34", "CE1"),
+        ("CE0X", "CC6"),
+        ("CE0Y", "CC5"),
+        ("CE0Z", "CC4"),
+        ("JE0", "JS3"),
     )
 
     def __post_init__(self):
-        real_station_code = StationUtils.pseudo_station_codes.get(
+        real_station_code = self.pseudo_station_codes.get(
             self.station_code, self.station_code
         )
         line_code, station_number, station_number_suffix = (
@@ -66,7 +83,7 @@ class Station:
         object.__setattr__(
             self,
             "has_pseudo_station_code",
-            self.station_code in StationUtils.pseudo_station_codes,
+            self.station_code in self.pseudo_station_codes,
         )
 
     @classmethod

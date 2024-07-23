@@ -22,6 +22,7 @@ trip_15.input = { start = "EW13", end = "DT18", network = "tel_4", walk = true }
 trip_16.input = { start = "DT23", end = "CC3", network = "tel_4", walk = true } # $ _ $$ walk $$ _ $
 trip_17.input = { start = "NE5", end = "CC2", network = "tel_4", walk = true } # $ _ $$ walk $ walk $
 
+trip_95.input = { start = "SE3", end = "SE5", network = "sklrt_east_loop", walk = false }
 trip_96.input = { start = "EW23", end = "BP14", network = "bplrt", walk = false }
 trip_97.input = { start = "JE5", end = "JS3", network = "jrl_3", walk = false }
 trip_98.input = { start = "TE26", end = "NE14", network = "tel_4", walk = false }
@@ -188,6 +189,15 @@ total_cost = 628
 path_distance = 2045.6381323781065
 haversine_distance = 1048.6397897137483
 directions = ["Start at NE5 Clarke Quay", "Board train towards terminus NE17 Punggol", "Alight at NE6 Dhoby Ghaut", "Walk to CC2 Bras Basah", "Total duration: 10 minutes 28 seconds", "Approximate path distance: 2.0 km, Haversine distance: 1.0 km, Circuity ratio: 2.0"]
+
+[trip_95.output]
+nodes = ["SE3", "SE4", "SE5"]
+edges = [[60, "", "", 28], [120, "", "", 28]]
+costs = [88, 148]
+total_cost = 236
+path_distance = 1133.223001501265
+haversine_distance = 1006.0874489645482
+directions = ["Start at SE3 Bakau", "Board train in direction of SE4 Kangkar", "Alight at SE5 Ranggung", "Total duration: 3 minutes 56 seconds", "Approximate path distance: 1.1 km, Haversine distance: 1.0 km, Circuity ratio: 1.1"]
 
 [trip_96.output]
 nodes = ["EW23", "EW24", "NS1", "NS2", "NS3", "NS4", "BP1", "BP2", "BP3", "BP4", "BP5", "BP6", "BP14"]

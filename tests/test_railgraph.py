@@ -21,7 +21,7 @@ import pytest
 import tomllib
 import tomlkit
 import warnings
-from dijkstar.algorithm import NoPathError, PathInfo
+from dijkstar.algorithm import PathInfo, NoPathError
 
 from railrailrail.railgraph import RailGraph
 
@@ -146,8 +146,20 @@ class TestRailGraph:
                 expected_pathinfo.total_cost == actual_pathinfo.total_cost
             ), f"{start}-{end} | Expected {expected_pathinfo.total_cost}. Got {actual_pathinfo.total_cost}."
 
-            with pytest.raises(NoPathError):
+            with pytest.raises(ValueError):
                 rail_graph.find_shortest_path("AA1", "BB2")
+
+            if trip_details["input"]["network"] == "sklrt_east_loop":
+                with pytest.raises(NoPathError):
+                    rail_graph.find_shortest_path(
+                        "NS4", "SE5"
+                    )  # Sengkang East Loop was isolated.
+
+            if trip_details["input"]["network"] == "tel_4":
+                with pytest.raises(ValueError):
+                    rail_graph.find_shortest_path(
+                        "EW6", "CE0Y"
+                    )  # Sengkang East Loop was isolated.
 
     def test_make_directions(self):
         for trip, trip_details in self.trips.items():

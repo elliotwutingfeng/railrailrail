@@ -14,35 +14,47 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+from __future__ import annotations
+
+import dataclasses
 from math import atan2, cos, radians, sin, sqrt
 
 
-class GeographicUtils:
+@dataclasses.dataclass(frozen=True)
+class Coordinates:
+    latitude: float
+    longitude: float
+
+    latitude_radians: float = dataclasses.field(init=False)
+    longitude_radians: float = dataclasses.field(init=False)
+
     # Earth radius from World Geodetic System 1984 (WGS 84)
     # Department of Defense World Geodetic System 1984, Its Definition and Relationships With Local Geodetic Systems
     # (2014-07-08)
     # https://earth-info.nga.mil/php/download.php?file=coord-wgs84#.pdf
     __earth_radius_in_metres = 6378137
 
+    def __post_init__(self):
+        object.__setattr__(self, "latitude_radians", radians(self.latitude))
+        object.__setattr__(self, "longitude_radians", radians(self.longitude))
+
     @classmethod
     def haversine_distance(
-        cls, lat1: float, lon1: float, lat2: float, lon2: float
+        cls, initial_coord: Coordinates, final_coord: Coordinates
     ) -> float:
         """Great-circle (shortest) distance between 2 points on Earth in metres.
 
         Args:
-            lat1 (float): Latitude of first point in decimal degrees.
-            lon1 (float): Longitude of first point in decimal degrees.
-            lat2 (float): Latitude of second point in decimal degrees.
-            lon2 (float): Longitude of second point in decimal degrees.
+            initial_coord (float): Coordinates of of initial point in decimal degrees.
+            final_coord (float): Coordinates of final point in decimal degrees.
 
         Returns:
             float: Shortest distance between 2 points in metres.
         """
-        lat1 = radians(lat1)
-        lon1 = radians(lon1)
-        lat2 = radians(lat2)
-        lon2 = radians(lon2)
+        lat1 = initial_coord.latitude_radians
+        lon1 = initial_coord.longitude_radians
+        lat2 = final_coord.latitude_radians
+        lon2 = final_coord.longitude_radians
 
         dlon = lon2 - lon1
         dlat = lat2 - lat1

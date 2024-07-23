@@ -14,16 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from railrailrail.utils import GeographicUtils
+from railrailrail.utils import Coordinates
 
 
-class TestGeographicUtils:
+class TestCoordinates:
     def test_haversine_distance(self):
         # Bukit Timah Hill Summit to Singapore Parliament House
         assert (
             int(
-                GeographicUtils.haversine_distance(
-                    1.354681, 103.776375, 1.2891, 103.8504
+                Coordinates.haversine_distance(
+                    Coordinates(1.354681, 103.776375), Coordinates(1.2891, 103.8504)
                 )
             )
             == 11007
