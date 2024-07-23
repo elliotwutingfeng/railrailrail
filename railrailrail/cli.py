@@ -63,7 +63,7 @@ def parse_args(args: list[str]) -> Namespace:
 
     parser.add_argument(
         "--network",
-        choices=["now"] + list(Stage.stages),
+        choices=["now", *Stage.stages],
         default="now",
         help="Choose from train network as it appears today (default), or as it would be at any specified future stage.",
     )

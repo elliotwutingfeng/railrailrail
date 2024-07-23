@@ -14,8 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import types
-
 from dijkstar import Graph
 
 from railrailrail.dataset.station import Station
@@ -35,15 +33,6 @@ class Terminal:
             "SW",
         )
     )  # These lines all terminate at one station like JS1, except for BPLRT (Service A/B -> BP1, Service C -> BP14).
-
-    pseudo_stations: types.MappingProxyType = types.MappingProxyType(
-        {
-            "CE0X": "CC6",
-            "CE0Y": "CC5",
-            "CE0Z": "CC4",
-            "JE0": "JS3",
-        }
-    )  # For temporary Circle Line Extension and Jurong Region Line East Branch.
 
     @classmethod
     def get_terminal(cls, graph: Graph, start: str, end: str) -> str | None:
@@ -67,12 +56,14 @@ class Terminal:
         next_node = start
         while True:
             node_and_neighbours = sorted(
-                list(
-                    node
-                    for node in graph.get_incoming(next_node)
-                    if node[:2] == start_line_code
-                )
-                + [next_node],
+                [
+                    *(
+                        node
+                        for node in graph.get_incoming(next_node)
+                        if node[:2] == start_line_code
+                    ),
+                    next_node,
+                ],
                 key=Station.to_station_code_components,
             )
             next_node_index = node_and_neighbours.index(next_node) + (

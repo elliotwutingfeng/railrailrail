@@ -18,7 +18,19 @@ from __future__ import annotations
 
 import dataclasses
 import re
+import types
 from collections import OrderedDict, defaultdict
+
+
+class StationUtils:
+    pseudo_station_codes: types.MappingProxyType[str, str] = types.MappingProxyType(
+        {
+            "CE0X": "CC6",
+            "CE0Y": "CC5",
+            "CE0Z": "CC4",
+            "JE0": "JS3",
+        }
+    )  # For temporary Circle Line Extension and Jurong Region Line East Branch.
 
 
 @dataclasses.dataclass(frozen=True)
@@ -31,17 +43,19 @@ class Station:
     line_code: str = dataclasses.field(init=False)
     station_number: int = dataclasses.field(init=False)
     station_number_suffix: str = dataclasses.field(init=False)
-    is_pseudo_station_code: bool = dataclasses.field(init=False)
+    has_pseudo_station_code: bool = dataclasses.field(init=False)
 
     ___match_expr: re.Pattern[str] = re.compile(
         r"^([A-Z]{2})([0-9]|[1-9][0-9]?)([A-Z]?)$", re.ASCII
     )
 
     def __post_init__(self):
-        real_station_code = self.station_code  # TODO Add mapping.
+        real_station_code = StationUtils.pseudo_station_codes.get(
+            self.station_code, self.station_code
+        )
         line_code, station_number, station_number_suffix = (
             self.to_station_code_components(self.station_code)
-        )
+        )  # Based on pseudo station code, if any.
         object.__setattr__(self, "real_station_code", real_station_code)
         object.__setattr__(
             self, "full_station_name", f"{real_station_code} {self.station_name}"
@@ -49,7 +63,11 @@ class Station:
         object.__setattr__(self, "line_code", line_code)
         object.__setattr__(self, "station_number", int(station_number))
         object.__setattr__(self, "station_number_suffix", station_number_suffix)
-        object.__setattr__(self, "is_pseudo_station_code", station_number == 0)
+        object.__setattr__(
+            self,
+            "has_pseudo_station_code",
+            self.station_code in StationUtils.pseudo_station_codes,
+        )
 
     @classmethod
     def to_station_code_components(cls, station_code: str) -> tuple[str, int, str]:
@@ -88,7 +106,7 @@ class Station:
 
     @classmethod
     def get_interchanges(cls, stations: list[Station]) -> tuple[set[Station]]:
-        """Group stations by interchange. Non-interchange station codes are excluded.
+        """Group stations by interchange. Non-interchange stations are excluded.
 
         Args:
             stations (list[Station]): Stations to be grouped.
@@ -124,7 +142,7 @@ class Station:
         """
         terminals: set[str] = set()
 
-        bi_directional_adjacency_matrix = defaultdict(OrderedDict)
+        bi_directional_adjacency_matrix = defaultdict(dict)
         for station_code in adjacency_matrix:
             for next_station_code in adjacency_matrix[station_code]:
                 bi_directional_adjacency_matrix[station_code][next_station_code] = None

@@ -405,11 +405,11 @@ class RailGraph:
             zip(pathinfo.nodes[:-1], pathinfo.nodes[1:], pathinfo.edges)
         ):
             at_pseudo_station = (
-                self._stations[u].is_pseudo_station_code
-                or self._stations[v].is_pseudo_station_code
+                self._stations[u].has_pseudo_station_code
+                or self._stations[v].has_pseudo_station_code
             )
-            u_ = Terminal.pseudo_stations.get(u, u)
-            v_ = Terminal.pseudo_stations.get(v, v)
+            u_ = self._stations[u].real_station_code
+            v_ = self._stations[v].real_station_code
             if status == "walking":
                 if edge_details[2] == "walk":  # Walk to the next station.
                     # Replace previous walking step with this walking step, effectively merging both steps into one step.
@@ -422,7 +422,7 @@ class RailGraph:
                     steps.append(
                         f"Board train in direction of {self._stations[v_].full_station_name}"  # Unusual terminal. Use next station instead.
                         if terminal is None
-                        else f"Board train towards terminus {Terminal.pseudo_stations.get(terminal, terminal)} {self._stations[terminal].station_name}"
+                        else f"Board train towards terminus {self._stations[terminal].full_station_name}"
                     )
                     status = "in_train"
             elif status == "at_station":
@@ -449,7 +449,7 @@ class RailGraph:
                     steps.append(
                         f"Board train in direction of {self._stations[v_].full_station_name}"  # Unusual terminal. Use next station instead.
                         if terminal is None
-                        else f"Board train towards terminus {Terminal.pseudo_stations.get(terminal, terminal)} {self._stations[terminal].station_name}"
+                        else f"Board train towards terminus {self._stations[terminal].full_station_name}"
                     )
                     status = "in_train"
             elif status == "in_train":
@@ -476,7 +476,7 @@ class RailGraph:
                     steps.append(
                         f"Board train in direction of {self._stations[v_].full_station_name}"  # Unusual terminal. Use next station instead.
                         if terminal is None
-                        else f"Board train towards terminus {Terminal.pseudo_stations.get(terminal, terminal)} {self._stations[terminal].station_name}"
+                        else f"Board train towards terminus {self._stations[terminal].full_station_name}"
                     )
                     status = "in_train"
         if steps and steps[-1].startswith("Switch over"):
