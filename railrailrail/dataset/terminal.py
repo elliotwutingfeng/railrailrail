@@ -14,35 +14,73 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+from collections import OrderedDict, defaultdict
+
 from dijkstar import Graph
 
 from railrailrail.dataset.station import Station
 
 
 class Terminal:
-    __looped_lines = frozenset(
-        (
-            "BP",
-            "JS",
-            "JW",
-            "PE",
-            "PTC",
-            "PW",
-            "SE",
-            "STC",
-            "SW",
-        )
-    )  # These lines all terminate at one station like JS1, except for BPLRT (Service A/B -> BP1, Service C -> BP14).
+    __looped_line_code_to_terminals: dict[str, set[str]] = {
+        "BP": {"BP1", "BP14"},
+        "JS": {"JS1"},
+        "JW": {"JS1"},
+        "PE": {"PTC"},
+        "PTC": {"PTC"},
+        "PW": {"PTC"},
+        "SE": {"STC"},
+        "STC": {"STC"},
+        "SW": {"STC"},
+    }
+    # These lines all terminate at one station like JS1, except for BPLRT (Service A/B -> BP1, Service C -> BP14).
 
     @classmethod
-    def get_terminal(cls, graph: Graph, start: str, end: str) -> str | None:
+    def get_terminals(
+        cls, adjacency_matrix: defaultdict[str, OrderedDict[str, dict]]
+    ) -> set[str]:
+        """Identify terminal stations from a uni-directional adjacency matrix by counting their neighbours.
+        Stations with purely alphabetic station codes will be identified as terminals.
+
+        Args:
+            adjacency_matrix (defaultdict[str, OrderedDict[str, dict]]): Uni-directional adjacency matrix
+            of station codes linked in ascending order.
+
+        Returns:
+            set[str]: Terminal station codes.
+        """
+        terminals: set[str] = set()
+
+        bi_directional_adjacency_matrix = defaultdict(dict)
+        for station_code in adjacency_matrix:
+            for next_station_code in adjacency_matrix[station_code]:
+                bi_directional_adjacency_matrix[station_code][next_station_code] = None
+                bi_directional_adjacency_matrix[next_station_code][station_code] = None
+
+        for station_code, neighbours in bi_directional_adjacency_matrix.items():
+            # Stations with less than 2 neighbours are terminals.
+            # Stations with purely alphabetic station codes will be identified as terminals.
+            line_code, _, _ = Station.to_station_code_components(station_code)
+            if line_code in cls.__looped_line_code_to_terminals:
+                if station_code in cls.__looped_line_code_to_terminals[line_code]:
+                    terminals.add(station_code)
+            elif (
+                len(neighbours) < 2
+                or Station.to_station_code_components(station_code)[1] == -1
+            ):
+                terminals.add(station_code)
+
+        return terminals
+
+    @classmethod
+    def get_approaching_terminal(cls, graph: Graph, start: str, end: str) -> str | None:
         if start == end:
             raise ValueError(f"start and end must be different. Got {start} and {end}")
         start_station_code_components = Station.to_station_code_components(start)
         end_station_code_components = Station.to_station_code_components(end)
         start_line_code, _, _ = start_station_code_components
         end_line_code, _, _ = end_station_code_components
-        if start_line_code in cls.__looped_lines or (
+        if start_line_code in cls.__looped_line_code_to_terminals or (
             start_line_code == "CC" and "CC34" in graph
         ):
             # Circle Line becomes a looped line at Stage 6.

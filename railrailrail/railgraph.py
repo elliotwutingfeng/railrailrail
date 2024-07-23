@@ -72,11 +72,11 @@ class RailGraph:
         self.__check_graph_params(stations, default_transfer_time, default_dwell_time)
 
         self.transfers = transfers
-        self._station_code_to_station = {
+        self.station_code_to_station = {
             station_code: Station(station_code, station_name)
             for station_code, station_name in stations.items()
         }
-        self._station_coordinates = station_coordinates
+        self.station_coordinates = station_coordinates
         self.default_transfer_time = default_transfer_time
         self.default_dwell_time = default_dwell_time
 
@@ -86,7 +86,7 @@ class RailGraph:
 
         for (start, end), segment_details in segments.items():
             for station_code in (start, end):
-                if station_code not in self._station_code_to_station:
+                if station_code not in self.station_code_to_station:
                     raise ValueError(
                         f"Station {station_code} in segment {start}-{end} does not have a name."
                     )
@@ -101,8 +101,12 @@ class RailGraph:
 
             edge_type = segment_details.get("edge_type", "")
             mode = segment_details.get("mode", "")
-            dwell_time_asc = segment_details.get("dwell_time_asc", 0)
-            dwell_time_desc = segment_details.get("dwell_time_asc", 0)
+            dwell_time_asc = segment_details.get(
+                "dwell_time_asc", self.default_dwell_time
+            )
+            dwell_time_desc = segment_details.get(
+                "dwell_time_desc", self.default_dwell_time
+            )
 
             is_ascending: bool = Station.to_station_code_components(
                 start
@@ -129,7 +133,7 @@ class RailGraph:
                 self._graph_without_walk_segments.add_edge(end, start, edge)
 
         self._interchanges = Station.get_interchanges(
-            list(self._station_code_to_station.values())
+            list(self.station_code_to_station.values())
         )
 
         for interchange_substations in (
@@ -214,11 +218,11 @@ class RailGraph:
             raise ValueError("Invalid config file: 'segments' must not be empty.")
 
         segments_ = dict()
-        for segment, segment_details in segments.items():
-            vertices = segment.split("-", 2)
+        for segment_link, segment_details in segments.items():
+            vertices = segment_link.split("-", 2)
             if len(vertices) != 2:
                 raise ValueError(
-                    f"Invalid config file: Segment must be in format 'AB1-AB2'. Got {segment}."
+                    f"Invalid config file: Segment link must be in format 'AB1-AB2'. Got {segment_link}."
                 )
             if not isinstance(segment_details, dict):
                 raise ValueError("Invalid config file: Segment details must be a dict.")
@@ -366,7 +370,7 @@ class RailGraph:
             PathInfo: Shortest path between 2 stations `start` and `end`.
         """
         for station_code in (start_station_code, end_station_code):
-            station = self._station_code_to_station.get(station_code, None)
+            station = self.station_code_to_station.get(station_code, None)
             if station is None:
                 raise ValueError(f"Station code not found: {station_code}")
             if station.has_pseudo_station_code:
@@ -394,15 +398,15 @@ class RailGraph:
             raise ValueError("At least 2 stations needed for journey.")
         status = "at_station"  # at_station | in_train | walking
         steps: list[str] = [
-            f"Start at {self._station_code_to_station[pathinfo.nodes[0]].full_station_name}"
+            f"Start at {self.station_code_to_station[pathinfo.nodes[0]].full_station_name}"
         ]
         for edge_idx, (
             current_station_code,
             next_station_code,
             edge_details,
         ) in enumerate(zip(pathinfo.nodes[:-1], pathinfo.nodes[1:], pathinfo.edges)):
-            current_station = self._station_code_to_station[current_station_code]
-            next_station = self._station_code_to_station[next_station_code]
+            current_station = self.station_code_to_station[current_station_code]
+            next_station = self.station_code_to_station[next_station_code]
             at_pseudo_station = (
                 current_station.has_pseudo_station_code
                 or next_station.has_pseudo_station_code
@@ -411,8 +415,8 @@ class RailGraph:
             next_station_full_name = next_station.full_station_name
 
             def get_terminal_full_station_name() -> str | None:
-                terminal_station: Station | None = self._station_code_to_station.get(
-                    Terminal.get_terminal(
+                terminal_station: Station | None = self.station_code_to_station.get(
+                    Terminal.get_approaching_terminal(
                         self._graph, current_station_code, next_station_code
                     ),
                     None,
@@ -537,13 +541,13 @@ class RailGraph:
         if len(nodes) < 2:
             raise ValueError("At least 2 stations needed for journey.")
         haversine_distance: float = Coordinates.haversine_distance(
-            self._station_coordinates[nodes[0]], self._station_coordinates[nodes[-1]]
+            self.station_coordinates[nodes[0]], self.station_coordinates[nodes[-1]]
         )
         path_distance: float = 0
         for current_node, next_node in zip(nodes[:-1], nodes[1:]):
             path_distance += Coordinates.haversine_distance(
-                self._station_coordinates[current_node],
-                self._station_coordinates[next_node],
+                self.station_coordinates[current_node],
+                self.station_coordinates[next_node],
             )
 
         logger.info(

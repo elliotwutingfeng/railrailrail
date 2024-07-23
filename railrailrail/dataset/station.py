@@ -19,7 +19,22 @@ from __future__ import annotations
 import dataclasses
 import re
 import types
-from collections import OrderedDict, defaultdict
+from collections import defaultdict
+
+
+class StationUtils:
+    pseudo_station_codes: types.MappingProxyType[str, str] = types.MappingProxyType(
+        {
+            "CE0X": "CC6",
+            "CE0Y": "CC5",
+            "CE0Z": "CC4",
+            "JE0": "JS3",
+        }
+    )  # For temporary Circle Line Extension and Jurong Region Line East Branch.
+
+    match_expr: re.Pattern[str] = re.compile(
+        r"^([A-Z]{2})([0-9]|[1-9][0-9]?)([A-Z]?)$", re.ASCII
+    )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -34,23 +49,6 @@ class Station:
     station_number: int = dataclasses.field(compare=False, init=False)
     station_number_suffix: str = dataclasses.field(compare=False, init=False)
     has_pseudo_station_code: bool = dataclasses.field(compare=False, init=False)
-
-    ___match_expr: re.Pattern[str] = dataclasses.field(
-        compare=False,
-        default=re.compile(r"^([A-Z]{2})([0-9]|[1-9][0-9]?)([A-Z]?)$", re.ASCII),
-    )
-
-    pseudo_station_codes: types.MappingProxyType[str, str] = dataclasses.field(
-        compare=False,
-        default=types.MappingProxyType(
-            {
-                "CE0X": "CC6",
-                "CE0Y": "CC5",
-                "CE0Z": "CC4",
-                "JE0": "JS3",
-            }
-        ),
-    )  # For temporary Circle Line Extension and Jurong Region Line East Branch.
 
     # Missing/future/pseudo station codes.
     equivalent_station_code_pairs = (
@@ -67,7 +65,7 @@ class Station:
     )
 
     def __post_init__(self):
-        real_station_code = self.pseudo_station_codes.get(
+        real_station_code = StationUtils.pseudo_station_codes.get(
             self.station_code, self.station_code
         )
         line_code, station_number, station_number_suffix = (
@@ -83,7 +81,7 @@ class Station:
         object.__setattr__(
             self,
             "has_pseudo_station_code",
-            self.station_code in self.pseudo_station_codes,
+            self.station_code in StationUtils.pseudo_station_codes,
         )
 
     @classmethod
@@ -111,7 +109,7 @@ class Station:
         ):
             return station_code, -1, ""
 
-        station_code_components_match = cls.___match_expr.match(station_code)
+        station_code_components_match = StationUtils.match_expr.match(station_code)
         if station_code_components_match is None:
             raise ValueError(f"Invalid station code: {station_code}")
         matcher_groups: tuple[str, str, str] = station_code_components_match.groups(
@@ -142,36 +140,3 @@ class Station:
             if len(stations) >= 2
         )
         return interchanges
-
-    @classmethod
-    def get_terminals(
-        cls, adjacency_matrix: defaultdict[str, OrderedDict[str, dict]]
-    ) -> set[str]:
-        """Identify terminal stations from a uni-directional adjacency matrix by counting their neighbours.
-        Stations with purely alphabetic station codes will be identified as terminals.
-
-        Args:
-            adjacency_matrix (defaultdict[str, OrderedDict[str, dict]]): Uni-directional adjacency matrix
-            of station codes linked in ascending order.
-
-        Returns:
-            set[str]: Terminal station codes.
-        """
-        terminals: set[str] = set()
-
-        bi_directional_adjacency_matrix = defaultdict(dict)
-        for station_code in adjacency_matrix:
-            for next_station_code in adjacency_matrix[station_code]:
-                bi_directional_adjacency_matrix[station_code][next_station_code] = None
-                bi_directional_adjacency_matrix[next_station_code][station_code] = None
-
-        for station_code, neighbours in bi_directional_adjacency_matrix.items():
-            # Stations with less than 2 neighbours are terminals.
-            # Stations with purely alphabetic station codes will be identified as terminals.
-            if (
-                len(neighbours) < 2
-                or cls.to_station_code_components(station_code)[1] == -1
-            ):
-                terminals.add(station_code)
-
-        return terminals

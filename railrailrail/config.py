@@ -27,6 +27,7 @@ from railrailrail.dataset.durations import Durations
 from railrailrail.dataset.dwell_time import DwellTime
 from railrailrail.dataset.stage import Stage
 from railrailrail.dataset.station import Station
+from railrailrail.dataset.terminal import Terminal
 from railrailrail.dataset.walking_train_map import WalkingTrainMap
 
 
@@ -77,27 +78,33 @@ class Config:
         Returns:
             defaultdict[str, OrderedDict[str, dict]]: Travel time adjacency matrix.
         """
-        stations: dict[str, str] = {
-            station.station_code: station.station_name for station in self.stations
+        station_code_to_station: dict[str, Station] = {
+            station.station_code: station for station in self.stations
         }
 
-        station_codes_by_line_code: defaultdict[str, OrderedDict[str, None]] = (
-            defaultdict(OrderedDict)
+        stations_by_line_code: defaultdict[str, set[Station]] = defaultdict(
+            set
         )  # Order is important as stations are almost always connected in sequential order.
-        for station_code in stations:  # Group stations by line.
-            line_code, _, _ = Station.to_station_code_components(station_code)
-            station_codes_by_line_code[line_code][station_code] = None
+        for station in self.stations:  # Group stations by line.
+            stations_by_line_code[station.line_code].add(station)
 
         # Uni-directionally link up all adjacent stations on same line based on the fact that most adjacent stations
         # are arranged by station code in sequential order (same line code and in ascending station number order).
         adjacency_matrix: defaultdict[str, OrderedDict[str, dict]] = defaultdict(
             OrderedDict
         )
-        for line_code in station_codes_by_line_code:
-            line_station_codes = sorted(
-                station_codes_by_line_code[line_code],
-                key=Station.to_station_code_components,
-            )
+        for stations in stations_by_line_code.values():
+            line_station_codes = [
+                station.station_code
+                for station in sorted(
+                    stations,
+                    key=lambda station: (
+                        station.line_code,
+                        station.station_number,
+                        station.station_number_suffix,
+                    ),
+                )
+            ]
             for station_code, next_station_code in zip(
                 line_station_codes[:-1], line_station_codes[1:]
             ):
@@ -114,7 +121,7 @@ class Config:
                 }
 
         # Add dwell time for each rail segment.
-        terminal_station_codes: set[str] = Station.get_terminals(adjacency_matrix)
+        terminal_station_codes: set[str] = Terminal.get_terminals(adjacency_matrix)
         interchange_station_codes: set[str] = {
             station.station_code
             for station in set().union(*Station.get_interchanges(self.stations))
@@ -159,18 +166,18 @@ class Config:
             conditional_interchange,
         ) in ConditionalInterchange.segments:
             # Skip conditional interchange segments made obsolete by new stations.
-            if (start, end) == ("STC", "SW2") and "SW1" in stations:
+            if (start, end) == ("STC", "SW2") and "SW1" in station_code_to_station:
                 continue
-            if (start, end) == ("STC", "SW4") and "SW2" in stations:
+            if (start, end) == ("STC", "SW4") and "SW2" in station_code_to_station:
                 continue
-            if (start, end) == ("PTC", "PE5") and "PE6" in stations:
+            if (start, end) == ("PTC", "PE5") and "PE6" in station_code_to_station:
                 continue
-            if (start, end) == ("PTC", "PE6") and "PE7" in stations:
+            if (start, end) == ("PTC", "PE6") and "PE7" in station_code_to_station:
                 continue
-            if (start, end) == ("PTC", "PW5") and "PW1" in stations:
+            if (start, end) == ("PTC", "PW5") and "PW1" in station_code_to_station:
                 continue
 
-            if start in stations and end in stations:
+            if start in station_code_to_station and end in station_code_to_station:
                 dwell_time_asc, dwell_time_desc = DwellTime.get_dwell_time(
                     terminal_station_codes,
                     interchange_station_codes.union(set([conditional_interchange])),

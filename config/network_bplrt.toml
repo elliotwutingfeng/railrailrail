@@ -76,14 +76,14 @@ BP3-BP4 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 BP4-BP5 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 BP5-BP6 = {duration = 60, edge_type = "bukit_panjang_main", dwell_time_asc = 28, dwell_time_desc = 45}
 BP6-BP7 = {duration = 60, edge_type = "bukit_panjang_service_b", dwell_time_asc = 45, dwell_time_desc = 28}
-BP6-BP13 = {duration = 120, edge_type = "bukit_panjang_service_a", dwell_time_asc = 45, dwell_time_desc = 60}
+BP6-BP13 = {duration = 120, edge_type = "bukit_panjang_service_a", dwell_time_asc = 45, dwell_time_desc = 28}
 BP6-BP14 = {duration = 60, edge_type = "bukit_panjang_service_c", dwell_time_asc = 45, dwell_time_desc = 28}
 BP7-BP8 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 BP8-BP9 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 BP9-BP10 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 BP10-BP11 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 BP11-BP12 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-BP12-BP13 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 60}
+BP12-BP13 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 EW1-EW2 = {duration = 180, dwell_time_asc = 60, dwell_time_desc = 28}
 EW2-EW3 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
 EW3-EW4 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}

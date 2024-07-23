@@ -38,6 +38,9 @@ class Coordinates:
         object.__setattr__(self, "latitude_radians", radians(self.latitude))
         object.__setattr__(self, "longitude_radians", radians(self.longitude))
 
+    def decimal_degree_pair(self) -> tuple[float, float]:
+        return self.latitude, self.longitude
+
     @classmethod
     def haversine_distance(
         cls, initial_coord: Coordinates, final_coord: Coordinates

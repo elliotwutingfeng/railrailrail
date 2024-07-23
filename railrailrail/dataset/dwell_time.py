@@ -46,39 +46,25 @@ class DwellTime:
         Returns:
             tuple[int, int]: Direction-specific dwell times; ascending and descending order of station codes.
         """
-        current_station_code_components = Station.to_station_code_components(
+        is_ascending: bool = Station.to_station_code_components(
             current_station
-        )
-        next_station_code_components = Station.to_station_code_components(next_station)
-        is_ascending: bool = (
-            current_station_code_components < next_station_code_components
-        )
+        ) < Station.to_station_code_components(next_station)
+        smaller = current_station if is_ascending else next_station
+        larger = next_station if is_ascending else current_station
 
         dwell_time_asc = cls.non_interchange
         dwell_time_desc = cls.non_interchange
 
         # Check if station is interchange.
-        if current_station in interchange_station_codes:
-            if is_ascending:
-                dwell_time_asc = cls.interchange
-            else:
-                dwell_time_desc = cls.interchange
-        if next_station in interchange_station_codes:
-            if is_ascending:
-                dwell_time_desc = cls.interchange
-            else:
-                dwell_time_asc = cls.interchange
+        if smaller in interchange_station_codes:
+            dwell_time_asc = max(dwell_time_asc, cls.interchange)
+        if larger in interchange_station_codes:
+            dwell_time_desc = max(dwell_time_desc, cls.interchange)
 
         # Check if station is terminal.
-        if current_station in terminal_station_codes:
-            if is_ascending:
-                dwell_time_asc = cls.terminal
-            else:
-                dwell_time_desc = cls.terminal
-        if next_station in terminal_station_codes:
-            if is_ascending:
-                dwell_time_desc = cls.terminal
-            else:
-                dwell_time_asc = cls.terminal
+        if smaller in terminal_station_codes:
+            dwell_time_asc = max(dwell_time_asc, cls.terminal)
+        if larger in terminal_station_codes:
+            dwell_time_desc = max(dwell_time_desc, cls.terminal)
 
         return dwell_time_asc, dwell_time_desc

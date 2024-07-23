@@ -225,13 +225,13 @@ BP3-BP4 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 BP4-BP5 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 BP5-BP6 = {duration = 60, edge_type = "bukit_panjang_main", dwell_time_asc = 28, dwell_time_desc = 45}
 BP6-BP7 = {duration = 60, edge_type = "bukit_panjang_service_b", dwell_time_asc = 45, dwell_time_desc = 28}
-BP6-BP13 = {duration = 120, edge_type = "bukit_panjang_service_a", dwell_time_asc = 45, dwell_time_desc = 60}
+BP6-BP13 = {duration = 120, edge_type = "bukit_panjang_service_a", dwell_time_asc = 45, dwell_time_desc = 28}
 BP7-BP8 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 BP8-BP9 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 BP9-BP10 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 BP10-BP11 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 BP11-BP12 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-BP12-BP13 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 60}
+BP12-BP13 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 CC1-CC2 = {duration = 180, dwell_time_asc = 60, dwell_time_desc = 28}
 CC1-DT21 = {duration = 300, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 CC2-CC3 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
@@ -406,36 +406,36 @@ NS25-NS26 = {duration = 120, dwell_time_asc = 45, dwell_time_desc = 45}
 NS26-NS27 = {duration = 120, dwell_time_asc = 45, dwell_time_desc = 45}
 NS27-DT17 = {duration = 300, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 NS27-NS28 = {duration = 120, dwell_time_asc = 45, dwell_time_desc = 60}
-PE1-PE2 = {duration = 60, dwell_time_asc = 60, dwell_time_desc = 28}
+PE1-PE2 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 PE2-PE3 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 PE3-PE4 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 PE4-PE5 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 PE5-PE6 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-PE6-PE7 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 60}
-PTC-PE1 = {duration = 180, edge_type = "punggol_east_loop", dwell_time_asc = 60, dwell_time_desc = 45}
-PTC-PE7 = {duration = 120, edge_type = "punggol_east_loop", dwell_time_asc = 60, dwell_time_desc = 45}
-PTC-PW1 = {duration = 120, edge_type = "punggol_west_loop", dwell_time_asc = 45, dwell_time_desc = 60}
-PTC-PW7 = {duration = 180, edge_type = "punggol_west_loop", dwell_time_asc = 45, dwell_time_desc = 60}
-PW1-PW3 = {duration = 120, dwell_time_asc = 60, dwell_time_desc = 28}
+PE6-PE7 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
+PTC-PE1 = {duration = 180, edge_type = "punggol_east_loop", dwell_time_asc = 28, dwell_time_desc = 45}
+PTC-PE7 = {duration = 120, edge_type = "punggol_east_loop", dwell_time_asc = 28, dwell_time_desc = 45}
+PTC-PW1 = {duration = 120, edge_type = "punggol_west_loop", dwell_time_asc = 45, dwell_time_desc = 28}
+PTC-PW7 = {duration = 180, edge_type = "punggol_west_loop", dwell_time_asc = 45, dwell_time_desc = 28}
+PW1-PW3 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 PW3-PW4 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 PW4-PW5 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 PW5-PW6 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-PW6-PW7 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 60}
-SE1-SE2 = {duration = 60, dwell_time_asc = 60, dwell_time_desc = 28}
+PW6-PW7 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
+SE1-SE2 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 SE2-SE3 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 SE3-SE4 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-SE4-SE5 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 60}
-STC-SE1 = {duration = 120, edge_type = "sengkang_east_loop", dwell_time_asc = 60, dwell_time_desc = 45}
-STC-SE5 = {duration = 180, edge_type = "sengkang_east_loop", dwell_time_asc = 60, dwell_time_desc = 45}
-STC-SW1 = {duration = 120, edge_type = "sengkang_west_loop", dwell_time_asc = 45, dwell_time_desc = 60}
-STC-SW8 = {duration = 180, edge_type = "sengkang_west_loop", dwell_time_asc = 45, dwell_time_desc = 60}
-SW1-SW2 = {duration = 60, dwell_time_asc = 60, dwell_time_desc = 28}
+SE4-SE5 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+STC-SE1 = {duration = 120, edge_type = "sengkang_east_loop", dwell_time_asc = 28, dwell_time_desc = 45}
+STC-SE5 = {duration = 180, edge_type = "sengkang_east_loop", dwell_time_asc = 28, dwell_time_desc = 45}
+STC-SW1 = {duration = 120, edge_type = "sengkang_west_loop", dwell_time_asc = 45, dwell_time_desc = 28}
+STC-SW8 = {duration = 180, edge_type = "sengkang_west_loop", dwell_time_asc = 45, dwell_time_desc = 28}
+SW1-SW2 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 SW2-SW3 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 SW3-SW4 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 SW4-SW5 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 SW5-SW6 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 SW6-SW7 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-SW7-SW8 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 60}
+SW7-SW8 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 TE1-TE2 = {duration = 120, dwell_time_asc = 60, dwell_time_desc = 45}
 TE2-TE3 = {duration = 120, dwell_time_asc = 45, dwell_time_desc = 28}
 TE3-TE4 = {duration = 300, dwell_time_asc = 28, dwell_time_desc = 28}
