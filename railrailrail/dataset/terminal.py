@@ -101,7 +101,7 @@ class Terminal:
                     *(
                         station_code
                         for station_code in graph.get_incoming(next_station_code)
-                        if station_code[:2] == start_line_code
+                        if Station.to_station_code_components(station_code)[0] == start_line_code
                     ),
                     next_station_code,
                 ],
