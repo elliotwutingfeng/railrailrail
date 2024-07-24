@@ -14,9 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+import csv
 import itertools
 import json
 import pathlib
+import tomllib
 import warnings
 from collections import OrderedDict, defaultdict
 
@@ -29,6 +31,7 @@ from railrailrail.dataset.stage import Stage
 from railrailrail.dataset.station import Station
 from railrailrail.dataset.terminal import Terminal
 from railrailrail.dataset.walking_train_map import WalkingTrainMap
+from railrailrail.utils import Coordinates
 
 
 class Config:
@@ -267,12 +270,12 @@ class Config:
     ) -> tomlkit.items.Table:
         # Mark modified edges with comment
         for station_pair, edge_details in network_adjacency_matrix.items():
-            station_pair_ = station_pair.split("-", 1)
+            first_station, second_station = station_pair.split("-", 1)
             if (
-                station_pair_[0] in adjacency_matrix
-                and station_pair_[1] in adjacency_matrix[station_pair_[0]]
+                first_station in adjacency_matrix
+                and second_station in adjacency_matrix[first_station]
             ):
-                new_edge_details = adjacency_matrix[station_pair_[0]][station_pair_[1]]
+                new_edge_details = adjacency_matrix[first_station][second_station]
                 if edge_details != new_edge_details:  # Shallow dict comparison
                     existing_comment = network_adjacency_matrix[
                         station_pair
@@ -282,7 +285,9 @@ class Config:
                     )
 
         adjacency_matrix_edges = {
-            f"{a}-{b}" for a in adjacency_matrix for b in adjacency_matrix[a]
+            f"{first_station}-{second_station}"
+            for first_station in adjacency_matrix
+            for second_station in adjacency_matrix[first_station]
         }
 
         # Mark defunct adjacency matrix entries with comment
@@ -394,3 +399,91 @@ class Config:
         self.update_network(network)
         with open(path, "w") as f:
             tomlkit.dump(network, f)
+
+    @classmethod
+    def parse_network_config(
+        cls, network_path: pathlib.Path, coordinates_path: pathlib.Path
+    ) -> tuple:
+        """Parse network configuration file and station coordinates file.
+
+        Args:
+            network_path (pathlib.Path): Path to network configuration file.
+            coordinates_path (pathlib.Path): Path to station coordinates file.
+
+        Raises:
+            ValueError: Invalid config file.
+
+        Returns:
+            tuple: Parsed network configuration data.
+        """
+        with open(network_path, "rb") as f:
+            network = tomllib.load(f)
+
+        schema = network.get("schema", None)
+        if schema != 1:
+            raise ValueError("Invalid config file: 'schema' must be 1.")
+        stations = network.get("stations", None)
+        if not isinstance(stations, dict) or not stations:
+            raise ValueError("Invalid config file: 'stations' must not be empty.")
+        default_transfer_time = network.get("default_transfer_time", None)
+        if type(default_transfer_time) is not int:
+            raise ValueError(
+                "Invalid config file: 'default_transfer_time' must be int."
+            )
+        default_dwell_time = network.get("default_dwell_time", None)
+        if type(default_dwell_time) is not int:
+            raise ValueError("Invalid config file: 'default_dwell_time'  must be int.")
+
+        segments = network.get("segments", None)
+        if not isinstance(segments, dict) or not segments:
+            raise ValueError("Invalid config file: 'segments' must not be empty.")
+
+        segments_ = dict()
+        for segment_link, segment_details in segments.items():
+            vertices = tuple(segment_link.split("-", 2))
+            if len(vertices) != 2:
+                raise ValueError(
+                    f"Invalid config file: Segment link must be in format 'AB1-AB2'. Got {segment_link}."
+                )
+            if not isinstance(segment_details, dict):
+                raise ValueError("Invalid config file: Segment details must be a dict.")
+            segments_[vertices] = segment_details
+
+        transfers = network.get("transfers", None)
+        if not isinstance(transfers, dict):
+            raise ValueError(
+                "Invalid config file: 'transfers' key must exist, even if there are no values."
+            )
+
+        transfers_ = dict()
+        for transfer, transfer_details in transfers.items():
+            vertices = tuple(transfer.split("-", 2))
+            if len(vertices) != 2:
+                raise ValueError(
+                    f"Invalid config file: Transfer must be in format 'AB1-AB2'. Got {transfer}."
+                )
+            if not isinstance(transfer_details, dict):
+                raise ValueError(
+                    "Invalid config file: Transfer details must be a dict."
+                )
+            transfers_[vertices] = transfer_details
+
+        station_coordinates: dict[str, Coordinates] = dict()
+        with open(coordinates_path, "r") as f:
+            csv_reader = csv.reader(f)
+            next(csv_reader)  # Skip column headers.
+            for row in csv_reader:
+                station_coordinates[row[0]] = Coordinates(float(row[2]), float(row[3]))
+
+        # Assign coordinates to missing/future/pseudo station codes.
+        for code1, code2 in Station.equivalent_station_code_pairs:
+            station_coordinates[code1] = station_coordinates[code2]
+
+        return (
+            segments_,
+            transfers_,
+            stations,
+            station_coordinates,
+            default_transfer_time,
+            default_dwell_time,
+        )

@@ -16,15 +16,14 @@ limitations under the License.
 
 from __future__ import annotations
 
-import csv
 import itertools
 import pathlib
-import tomllib
 import typing
 
 from dijkstar import Graph
 from dijkstar.algorithm import PathInfo, find_path
 
+from railrailrail.config import Config
 from railrailrail.dataset.conditional_interchange import ConditionalInterchange
 from railrailrail.dataset.station import Station
 from railrailrail.dataset.terminal import Terminal
@@ -189,85 +188,11 @@ class RailGraph:
             network_path (pathlib.Path): Path to network configuration file.
             coordinates_path (pathlib.Path): Path to station coordinates file.
 
-        Raises:
-            ValueError: Invalid config file.
-
         Returns:
             RailGraph: Rail network graph.
         """
-        with open(network_path, "rb") as f:
-            network = tomllib.load(f)
 
-        schema = network.get("schema", None)
-        if schema != 1:
-            raise ValueError("Invalid config file: 'schema' must be 1.")
-        stations = network.get("stations", None)
-        if not isinstance(stations, dict) or not stations:
-            raise ValueError("Invalid config file: 'stations' must not be empty.")
-        default_transfer_time = network.get("default_transfer_time", None)
-        if type(default_transfer_time) is not int:
-            raise ValueError(
-                "Invalid config file: 'default_transfer_time' must be int."
-            )
-        default_dwell_time = network.get("default_dwell_time", None)
-        if type(default_dwell_time) is not int:
-            raise ValueError("Invalid config file: 'default_dwell_time'  must be int.")
-
-        segments = network.get("segments", None)
-        if not isinstance(segments, dict) or not segments:
-            raise ValueError("Invalid config file: 'segments' must not be empty.")
-
-        segments_ = dict()
-        for segment_link, segment_details in segments.items():
-            vertices = segment_link.split("-", 2)
-            if len(vertices) != 2:
-                raise ValueError(
-                    f"Invalid config file: Segment link must be in format 'AB1-AB2'. Got {segment_link}."
-                )
-            if not isinstance(segment_details, dict):
-                raise ValueError("Invalid config file: Segment details must be a dict.")
-            start, end = vertices[0], vertices[1]
-            segments_[(start, end)] = segment_details
-
-        transfers = network.get("transfers", None)
-        if not isinstance(transfers, dict):
-            raise ValueError(
-                "Invalid config file: 'transfers' key must exist, even if there are no values."
-            )
-
-        transfers_ = dict()
-        for transfer, transfer_details in transfers.items():
-            vertices = transfer.split("-", 2)
-            if len(vertices) != 2:
-                raise ValueError(
-                    f"Invalid config file: Transfer must be in format 'AB1-AB2'. Got {transfer}."
-                )
-            if not isinstance(transfer_details, dict):
-                raise ValueError(
-                    "Invalid config file: Transfer details must be a dict."
-                )
-            start, end = vertices[0], vertices[1]
-            transfers_[(start, end)] = transfer_details
-
-        station_coordinates: dict[str, Coordinates] = dict()
-        with open(coordinates_path, "r") as f:
-            csv_reader = csv.reader(f)
-            next(csv_reader)  # Skip column headers.
-            for row in csv_reader:
-                station_coordinates[row[0]] = Coordinates(float(row[2]), float(row[3]))
-
-        # Assign coordinates to missing/future/pseudo station codes.
-        for code1, code2 in Station.equivalent_station_code_pairs:
-            station_coordinates[code1] = station_coordinates[code2]
-
-        return cls(
-            segments_,
-            transfers_,
-            stations,
-            station_coordinates,
-            default_transfer_time,
-            default_dwell_time,
-        )
+        return cls(*Config.parse_network_config(network_path, coordinates_path))
 
     def _cost_func(self, start: str, end: str) -> typing.Callable[..., int]:
         def cost_func_aux(

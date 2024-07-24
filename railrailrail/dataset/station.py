@@ -18,39 +18,15 @@ from __future__ import annotations
 
 import dataclasses
 import re
-import types
 from collections import defaultdict
 
-
-class StationUtils:
-    missing_station_codes: types.MappingProxyType[str, str] = types.MappingProxyType(
-        {"CG": "EW4"}
-    )
-    succeeding_station_codes: types.MappingProxyType[str, str] = types.MappingProxyType(
-        {
-            "TE33": "CG2",
-            "TE34": "CG1",
-            "TE35": "EW4",
-            "CC33": "CE2",
-            "CC34": "CE1",
-        }
-    )
-    pseudo_station_codes: types.MappingProxyType[str, str] = types.MappingProxyType(
-        {
-            "CE0X": "CC6",
-            "CE0Y": "CC5",
-            "CE0Z": "CC4",
-            "JE0": "JS3",
-        }
-    )  # For temporary Circle Line Extension, and Jurong Region Line East Branch.
-
-    match_expr: re.Pattern[str] = re.compile(
-        r"^([A-Z]{2})([0-9]|[1-9][0-9]?)([A-Z]?)$", re.ASCII
-    )
+import immutabledict
 
 
 @dataclasses.dataclass(frozen=True)
 class Station:
+    """Train Station."""
+
     station_code: str
     station_name: str
 
@@ -62,21 +38,50 @@ class Station:
     station_number_suffix: str = dataclasses.field(compare=False, init=False)
     has_pseudo_station_code: bool = dataclasses.field(compare=False, init=False)
 
+    missing_station_codes: immutabledict.immutabledict[str, str] = (
+        immutabledict.immutabledict({"CG": "EW4"})
+    )
+    succeeding_station_codes: immutabledict.immutabledict[str, str] = (
+        immutabledict.immutabledict(
+            {
+                "TE33": "CG2",
+                "TE34": "CG1",
+                "TE35": "EW4",
+                "CC33": "CE2",
+                "CC34": "CE1",
+            }
+        )
+    )
+    pseudo_station_codes: immutabledict.immutabledict[str, str] = (
+        immutabledict.immutabledict(
+            {
+                "CE0X": "CC6",
+                "CE0Y": "CC5",
+                "CE0Z": "CC4",
+                "JE0": "JS3",
+            }
+        )
+    )  # For temporary Circle Line Extension, and Jurong Region Line East Branch.
+
+    match_expr: re.Pattern[str] = re.compile(
+        r"^([A-Z]{2})([0-9]|[1-9][0-9]?)([A-Z]?)$", re.ASCII
+    )
+
     # Missing/future/pseudo station codes.
     equivalent_station_code_pairs: tuple[tuple[str, str]] = dataclasses.field(
         compare=False,
         default=tuple(
             (k, v)
             for k, v in {
-                **StationUtils.missing_station_codes,
-                **StationUtils.succeeding_station_codes,
-                **StationUtils.pseudo_station_codes,
+                **missing_station_codes,
+                **succeeding_station_codes,
+                **pseudo_station_codes,
             }.items()
         ),
     )
 
     def __post_init__(self):
-        real_station_code = StationUtils.pseudo_station_codes.get(
+        real_station_code = self.pseudo_station_codes.get(
             self.station_code, self.station_code
         )
         line_code, station_number, station_number_suffix = (
@@ -92,7 +97,7 @@ class Station:
         object.__setattr__(
             self,
             "has_pseudo_station_code",
-            self.station_code in StationUtils.pseudo_station_codes,
+            self.station_code in self.pseudo_station_codes,
         )
 
     @classmethod
@@ -120,7 +125,7 @@ class Station:
         ):
             return station_code, -1, ""
 
-        station_code_components_match = StationUtils.match_expr.match(station_code)
+        station_code_components_match = cls.match_expr.match(station_code)
         if station_code_components_match is None:
             raise ValueError(f"Invalid station code: {station_code}")
         matcher_groups: tuple[str, str, str] = station_code_components_match.groups(

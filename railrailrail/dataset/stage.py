@@ -479,7 +479,7 @@ class StageMeta(type):
 
             # Ensure no station code has multiple names.
             station_code_counts = collections.Counter(
-                [station.station_code for station in stations]
+                station.station_code for station in stations
             )
             for station_code, count in station_code_counts.items():
                 if count > 1:

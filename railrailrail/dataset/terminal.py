@@ -94,22 +94,24 @@ class Terminal:
             )
         is_ascending: bool = start_station_code_components < end_station_code_components
         # From start, traverse nodes in ascending or descending order with same line code until dead end is reached.
-        next_node = start
+        next_station_code = start
         while True:
-            node_and_neighbours = sorted(
+            station_and_neighbours = sorted(
                 [
                     *(
-                        node
-                        for node in graph.get_incoming(next_node)
-                        if node[:2] == start_line_code
+                        station_code
+                        for station_code in graph.get_incoming(next_station_code)
+                        if station_code[:2] == start_line_code
                     ),
-                    next_node,
+                    next_station_code,
                 ],
                 key=Station.to_station_code_components,
             )
-            next_node_index = node_and_neighbours.index(next_node) + (
+            next_station_index = station_and_neighbours.index(next_station_code) + (
                 1 if is_ascending else -1
             )
-            if next_node_index < 0 or next_node_index >= len(node_and_neighbours):
-                return next_node
-            next_node = node_and_neighbours[next_node_index]
+            if next_station_index < 0 or next_station_index >= len(
+                station_and_neighbours
+            ):
+                return next_station_code
+            next_station_code = station_and_neighbours[next_station_index]
