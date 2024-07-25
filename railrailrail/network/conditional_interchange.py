@@ -14,9 +14,50 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+import dataclasses
+import enum
 
+
+@enum.verify(enum.UNIQUE)
+class EdgeType(enum.Enum):
+    bukit_panjang_main = 0
+    bukit_panjang_service_a = 1
+    bukit_panjang_service_b = 2
+    bukit_panjang_service_c = 3
+    sengkang_east_loop = 4
+    sengkang_west_loop = 5
+    punggol_east_loop = 6
+    punggol_west_loop = 7
+    promenade_east = 8
+    promenade_west = 9
+    promenade_south = 10
+    bahar_east = 11
+    bahar_west = 12
+    bahar_south = 13
+
+
+@dataclasses.dataclass(frozen=True)
+class ConditionalInterchangeSegment:
+    station_code_pair: tuple[str, str]
+    edge_type: EdgeType
+    interchange_station_code: str
+    defunct_with_station_code: str | None = (
+        None  # If this station code is present, this segment will no longer exist.
+    )
+
+    def __post_init__(self):
+        if (
+            len(self.station_code_pair) != 2
+            or self.station_code_pair[0] == self.station_code_pair[1]
+        ):
+            raise ValueError("station_code_pair must be 2 different station codes.")
+        if self.interchange_station_code not in self.station_code_pair:
+            raise ValueError("station_code_pair must contain interchange_station_code.")
+
+
+@dataclasses.dataclass(frozen=True)
 class ConditionalInterchange:
-    """A conditional interchange is a station that is positioned between different sections of the
+    """A conditional interchange is a station that is positioned between different segments of the
     same line that are not directly connected to each other. For example, STC Sengkang is the
     conditional interchange for the Sengkang LRT East Loop and Sengkang LRT West Loop.
 
@@ -28,73 +69,105 @@ class ConditionalInterchange:
     except for BP6-BP7, JS6-JS7, JS7-JS8 which are sequential.
     """
 
-    # (start, end, edge_type, conditional_interchange_station_code)
-    segments: tuple[tuple[str, str, str, str]] = (
-        ("BP5", "BP6", "bukit_panjang_main", "BP6"),
-        ("BP6", "BP13", "bukit_panjang_service_a", "BP6"),
-        ("BP6", "BP7", "bukit_panjang_service_b", "BP6"),
-        ("BP6", "BP14", "bukit_panjang_service_c", "BP6"),
+    segments: tuple[ConditionalInterchangeSegment] = (
+        ConditionalInterchangeSegment(
+            ("BP5", "BP6"), EdgeType.bukit_panjang_main, "BP6"
+        ),
+        ConditionalInterchangeSegment(
+            ("BP6", "BP13"), EdgeType.bukit_panjang_service_a, "BP6"
+        ),
+        ConditionalInterchangeSegment(
+            ("BP6", "BP7"), EdgeType.bukit_panjang_service_b, "BP6"
+        ),
+        ConditionalInterchangeSegment(
+            ("BP6", "BP14"), EdgeType.bukit_panjang_service_c, "BP6"
+        ),
         #
-        ("STC", "SE1", "sengkang_east_loop", "STC"),
-        ("STC", "SE5", "sengkang_east_loop", "STC"),
-        ("STC", "SW1", "sengkang_west_loop", "STC"),
-        ("STC", "SW2", "sengkang_west_loop", "STC"),  # Defunct with SW1 | cheng_lim
-        ("STC", "SW4", "sengkang_west_loop", "STC"),  # Defunct with SW2 | farmway
-        ("STC", "SW8", "sengkang_west_loop", "STC"),
+        ConditionalInterchangeSegment(
+            ("STC", "SE1"), EdgeType.sengkang_east_loop, "STC"
+        ),
+        ConditionalInterchangeSegment(
+            ("STC", "SE5"), EdgeType.sengkang_east_loop, "STC"
+        ),
+        ConditionalInterchangeSegment(
+            ("STC", "SW1"), EdgeType.sengkang_west_loop, "STC"
+        ),
+        ConditionalInterchangeSegment(
+            ("STC", "SW2"), EdgeType.sengkang_west_loop, "STC", "SW1"
+        ),
+        ConditionalInterchangeSegment(
+            ("STC", "SW4"), EdgeType.sengkang_west_loop, "STC", "SW2"
+        ),
+        ConditionalInterchangeSegment(
+            ("STC", "SW8"), EdgeType.sengkang_west_loop, "STC"
+        ),
         #
-        ("PTC", "PE1", "punggol_east_loop", "PTC"),
-        ("PTC", "PE5", "punggol_east_loop", "PTC"),  # Defunct with PE6 | oasis
-        (
-            "PTC",
-            "PE6",
-            "punggol_east_loop",
-            "PTC",
-        ),  # Defunct with PE7 | woodleigh_and_damai
-        ("PTC", "PE7", "punggol_east_loop", "PTC"),
-        ("PTC", "PW1", "punggol_west_loop", "PTC"),
-        ("PTC", "PW5", "punggol_west_loop", "PTC"),  # Defunct with PW1 | sam_kee
-        ("PTC", "PW7", "punggol_west_loop", "PTC"),
+        ConditionalInterchangeSegment(
+            ("PTC", "PE1"), EdgeType.punggol_east_loop, "PTC"
+        ),
+        ConditionalInterchangeSegment(
+            ("PTC", "PE5"), EdgeType.punggol_east_loop, "PTC", "PE6"
+        ),
+        ConditionalInterchangeSegment(
+            ("PTC", "PE6"), EdgeType.punggol_east_loop, "PTC", "PE7"
+        ),
+        ConditionalInterchangeSegment(
+            ("PTC", "PE7"), EdgeType.punggol_east_loop, "PTC"
+        ),
+        ConditionalInterchangeSegment(
+            ("PTC", "PW1"), EdgeType.punggol_west_loop, "PTC"
+        ),
+        ConditionalInterchangeSegment(
+            ("PTC", "PW5"), EdgeType.punggol_west_loop, "PTC", "PW1"
+        ),
+        ConditionalInterchangeSegment(
+            ("PTC", "PW7"), EdgeType.punggol_west_loop, "PTC"
+        ),
         #
-        ("CC4", "CC5", "promenade_east", "CC4"),
-        ("CC3", "CC4", "promenade_west", "CC4"),
-        ("CC4", "CC34", "promenade_south", "CC4"),
+        ConditionalInterchangeSegment(("CC4", "CC5"), EdgeType.promenade_east, "CC4"),
+        ConditionalInterchangeSegment(("CC3", "CC4"), EdgeType.promenade_west, "CC4"),
+        ConditionalInterchangeSegment(("CC4", "CC34"), EdgeType.promenade_south, "CC4"),
         #
-        ("JS6", "JS7", "bahar_east", "JS7"),
-        ("JS7", "JW1", "bahar_west", "JS7"),
-        ("JS7", "JS8", "bahar_south", "JS7"),
+        ConditionalInterchangeSegment(("JS6", "JS7"), EdgeType.bahar_east, "JS7"),
+        ConditionalInterchangeSegment(("JS7", "JW1"), EdgeType.bahar_west, "JS7"),
+        ConditionalInterchangeSegment(("JS7", "JS8"), EdgeType.bahar_south, "JS7"),
     )
 
     # TODO change to dict that maps pairs to transfer durations.
-    edge_type_pairs: frozenset[tuple[str, str]] = frozenset(
+    edge_type_pairs: frozenset[tuple[EdgeType, EdgeType]] = frozenset(
         (
-            ("punggol_west_loop", "punggol_east_loop"),
-            ("punggol_east_loop", "punggol_west_loop"),
+            (EdgeType.punggol_west_loop, EdgeType.punggol_east_loop),
+            (EdgeType.punggol_east_loop, EdgeType.punggol_west_loop),
             #
-            ("sengkang_west_loop", "sengkang_east_loop"),
-            ("sengkang_east_loop", "sengkang_west_loop"),
+            (EdgeType.sengkang_west_loop, EdgeType.sengkang_east_loop),
+            (EdgeType.sengkang_east_loop, EdgeType.sengkang_west_loop),
             #
-            ("bukit_panjang_service_a", "bukit_panjang_service_b"),
-            ("bukit_panjang_service_b", "bukit_panjang_service_a"),
+            (EdgeType.bukit_panjang_service_a, EdgeType.bukit_panjang_service_b),
+            (EdgeType.bukit_panjang_service_b, EdgeType.bukit_panjang_service_a),
             # Assume Service C always involves transfer at BP6.
-            ("bukit_panjang_service_c", "bukit_panjang_main"),
-            ("bukit_panjang_service_c", "bukit_panjang_service_a"),
-            ("bukit_panjang_service_c", "bukit_panjang_service_b"),
-            ("bukit_panjang_main", "bukit_panjang_service_c"),
-            ("bukit_panjang_service_a", "bukit_panjang_service_c"),
-            ("bukit_panjang_service_b", "bukit_panjang_service_c"),
+            (EdgeType.bukit_panjang_service_c, EdgeType.bukit_panjang_main),
+            (EdgeType.bukit_panjang_service_c, EdgeType.bukit_panjang_service_a),
+            (EdgeType.bukit_panjang_service_c, EdgeType.bukit_panjang_service_b),
+            (EdgeType.bukit_panjang_main, EdgeType.bukit_panjang_service_c),
+            (EdgeType.bukit_panjang_service_a, EdgeType.bukit_panjang_service_c),
+            (EdgeType.bukit_panjang_service_b, EdgeType.bukit_panjang_service_c),
             #
-            ("promenade_south", "promenade_west"),
-            ("promenade_west", "promenade_south"),
-            ("promenade_east", "promenade_south"),
+            (EdgeType.promenade_south, EdgeType.promenade_west),
+            (EdgeType.promenade_west, EdgeType.promenade_south),
+            (EdgeType.promenade_east, EdgeType.promenade_south),
             #
-            ("bahar_east", "bahar_west"),
-            ("bahar_west", "bahar_south"),
-            ("bahar_south", "bahar_east"),
+            (EdgeType.bahar_east, EdgeType.bahar_west),
+            (EdgeType.bahar_west, EdgeType.bahar_south),
+            (EdgeType.bahar_south, EdgeType.bahar_east),
         )
-    )
+    )  # Order is important; (EdgeType.bahar_east, EdgeType.bahar_west) != (EdgeType.bahar_west, EdgeType.bahar_east)
 
     @classmethod
     def is_conditional_interchange_transfer(
         cls, previous_edge_type: str, next_edge_type: str
     ) -> bool:  # TODO this should return (bool, int) where int is transfer duration
-        return (previous_edge_type, next_edge_type) in cls.edge_type_pairs
+        try:
+            p, n = EdgeType[previous_edge_type], EdgeType[next_edge_type]
+        except KeyError:
+            return False
+        return (p, n) in cls.edge_type_pairs

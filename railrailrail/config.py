@@ -173,37 +173,30 @@ class Config:
                         "dwell_time_desc": 0,
                     }  # No dwell time for walking routes.
 
-        # Mark segments that need to be treated differently from
+        # Create and mark segments that need to be treated differently from
         # most other segments. Currently this only means checking if a segment is
         # adjacent to a conditional interchange.
-        for (
-            start,
-            end,
-            edge_type,
-            conditional_interchange,
-        ) in ConditionalInterchange.segments:
+        for segment in ConditionalInterchange.segments:
             # Skip conditional interchange segments made obsolete by new stations.
-            if (start, end) == ("STC", "SW2") and "SW1" in station_code_to_station:
+            if (
+                isinstance(segment.defunct_with_station_code, str)
+                and segment.defunct_with_station_code in station_code_to_station
+            ):
                 continue
-            if (start, end) == ("STC", "SW4") and "SW2" in station_code_to_station:
-                continue
-            if (start, end) == ("PTC", "PE5") and "PE6" in station_code_to_station:
-                continue
-            if (start, end) == ("PTC", "PE6") and "PE7" in station_code_to_station:
-                continue
-            if (start, end) == ("PTC", "PW5") and "PW1" in station_code_to_station:
-                continue
-
-            if start in station_code_to_station and end in station_code_to_station:
+            station_a, station_b = segment.station_code_pair
+            if (
+                station_a in station_code_to_station
+                and station_b in station_code_to_station
+            ):
                 dwell_time_asc, dwell_time_desc = DwellTime.get_dwell_time(
                     terminal_station_codes,
-                    interchange_station_codes.union(set([conditional_interchange])),
-                    start,
-                    end,
+                    interchange_station_codes.union({segment.interchange_station_code}),
+                    station_a,
+                    station_b,
                 )
-                adjacency_matrix[start][end] = {
-                    **Durations.segments[f"{start}-{end}"],
-                    "edge_type": edge_type,
+                adjacency_matrix[station_a][station_b] = {
+                    **Durations.segments[f"{station_a}-{station_b}"],
+                    "edge_type": segment.edge_type.name,
                     "dwell_time_asc": dwell_time_asc,
                     "dwell_time_desc": dwell_time_desc,
                 }

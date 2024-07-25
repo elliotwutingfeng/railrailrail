@@ -17,7 +17,7 @@ limitations under the License.
 from __future__ import annotations
 
 import dataclasses
-from math import atan2, cos, radians, sin, sqrt
+import math
 
 
 @dataclasses.dataclass(frozen=True)
@@ -25,21 +25,11 @@ class Coordinates:
     latitude: float
     longitude: float
 
-    latitude_radians: float = dataclasses.field(init=False)
-    longitude_radians: float = dataclasses.field(init=False)
-
     # Earth radius from World Geodetic System 1984 (WGS 84)
     # Department of Defense World Geodetic System 1984, Its Definition and Relationships With Local Geodetic Systems
     # (2014-07-08)
     # https://earth-info.nga.mil/php/download.php?file=coord-wgs84#.pdf
     __earth_radius_in_metres = 6378137
-
-    def __post_init__(self):
-        object.__setattr__(self, "latitude_radians", radians(self.latitude))
-        object.__setattr__(self, "longitude_radians", radians(self.longitude))
-
-    def decimal_degree_pair(self) -> tuple[float, float]:
-        return self.latitude, self.longitude
 
     @classmethod
     def haversine_distance(
@@ -54,15 +44,18 @@ class Coordinates:
         Returns:
             float: Shortest distance between 2 points in metres.
         """
-        lat1 = initial_coord.latitude_radians
-        lon1 = initial_coord.longitude_radians
-        lat2 = final_coord.latitude_radians
-        lon2 = final_coord.longitude_radians
+        lat1 = math.radians(initial_coord.latitude)
+        lon1 = math.radians(initial_coord.longitude)
+        lat2 = math.radians(final_coord.latitude)
+        lon2 = math.radians(final_coord.longitude)
 
         dlon = lon2 - lon1
         dlat = lat2 - lat1
 
-        a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
-        c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        a = (
+            math.sin(dlat / 2) ** 2
+            + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2) ** 2
+        )
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
         return cls.__earth_radius_in_metres * c
