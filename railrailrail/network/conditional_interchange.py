@@ -21,7 +21,7 @@ class ConditionalInterchange:
     conditional interchange for the Sengkang LRT East Loop and Sengkang LRT West Loop.
 
     A conditional interchange behaves as an interchange only when previous segment and next segment are
-    of specific types as outlined in `segment_pairs`. For example, there will be an interchange transfer when
+    of specific types as outlined in `edge_type_pairs`. For example, there will be an interchange transfer when
     moving from "bahar_east" to "bahar_west", but not from "bahar_west" to "bahar_east".
 
     Nearly all segments adjacent to a conditional interchange are non-sequential,
@@ -65,7 +65,7 @@ class ConditionalInterchange:
     )
 
     # TODO change to dict that maps pairs to transfer durations.
-    segment_pairs: frozenset[tuple[str, str]] = frozenset(
+    edge_type_pairs: frozenset[tuple[str, str]] = frozenset(
         (
             ("punggol_west_loop", "punggol_east_loop"),
             ("punggol_east_loop", "punggol_west_loop"),
@@ -97,4 +97,4 @@ class ConditionalInterchange:
     def is_conditional_interchange_transfer(
         cls, previous_edge_type: str, next_edge_type: str
     ) -> bool:  # TODO this should return (bool, int) where int is transfer duration
-        return (previous_edge_type, next_edge_type) in cls.segment_pairs
+        return (previous_edge_type, next_edge_type) in cls.edge_type_pairs

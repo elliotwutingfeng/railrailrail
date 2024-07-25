@@ -17,13 +17,13 @@ limitations under the License.
 import pytest
 from dijkstar import Graph
 
-from railrailrail.dataset.conditional_interchange import ConditionalInterchange
-from railrailrail.dataset.durations import Durations
-from railrailrail.dataset.dwell_time import DwellTime
-from railrailrail.dataset.stage import Stage
-from railrailrail.dataset.station import Station
-from railrailrail.dataset.terminal import Terminal
-from railrailrail.dataset.walking_train_map import WalkingTrainMap
+from railrailrail.network.conditional_interchange import ConditionalInterchange
+from railrailrail.network.durations import Durations
+from railrailrail.network.dwell_time import DwellTime
+from railrailrail.network.stage import Stage
+from railrailrail.network.station import Station
+from railrailrail.network.terminal import Terminal
+from railrailrail.network.walking_train_map import WalkingTrainMap
 
 
 class TestStage:

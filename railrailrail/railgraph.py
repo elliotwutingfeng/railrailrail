@@ -24,10 +24,10 @@ from dijkstar import Graph
 from dijkstar.algorithm import PathInfo, find_path
 
 from railrailrail.config import Config
-from railrailrail.dataset.conditional_interchange import ConditionalInterchange
-from railrailrail.dataset.station import Station
-from railrailrail.dataset.terminal import Terminal
 from railrailrail.logger import logger
+from railrailrail.network.conditional_interchange import ConditionalInterchange
+from railrailrail.network.station import Station
+from railrailrail.network.terminal import Terminal
 from railrailrail.utils import Coordinates
 
 
@@ -468,12 +468,13 @@ class RailGraph:
         haversine_distance: float = Coordinates.haversine_distance(
             self.station_coordinates[nodes[0]], self.station_coordinates[nodes[-1]]
         )
-        path_distance: float = 0
-        for current_node, next_node in zip(nodes[:-1], nodes[1:]):
-            path_distance += Coordinates.haversine_distance(
+        path_distance: float = sum(
+            Coordinates.haversine_distance(
                 self.station_coordinates[current_node],
                 self.station_coordinates[next_node],
             )
+            for current_node, next_node in zip(nodes[:-1], nodes[1:])
+        )
 
         logger.info(
             "Approximate path distance: %.3f km, Haversine distance: %.3f km, Circuity ratio: %.2f",

@@ -24,13 +24,13 @@ from collections import OrderedDict, defaultdict
 
 import tomlkit
 
-from railrailrail.dataset.conditional_interchange import ConditionalInterchange
-from railrailrail.dataset.durations import Durations
-from railrailrail.dataset.dwell_time import DwellTime
-from railrailrail.dataset.stage import Stage
-from railrailrail.dataset.station import Station
-from railrailrail.dataset.terminal import Terminal
-from railrailrail.dataset.walking_train_map import WalkingTrainMap
+from railrailrail.network.conditional_interchange import ConditionalInterchange
+from railrailrail.network.durations import Durations
+from railrailrail.network.dwell_time import DwellTime
+from railrailrail.network.stage import Stage
+from railrailrail.network.station import Station
+from railrailrail.network.terminal import Terminal
+from railrailrail.network.walking_train_map import WalkingTrainMap
 from railrailrail.utils import Coordinates
 
 
@@ -97,20 +97,19 @@ class Config:
             OrderedDict
         )
         for stations in stations_by_line_code.values():
-            line_station_codes = [
-                station.station_code
-                for station in sorted(
-                    stations,
-                    key=lambda station: (
-                        station.line_code,
-                        station.station_number,
-                        station.station_number_suffix,
-                    ),
+            line_stations = sorted(
+                stations,
+                key=lambda station: (
+                    station.line_code,
+                    station.station_number,
+                    station.station_number_suffix,
+                ),
+            )
+            for station, next_station in zip(line_stations[:-1], line_stations[1:]):
+                station_code, next_station_code = (
+                    station.station_code,
+                    next_station.station_code,
                 )
-            ]
-            for station_code, next_station_code in zip(
-                line_station_codes[:-1], line_station_codes[1:]
-            ):
                 if (station_code, next_station_code) == ("BP13", "BP14"):
                     continue  # Special case: No link between BP13 and BP14.
                 if (station_code, next_station_code) == ("NS4", "NS13"):
@@ -128,7 +127,7 @@ class Config:
             and "EW15" in station_code_to_station
             and "NS26" in station_code_to_station
         ):
-            # EWL still part of NSL.
+            # Special case: EWL still part of NSL.
             station_code, next_station_code = "EW15", "NS26"
             adjacency_matrix[station_code][next_station_code] = {
                 "duration": Durations.segments.get(
@@ -263,6 +262,50 @@ class Config:
         return adjacency_matrix
 
     @classmethod
+    def __get_updated_stations(
+        cls, network_stations: tomlkit.items.Table, stations: list[Station]
+    ):
+        station_code_to_station_name = {
+            station.station_code: station.station_name for station in stations
+        }
+        # Mark modified stations with comment
+        for station_code, station_name in network_stations.items():
+            if (
+                station_code in station_code_to_station_name
+                and station_name != station_code_to_station_name[station_code]
+            ):
+                existing_comment = network_stations[station_code].trivia.comment
+                network_stations[station_code].comment(
+                    f"NEW -> {station_code_to_station_name[station_code]}{' | %s' % existing_comment if existing_comment else ''}"
+                )
+
+        # Mark defunct stations with comment
+        for defunct_station_code in set(network_stations).difference(
+            station_code_to_station_name
+        ):
+            existing_comment = network_stations[defunct_station_code].trivia.comment
+            network_stations[defunct_station_code].comment(
+                f"DEFUNCT{' | %s' % existing_comment if existing_comment else ''}"
+            )
+
+        # Add new stations
+        for new_station_code in set(station_code_to_station_name).difference(
+            network_stations
+        ):
+            network_stations[new_station_code] = station_code_to_station_name[
+                new_station_code
+            ]
+            network_stations[new_station_code].comment("NEW")
+
+        # Sort stations
+        updated_stations = tomlkit.table()
+        for station_code in sorted(
+            network_stations, key=Station.to_station_code_components
+        ):
+            updated_stations[station_code] = network_stations[station_code]
+        return updated_stations
+
+    @classmethod
     def __get_updated_network_adjacency_matrix(
         cls,
         network_adjacency_matrix: tomlkit.items.Table,
@@ -336,53 +379,17 @@ class Config:
         network["schema"] = network.get("schema", 1)
         network["default_transfer_time"] = network.get("default_transfer_time", 420)
         network["default_dwell_time"] = network.get("default_dwell_time", 30)
-
-        ### stations ###
-
-        stations_ = {
-            station.station_code: station.station_name for station in self.stations
-        }
-        network_stations = (
-            network["stations"] if "stations" in network else tomlkit.table()
+        network["stations"] = self.__get_updated_stations(
+            network.get("stations", tomlkit.table()), self.stations
         )
-
-        # Mark modified stations with comment
-        for station_code, station_name in network_stations.items():
-            if station_code in stations_ and station_name != stations_[station_code]:
-                existing_comment = network_stations[station_code].trivia.comment
-                network_stations[station_code].comment(
-                    f"NEW -> {stations_[station_code]}{' | %s' % existing_comment if existing_comment else ''}"
-                )
-
-        # Mark defunct stations with comment
-        for defunct_station_code in set(network_stations).difference(stations_):
-            existing_comment = network_stations[defunct_station_code].trivia.comment
-            network_stations[defunct_station_code].comment(
-                f"DEFUNCT{' | %s' % existing_comment if existing_comment else ''}"
-            )
-
-        # Add new stations
-        for new_station_code in set(stations_).difference(network_stations):
-            network_stations[new_station_code] = stations_[new_station_code]
-            network_stations[new_station_code].comment("NEW")
-
-        # Sort stations
-        updated_stations = tomlkit.table()
-        for station_code in sorted(
-            network_stations, key=Station.to_station_code_components
-        ):
-            updated_stations[station_code] = network_stations[station_code]
-        network["stations"] = updated_stations
-
         network["segments"] = self.__get_updated_network_adjacency_matrix(
-            network["segments"] if "segments" in network else tomlkit.table(),
+            network.get("segments", tomlkit.table()),
             self.segment_adjacency_matrix,
-        )  # segments
-
+        )
         network["transfers"] = self.__get_updated_network_adjacency_matrix(
-            network["transfers"] if "transfers" in network else tomlkit.table(),
+            network.get("transfers", tomlkit.table()),
             self.transfer_adjacency_matrix,
-        )  # transfers
+        )
 
     def update_network_config_file(self, path: pathlib.Path) -> None:
         """Overwrite contents of network configuration file at `path` with updated

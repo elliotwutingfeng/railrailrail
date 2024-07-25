@@ -17,7 +17,7 @@ limitations under the License.
 import collections
 import types
 
-from railrailrail.dataset.station import Station
+from railrailrail.network.station import Station
 
 
 class StageMeta(type):

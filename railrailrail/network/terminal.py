@@ -18,7 +18,7 @@ from collections import OrderedDict, defaultdict
 
 from dijkstar import Graph
 
-from railrailrail.dataset.station import Station
+from railrailrail.network.station import Station
 
 
 class Terminal:
@@ -32,8 +32,8 @@ class Terminal:
         "SE": {"STC"},
         "STC": {"STC"},
         "SW": {"STC"},
-    }
-    # These lines all terminate at one station like JS1, except for BPLRT (Service A/B -> BP1, Service C -> BP14).
+    }  # These lines all terminate at one station like JS1,
+    # except for BPLRT (Service A/B -> BP1, Service C -> BP14).
 
     @classmethod
     def get_terminals(
@@ -101,7 +101,8 @@ class Terminal:
                     *(
                         station_code
                         for station_code in graph.get_incoming(next_station_code)
-                        if Station.to_station_code_components(station_code)[0] == start_line_code
+                        if Station.to_station_code_components(station_code)[0]
+                        == start_line_code
                     ),
                     next_station_code,
                 ],

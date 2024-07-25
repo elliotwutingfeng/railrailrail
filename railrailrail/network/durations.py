@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from railrailrail.dataset.station import Station
+from railrailrail.network.station import Station
 
 
 class DurationsMeta(type):
