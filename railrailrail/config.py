@@ -26,10 +26,11 @@ import tomlkit
 
 from railrailrail.network.conditional_transfers import ConditionalTransfers
 from railrailrail.network.dwell_time import DwellTime
+from railrailrail.network.segments import Segments
 from railrailrail.network.stage import Stage
 from railrailrail.network.station import Station
 from railrailrail.network.terminal import Terminal
-from railrailrail.network.transfers import Durations
+from railrailrail.network.transfers import Transfers
 from railrailrail.network.walks import Walks
 from railrailrail.utils import Coordinates
 
@@ -124,7 +125,7 @@ class Config:
                 if (station_code, next_station_code) == ("NS4", "NS13"):
                     continue  # Special case: No link between NS4 and NS13.
                 adjacency_matrix[station_code][next_station_code] = {
-                    "duration": Durations.segments.get(
+                    "duration": Segments.segments.get(
                         f"{station_code}-{next_station_code}", dict()
                     ).get(
                         "duration", -1
@@ -139,7 +140,7 @@ class Config:
             # Special case: EWL still part of NSL.
             station_code, next_station_code = "EW15", "NS26"
             adjacency_matrix[station_code][next_station_code] = {
-                "duration": Durations.segments.get(
+                "duration": Segments.segments.get(
                     f"{station_code}-{next_station_code}", dict()
                 ).get(
                     "duration", -1
@@ -204,7 +205,7 @@ class Config:
                     station_b,
                 )
                 adjacency_matrix[station_a][station_b] = {
-                    **Durations.segments[f"{station_a}-{station_b}"],
+                    **Segments.segments[f"{station_a}-{station_b}"],
                     "edge_type": segment.edge_type,
                     "dwell_time_asc": dwell_time_asc,
                     "dwell_time_desc": dwell_time_desc,
@@ -241,7 +242,7 @@ class Config:
         )
         pairs = []
         for station_name, station_codes in interchanges.items():
-            if station_name in Durations.interchange_transfers:
+            if station_name in Transfers.interchange_transfers:
                 for start, end in itertools.combinations(station_codes, 2):
                     # As a simplification, treat transfer time in both directions as equal.
                     # TODO: Update in the future when more direction-specific transfer time is available.
@@ -258,7 +259,7 @@ class Config:
             )
         )
         for start, end, station_name in pairs:
-            duration = Durations.interchange_transfers[station_name]
+            duration = Transfers.interchange_transfers[station_name]
             adjacency_matrix[start][end] = {"duration": duration}
 
         return adjacency_matrix

@@ -18,10 +18,10 @@ import pytest
 from dijkstar import Graph
 
 from railrailrail.network.dwell_time import DwellTime
+from railrailrail.network.segments import Segments
 from railrailrail.network.stage import Stage
 from railrailrail.network.station import Station
 from railrailrail.network.terminal import Terminal
-from railrailrail.network.transfers import Durations
 from railrailrail.network.walks import Walks
 
 
@@ -83,9 +83,9 @@ class TestTerminal:
             Terminal.get_approaching_terminal(graph, "EW1", "EW1")
 
 
-class TestDurations:
+class TestSegments:
     def test_segments(self):
-        assert Durations.segments
+        assert Segments.segments
 
 
 class TestStation:
