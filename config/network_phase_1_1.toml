@@ -1,5 +1,4 @@
 schema = 1
-default_transfer_time = 420
 default_dwell_time = 30
 
 [stations]
@@ -16,3 +15,5 @@ NS17-NS18 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 NS18-NS19 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 60}
 
 [transfers]
+
+[conditional_transfers]

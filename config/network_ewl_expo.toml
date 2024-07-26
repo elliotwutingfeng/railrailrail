@@ -1,5 +1,4 @@
 schema = 1
-default_transfer_time = 420
 default_dwell_time = 30
 
 [stations]
@@ -148,3 +147,13 @@ NS1-EW24 = {duration = 420}
 NS4-BP1 = {duration = 420}
 NS25-EW13 = {duration = 360}
 NS26-EW14 = {duration = 360}
+
+[conditional_transfers]
+bukit_panjang_main.bukit_panjang_service_c = 420
+bukit_panjang_service_a.bukit_panjang_service_b = 420
+bukit_panjang_service_a.bukit_panjang_service_c = 420
+bukit_panjang_service_b.bukit_panjang_service_a = 420
+bukit_panjang_service_b.bukit_panjang_service_c = 420
+bukit_panjang_service_c.bukit_panjang_main = 420
+bukit_panjang_service_c.bukit_panjang_service_a = 420
+bukit_panjang_service_c.bukit_panjang_service_b = 420

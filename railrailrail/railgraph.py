@@ -25,7 +25,6 @@ from dijkstar.algorithm import PathInfo, find_path
 
 from railrailrail.config import Config
 from railrailrail.logger import logger
-from railrailrail.network.conditional_interchange import ConditionalInterchange
 from railrailrail.network.station import Station
 from railrailrail.network.terminal import Terminal
 from railrailrail.utils import Coordinates
@@ -37,9 +36,7 @@ class RailGraph:
     __minimum_duration = 0
     __maximum_duration = 3600  # 3600 seconds = 1 hour
 
-    def __check_graph_params(self, stations, default_transfer_time, default_dwell_time):
-        if type(default_transfer_time) is not int or default_transfer_time < 0:
-            raise ValueError("default_transfer_time must be non-negative int.")
+    def __check_graph_params(self, stations, default_dwell_time):
         if type(default_dwell_time) is not int or default_dwell_time < 0:
             raise ValueError("default_dwell_time must be non-negative int.")
         if not isinstance(stations, dict) or not stations:
@@ -52,9 +49,9 @@ class RailGraph:
         self,
         segments: dict[tuple[str, str], dict],
         transfers: dict[tuple[str, str], dict],
+        conditional_transfers: dict[str, dict[str, int]],
         stations: dict[str, str],
         station_coordinates: dict[str, Coordinates],
-        default_transfer_time: int = 420,
         default_dwell_time: int = 30,
     ):
         """Setup rail network graph.
@@ -63,20 +60,20 @@ class RailGraph:
             segments (dict[tuple[str, str], dict]): Every adjacent pair of stations directly connected to each
             other either by rail (same line), or by walking.
             transfers (dict[tuple[str, str], dict]): Every pair of stations that belong to the same interchange.
+            conditional_transfers (dict[str, dict[str, int]]): Edge type sequences for conditional transfers.
             stations (dict[str, str]): Map of station codes to station names.
             station_coordinates (dict[str, Coordinates]): Map of station codes to station latitude and longitude.
-            default_transfer_time (int, optional): Time taken to switch lines at an interchange station in seconds. Defaults to 420.
             default_dwell_time (int, optional): Time taken by train to either drop off or pick up passengers at a station in seconds. Defaults to 30.
         """
-        self.__check_graph_params(stations, default_transfer_time, default_dwell_time)
+        self.__check_graph_params(stations, default_dwell_time)
 
         self.transfers = transfers
+        self.conditional_transfers = conditional_transfers
         self.station_code_to_station = {
             station_code: Station(station_code, station_name)
             for station_code, station_name in stations.items()
         }
         self.station_coordinates = station_coordinates
-        self.default_transfer_time = default_transfer_time
         self.default_dwell_time = default_dwell_time
 
         # Undirected Graph allows for different time cost when moving in opposite direction.
@@ -254,10 +251,9 @@ class RailGraph:
             ):  # Walking away from station -> Not waiting for train to depart.
                 dwell_time = 0
 
-            if ConditionalInterchange.is_conditional_interchange_transfer(
-                previous_edge_type, next_edge_type
-            ):
-                cost += self.default_transfer_time  # TODO Use network config timing.
+            cost += self.conditional_transfers.get(previous_edge_type, dict()).get(
+                next_edge_type, 0
+            )
 
             if current_station == start or next_station == end:
                 if (
@@ -382,9 +378,10 @@ class RailGraph:
                     status = "walking"
                 elif (
                     0 < edge_idx
-                    and ConditionalInterchange.is_conditional_interchange_transfer(
-                        pathinfo.edges[edge_idx - 1][1], pathinfo.edges[edge_idx][1]
-                    )
+                    and self.conditional_transfers.get(
+                        pathinfo.edges[edge_idx - 1][1], dict()
+                    ).get(pathinfo.edges[edge_idx][1], None)
+                    is not None
                 ):  # Conditional interchange transfer
                     raise RuntimeError(
                         "Something is not right; this conditional interchange transfer is also an interchange transfer. "
@@ -417,9 +414,10 @@ class RailGraph:
                     status = "walking"
                 elif (
                     0 < edge_idx
-                    and ConditionalInterchange.is_conditional_interchange_transfer(
-                        pathinfo.edges[edge_idx - 1][1], pathinfo.edges[edge_idx][1]
-                    )
+                    and self.conditional_transfers.get(
+                        pathinfo.edges[edge_idx - 1][1], dict()
+                    ).get(pathinfo.edges[edge_idx][1], None)
+                    is not None
                 ):  # Conditional interchange transfer
                     steps.append(f"Switch over at {current_station_full_name}")
                     terminal_full_station_name: str | None = (

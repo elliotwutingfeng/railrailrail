@@ -79,45 +79,45 @@ class TestRailGraph:
             RailGraph(
                 segments=dict(),
                 transfers=dict(),
+                conditional_transfers=dict(),
                 stations=dict(),
                 station_coordinates=dict(),
-                default_transfer_time="",
                 default_dwell_time="",
             )
         with pytest.raises(ValueError):
             RailGraph(
                 segments=dict(),
                 transfers=dict(),
+                conditional_transfers=dict(),
                 stations=dict(),
                 station_coordinates=dict(),
-                default_transfer_time=0,
                 default_dwell_time="",
             )
         with pytest.raises(ValueError):
             RailGraph(
                 segments=dict(),
                 transfers=dict(),
+                conditional_transfers=dict(),
                 stations=dict(),
                 station_coordinates=dict(),
-                default_transfer_time=0,
                 default_dwell_time=0,
             )
         with pytest.raises(ValueError):
             RailGraph(
                 segments=dict(),
                 transfers=dict(),
+                conditional_transfers=dict(),
                 stations={"EX1": ["Easy"]},
                 station_coordinates=dict(),
-                default_transfer_time=0,
                 default_dwell_time=0,
             )
         with pytest.raises(ValueError):
             RailGraph(
                 segments={("EX1", "HX1"): {"duration": 999999}},
                 transfers=dict(),
+                conditional_transfers=dict(),
                 stations={"EX1": "Easy", "HX1": "How"},
                 station_coordinates=dict(),
-                default_transfer_time=0,
                 default_dwell_time=0,
             )
 

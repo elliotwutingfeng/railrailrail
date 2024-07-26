@@ -24,17 +24,23 @@ from collections import OrderedDict, defaultdict
 
 import tomlkit
 
-from railrailrail.network.conditional_interchange import ConditionalInterchange
-from railrailrail.network.durations import Durations
+from railrailrail.network.conditional_transfers import ConditionalTransfers
 from railrailrail.network.dwell_time import DwellTime
 from railrailrail.network.stage import Stage
 from railrailrail.network.station import Station
 from railrailrail.network.terminal import Terminal
-from railrailrail.network.walking_train_map import WalkingTrainMap
+from railrailrail.network.transfers import Durations
+from railrailrail.network.walks import Walks
 from railrailrail.utils import Coordinates
 
 
 class Config:
+    """Create and update existing rail network configuration files with preset values for
+    each stage.
+
+    A helper classmethod for parsing configuration files is provided. See `parse_network_config`.
+    """
+
     def __init__(self, stage: Stage):
         """Setup network `Config` based on `stage`.
 
@@ -53,6 +59,9 @@ class Config:
         )
         self.transfer_adjacency_matrix: defaultdict[str, OrderedDict[str, dict]] = (
             self._generate_transfer_adjacency_matrix()
+        )
+        self.conditional_transfers: dict[str, dict[str, int]] = (
+            self._generate_conditional_transfers()
         )
 
     def _get_stations(self) -> list[Station]:
@@ -159,7 +168,7 @@ class Config:
                 )
 
         # Add walking paths from LTA Walking Train Map (WTM)
-        for start_station_name, end_station_name, duration in WalkingTrainMap.routes:
+        for start_station_name, end_station_name, duration in Walks.routes:
             for start_station_code in self.station_codes_by_station_name[
                 start_station_name
             ]:
@@ -176,7 +185,7 @@ class Config:
         # Create and mark segments that need to be treated differently from
         # most other segments. Currently this only means checking if a segment is
         # adjacent to a conditional interchange.
-        for segment in ConditionalInterchange.segments:
+        for segment in ConditionalTransfers.conditional_transfer_segments:
             # Skip conditional interchange segments made obsolete by new stations.
             if (
                 isinstance(segment.defunct_with_station_code, str)
@@ -196,7 +205,7 @@ class Config:
                 )
                 adjacency_matrix[station_a][station_b] = {
                     **Durations.segments[f"{station_a}-{station_b}"],
-                    "edge_type": segment.edge_type.name,
+                    "edge_type": segment.edge_type,
                     "dwell_time_asc": dwell_time_asc,
                     "dwell_time_desc": dwell_time_desc,
                 }
@@ -253,6 +262,23 @@ class Config:
             adjacency_matrix[start][end] = {"duration": duration}
 
         return adjacency_matrix
+
+    def _generate_conditional_transfers(self) -> dict[str, dict[str, int]]:
+        # Filter out unused conditional transfers.
+        edge_types: set[str] = set()
+        for start in self.segment_adjacency_matrix:
+            for _, segment_details in self.segment_adjacency_matrix[start].items():
+                edge_type = segment_details.get("edge_type", None)
+                if isinstance(edge_type, str):
+                    edge_types.add(edge_type)
+        conditional_transfers: defaultdict[str, dict[str, int]] = defaultdict(dict)
+        for start in ConditionalTransfers.conditional_transfers:
+            for end, duration in ConditionalTransfers.conditional_transfers[
+                start
+            ].items():
+                if {start, end}.issubset(edge_types):
+                    conditional_transfers[start][end] = duration
+        return dict(conditional_transfers)
 
     @classmethod
     def __get_updated_stations(
@@ -357,6 +383,56 @@ class Config:
             updated_network_adjacency_matrix[edge] = network_adjacency_matrix[edge]
         return updated_network_adjacency_matrix
 
+    @classmethod
+    def __get_updated_network_conditional_transfers(
+        cls,
+        network_conditional_transfers: tomlkit.items.Table,
+        conditional_transfers: dict[str, dict[str, int]],
+    ) -> tomlkit.items.Table:
+        for start in network_conditional_transfers:
+            for end, duration in network_conditional_transfers[start].items():
+                existing_comment = network_conditional_transfers[start][
+                    end
+                ].trivia.comment
+                # Mark modified conditional transfers with comment
+                if (
+                    start in conditional_transfers
+                    and end in conditional_transfers[start]
+                    and conditional_transfers[start][end] != duration
+                ):
+                    network_conditional_transfers[start][end].comment(
+                        f"NEW -> {conditional_transfers[start][end]}{' | %s' % existing_comment if existing_comment else ''}"
+                    )
+                # Mark defunct conditional transfers with comment
+                elif (
+                    start not in conditional_transfers
+                    or end not in conditional_transfers[start]
+                ):
+                    network_conditional_transfers[start][end].comment(
+                        f"DEFUNCT{' | %s' % existing_comment if existing_comment else ''}"
+                    )
+
+        # Add new conditional transfers
+        for start in conditional_transfers:
+            for end, duration in conditional_transfers[start].items():
+                has_start = start in network_conditional_transfers
+                has_end = end in network_conditional_transfers.get(start, dict())
+                if has_start and has_end:
+                    continue
+                network_conditional_transfers[tomlkit.key([start, end])] = (
+                    conditional_transfers[start][end]
+                )
+                network_conditional_transfers[start][end].comment("NEW")
+
+        # Sort conditional transfers
+        updated_conditional_transfers = tomlkit.table()
+        for start in sorted(network_conditional_transfers):
+            for end in sorted(network_conditional_transfers[start]):
+                updated_conditional_transfers[tomlkit.key([start, end])] = (
+                    network_conditional_transfers[start][end]
+                )
+        return updated_conditional_transfers
+
     def update_network(self, network: tomlkit.TOMLDocument) -> None:
         """Update contents of `network` configuration in-place.
 
@@ -370,7 +446,6 @@ class Config:
         """
 
         network["schema"] = network.get("schema", 1)
-        network["default_transfer_time"] = network.get("default_transfer_time", 420)
         network["default_dwell_time"] = network.get("default_dwell_time", 30)
         network["stations"] = self.__get_updated_stations(
             network.get("stations", tomlkit.table()), self.stations
@@ -382,6 +457,12 @@ class Config:
         network["transfers"] = self.__get_updated_network_adjacency_matrix(
             network.get("transfers", tomlkit.table()),
             self.transfer_adjacency_matrix,
+        )
+        network["conditional_transfers"] = (
+            self.__get_updated_network_conditional_transfers(
+                network.get("conditional_transfers", tomlkit.table()),
+                self.conditional_transfers,
+            )
         )
 
     def update_network_config_file(self, path: pathlib.Path) -> None:
@@ -425,11 +506,6 @@ class Config:
         stations = network.get("stations", None)
         if not isinstance(stations, dict) or not stations:
             raise ValueError("Invalid config file: 'stations' must not be empty.")
-        default_transfer_time = network.get("default_transfer_time", None)
-        if type(default_transfer_time) is not int:
-            raise ValueError(
-                "Invalid config file: 'default_transfer_time' must be int."
-            )
         default_dwell_time = network.get("default_dwell_time", None)
         if type(default_dwell_time) is not int:
             raise ValueError("Invalid config file: 'default_dwell_time'  must be int.")
@@ -468,6 +544,12 @@ class Config:
                 )
             transfers_[vertices] = transfer_details
 
+        conditional_transfers = network.get("conditional_transfers", None)
+        if not isinstance(conditional_transfers, dict):
+            raise ValueError(
+                "Invalid config file: 'conditional_transfers' key must exist, even if there are no values."
+            )
+
         station_coordinates: dict[str, Coordinates] = dict()
         with open(coordinates_path, "r") as f:
             csv_reader = csv.reader(f)
@@ -482,8 +564,8 @@ class Config:
         return (
             segments_,
             transfers_,
+            conditional_transfers,
             stations,
             station_coordinates,
-            default_transfer_time,
             default_dwell_time,
         )

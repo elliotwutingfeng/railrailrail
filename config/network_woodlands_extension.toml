@@ -1,5 +1,4 @@
 schema = 1
-default_transfer_time = 420
 default_dwell_time = 30
 
 [stations]
@@ -113,3 +112,5 @@ EW24-NS1 = {duration = 420}
 NS1-EW24 = {duration = 420}
 NS25-EW13 = {duration = 360}
 NS26-EW14 = {duration = 360}
+
+[conditional_transfers]

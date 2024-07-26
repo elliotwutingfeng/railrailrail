@@ -1,5 +1,4 @@
 schema = 1
-default_transfer_time = 420
 default_dwell_time = 30
 
 [stations]
@@ -537,3 +536,11 @@ TE17-EW16 = {duration = 480}
 TE17-NE3 = {duration = 480}
 TE20-CE2 = {duration = 600}
 TE20-NS27 = {duration = 600}
+
+[conditional_transfers]
+bukit_panjang_service_a.bukit_panjang_service_b = 420
+bukit_panjang_service_b.bukit_panjang_service_a = 420
+punggol_east_loop.punggol_west_loop = 360
+punggol_west_loop.punggol_east_loop = 360
+sengkang_east_loop.sengkang_west_loop = 360
+sengkang_west_loop.sengkang_east_loop = 360

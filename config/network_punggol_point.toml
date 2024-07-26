@@ -1,5 +1,4 @@
 schema = 1
-default_transfer_time = 420
 default_dwell_time = 30
 
 [stations]
@@ -413,3 +412,17 @@ NS26-EW14 = {duration = 360}
 NS27-CE2 = {duration = 600}
 PTC-NE17 = {duration = 420}
 STC-NE16 = {duration = 420}
+
+[conditional_transfers]
+bukit_panjang_main.bukit_panjang_service_c = 420
+bukit_panjang_service_a.bukit_panjang_service_b = 420
+bukit_panjang_service_a.bukit_panjang_service_c = 420
+bukit_panjang_service_b.bukit_panjang_service_a = 420
+bukit_panjang_service_b.bukit_panjang_service_c = 420
+bukit_panjang_service_c.bukit_panjang_main = 420
+bukit_panjang_service_c.bukit_panjang_service_a = 420
+bukit_panjang_service_c.bukit_panjang_service_b = 420
+punggol_east_loop.punggol_west_loop = 360
+punggol_west_loop.punggol_east_loop = 360
+sengkang_east_loop.sengkang_west_loop = 360
+sengkang_west_loop.sengkang_east_loop = 360

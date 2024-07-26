@@ -17,13 +17,12 @@ limitations under the License.
 import pytest
 from dijkstar import Graph
 
-from railrailrail.network.conditional_interchange import ConditionalInterchange
-from railrailrail.network.durations import Durations
 from railrailrail.network.dwell_time import DwellTime
 from railrailrail.network.stage import Stage
 from railrailrail.network.station import Station
 from railrailrail.network.terminal import Terminal
-from railrailrail.network.walking_train_map import WalkingTrainMap
+from railrailrail.network.transfers import Durations
+from railrailrail.network.walks import Walks
 
 
 class TestStage:
@@ -36,19 +35,9 @@ class TestStage:
             Stage("this_is_not_a_real_stage")
 
 
-class TestWalkingTrainMap:
+class TestWalks:
     def test_routes(self):
-        assert WalkingTrainMap.routes
-
-
-class TestConditionalInterchange:
-    def test_is_conditional_interchange_transfer(self):
-        assert ConditionalInterchange.is_conditional_interchange_transfer(
-            "bahar_east", "bahar_west"
-        )
-        assert not ConditionalInterchange.is_conditional_interchange_transfer(
-            "bahar_west", "bahar_east"
-        )
+        assert Walks.routes
 
 
 class TestTerminal:

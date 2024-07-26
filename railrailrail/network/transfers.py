@@ -18,7 +18,7 @@ from railrailrail.network.station import Station
 
 
 class DurationsMeta(type):
-    """Standard duration presets."""
+    """Standard duration presets for segments and transfers."""
 
     # All possible rail segments between any 2 adjacent stations on the same line.
     # This includes segments that have yet to exist (e.g. NS3 -> NS3A),
@@ -387,19 +387,6 @@ class DurationsMeta(type):
         ("Woodlands", 540),
     )
 
-    # Transfers at all possible conditional interchanges, including defunct and future conditional interchanges.
-    #
-    # As a simplification, treat transfer time in both directions as equal.
-    # TODO: Update in the future when more direction-specific transfer time is available.
-    #
-    __conditional_interchange_transfers: tuple = (
-        ("Bahar Junction", 360),
-        ("Bukit Panjang", 420),
-        ("Promenade", 420),
-        ("Punggol", 360),
-        ("Sengkang", 360),
-    )
-
     def __new__(cls, name, bases, dct):
         cls.segments = dict()
         pairs: set[tuple[str, str]] = set()
@@ -443,17 +430,6 @@ class DurationsMeta(type):
             for station_name, duration in cls.__interchange_transfers
         }
         if len(cls.interchange_transfers) != len(cls.__interchange_transfers):
-            raise AttributeError(
-                "Duplicate station names are not allowed."
-            )  # pragma: no cover
-
-        cls.conditional_interchange_transfers = {
-            station_name: duration
-            for station_name, duration in cls.__conditional_interchange_transfers
-        }
-        if len(cls.conditional_interchange_transfers) != len(
-            cls.__conditional_interchange_transfers
-        ):
             raise AttributeError(
                 "Duplicate station names are not allowed."
             )  # pragma: no cover

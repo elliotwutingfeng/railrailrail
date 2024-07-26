@@ -1,5 +1,4 @@
 schema = 1
-default_transfer_time = 420
 default_dwell_time = 30
 
 [stations]
@@ -670,3 +669,17 @@ TE17-NE3 = {duration = 480}
 TE20-CC33 = {duration = 600}
 TE20-NS27 = {duration = 600}
 TE31-DT37 = {duration = 540}
+
+[conditional_transfers]
+bahar_east.bahar_west = 360
+bahar_south.bahar_east = 360
+bahar_west.bahar_south = 360
+bukit_panjang_service_a.bukit_panjang_service_b = 420
+bukit_panjang_service_b.bukit_panjang_service_a = 420
+promenade_east.promenade_south = 420
+promenade_south.promenade_west = 420
+promenade_west.promenade_south = 420
+punggol_east_loop.punggol_west_loop = 360
+punggol_west_loop.punggol_east_loop = 360
+sengkang_east_loop.sengkang_west_loop = 360
+sengkang_west_loop.sengkang_east_loop = 360
