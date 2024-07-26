@@ -142,6 +142,9 @@ class Station:
         Args:
             stations (list[Station]): Stations to be grouped.
 
+        Raises:
+            ValueError: Duplicate line codes not allowed at interchange.
+
         Returns:
             tuple[set[Station]]: Stations grouped by interchange.
         """
@@ -155,4 +158,11 @@ class Station:
             for stations in interchange_stations_by_station_name.values()
             if len(stations) >= 2
         )
+        # Ensure all line codes are unique within each interchange.
+        for interchange in interchanges:
+            unique_line_codes = set(station.line_code for station in interchange)
+            if len(unique_line_codes) != len(interchange):
+                raise ValueError(
+                    f"Stations with same line code are not allowed to have same name. Station: {next(iter(interchange)).station_name}."
+                )
         return interchanges
