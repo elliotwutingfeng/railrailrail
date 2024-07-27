@@ -26,54 +26,71 @@ from railrailrail.railgraph import RailGraph
 def parse_args(args: list[str]) -> Namespace:
     parser = ArgumentParser(
         prog="railrailrail",
-        description="Find fastest route between any 2 stations on the Singapore rail network.",
+        description="Route planner for the Singapore MRT/LRT rail network.",
         epilog="",
     )
-    mode_group = parser.add_mutually_exclusive_group(required=True)
-    mode_group.add_argument(
-        "--generate-config", action="store_true", help="Generate network config file."
+    parser.add_argument("--debug", action="store_true", help="Enable debug output.")
+
+    subparser_description = "Calculate fastest route or generate preset config files."
+    subparsers = parser.add_subparsers(
+        dest="command",
+        required=True,
+        help=subparser_description,
+        description=subparser_description,
     )
-    mode_group.add_argument(
-        "--route",
-        action="store_true",
-        help="Find fastest route between any 2 station codes.",
+    generate_parser_description = "Generate config file(s) with preset values."
+    generate_parser = subparsers.add_parser(
+        "generate",
+        help=generate_parser_description,
+        description=generate_parser_description,
     )
-    mode_group.add_argument(
-        "--interactive",
-        action="store_true",
-        help="Open interactive terminal user interface.",
+    route_parser_description = "Find fastest route between any 2 station codes."
+    route_parser = subparsers.add_parser(
+        "route", help=route_parser_description, description=route_parser_description
     )
 
-    route_group = parser.add_argument_group("route arguments")
+    generate_group = generate_parser.add_mutually_exclusive_group(required=True)
+    generate_group.add_argument(
+        "--coordinates",
+        action="store_true",
+        help="Generate train station coordinates file.",
+    )
+    generate_group.add_argument(
+        "--network",
+        choices=["now", "all", *Stage.stages],
+        default="now",
+        help="Generate preset network config file(s) for train network stage. Use 'all' to generate preset network config files for all stages. Defaults to 'now' (current stage).",
+    )
+
+    route_group = route_parser.add_argument_group("route arguments")
     route_group.add_argument(
         "--start",
         type=str,
         default=None,
+        required=True,
         help="Origin station code.",
     )
     route_group.add_argument(
         "--end",
         type=str,
         default=None,
+        required=True,
         help="Destination station code.",
     )
     route_group.add_argument(
         "--walk", action="store_true", help="Allow station transfers by walking."
     )
-
-    parser.add_argument(
+    route_group.add_argument(
         "--network",
         choices=["now", *Stage.stages],
         default="now",
-        help="Choose from train network as it appears today (default), or as it would be at any specified future stage.",
+        help="Train network stage. Defaults to 'now' (current stage)",
     )
-    parser.add_argument("--debug", action="store_true", help="Enable debug output.")
 
     parsed_args = parser.parse_args(args)
 
-    if parsed_args.route:
-        if not parsed_args.start or not parsed_args.end:
-            parser.error("the following arguments are required: --start, --end")
+    if parsed_args.network == "now":
+        parsed_args.network = "tel_4"  # Contemporary train network; to be updated as the real train network expands.
 
     return parsed_args
 
@@ -84,28 +101,39 @@ if __name__ == "__main__":  # pragma: no cover
     if args.debug:
         logger.setLevel("INFO")
 
-    args.network = (
-        "tel_4" if args.network == "now" else args.network
-    )  # Contemporary train network; to be updated as the real train network expands.
-
-    network_path = (
-        pathlib.Path(__file__).resolve().parent.parent
-        / "config"
-        / f"network_{args.network}.toml"
-    )
-    network_path.parent.mkdir(parents=True, exist_ok=True)
-
     coordinates_path = (
         pathlib.Path(__file__).resolve().parent.parent
         / "config"
         / "station_coordinates.csv"
     )
 
-    if args.generate_config:
-        config = Config(Stage(stage=args.network))
-        config.update_network_config_file(network_path)
+    if args.command == "generate":
+        if args.network:
+            networks: list[str] = (
+                list(Stage.stages) if args.network == "all" else [args.network]
+            )
+            for network in networks:
+                config = Config(Stage(stage=network))
+                network_path = (
+                    pathlib.Path(__file__).resolve().parent.parent
+                    / "config"
+                    / f"network_{network}.toml"
+                )
+                network_path.parent.mkdir(parents=True, exist_ok=True)
+                # No inline comments (e.g. # NEW) will be added if file does not exist yet.
+                config.update_network_config_file(
+                    network_path, do_not_comment_new_lines=not network_path.is_file()
+                )
+        if args.coordinates:
+            raise NotImplementedError()
 
-    if args.route:
+    if args.command == "route":
+        network_path = (
+            pathlib.Path(__file__).resolve().parent.parent
+            / "config"
+            / f"network_{args.network}.toml"
+        )
+        network_path.parent.mkdir(parents=True, exist_ok=True)
         rail_graph = RailGraph.from_file(network_path, coordinates_path)
         pathinfo = rail_graph.find_shortest_path(
             start_station_code=args.start.upper(),

@@ -30,9 +30,9 @@ make install
 ## Usage
 
 ```bash
-poetry run python railrailrail/cli.py --route --walk --network now --start NS14 --end TE29
-poetry run python railrailrail/cli.py --route --walk --network crl_2 --start CR14 --end TE31
-poetry run python railrailrail/cli.py --route --walk --network future --start CR14 --end CC18
+poetry run python railrailrail/cli.py route --walk --network now --start NS14 --end TE29
+poetry run python railrailrail/cli.py route --walk --network crl_2 --start CR14 --end TE31
+poetry run python railrailrail/cli.py route --walk --network future --start CR14 --end CC18
 ```
 
 ## Development

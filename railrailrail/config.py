@@ -283,7 +283,10 @@ class Config:
 
     @classmethod
     def __get_updated_stations(
-        cls, network_stations: tomlkit.items.Table, stations: list[Station]
+        cls,
+        network_stations: tomlkit.items.Table,
+        stations: list[Station],
+        do_not_comment_new_lines: bool,
     ):
         station_code_to_station_name = {
             station.station_code: station.station_name for station in stations
@@ -315,7 +318,8 @@ class Config:
             network_stations[new_station_code] = station_code_to_station_name[
                 new_station_code
             ]
-            network_stations[new_station_code].comment("NEW")
+            if not do_not_comment_new_lines:
+                network_stations[new_station_code].comment("NEW")
 
         # Sort stations
         updated_stations = tomlkit.table()
@@ -330,6 +334,7 @@ class Config:
         cls,
         network_adjacency_matrix: tomlkit.items.Table,
         adjacency_matrix: defaultdict[str, OrderedDict[str, dict]],
+        do_not_comment_new_lines: bool,
     ) -> tomlkit.items.Table:
         # Mark modified edges with comment
         for station_pair, edge_details in network_adjacency_matrix.items():
@@ -371,7 +376,8 @@ class Config:
             it = tomlkit.inline_table()
             it.update(adjacency_matrix[start][end])
             network_adjacency_matrix[new_edge] = it
-            network_adjacency_matrix[new_edge].comment("NEW")
+            if not do_not_comment_new_lines:
+                network_adjacency_matrix[new_edge].comment("NEW")
 
         # Sort adjacency matrix entries
         updated_network_adjacency_matrix = tomlkit.table()
@@ -389,6 +395,7 @@ class Config:
         cls,
         network_conditional_transfers: tomlkit.items.Table,
         conditional_transfers: dict[str, dict[str, int]],
+        do_not_comment_new_lines: bool,
     ) -> tomlkit.items.Table:
         for start in network_conditional_transfers:
             for end, duration in network_conditional_transfers[start].items():
@@ -423,7 +430,8 @@ class Config:
                 network_conditional_transfers[tomlkit.key([start, end])] = (
                     conditional_transfers[start][end]
                 )
-                network_conditional_transfers[start][end].comment("NEW")
+                if not do_not_comment_new_lines:
+                    network_conditional_transfers[start][end].comment("NEW")
 
         # Sort conditional transfers
         updated_conditional_transfers = tomlkit.table()
@@ -434,7 +442,9 @@ class Config:
                 )
         return updated_conditional_transfers
 
-    def update_network(self, network: tomlkit.TOMLDocument) -> None:
+    def update_network(
+        self, network: tomlkit.TOMLDocument, do_not_comment_new_lines: bool = False
+    ) -> None:
         """Update contents of `network` configuration in-place.
 
         - Newly added entries are marked as NEW.
@@ -444,41 +454,50 @@ class Config:
 
         Args:
             network (tomlkit.TOMLDocument): Network configuration to be updated.
+            do_not_comment_new_lines (bool, optional): If enabled, no inline comments will be added for new lines. Defaults to False.
         """
 
         network["schema"] = network.get("schema", 1)
         network["default_dwell_time"] = network.get("default_dwell_time", 30)
         network["stations"] = self.__get_updated_stations(
-            network.get("stations", tomlkit.table()), self.stations
+            network.get("stations", tomlkit.table()),
+            self.stations,
+            do_not_comment_new_lines,
         )
         network["segments"] = self.__get_updated_network_adjacency_matrix(
             network.get("segments", tomlkit.table()),
             self.segment_adjacency_matrix,
+            do_not_comment_new_lines,
         )
         network["transfers"] = self.__get_updated_network_adjacency_matrix(
             network.get("transfers", tomlkit.table()),
             self.transfer_adjacency_matrix,
+            do_not_comment_new_lines,
         )
         network["conditional_transfers"] = (
             self.__get_updated_network_conditional_transfers(
                 network.get("conditional_transfers", tomlkit.table()),
                 self.conditional_transfers,
+                do_not_comment_new_lines,
             )
         )
 
-    def update_network_config_file(self, path: pathlib.Path) -> None:
+    def update_network_config_file(
+        self, path: pathlib.Path, do_not_comment_new_lines: bool = False
+    ) -> None:
         """Overwrite contents of network configuration file at `path` with updated
         network data.
 
         Args:
             path (pathlib.Path): Path to network configuration file.
+            do_not_comment_new_lines (bool, optional): If enabled, no inline comments will be added for new lines. Defaults to False.
         """
         try:
             with open(path, "rb") as f:
                 network: tomlkit.TOMLDocument = tomlkit.load(f)
         except OSError:
             network: tomlkit.TOMLDocument = tomlkit.TOMLDocument()
-        self.update_network(network)
+        self.update_network(network, do_not_comment_new_lines)
         with open(path, "w") as f:
             tomlkit.dump(network, f)
 
