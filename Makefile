@@ -1,4 +1,5 @@
 generate_all:
+	poetry run python railrailrail/cli.py generate --coordinates
 	poetry run python railrailrail/cli.py generate --network all
 
 ruff_lint:

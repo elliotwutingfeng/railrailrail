@@ -3,7 +3,7 @@
   <img src="images/train.svg" alt="Train" width="200" height="200">
 
   <p align="center">
-  Route planner for the Singapore MRT/LRT rail network.
+  Route planner for all stages of the Singapore MRT/LRT rail network (1987-2040+).
   </p>
 
   <p align="center">
@@ -23,8 +23,11 @@
 
 ## Setup
 
+Install dependencies and generate network configuration files.
+
 ```bash
 make install
+make generate_all
 ```
 
 ## Usage
@@ -33,12 +36,6 @@ make install
 poetry run python railrailrail/cli.py route --walk --network now --start NS14 --end TE29
 poetry run python railrailrail/cli.py route --walk --network crl_2 --start CR14 --end TE31
 poetry run python railrailrail/cli.py route --walk --network future --start CR14 --end CC18
-```
-
-## Development
-
-```bash
-make generate_all
 ```
 
 ## Future Developments

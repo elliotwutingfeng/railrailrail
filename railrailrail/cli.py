@@ -15,6 +15,7 @@ limitations under the License.
 """
 
 import pathlib
+import shutil
 import sys
 from argparse import ArgumentParser, Namespace
 
@@ -26,7 +27,7 @@ from railrailrail.railgraph import RailGraph
 def parse_args(args: list[str]) -> Namespace:
     parser = ArgumentParser(
         prog="railrailrail",
-        description="Route planner for the Singapore MRT/LRT rail network.",
+        description="Route planner for all stages of the Singapore MRT/LRT rail network (1987-2040+).",
         epilog="",
     )
     parser.add_argument("--debug", action="store_true", help="Enable debug output.")
@@ -101,10 +102,12 @@ if __name__ == "__main__":  # pragma: no cover
     if args.debug:
         logger.setLevel("INFO")
 
-    coordinates_path = (
-        pathlib.Path(__file__).resolve().parent.parent
-        / "config"
-        / "station_coordinates.csv"
+    parent_path: pathlib.Path = pathlib.Path(__file__).resolve().parent
+
+    coordinates_path = parent_path.parent / "config" / "station_coordinates.csv"
+
+    example_coordinates_path = (
+        parent_path.parent / "config_examples" / "station_coordinates.csv"
     )
 
     if args.command == "generate":
@@ -114,25 +117,21 @@ if __name__ == "__main__":  # pragma: no cover
             )
             for network in networks:
                 config = Config(Stage(stage=network))
-                network_path = (
-                    pathlib.Path(__file__).resolve().parent.parent
-                    / "config"
-                    / f"network_{network}.toml"
-                )
+                network_path = parent_path.parent / "config" / f"network_{network}.toml"
                 network_path.parent.mkdir(parents=True, exist_ok=True)
                 # No inline comments (e.g. # NEW) will be added if file does not exist yet.
                 config.update_network_config_file(
                     network_path, do_not_comment_new_lines=not network_path.is_file()
                 )
         if args.coordinates:
-            raise NotImplementedError()
+            if coordinates_path.is_file():
+                raise FileExistsError(
+                    f"Coordinates file already exists at {coordinates_path}. Remove it before generating a new coordinates file."
+                )
+            shutil.copy(src=example_coordinates_path, dst=coordinates_path)
 
     if args.command == "route":
-        network_path = (
-            pathlib.Path(__file__).resolve().parent.parent
-            / "config"
-            / f"network_{args.network}.toml"
-        )
+        network_path = parent_path.parent / "config" / f"network_{args.network}.toml"
         network_path.parent.mkdir(parents=True, exist_ok=True)
         rail_graph = RailGraph.from_file(network_path, coordinates_path)
         pathinfo = rail_graph.find_shortest_path(
