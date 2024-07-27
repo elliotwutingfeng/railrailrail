@@ -22,8 +22,8 @@ from railrailrail.cli import parse_args
 class TestCli:
     def test_parse_args(self):
         assert parse_args(
-            ["--route", "--network", "now", "--start", "NE1", "--end", "NE3"]
+            ["route", "--network", "now", "--start", "NE1", "--end", "NE3"]
         )
 
         with pytest.raises(SystemExit):
-            assert parse_args(["--route", "--network", "now"])
+            assert parse_args(["route", "--network", "now"])
