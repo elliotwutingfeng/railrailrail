@@ -33,9 +33,9 @@ make generate_all
 ## Usage
 
 ```bash
-poetry run python railrailrail/cli.py route --walk --network now --start NS14 --end TE29
-poetry run python railrailrail/cli.py route --walk --network crl_2 --start CR14 --end TE31
-poetry run python railrailrail/cli.py route --walk --network future --start CR14 --end CC18
+poetry run python railrailrail/cli.py route --walk --network-file config/network_tel_4.toml --coordinates-file config/station_coordinates.csv --start NS14 --end TE29
+poetry run python railrailrail/cli.py route --walk --network-file config/network_crl_2.toml --coordinates-file config/station_coordinates.csv --start CR14 --end TE31
+poetry run python railrailrail/cli.py route --walk --network-file config/network_future.toml --coordinates-file config/station_coordinates.csv --start CR14 --end CC18
 ```
 
 ## Future Developments

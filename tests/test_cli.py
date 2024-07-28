@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+import pathlib
+
 import pytest
 
 from railrailrail.cli import parse_args
@@ -22,8 +24,18 @@ from railrailrail.cli import parse_args
 class TestCli:
     def test_parse_args(self):
         assert parse_args(
-            ["route", "--network", "now", "--start", "NE1", "--end", "NE3"]
+            [
+                "route",
+                "--network-file",
+                str(pathlib.Path("config_examples", "network_tel_4.toml")),
+                "--coordinates-file",
+                str(pathlib.Path("config_examples", "station_coordinates.csv")),
+                "--start",
+                "NE1",
+                "--end",
+                "NE3",
+            ]
         )
 
         with pytest.raises(SystemExit):
-            assert parse_args(["route", "--network", "now"])
+            assert parse_args(["route", "--network-file", "network_tel_4.toml"])

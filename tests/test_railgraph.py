@@ -16,11 +16,9 @@ limitations under the License.
 
 import pathlib
 import math
-import pandas as pd
 import pytest
 import tomllib
 import tomlkit
-import warnings
 from dijkstar.algorithm import PathInfo, NoPathError
 
 from railrailrail.railgraph import RailGraph
@@ -29,38 +27,18 @@ from railrailrail.railgraph import RailGraph
 class TestRailGraph:
     def setup_method(self):
         parent_path: pathlib.Path = pathlib.Path(__file__).resolve().parent
-        example_coordinates_path = (
+
+        test_coordinates_path = (
             parent_path.parent / "config_examples" / "station_coordinates.csv"
         )
 
-        test_coordinates_path = (
-            parent_path / "test_config" / "test_station_coordinates.csv"
-        )
-
-        # Warn if content in example_coordinates_path and test_coordinates_path are different.
-        # Different order of rows does not count as different.
-        example_coordinates_csv = pd.read_csv(example_coordinates_path)
-        example_coordinates_csv = example_coordinates_csv.sort_values(
-            list(example_coordinates_csv.columns)
-        )
-        test_coordinates_csv = pd.read_csv(test_coordinates_path)
-        test_coordinates_csv = test_coordinates_csv.sort_values(
-            list(test_coordinates_csv.columns)
-        )
-
-        if not example_coordinates_csv.equals(test_coordinates_csv):
-            warnings.warn(
-                "Coordinates file at %s is different from test coordinates file at %s"
-                % (example_coordinates_path, test_coordinates_path)
-            )
-
-        with open(parent_path / "test_config" / "test_trips.toml", "rb") as f:
+        with open(parent_path / "test_trips.toml", "rb") as f:
             self.trips: dict = tomllib.load(f)
         for trip in self.trips:
             test_network_path = (
-                parent_path
-                / "test_config"
-                / f"test_network_{self.trips[trip]["input"]["network"]}.toml"
+                parent_path.parent
+                / "config_examples"
+                / f"network_{self.trips[trip]["input"]["network"]}.toml"
             )
             self.trips[trip]["rail_graph"] = RailGraph.from_file(
                 test_network_path, test_coordinates_path
@@ -203,7 +181,7 @@ def generate_test_trips():  # pragma: no cover
     """
     parent_path: pathlib.Path = pathlib.Path(__file__).resolve().parent
 
-    with open(parent_path / "test_config" / "test_trips.toml", "rb") as f:
+    with open(parent_path / "test_trips.toml", "rb") as f:
         trips = tomllib.load(f)
 
     data_ = dict()
@@ -213,8 +191,8 @@ def generate_test_trips():  # pragma: no cover
         end = trip_details["input"]["end"]
         walk = trip_details["input"]["walk"]
         rail_graph = RailGraph.from_file(
-            parent_path / "test_config" / f"test_network_{network}.toml",
-            parent_path / "test_config" / "test_station_coordinates.csv",
+            parent_path.parent / "config_examples" / f"network_{network}.toml",
+            parent_path.parent / "config_examples" / "station_coordinates.csv",
         )
         pathinfo = rail_graph.find_shortest_path(start, end, walk)
         path_distance, haversine_distance = rail_graph.path_and_haversine_distance(

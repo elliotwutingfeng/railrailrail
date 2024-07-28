@@ -58,9 +58,9 @@ def parse_args(args: list[str]) -> Namespace:
     )
     generate_group.add_argument(
         "--network",
-        choices=["now", "all", *Stage.stages],
-        default="now",
-        help="Generate preset network config file(s) for train network stage. Use 'all' to generate preset network config files for all stages. Defaults to 'now' (current stage).",
+        choices=["all", *Stage.stages],
+        default="all",
+        help="Generate preset network config file(s) for train network stage. Use 'all' to generate preset network config files for all stages. Defaults to 'all'.",
     )
 
     route_group = route_parser.add_argument_group("route arguments")
@@ -82,16 +82,21 @@ def parse_args(args: list[str]) -> Namespace:
         "--walk", action="store_true", help="Allow station transfers by walking."
     )
     route_group.add_argument(
-        "--network",
-        choices=["now", *Stage.stages],
-        default="now",
-        help="Train network stage. Defaults to 'now' (current stage)",
+        "--network-file",
+        type=str,
+        default=None,
+        required=True,
+        help="Path to network config file.",
+    )
+    route_group.add_argument(
+        "--coordinates-file",
+        type=str,
+        default=None,
+        required=True,
+        help="Path to station coordinates file.",
     )
 
     parsed_args = parser.parse_args(args)
-
-    if parsed_args.network == "now":
-        parsed_args.network = "tel_4"  # Contemporary train network; to be updated as the real train network expands.
 
     return parsed_args
 
@@ -103,12 +108,6 @@ if __name__ == "__main__":  # pragma: no cover
         logger.setLevel("INFO")
 
     parent_path: pathlib.Path = pathlib.Path(__file__).resolve().parent
-
-    coordinates_path = parent_path.parent / "config" / "station_coordinates.csv"
-
-    example_coordinates_path = (
-        parent_path.parent / "config_examples" / "station_coordinates.csv"
-    )
 
     if args.command == "generate":
         if args.network:
@@ -124,6 +123,10 @@ if __name__ == "__main__":  # pragma: no cover
                     network_path, do_not_comment_new_lines=not network_path.is_file()
                 )
         if args.coordinates:
+            coordinates_path = parent_path.parent / "config" / "station_coordinates.csv"
+            example_coordinates_path = (
+                parent_path.parent / "config_examples" / "station_coordinates.csv"
+            )
             if coordinates_path.is_file():
                 raise FileExistsError(
                     f"Coordinates file already exists at {coordinates_path}. Remove it before generating a new coordinates file."
@@ -131,9 +134,7 @@ if __name__ == "__main__":  # pragma: no cover
             shutil.copy(src=example_coordinates_path, dst=coordinates_path)
 
     if args.command == "route":
-        network_path = parent_path.parent / "config" / f"network_{args.network}.toml"
-        network_path.parent.mkdir(parents=True, exist_ok=True)
-        rail_graph = RailGraph.from_file(network_path, coordinates_path)
+        rail_graph = RailGraph.from_file(args.network_file, args.coordinates_file)
         pathinfo = rail_graph.find_shortest_path(
             start_station_code=args.start.upper(),
             end_station_code=args.end.upper(),
