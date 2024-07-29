@@ -438,13 +438,14 @@ class TestConfig:
         network = tomlkit.TOMLDocument()
         self.config_phase_1_1.update_network(network)
         assert tomlkit.dumps(network) == (
-            "schema = 1\ndefault_dwell_time = 30\n\n"
+            "schema = 1\n\n"
             '[stations]\nNS15 = "Yio Chu Kang" # NEW\n'
             'NS16 = "Ang Mo Kio" # NEW\nNS17 = "Bishan" # NEW\nNS18 = "Braddell" # NEW\nNS19 = "Toa Payoh" # NEW\n\n'
             "[segments]\nNS15-NS16 = {duration = 180, dwell_time_asc = 60, dwell_time_desc = 28} # NEW\n"
             "NS16-NS17 = {duration = 240, dwell_time_asc = 28, dwell_time_desc = 28} # NEW\n"
             "NS17-NS18 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28} # NEW\n"
-            "NS18-NS19 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 60} # NEW\n\n[transfers]\n\n[conditional_transfers]\n"
+            "NS18-NS19 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 60} # NEW\n\n[transfers]\n\n"
+            "[conditional_transfers]\n\n[non_linear_line_terminals]\n"
         )
 
         # Add Expo station.

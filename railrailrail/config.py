@@ -50,18 +50,24 @@ class Config:
         """
         self.stage = stage
         self.stations: list[Station] = self._get_stations()
+
+        # Station lookup tables.
+        self._station_codes_by_station_name: dict[str, set[str]] = defaultdict(set)
+        for station in self.stations:
+            self._station_codes_by_station_name[station.station_name].add(
+                station.station_code
+            )
+        self._stations_by_line_code: defaultdict[str, set[Station]] = defaultdict(set)
+        for station in self.stations:
+            self._stations_by_line_code[station.line_code].add(station)
+
+        # Network config sections.
         self.station_code_to_station: dict[str, Station] = {
             station.station_code: station for station in self.stations
         }
-        self.station_codes_by_station_name: dict[str, set[str]] = defaultdict(set)
-        for station in self.stations:
-            self.station_codes_by_station_name[station.station_name].add(
-                station.station_code
-            )
-        self.stations_by_line_code: defaultdict[str, set[Station]] = defaultdict(set)
-        for station in self.stations:
-            self.stations_by_line_code[station.line_code].add(station)
-
+        self.non_linear_line_terminals: dict[str, set[str]] = (
+            self._generate_non_linear_line_terminals()
+        )
         self.segment_adjacency_matrix: defaultdict[str, OrderedDict[str, dict]] = (
             self._generate_segment_adjacency_matrix()
         )
@@ -70,9 +76,6 @@ class Config:
         )
         self.conditional_transfers: dict[str, dict[str, int]] = (
             self._generate_conditional_transfers()
-        )
-        self.non_linear_line_terminals: dict[str, set[str]] = (
-            self._generate_non_linear_line_terminals()
         )
 
     def _get_stations(self) -> list[Station]:
@@ -104,7 +107,7 @@ class Config:
         adjacency_matrix: defaultdict[str, OrderedDict[str, dict]] = defaultdict(
             OrderedDict
         )
-        for stations in self.stations_by_line_code.values():
+        for stations in self._stations_by_line_code.values():
             line_stations = sorted(
                 stations,
                 key=Station.sort_key,
@@ -142,7 +145,9 @@ class Config:
             }
 
         # Add dwell time for each rail segment.
-        terminal_station_codes: set[str] = Terminal.get_terminals(adjacency_matrix)
+        terminal_station_codes: set[str] = Terminal.get_terminals(
+            self.non_linear_line_terminals, adjacency_matrix
+        )
         interchange_station_codes: set[str] = {
             station.station_code
             for station in set().union(*Station.get_interchanges(self.stations))
@@ -164,10 +169,10 @@ class Config:
 
         # Add walking paths from LTA Walking Train Map (WTM)
         for start_station_name, end_station_name, duration in Walks.routes:
-            for start_station_code in self.station_codes_by_station_name[
+            for start_station_code in self._station_codes_by_station_name[
                 start_station_name
             ]:
-                for end_station_code in self.station_codes_by_station_name[
+                for end_station_code in self._station_codes_by_station_name[
                     end_station_name
                 ]:
                     adjacency_matrix[start_station_code][end_station_code] = {
@@ -216,19 +221,12 @@ class Config:
         Returns:
             defaultdict[str, OrderedDict[str, dict]]: Travel time adjacency matrix.
         """
-        interchange_station_codes_by_station_name: defaultdict[str, set[str]] = (
-            defaultdict(set)
-        )
-        for station in self.stations:
-            interchange_station_codes_by_station_name[station.station_name].add(
-                station.station_code
-            )
         interchanges: dict[str, set[str]] = {
             station_name: station_codes
             for (
                 station_name,
                 station_codes,
-            ) in interchange_station_codes_by_station_name.items()
+            ) in self._station_codes_by_station_name.items()
             if len(station_codes) >= 2
         }
         adjacency_matrix: defaultdict[str, OrderedDict[str, dict]] = defaultdict(
@@ -281,7 +279,7 @@ class Config:
         for line_code in (
             Terminal.looped_line_code_to_terminals
         ):  # Only include looped line terminals that exist.
-            if line_code not in self.stations_by_line_code:
+            if line_code not in self._stations_by_line_code:
                 continue
             terminal_station_codes: set[str] = set()
             for station_code in Terminal.looped_line_code_to_terminals[line_code]:
@@ -302,11 +300,11 @@ class Config:
         ):  # Special case: EWL still part of NSL.
             terminals = {
                 sorted(
-                    self.stations_by_line_code["EW"],
+                    self._stations_by_line_code["EW"],
                     key=Station.sort_key,
                 )[-1].station_code,
                 sorted(
-                    self.stations_by_line_code["NS"],
+                    self._stations_by_line_code["NS"],
                     key=Station.sort_key,
                 )[0].station_code,
             }  # Highest EW and Lowest NS
@@ -547,7 +545,6 @@ class Config:
         """
 
         network["schema"] = network.get("schema", 1)
-        network["default_dwell_time"] = network.get("default_dwell_time", 30)
         network["stations"] = self.__get_updated_stations(
             network.get("stations", tomlkit.table()),
             self.stations,
@@ -622,9 +619,6 @@ class Config:
         stations = network.get("stations", None)
         if not isinstance(stations, dict) or not stations:
             raise ValueError("Invalid config file: 'stations' must not be empty.")
-        default_dwell_time = network.get("default_dwell_time", None)
-        if type(default_dwell_time) is not int:
-            raise ValueError("Invalid config file: 'default_dwell_time'  must be int.")
 
         segments = network.get("segments", None)
         if not isinstance(segments, dict) or not segments:
@@ -666,6 +660,12 @@ class Config:
                 "Invalid config file: 'conditional_transfers' key must exist, even if there are no values."
             )
 
+        non_linear_line_terminals = network.get("non_linear_line_terminals", None)
+        if not isinstance(non_linear_line_terminals, dict):
+            raise ValueError(
+                "Invalid config file: 'non_linear_line_terminals' key must exist, even if there are no values."
+            )
+
         station_coordinates: dict[str, Coordinates] = dict()
         with open(coordinates_path, "r") as f:
             csv_reader = csv.reader(f)
@@ -681,7 +681,7 @@ class Config:
             segments_,
             transfers_,
             conditional_transfers,
+            non_linear_line_terminals,
             stations,
             station_coordinates,
-            default_dwell_time,
         )

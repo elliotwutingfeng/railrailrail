@@ -39,12 +39,15 @@ class Terminal:
 
     @classmethod
     def get_terminals(
-        cls, adjacency_matrix: defaultdict[str, OrderedDict[str, dict]]
+        cls,
+        non_linear_line_terminals: dict[str, dict[str, int]],
+        adjacency_matrix: defaultdict[str, OrderedDict[str, dict]],
     ) -> set[str]:
         """Identify terminal stations from a uni-directional adjacency matrix by counting their neighbours.
         Stations with purely alphabetic station codes will be identified as terminals.
 
         Args:
+            non_linear_line_terminals (dict[str, dict[str, int]]): Map of non-linear line codes to terminal station codes.
             adjacency_matrix (defaultdict[str, OrderedDict[str, dict]]): Uni-directional adjacency matrix
             of station codes linked in ascending order.
 
@@ -62,37 +65,36 @@ class Terminal:
         for station_code, neighbours in bi_directional_adjacency_matrix.items():
             # Stations with less than 2 neighbours are terminals.
             # Stations with purely alphabetic station codes will be identified as terminals.
-            line_code, _, _ = Station.to_station_code_components(station_code)
-            if line_code in cls.looped_line_code_to_terminals:
-                if station_code in cls.looped_line_code_to_terminals[line_code]:
+            line_code, station_number, _ = Station.to_station_code_components(
+                station_code
+            )
+            if line_code in non_linear_line_terminals:
+                if station_code in non_linear_line_terminals[line_code]:
                     terminals.add(station_code)
-            elif (
-                len(neighbours) < 2
-                or Station.to_station_code_components(station_code)[1] == -1
-            ):
+            elif len(neighbours) < 2 or station_number == -1:
                 terminals.add(station_code)
 
         return terminals
 
     @classmethod
-    def get_approaching_terminal(cls, graph: Graph, start: str, end: str) -> str | None:
+    def get_approaching_terminal(
+        cls,
+        graph: Graph,
+        non_linear_line_terminals: dict[str, dict[str, int]],
+        start: str,
+        end: str,
+    ) -> str | None:
         if start == end:
             raise ValueError(f"start and end must be different. Got {start} and {end}")
         start_station_code_components = Station.to_station_code_components(start)
         end_station_code_components = Station.to_station_code_components(end)
         start_line_code, _, _ = start_station_code_components
         end_line_code, _, _ = end_station_code_components
-        if start_line_code in cls.looped_line_code_to_terminals:
-            return None
-        if start_line_code == "CC" and "CC34" in graph:
-            # Circle Line becomes a looped line at Stage 6.
-            return None
-        if "EW14" not in graph and "EW15" in graph and "NS26" in graph:
-            # EWL still part of NSL.
+        if start_line_code in non_linear_line_terminals:
             return None
         if start_line_code != end_line_code:
             raise ValueError(
-                f"start_line_code and end_line_code must be the same. Got {start_line_code} and {end_line_code}"
+                f"start_line_code and end_line_code must be the same on linear lines. Got {start_line_code} and {end_line_code}"
             )
         is_ascending: bool = start_station_code_components < end_station_code_components
         # From start, traverse nodes in ascending or descending order with same line code until dead end is reached.

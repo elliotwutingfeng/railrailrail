@@ -36,9 +36,7 @@ class RailGraph:
     __minimum_duration = 0
     __maximum_duration = 3600  # 3600 seconds = 1 hour
 
-    def __check_graph_params(self, stations, default_dwell_time):
-        if type(default_dwell_time) is not int or default_dwell_time < 0:
-            raise ValueError("default_dwell_time must be non-negative int.")
+    def __check_graph_params(self, stations):
         if not isinstance(stations, dict) or not stations:
             raise ValueError("stations must be non-empty dict.")
         for k, v in stations.items():
@@ -50,9 +48,9 @@ class RailGraph:
         segments: dict[tuple[str, str], dict],
         transfers: dict[tuple[str, str], dict],
         conditional_transfers: dict[str, dict[str, int]],
+        non_linear_line_terminals: dict[str, dict[str, int]],
         stations: dict[str, str],
         station_coordinates: dict[str, Coordinates],
-        default_dwell_time: int = 30,
     ):
         """Setup rail network graph.
 
@@ -61,20 +59,20 @@ class RailGraph:
             other either by rail (same line), or by walking.
             transfers (dict[tuple[str, str], dict]): Every pair of stations that belong to the same interchange.
             conditional_transfers (dict[str, dict[str, int]]): Edge type sequences for conditional transfers.
+            non_linear_line_terminals (dict[str, dict[str, int]]): Map of non-linear line codes to terminal station codes.
             stations (dict[str, str]): Map of station codes to station names.
             station_coordinates (dict[str, Coordinates]): Map of station codes to station latitude and longitude.
-            default_dwell_time (int, optional): Time taken by train to either drop off or pick up passengers at a station in seconds. Defaults to 30.
         """
-        self.__check_graph_params(stations, default_dwell_time)
+        self.__check_graph_params(stations)
 
         self.transfers = transfers
         self.conditional_transfers = conditional_transfers
+        self.non_linear_line_terminals = non_linear_line_terminals
         self.station_code_to_station = {
             station_code: Station(station_code, station_name)
             for station_code, station_name in stations.items()
         }
         self.station_coordinates = station_coordinates
-        self.default_dwell_time = default_dwell_time
 
         # Undirected Graph allows for different time cost when moving in opposite direction.
         self._graph = Graph(undirected=False)
@@ -97,12 +95,14 @@ class RailGraph:
 
             edge_type = segment_details.get("edge_type", "")
             mode = segment_details.get("mode", "")
-            dwell_time_asc = segment_details.get(
-                "dwell_time_asc", self.default_dwell_time
-            )
-            dwell_time_desc = segment_details.get(
-                "dwell_time_desc", self.default_dwell_time
-            )
+
+            # Dwell time is mandatory for segments.
+            dwell_time_asc = segment_details.get("dwell_time_asc", None)
+            if type(dwell_time_asc) is not int or dwell_time_asc < 0:
+                raise ValueError("dwell_time_asc must be a non-negative int.")
+            dwell_time_desc = segment_details.get("dwell_time_desc", None)
+            if type(dwell_time_desc) is not int or dwell_time_desc < 0:
+                raise ValueError("dwell_time_desc must be a non-negative int.")
 
             is_ascending: bool = Station.to_station_code_components(
                 start
@@ -152,12 +152,8 @@ class RailGraph:
                     )
                 edge_type = transfer_details.get("edge_type", "")
                 mode = transfer_details.get("mode", "")
-                dwell_time_asc = transfer_details.get(
-                    "dwell_time_asc", self.default_dwell_time
-                )
-                dwell_time_desc = transfer_details.get(
-                    "dwell_time_asc", self.default_dwell_time
-                )
+                dwell_time_asc = 0  # Transfers have no dwell time.
+                dwell_time_desc = 0  # Transfers have no dwell time.
 
                 is_ascending: bool = (
                     start.line_code,
@@ -338,7 +334,10 @@ class RailGraph:
             def get_terminal_full_station_name() -> str | None:
                 terminal_station: Station | None = self.station_code_to_station.get(
                     Terminal.get_approaching_terminal(
-                        self._graph, current_station_code, next_station_code
+                        self._graph,
+                        self.non_linear_line_terminals,
+                        current_station_code,
+                        next_station_code,
                     ),
                     None,
                 )

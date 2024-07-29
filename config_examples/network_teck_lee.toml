@@ -1,5 +1,4 @@
 schema = 1
-default_dwell_time = 30
 
 [stations]
 BP1 = "Choa Chu Kang"

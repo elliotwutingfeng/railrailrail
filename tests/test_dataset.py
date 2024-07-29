@@ -42,6 +42,7 @@ class TestWalks:
 
 class TestTerminal:
     def test_get_approaching_terminal(self):
+        non_linear_line_terminals = {"BP": {"BP1": 1, "BP14": 1}}
         graph = Graph(undirected=False)
         edge_node_pairs = (
             ("NS1", "NS2"),
@@ -58,13 +59,19 @@ class TestTerminal:
             for j in range(i + 1, len(edge_node_pairs)):
                 assert (
                     Terminal.get_approaching_terminal(
-                        graph, edge_node_pairs[i][0], edge_node_pairs[j][1]
+                        graph,
+                        non_linear_line_terminals,
+                        edge_node_pairs[i][0],
+                        edge_node_pairs[j][1],
                     )
                     == "NS8"
                 )
                 assert (
                     Terminal.get_approaching_terminal(
-                        graph, edge_node_pairs[j][1], edge_node_pairs[i][0]
+                        graph,
+                        non_linear_line_terminals,
+                        edge_node_pairs[j][1],
+                        edge_node_pairs[i][0],
                     )
                     == "NS1"
                 )
@@ -72,15 +79,24 @@ class TestTerminal:
         # Reject lines with loops
         graph = Graph(undirected=False)
         graph.add_edge("BP1", "BP2", (1, "", ""))
-        assert Terminal.get_approaching_terminal(graph, "BP1", "BP2") is None
+        assert (
+            Terminal.get_approaching_terminal(
+                graph, non_linear_line_terminals, "BP1", "BP2"
+            )
+            is None
+        )
 
         # Journeys on lines without loops must start and end on stations with same line code.
         with pytest.raises(ValueError):
-            Terminal.get_approaching_terminal(graph, "EW1", "NS2")
+            Terminal.get_approaching_terminal(
+                graph, non_linear_line_terminals, "EW1", "NS2"
+            )
 
         # Journey cannot start and end at the same station.
         with pytest.raises(ValueError):
-            Terminal.get_approaching_terminal(graph, "EW1", "EW1")
+            Terminal.get_approaching_terminal(
+                graph, non_linear_line_terminals, "EW1", "EW1"
+            )
 
 
 class TestSegments:

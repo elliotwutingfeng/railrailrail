@@ -1,5 +1,4 @@
 schema = 1
-default_dwell_time = 30
 
 [stations]
 EW1 = "Pasir Ris"
