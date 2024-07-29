@@ -22,7 +22,9 @@ from railrailrail.network.station import Station
 
 
 class Terminal:
-    __looped_line_code_to_terminals: dict[str, set[str]] = {
+    """For identifying terminal stations."""
+
+    looped_line_code_to_terminals: dict[str, set[str]] = {
         "BP": {"BP1", "BP14"},
         "JS": {"JS1"},
         "JW": {"JS1"},
@@ -61,8 +63,8 @@ class Terminal:
             # Stations with less than 2 neighbours are terminals.
             # Stations with purely alphabetic station codes will be identified as terminals.
             line_code, _, _ = Station.to_station_code_components(station_code)
-            if line_code in cls.__looped_line_code_to_terminals:
-                if station_code in cls.__looped_line_code_to_terminals[line_code]:
+            if line_code in cls.looped_line_code_to_terminals:
+                if station_code in cls.looped_line_code_to_terminals[line_code]:
                     terminals.add(station_code)
             elif (
                 len(neighbours) < 2
@@ -80,9 +82,9 @@ class Terminal:
         end_station_code_components = Station.to_station_code_components(end)
         start_line_code, _, _ = start_station_code_components
         end_line_code, _, _ = end_station_code_components
-        if start_line_code in cls.__looped_line_code_to_terminals or (
-            start_line_code == "CC" and "CC34" in graph
-        ):
+        if start_line_code in cls.looped_line_code_to_terminals:
+            return None
+        if start_line_code == "CC" and "CC34" in graph:
             # Circle Line becomes a looped line at Stage 6.
             return None
         if "EW14" not in graph and "EW15" in graph and "NS26" in graph:

@@ -166,3 +166,11 @@ class Station:
                     f"Stations with same line code are not allowed to have same name. Station: {next(iter(interchange)).station_name}."
                 )
         return interchanges
+
+    @classmethod
+    def sort_key(cls, station: Station):
+        return (
+            station.line_code,
+            station.station_number,
+            station.station_number_suffix,
+        )

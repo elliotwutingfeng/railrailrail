@@ -35,3 +35,9 @@ NS25-NS26 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 [transfers]
 
 [conditional_transfers]
+
+[non_linear_line_terminals]
+EW.EW16 = 1
+EW.NS15 = 1
+NS.EW16 = 1
+NS.NS15 = 1

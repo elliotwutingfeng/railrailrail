@@ -173,3 +173,9 @@ bukit_panjang_service_b.bukit_panjang_service_c = 420
 bukit_panjang_service_c.bukit_panjang_main = 420
 bukit_panjang_service_c.bukit_panjang_service_a = 420
 bukit_panjang_service_c.bukit_panjang_service_b = 420
+
+[non_linear_line_terminals]
+BP.BP1 = 1
+BP.BP14 = 1
+SE.STC = 1
+STC.STC = 1

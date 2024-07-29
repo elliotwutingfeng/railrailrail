@@ -702,3 +702,15 @@ punggol_east_loop.punggol_west_loop = 360
 punggol_west_loop.punggol_east_loop = 360
 sengkang_east_loop.sengkang_west_loop = 360
 sengkang_west_loop.sengkang_east_loop = 360
+
+[non_linear_line_terminals]
+BP.BP1 = 1
+CC.CC1 = 1
+JS.JS1 = 1
+JW.JS1 = 1
+PE.PTC = 1
+PTC.PTC = 1
+PW.PTC = 1
+SE.STC = 1
+STC.STC = 1
+SW.STC = 1

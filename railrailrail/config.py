@@ -37,7 +37,7 @@ from railrailrail.utils import Coordinates
 
 class Config:
     """Create and update existing rail network configuration files with preset values for
-    each stage.
+    each stage of the Singapore MRT/LRT system.
 
     A helper classmethod for parsing configuration files is provided. See `parse_network_config`.
     """
@@ -50,11 +50,18 @@ class Config:
         """
         self.stage = stage
         self.stations: list[Station] = self._get_stations()
+        self.station_code_to_station: dict[str, Station] = {
+            station.station_code: station for station in self.stations
+        }
         self.station_codes_by_station_name: dict[str, set[str]] = defaultdict(set)
         for station in self.stations:
             self.station_codes_by_station_name[station.station_name].add(
                 station.station_code
             )
+        self.stations_by_line_code: defaultdict[str, set[Station]] = defaultdict(set)
+        for station in self.stations:
+            self.stations_by_line_code[station.line_code].add(station)
+
         self.segment_adjacency_matrix: defaultdict[str, OrderedDict[str, dict]] = (
             self._generate_segment_adjacency_matrix()
         )
@@ -64,10 +71,15 @@ class Config:
         self.conditional_transfers: dict[str, dict[str, int]] = (
             self._generate_conditional_transfers()
         )
+        self.non_linear_line_terminals: dict[str, set[str]] = (
+            self._generate_non_linear_line_terminals()
+        )
 
     def _get_stations(self) -> list[Station]:
         """Generate list of operational train station codes and station names,
         sorted by station code in ascending order.
+
+        Order is important as stations are almost always connected in sequential order.
 
         Returns:
             list[Station]: Train stations sorted by station code in ascending order.
@@ -75,11 +87,7 @@ class Config:
 
         return sorted(
             self.stage.stations,
-            key=lambda station: (
-                station.line_code,
-                station.station_number,
-                station.station_number_suffix,
-            ),
+            key=Station.sort_key,
         )
 
     def _generate_segment_adjacency_matrix(
@@ -91,29 +99,15 @@ class Config:
         Returns:
             defaultdict[str, OrderedDict[str, dict]]: Travel time adjacency matrix.
         """
-        station_code_to_station: dict[str, Station] = {
-            station.station_code: station for station in self.stations
-        }
-
-        stations_by_line_code: defaultdict[str, set[Station]] = defaultdict(
-            set
-        )  # Order is important as stations are almost always connected in sequential order.
-        for station in self.stations:  # Group stations by line.
-            stations_by_line_code[station.line_code].add(station)
-
         # Uni-directionally link up all adjacent stations on same line based on the fact that most adjacent stations
         # are arranged by station code in sequential order (same line code and in ascending station number order).
         adjacency_matrix: defaultdict[str, OrderedDict[str, dict]] = defaultdict(
             OrderedDict
         )
-        for stations in stations_by_line_code.values():
+        for stations in self.stations_by_line_code.values():
             line_stations = sorted(
                 stations,
-                key=lambda station: (
-                    station.line_code,
-                    station.station_number,
-                    station.station_number_suffix,
-                ),
+                key=Station.sort_key,
             )
             for station, next_station in zip(line_stations[:-1], line_stations[1:]):
                 station_code, next_station_code = (
@@ -133,9 +127,9 @@ class Config:
                 }
 
         if (
-            "EW14" not in station_code_to_station
-            and "EW15" in station_code_to_station
-            and "NS26" in station_code_to_station
+            "EW14" not in self.station_code_to_station
+            and "EW15" in self.station_code_to_station
+            and "NS26" in self.station_code_to_station
         ):
             # Special case: EWL still part of NSL.
             station_code, next_station_code = "EW15", "NS26"
@@ -190,13 +184,13 @@ class Config:
             # Skip conditional interchange segments made obsolete by new stations.
             if (
                 isinstance(segment.defunct_with_station_code, str)
-                and segment.defunct_with_station_code in station_code_to_station
+                and segment.defunct_with_station_code in self.station_code_to_station
             ):
                 continue
             station_a, station_b = segment.station_code_pair
             if (
-                station_a in station_code_to_station
-                and station_b in station_code_to_station
+                station_a in self.station_code_to_station
+                and station_b in self.station_code_to_station
             ):
                 dwell_time_asc, dwell_time_desc = DwellTime.get_dwell_time(
                     terminal_station_codes,
@@ -281,13 +275,52 @@ class Config:
                     conditional_transfers[start][end] = duration
         return dict(conditional_transfers)
 
+    def _generate_non_linear_line_terminals(self) -> dict[str, set[str]]:
+        non_linear_line_terminals: dict[str, set[str]] = dict()
+
+        for line_code in (
+            Terminal.looped_line_code_to_terminals
+        ):  # Only include looped line terminals that exist.
+            if line_code not in self.stations_by_line_code:
+                continue
+            terminal_station_codes: set[str] = set()
+            for station_code in Terminal.looped_line_code_to_terminals[line_code]:
+                if station_code in self.station_code_to_station:
+                    terminal_station_codes.add(station_code)
+            if terminal_station_codes:
+                non_linear_line_terminals[line_code] = terminal_station_codes
+
+        if (
+            "CC34" in self.station_code_to_station
+        ):  # Special case: Circle Line becomes a looped line at Stage 6.
+            non_linear_line_terminals["CC"] = {"CC1"}
+
+        if (
+            "EW14" not in self.station_code_to_station
+            and "EW15" in self.station_code_to_station
+            and "NS26" in self.station_code_to_station
+        ):  # Special case: EWL still part of NSL.
+            terminals = {
+                sorted(
+                    self.stations_by_line_code["EW"],
+                    key=Station.sort_key,
+                )[-1].station_code,
+                sorted(
+                    self.stations_by_line_code["NS"],
+                    key=Station.sort_key,
+                )[0].station_code,
+            }  # Highest EW and Lowest NS
+            non_linear_line_terminals["EW"] = terminals.copy()
+            non_linear_line_terminals["NS"] = terminals.copy()
+        return non_linear_line_terminals
+
     @classmethod
     def __get_updated_stations(
         cls,
         network_stations: tomlkit.items.Table,
         stations: list[Station],
         do_not_comment_new_lines: bool,
-    ):
+    ) -> tomlkit.items.Table:
         station_code_to_station_name = {
             station.station_code: station.station_name for station in stations
         }
@@ -442,6 +475,62 @@ class Config:
                 )
         return updated_conditional_transfers
 
+    @classmethod
+    def __get_updated_non_linear_line_terminals(
+        cls,
+        network_non_linear_line_terminals: tomlkit.items.Table,
+        non_linear_line_terminals: dict[str, set[str]],
+        do_not_comment_new_lines: bool,
+    ) -> tomlkit.items.Table:
+        for line_code, station_codes in network_non_linear_line_terminals.items():
+            for station_code, val in station_codes.items():
+                # Mark modified terminals with comment
+                if (
+                    station_code in non_linear_line_terminals.get(line_code, set())
+                    and val != 1
+                ):
+                    existing_comment = network_non_linear_line_terminals[line_code][
+                        station_code
+                    ].trivia.comment
+                    network_non_linear_line_terminals[line_code][station_code].comment(
+                        f"NEW -> {1}{' | %s' % existing_comment if existing_comment else ''}"
+                    )
+                # Mark defunct terminals with comment
+                if station_code not in non_linear_line_terminals.get(line_code, set()):
+                    existing_comment = network_non_linear_line_terminals[line_code][
+                        station_code
+                    ].trivia.comment
+                    network_non_linear_line_terminals[line_code][station_code].comment(
+                        f"DEFUNCT{' | %s' % existing_comment if existing_comment else ''}"
+                    )
+
+        # Add new terminals
+        for line, station_codes in non_linear_line_terminals.items():
+            for station_code in station_codes:
+                if station_code not in network_non_linear_line_terminals.get(
+                    line, set()
+                ):
+                    network_non_linear_line_terminals[
+                        tomlkit.key([line, station_code])
+                    ] = 1
+                    if not do_not_comment_new_lines:
+                        network_non_linear_line_terminals[line][station_code].comment(
+                            "NEW"
+                        )
+
+        # Sort lines
+        updated_non_linear_line_terminals = tomlkit.table()
+        for line_code in sorted(network_non_linear_line_terminals):
+            for station_code in sorted(
+                network_non_linear_line_terminals[line_code],
+                key=Station.to_station_code_components,
+            ):
+                updated_non_linear_line_terminals[
+                    tomlkit.key([line_code, station_code])
+                ] = network_non_linear_line_terminals[line_code][station_code]
+
+        return updated_non_linear_line_terminals
+
     def update_network(
         self, network: tomlkit.TOMLDocument, do_not_comment_new_lines: bool = False
     ) -> None:
@@ -478,6 +567,13 @@ class Config:
             self.__get_updated_network_conditional_transfers(
                 network.get("conditional_transfers", tomlkit.table()),
                 self.conditional_transfers,
+                do_not_comment_new_lines,
+            )
+        )
+        network["non_linear_line_terminals"] = (
+            self.__get_updated_non_linear_line_terminals(
+                network.get("non_linear_line_terminals", tomlkit.table()),
+                self.non_linear_line_terminals,
                 do_not_comment_new_lines,
             )
         )
