@@ -20,7 +20,7 @@ from railrailrail.network.station import Station
 class DwellTime:
     """Standard dwell time presets.
 
-    Source: https://www.railengineer.co.uk/an-international-metro-review
+    Reference: https://www.railengineer.co.uk/an-international-metro-review
     """
 
     non_interchange = 28
@@ -44,7 +44,7 @@ class DwellTime:
             next_station (str): Next station code.
 
         Returns:
-            tuple[int, int]: Direction-specific dwell times; ascending and descending order of station codes.
+            tuple[int, int]: Direction-specific dwell times; in ascending and in descending order of station codes.
         """
         is_ascending: bool = Station.to_station_code_components(
             current_station

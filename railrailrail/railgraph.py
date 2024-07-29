@@ -36,13 +36,6 @@ class RailGraph:
     __minimum_duration = 0
     __maximum_duration = 3600  # 3600 seconds = 1 hour
 
-    def __check_graph_params(self, stations):
-        if not isinstance(stations, dict) or not stations:
-            raise ValueError("stations must be non-empty dict.")
-        for k, v in stations.items():
-            if type(k) is not str or type(v) is not str:
-                raise ValueError("stations must be dict[str, str]")
-
     def __init__(
         self,
         segments: dict[tuple[str, str], dict],
@@ -63,7 +56,11 @@ class RailGraph:
             stations (dict[str, str]): Map of station codes to station names.
             station_coordinates (dict[str, Coordinates]): Map of station codes to station latitude and longitude.
         """
-        self.__check_graph_params(stations)
+        if not isinstance(stations, dict) or not stations:
+            raise ValueError("stations must be non-empty dict.")
+        for k, v in stations.items():
+            if type(k) is not str or type(v) is not str:
+                raise ValueError("stations must be dict[str, str]")
 
         self.transfers = transfers
         self.conditional_transfers = conditional_transfers
@@ -98,11 +95,19 @@ class RailGraph:
 
             # Dwell time is mandatory for segments.
             dwell_time_asc = segment_details.get("dwell_time_asc", None)
-            if type(dwell_time_asc) is not int or dwell_time_asc < 0:
-                raise ValueError("dwell_time_asc must be a non-negative int.")
+            if type(dwell_time_asc) is not int or not (
+                self.__minimum_duration <= dwell_time_asc <= self.__maximum_duration
+            ):
+                raise ValueError(
+                    f"dwell_time_asc must be number in range {self.__minimum_duration}-{self.__maximum_duration}"
+                )
             dwell_time_desc = segment_details.get("dwell_time_desc", None)
-            if type(dwell_time_desc) is not int or dwell_time_desc < 0:
-                raise ValueError("dwell_time_desc must be a non-negative int.")
+            if type(dwell_time_desc) is not int or not (
+                self.__minimum_duration <= dwell_time_desc <= self.__maximum_duration
+            ):
+                raise ValueError(
+                    f"dwell_time_desc must be number in range {self.__minimum_duration}-{self.__maximum_duration}"
+                )
 
             is_ascending: bool = Station.to_station_code_components(
                 start

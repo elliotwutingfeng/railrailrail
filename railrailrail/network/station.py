@@ -41,7 +41,7 @@ class Station:
     missing_station_codes: immutabledict.immutabledict[str, str] = (
         immutabledict.immutabledict({"CG": "EW4"})
     )
-    succeeding_station_codes: immutabledict.immutabledict[str, str] = (
+    future_station_codes: immutabledict.immutabledict[str, str] = (
         immutabledict.immutabledict(
             {
                 "TE33": "CG2",
@@ -74,7 +74,7 @@ class Station:
             (k, v)
             for k, v in {
                 **missing_station_codes,
-                **succeeding_station_codes,
+                **future_station_codes,
                 **pseudo_station_codes,
             }.items()
         ),

@@ -174,7 +174,7 @@ class TestRailGraph:
                 rail_graph.path_and_haversine_distance(self.single_node_path)
 
 
-def generate_test_trips():  # pragma: no cover
+def __generate_test_trips():  # pragma: no cover
     """Helper function to re-generate test trips for test_trips.toml
 
     Generated test cases are printed to stdout.
@@ -217,4 +217,4 @@ def generate_test_trips():  # pragma: no cover
 
 
 if __name__ == "__main__":  # pragma: no cover
-    generate_test_trips()  # Run this file `test_railgraph.py` to print updated test cases to stdout.
+    __generate_test_trips()  # Run this file `test_railgraph.py` to print updated test cases to stdout.

@@ -257,6 +257,12 @@ class Config:
         return adjacency_matrix
 
     def _generate_conditional_transfers(self) -> dict[str, dict[str, int]]:
+        """Generate a lookup table for conditional transfers.
+
+        Returns:
+            dict[str, dict[str, int]]: Conditional transfers lookup table.
+        """
+
         # Filter out unused conditional transfers.
         edge_types: set[str] = set()
         for start in self.segment_adjacency_matrix:
@@ -274,6 +280,12 @@ class Config:
         return dict(conditional_transfers)
 
     def _generate_non_linear_line_terminals(self) -> dict[str, set[str]]:
+        """Generate a mapping of non-linear lines to their terminal station codes.
+
+        Returns:
+            dict[str, set[str]]: Map of non-linear line codes to terminal station codes.
+        """
+
         non_linear_line_terminals: dict[str, set[str]] = dict()
 
         for line_code in (

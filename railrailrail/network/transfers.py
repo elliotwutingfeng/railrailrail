@@ -16,18 +16,20 @@ limitations under the License.
 
 
 class TransfersMeta(type):
-    """Duration presets for transfers."""
+    """Duration presets for transfers, which includes defunct and future interchanges.
 
-    # Transfers at all possible interchanges, including defunct and future interchanges.
-    # Estimates based on walking time + waiting time (5 min for MRT / 6 min for LRT).
-    #
-    # As a simplification, treat transfer time in both directions as equal.
-    # TODO: Update in the future when more direction-specific transfer time is available.
-    #
-    # Rule of thumb for future interchanges
-    # elevated/elevated -> 7 min
-    # underground/underground -> 9 min
-    # underground/elevated -> 12 min
+    Estimates based on walking time + waiting time (5 min for MRT / 6 min for LRT).
+
+    As a simplification, treat transfer time in both directions as equal.
+    TODO: Update in the future when more direction-specific transfer time is available.
+
+    Estimated transfer time for future interchanges:
+
+    - elevated/elevated -> 7 min
+    - underground/underground -> 9 min
+    - underground/elevated -> 12 min
+    """
+
     __interchange_transfers: tuple = (
         ("Ang Mo Kio", 600),
         ("Bayfront", 360),

@@ -300,7 +300,7 @@ CC3-EW12 = {duration = 720, mode = "walk", dwell_time_asc = 0, dwell_time_desc =
 CC3-EW13 = {duration = 300, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 CC3-NS25 = {duration = 300, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 CC4-CC5 = {duration = 360, edge_type = "promenade_east", dwell_time_asc = 45, dwell_time_desc = 28}
-CC4-CC34 = {duration = 180, edge_type = "promenade_south", dwell_time_asc = 45, dwell_time_desc = 60}
+CC4-CC34 = {duration = 180, edge_type = "promenade_south", dwell_time_asc = 45, dwell_time_desc = 45}
 CC5-CC6 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 CC6-CC7 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 CC7-CC8 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
@@ -328,7 +328,7 @@ CC29-CC30 = {duration = 120, dwell_time_asc = 45, dwell_time_desc = 28}
 CC30-CC31 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 CC31-CC32 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 CC32-CC33 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 45}
-CC33-CC34 = {duration = 120, dwell_time_asc = 45, dwell_time_desc = 60}
+CC33-CC34 = {duration = 120, dwell_time_asc = 45, dwell_time_desc = 45}
 CC33-DT17 = {duration = 300, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 CG-CG1 = {duration = 180, dwell_time_asc = 60, dwell_time_desc = 45}
 CG1-CG2 = {duration = 240, dwell_time_asc = 45, dwell_time_desc = 60}

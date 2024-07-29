@@ -17,6 +17,7 @@ limitations under the License.
 import pytest
 from dijkstar import Graph
 
+from railrailrail.network.conditional_transfers import ConditionalTransfersSegment
 from railrailrail.network.dwell_time import DwellTime
 from railrailrail.network.segments import Segments
 from railrailrail.network.stage import Stage
@@ -133,6 +134,10 @@ class TestStation:
         with pytest.raises(ValueError):
             Station.to_station_code_components("XYZ1A")
 
+    def test_get_interchanges(self):
+        with pytest.raises(ValueError):
+            Station.get_interchanges([Station("AB1", "X"), Station("AB2", "X")])
+
 
 class TestDwellTime:
     def test_get_dwell_time(self):
@@ -141,3 +146,13 @@ class TestDwellTime:
         assert DwellTime.get_dwell_time(
             terminal_station_codes, interchange_station_codes, "SW1", "STC"
         ) == (60, 28)
+
+
+class TestConditionalTransfersSegment:
+    def test_post_init(self):
+        with pytest.raises(ValueError):
+            ConditionalTransfersSegment(("AB1", "AB2"), "", "AB1")
+        with pytest.raises(ValueError):
+            ConditionalTransfersSegment(("AB1", "AB1"), "x", "AB1")
+        with pytest.raises(ValueError):
+            ConditionalTransfersSegment(("AB1", "AB2"), "x", "AB3")

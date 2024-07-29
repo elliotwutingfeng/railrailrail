@@ -18,11 +18,13 @@ from railrailrail.network.station import Station
 
 
 class SegmentsMeta(type):
-    """Duration presets for segments."""
+    """Duration presets for all segments, which includes future segments (e.g. NS3 -> NS3A),
+    defunct segments, and soon-to-be-defunct segments (e.g. BP6 -> BP14, NS3 -> NS4).
 
-    # All possible rail segments between any 2 adjacent stations on the same line.
-    # This includes segments that have yet to exist (e.g. NS3 -> NS3A),
-    # and segments that no longer exist or will be removed in the future (e.g. BP6 -> BP14, NS3 -> NS4).
+    A segment is an edge between any 2 adjacent stations traversed via train; not a transfer and not a walking route.
+    The two stations almost always have the same line code, except for "EW15-NS26" before EWL opening.
+    """
+
     __segments: tuple = (
         ("BP1-BP2", ("duration", 120)),
         ("BP2-BP3", ("duration", 60)),
@@ -73,7 +75,6 @@ class SegmentsMeta(type):
         ("CC31-CC32", ("duration", 60)),
         ("CC32-CC33", ("duration", 60)),
         ("CC33-CC34", ("duration", 120)),
-        ("CC33-DT17", ("duration", 300)),
         ("CE0X-CE0Y", ("duration", 120)),
         ("CE0Y-CE0Z", ("duration", 360)),
         ("CE0Z-CE1", ("duration", 180)),

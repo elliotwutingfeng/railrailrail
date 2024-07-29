@@ -22,7 +22,11 @@ from railrailrail.network.station import Station
 
 
 class Terminal:
-    """For identifying terminal stations."""
+    """For identifying terminal stations.
+
+    Some lines are non-linear, which include the looped lines in `looped_line_code_to_terminals`, and
+    the combined NSL-EWL line before year 1989.
+    """
 
     looped_line_code_to_terminals: dict[str, set[str]] = {
         "BP": {"BP1", "BP14"},
@@ -34,7 +38,7 @@ class Terminal:
         "SE": {"STC"},
         "STC": {"STC"},
         "SW": {"STC"},
-    }  # These lines all terminate at one station like JS1,
+    }  # Jurong Region Line and all LRT lines terminate at one station like JS1,
     # except for BPLRT (Service A/B -> BP1, Service C -> BP14).
 
     @classmethod
@@ -63,15 +67,13 @@ class Terminal:
                 bi_directional_adjacency_matrix[next_station_code][station_code] = None
 
         for station_code, neighbours in bi_directional_adjacency_matrix.items():
-            # Stations with less than 2 neighbours are terminals.
-            # Stations with purely alphabetic station codes will be identified as terminals.
-            line_code, station_number, _ = Station.to_station_code_components(
-                station_code
-            )
+            line_code, _, _ = Station.to_station_code_components(station_code)
             if line_code in non_linear_line_terminals:
                 if station_code in non_linear_line_terminals[line_code]:
                     terminals.add(station_code)
-            elif len(neighbours) < 2 or station_number == -1:
+            elif (
+                len(neighbours) < 2
+            ):  # Stations on linear lines with less than 2 neighbours are terminals.
                 terminals.add(station_code)
 
         return terminals
@@ -81,24 +83,49 @@ class Terminal:
         cls,
         graph: Graph,
         non_linear_line_terminals: dict[str, dict[str, int]],
-        start: str,
-        end: str,
+        start_station_code: str,
+        end_station_code: str,
     ) -> str | None:
-        if start == end:
-            raise ValueError(f"start and end must be different. Got {start} and {end}")
-        start_station_code_components = Station.to_station_code_components(start)
-        end_station_code_components = Station.to_station_code_components(end)
+        """Find terminal station that a train heading from `start_station_code` to `end_station_code`
+        is approaching towards.
+
+        Args:
+            graph (Graph): Rail network graph.
+            non_linear_line_terminals (dict[str, dict[str, int]]): Map of non-linear line codes to terminal station codes.
+            start_station_code (str): Origin station.
+            end_station_code (str): Next station.
+
+        Raises:
+            ValueError: `start_station_code` and `end_station_code` must be different.
+            ValueError: On linear lines, start_line_code and end_line_code must be the same.
+
+        Returns:
+            str | None: Terminal station code. If line is non-linear, return None.
+        """
+        if start_station_code == end_station_code:
+            raise ValueError(
+                f"start_station_code and end_station_code must be different. Got {start_station_code} and {end_station_code}"
+            )
+        start_station_code_components = Station.to_station_code_components(
+            start_station_code
+        )
+        end_station_code_components = Station.to_station_code_components(
+            end_station_code
+        )
         start_line_code, _, _ = start_station_code_components
         end_line_code, _, _ = end_station_code_components
-        if start_line_code in non_linear_line_terminals:
+        if (
+            start_line_code in non_linear_line_terminals
+            or end_line_code in non_linear_line_terminals
+        ):
             return None
         if start_line_code != end_line_code:
             raise ValueError(
-                f"start_line_code and end_line_code must be the same on linear lines. Got {start_line_code} and {end_line_code}"
+                f"On linear lines, start_line_code and end_line_code must be the same. Got {start_line_code} and {end_line_code}"
             )
         is_ascending: bool = start_station_code_components < end_station_code_components
-        # From start, traverse nodes in ascending or descending order with same line code until dead end is reached.
-        next_station_code = start
+        # From start_station_code, traverse nodes in ascending or descending order with same line code until dead end is reached.
+        next_station_code = start_station_code
         while True:
             station_and_neighbours = sorted(
                 [

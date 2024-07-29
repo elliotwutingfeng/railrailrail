@@ -29,6 +29,8 @@ class ConditionalTransfersSegment:
     )
 
     def __post_init__(self):
+        if not self.edge_type:
+            raise ValueError("edge_type must be a non-empty string.")
         if (
             len(self.station_code_pair) != 2
             or self.station_code_pair[0] == self.station_code_pair[1]
@@ -137,4 +139,4 @@ class ConditionalTransfers:
             "bahar_west": immutabledict.immutabledict({"bahar_south": 360}),
             "bahar_south": immutabledict.immutabledict({"bahar_east": 360}),
         }
-    )  # Order is important; bahar_east -> bahar_west) != bahar_west -> bahar_east
+    )  # Order is important; bahar_east -> bahar_west != bahar_west -> bahar_east
