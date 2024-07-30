@@ -180,10 +180,10 @@ class RailGraph:
     def from_file(
         cls, network_path: pathlib.Path, coordinates_path: pathlib.Path
     ) -> RailGraph:
-        """Setup rail network graph from network configuration file.
+        """Setup rail network graph from network config file.
 
         Args:
-            network_path (pathlib.Path): Path to network configuration file.
+            network_path (pathlib.Path): Path to network config file.
             coordinates_path (pathlib.Path): Path to station coordinates file.
 
         Returns:
@@ -278,7 +278,7 @@ class RailGraph:
     ) -> PathInfo:
         """Find shortest path between 2 stations `start` and `end`.
 
-        Pseudo station codes like "CE0Y" are considered invalid.
+        Zero station codes like "CE0Y" are considered invalid.
 
         Args:
             start_station_code (str): Station code of station to start from.
@@ -295,8 +295,8 @@ class RailGraph:
             station = self.station_code_to_station.get(station_code, None)
             if station is None:
                 raise ValueError(f"Station code not found: {station_code}")
-            if station.has_pseudo_station_code:
-                raise ValueError(f"Pseudo station code not allowed: {station_code}")
+            if station.has_zero_station_code:
+                raise ValueError(f"Zero station code not allowed: {station_code}")
 
         pathinfo = find_path(
             self._graph if walk else self._graph_without_walk_segments,
@@ -329,9 +329,9 @@ class RailGraph:
         ) in enumerate(zip(pathinfo.nodes[:-1], pathinfo.nodes[1:], pathinfo.edges)):
             current_station = self.station_code_to_station[current_station_code]
             next_station = self.station_code_to_station[next_station_code]
-            at_pseudo_station = (
-                current_station.has_pseudo_station_code
-                or next_station.has_pseudo_station_code
+            at_zero_station = (
+                current_station.has_zero_station_code
+                or next_station.has_zero_station_code
             )
             current_station_full_name = current_station.full_station_name
             next_station_full_name = next_station.full_station_name
@@ -375,7 +375,7 @@ class RailGraph:
                     next_station_code,
                 ) in self.transfers:  # Interchange transfer.
                     steps.append(
-                        f"{'Switch over at' if at_pseudo_station else 'Transfer to'} {next_station_full_name}"
+                        f"{'Switch over at' if at_zero_station else 'Transfer to'} {next_station_full_name}"
                     )
                 elif edge_details[2] == "walk":  # Walk to the next station.
                     steps.append(f"Walk to {next_station_full_name}")
@@ -409,7 +409,7 @@ class RailGraph:
                 ) in self.transfers:  # Interchange transfer.
                     steps.append(f"Alight at {current_station_full_name}")
                     steps.append(
-                        f"{'Switch over at' if at_pseudo_station else 'Transfer to'} {next_station_full_name}"
+                        f"{'Switch over at' if at_zero_station else 'Transfer to'} {next_station_full_name}"
                     )
                     status = "at_station"
                 elif edge_details[2] == "walk":  # Walk to the next station.
@@ -434,7 +434,7 @@ class RailGraph:
                     )
                     status = "in_train"
         if steps and steps[-1].startswith("Switch over"):
-            steps.pop()  # Special case: Final edge is interchange transfer from pseudo station like JE0 -> JS3.
+            steps.pop()  # Special case: Final edge is interchange transfer from zero station like JE0 -> JS3.
         if status == "in_train":
             steps.append(f"Alight at {next_station_full_name}")
         steps.append(

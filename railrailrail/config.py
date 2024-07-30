@@ -26,20 +26,20 @@ import tomlkit
 
 from railrailrail.network.conditional_transfers import ConditionalTransfers
 from railrailrail.network.dwell_time import DwellTime
-from railrailrail.network.segments import Segments
 from railrailrail.network.stage import Stage
 from railrailrail.network.station import Station
 from railrailrail.network.terminal import Terminal
+from railrailrail.network.train_segments import TrainSegments
 from railrailrail.network.transfers import Transfers
 from railrailrail.network.walks import Walks
 from railrailrail.utils import Coordinates
 
 
 class Config:
-    """Create and update existing rail network configuration files with preset values for
+    """Create and update existing rail network config files with preset values for
     each stage of the Singapore MRT/LRT system.
 
-    A helper classmethod for parsing configuration files is provided. See `parse_network_config`.
+    A helper classmethod for parsing network config files is provided. See `parse_network_config`.
     """
 
     def __init__(self, stage: Stage):
@@ -122,7 +122,7 @@ class Config:
                 if (station_code, next_station_code) == ("NS4", "NS13"):
                     continue  # Special case: No link between NS4 and NS13.
                 adjacency_matrix[station_code][next_station_code] = {
-                    "duration": Segments.segments.get(
+                    "duration": TrainSegments.train_segments.get(
                         f"{station_code}-{next_station_code}", dict()
                     ).get(
                         "duration", -1
@@ -137,14 +137,14 @@ class Config:
             # Special case: EWL still part of NSL.
             station_code, next_station_code = "EW15", "NS26"
             adjacency_matrix[station_code][next_station_code] = {
-                "duration": Segments.segments.get(
+                "duration": TrainSegments.train_segments.get(
                     f"{station_code}-{next_station_code}", dict()
                 ).get(
                     "duration", -1
                 ),  # Invalid negative value, to be manually updated by user.
             }
 
-        # Add dwell time for each rail segment.
+        # Add dwell time for each train segment.
         terminal_station_codes: set[str] = Terminal.get_terminals(
             self.non_linear_line_terminals, adjacency_matrix
         )
@@ -167,7 +167,7 @@ class Config:
                     }
                 )
 
-        # Add walking paths from LTA Walking Train Map (WTM)
+        # Add walking segments from LTA Walking Train Map (WTM)
         for start_station_name, end_station_name, duration in Walks.routes:
             for start_station_code in self._station_codes_by_station_name[
                 start_station_name
@@ -204,7 +204,7 @@ class Config:
                     station_b,
                 )
                 adjacency_matrix[station_a][station_b] = {
-                    **Segments.segments[f"{station_a}-{station_b}"],
+                    **TrainSegments.train_segments[f"{station_a}-{station_b}"],
                     "edge_type": segment.edge_type,
                     "dwell_time_asc": dwell_time_asc,
                     "dwell_time_desc": dwell_time_desc,
@@ -544,7 +544,7 @@ class Config:
     def update_network(
         self, network: tomlkit.TOMLDocument, do_not_comment_new_lines: bool = False
     ) -> None:
-        """Update contents of `network` configuration in-place.
+        """Update contents of `network` config in-place.
 
         - Newly added entries are marked as NEW.
         - Entries to be modified will have their new content added as an inline-comment.
@@ -552,7 +552,7 @@ class Config:
         - Existing comments are preserved.
 
         Args:
-            network (tomlkit.TOMLDocument): Network configuration to be updated.
+            network (tomlkit.TOMLDocument): Network config to be updated.
             do_not_comment_new_lines (bool, optional): If enabled, no inline comments will be added for new lines. Defaults to False.
         """
 
@@ -590,11 +590,11 @@ class Config:
     def update_network_config_file(
         self, path: pathlib.Path, do_not_comment_new_lines: bool = False
     ) -> None:
-        """Overwrite contents of network configuration file at `path` with updated
+        """Overwrite contents of network config file at `path` with updated
         network data.
 
         Args:
-            path (pathlib.Path): Path to network configuration file.
+            path (pathlib.Path): Path to network config file.
             do_not_comment_new_lines (bool, optional): If enabled, no inline comments will be added for new lines. Defaults to False.
         """
         try:
@@ -610,17 +610,17 @@ class Config:
     def parse_network_config(
         cls, network_path: pathlib.Path, coordinates_path: pathlib.Path
     ) -> tuple:
-        """Parse network configuration file and station coordinates file.
+        """Parse network config file and station coordinates file.
 
         Args:
-            network_path (pathlib.Path): Path to network configuration file.
+            network_path (pathlib.Path): Path to network config file.
             coordinates_path (pathlib.Path): Path to station coordinates file.
 
         Raises:
             ValueError: Invalid config file.
 
         Returns:
-            tuple: Parsed network configuration data.
+            tuple: Parsed network config data.
         """
         with open(network_path, "rb") as f:
             network = tomllib.load(f)
@@ -685,7 +685,7 @@ class Config:
             for row in csv_reader:
                 station_coordinates[row[0]] = Coordinates(float(row[2]), float(row[3]))
 
-        # Assign coordinates to missing/future/pseudo station codes.
+        # Assign coordinates to missing/future/zero station codes.
         for code1, code2 in Station.equivalent_station_code_pairs:
             station_coordinates[code1] = station_coordinates[code2]
 

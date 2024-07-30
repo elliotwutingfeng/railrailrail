@@ -17,15 +17,15 @@ limitations under the License.
 from railrailrail.network.station import Station
 
 
-class SegmentsMeta(type):
-    """Duration presets for all segments, which includes future segments (e.g. NS3 -> NS3A),
-    defunct segments, and soon-to-be-defunct segments (e.g. BP6 -> BP14, NS3 -> NS4).
+class TrainSegmentsMeta(type):
+    """Duration presets for all train segments, which includes future train segments (e.g. NS3 -> NS3A),
+    defunct train segments, and soon-to-be-defunct train segments (e.g. BP6 -> BP14, NS3 -> NS4).
 
-    A segment is an edge between any 2 adjacent stations traversed via train; not a transfer and not a walking route.
+    A train segment is an edge between any 2 adjacent stations traversed via train; not a transfer and not a walking route.
     The two stations almost always have the same line code, except for "EW15-NS26" before EWL opening.
     """
 
-    __segments: tuple = (
+    __train_segments: tuple = (
         ("BP1-BP2", ("duration", 120)),
         ("BP2-BP3", ("duration", 60)),
         ("BP3-BP4", ("duration", 120)),
@@ -332,9 +332,9 @@ class SegmentsMeta(type):
     )
 
     def __new__(cls, name, bases, dct):
-        cls.segments = dict()
+        cls.train_segments = dict()
         pairs: set[tuple[str, str]] = set()
-        for segment, *details in cls.__segments:
+        for segment, *details in cls.__train_segments:
             # Validate segment format
             segment_parts = segment.split("-", 2)
             if len(segment_parts) != 2:
@@ -367,10 +367,10 @@ class SegmentsMeta(type):
                 raise AttributeError(
                     "Segment duration must be int."
                 )  # pragma: no cover
-            cls.segments[segment] = segment_details
+            cls.train_segments[segment] = segment_details
 
         return super().__new__(cls, name, bases, dct)
 
 
-class Segments(metaclass=SegmentsMeta):
+class TrainSegments(metaclass=TrainSegmentsMeta):
     pass

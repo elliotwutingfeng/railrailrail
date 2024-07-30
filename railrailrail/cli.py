@@ -23,6 +23,8 @@ from railrailrail.config import Config, Stage
 from railrailrail.logger import logger
 from railrailrail.railgraph import RailGraph
 
+STATION_COORDINATES_FILENAME = "station_coordinates.csv"
+
 
 def parse_args(args: list[str]) -> Namespace:
     parser = ArgumentParser(
@@ -54,7 +56,7 @@ def parse_args(args: list[str]) -> Namespace:
     generate_group.add_argument(
         "--coordinates",
         action="store_true",
-        help="Generate train station coordinates file.",
+        help=f"Generate train station coordinates file ({STATION_COORDINATES_FILENAME}).",
     )
     generate_group.add_argument(
         "--network",
@@ -123,9 +125,11 @@ if __name__ == "__main__":  # pragma: no cover
                     network_path, do_not_comment_new_lines=not network_path.is_file()
                 )
         if args.coordinates:
-            coordinates_path = parent_path.parent / "config" / "station_coordinates.csv"
+            coordinates_path = (
+                parent_path.parent / "config" / STATION_COORDINATES_FILENAME
+            )
             example_coordinates_path = (
-                parent_path.parent / "config_examples" / "station_coordinates.csv"
+                parent_path.parent / "config_examples" / STATION_COORDINATES_FILENAME
             )
             if coordinates_path.is_file():
                 raise FileExistsError(

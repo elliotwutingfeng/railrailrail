@@ -42,17 +42,18 @@ class ConditionalTransfersSegment:
 
 @dataclasses.dataclass(frozen=True)
 class ConditionalTransfers:
-    """A conditional interchange is a station that is positioned between different segments of the
+    """A conditional interchange is a station that is positioned between different train segments of the
     same line that are not directly connected to each other. For example, STC Sengkang is the
     conditional interchange for the Sengkang LRT East Loop and Sengkang LRT West Loop.
 
-    A conditional interchange behaves as an interchange only when previous segment and next segment are
-    match any sequence in `conditional_transfers`. When this happens, a conditional transfer occurs.
+    A conditional interchange behaves as an interchange only when the `edge_type` of the
+    previous train segment and next train segment match any sequence in `conditional_transfers`.
+    When this happens, a conditional transfer occurs.
 
     For example, there will be a conditional transfer when
     moving from "bahar_east" to "bahar_west", but not from "bahar_west" to "bahar_east".
 
-    Nearly all segments adjacent to a conditional interchange are non-sequential, like JS7-JW1,
+    Nearly all train segments adjacent to a conditional interchange are non-sequential, like JS7-JW1,
     except for BP6-BP7, JS6-JS7, JS7-JS8 which are sequential.
     """
 

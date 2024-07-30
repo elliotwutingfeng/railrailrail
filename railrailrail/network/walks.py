@@ -18,9 +18,7 @@ limitations under the License.
 class WalksMeta(type):
     """Walking routes and their estimated durations between some stations.
 
-    From LTA Walking Train Map (WTM).
-
-    https://www.lta.gov.sg/content/dam/ltagov/who_we_are/statistics_and_publications/pdf/connect_nov_2018_fa_12nov.pdf
+    From [LTA Walking Train Map (WTM)](https://www.lta.gov.sg/content/dam/ltagov/who_we_are/statistics_and_publications/pdf/connect_nov_2018_fa_12nov.pdf)
     """
 
     __routes: tuple[tuple[str, str, int]] = (

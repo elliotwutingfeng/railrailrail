@@ -19,10 +19,10 @@ from dijkstar import Graph
 
 from railrailrail.network.conditional_transfers import ConditionalTransfersSegment
 from railrailrail.network.dwell_time import DwellTime
-from railrailrail.network.segments import Segments
 from railrailrail.network.stage import Stage
 from railrailrail.network.station import Station
 from railrailrail.network.terminal import Terminal
+from railrailrail.network.train_segments import TrainSegments
 from railrailrail.network.walks import Walks
 
 
@@ -100,9 +100,9 @@ class TestTerminal:
             )
 
 
-class TestSegments:
+class TestTrainSegments:
     def test_segments(self):
-        assert Segments.segments
+        assert TrainSegments.train_segments
 
 
 class TestStation:

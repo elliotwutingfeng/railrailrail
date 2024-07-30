@@ -36,7 +36,7 @@ class Station:
     line_code: str = dataclasses.field(compare=False, init=False)
     station_number: int = dataclasses.field(compare=False, init=False)
     station_number_suffix: str = dataclasses.field(compare=False, init=False)
-    has_pseudo_station_code: bool = dataclasses.field(compare=False, init=False)
+    has_zero_station_code: bool = dataclasses.field(compare=False, init=False)
 
     missing_station_codes: immutabledict.immutabledict[str, str] = (
         immutabledict.immutabledict({"CG": "EW4"})
@@ -52,7 +52,7 @@ class Station:
             }
         )
     )
-    pseudo_station_codes: immutabledict.immutabledict[str, str] = (
+    zero_station_codes: immutabledict.immutabledict[str, str] = (
         immutabledict.immutabledict(
             {
                 "CE0X": "CC6",
@@ -67,7 +67,7 @@ class Station:
         r"^([A-Z]{2})([0-9]|[1-9][0-9]?)([A-Z]?)$", re.ASCII
     )
 
-    # Missing/future/pseudo station codes.
+    # Missing/future/zero station codes.
     equivalent_station_code_pairs: tuple[tuple[str, str]] = dataclasses.field(
         compare=False,
         default=tuple(
@@ -75,18 +75,18 @@ class Station:
             for k, v in {
                 **missing_station_codes,
                 **future_station_codes,
-                **pseudo_station_codes,
+                **zero_station_codes,
             }.items()
         ),
     )
 
     def __post_init__(self):
-        real_station_code = self.pseudo_station_codes.get(
+        real_station_code = self.zero_station_codes.get(
             self.station_code, self.station_code
         )
         line_code, station_number, station_number_suffix = (
             self.to_station_code_components(self.station_code)
-        )  # Based on pseudo station code, if any.
+        )  # Based on zero station code, if any.
         object.__setattr__(self, "real_station_code", real_station_code)
         object.__setattr__(
             self, "full_station_name", f"{real_station_code} {self.station_name}"
@@ -96,8 +96,8 @@ class Station:
         object.__setattr__(self, "station_number_suffix", station_number_suffix)
         object.__setattr__(
             self,
-            "has_pseudo_station_code",
-            self.station_code in self.pseudo_station_codes,
+            "has_zero_station_code",
+            self.station_number == 0,
         )
 
     @classmethod

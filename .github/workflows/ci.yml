@@ -2,6 +2,18 @@ name: ci
 
 on: [push, pull_request, workflow_dispatch]
 jobs:
+    format-markdown:
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout repo content
+              uses: actions/checkout@v4
+
+            - name: Markdown format check
+              run: |
+                  npm install -g markdownlint-cli
+                  markdownlint --disable MD013 MD033 MD041 --fix . --ignore CODE_OF_CONDUCT.md
+                  git add -A
+                  git diff --cached --exit-code
     test-and-coverage:
         strategy:
           matrix:
@@ -18,15 +30,15 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  poetry install
+                  make install
 
-            - name: Ruff format
+            - name: Ruff format check
               run: |
-                  poetry run ruff format --check
+                  make ruff_format_check
 
-            - name: Ruff lint
+            - name: Ruff lint check
               run: |
-                  poetry run ruff check
+                  make ruff_check
 
             - name: Test
               run: |

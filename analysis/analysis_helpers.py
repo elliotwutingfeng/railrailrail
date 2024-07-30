@@ -30,8 +30,8 @@ def get_stage_journeys(stage: str) -> tuple[str, dict, RailGraph]:
     real_stations = {
         station_code: station
         for (station_code, station) in rail_graph.station_code_to_station.items()
-        if not station.has_pseudo_station_code
-    }  # Exclude stations with pseudo station codes like CE0Z.
+        if not station.has_zero_station_code
+    }  # Exclude stations with zero station codes like CE0Z.
 
     # Run all possible pair permutations of stations on the RailGraph.
     journeys = dict()
