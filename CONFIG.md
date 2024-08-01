@@ -143,3 +143,17 @@ BP.BP14 = 1
 PE.PTC = 1
 ...
 ```
+
+### Station Code Pseudonyms
+
+This section maps pseudo station codes (e.g. JE0) to real station codes (e.g. JS3). Pseudo station codes
+are used in lines that overlap with other lines like the Jurong Region Line East Branch (JE over JS),
+and Circle Line Extension (CE over CC).
+
+```toml
+[station_code_pseudonyms]
+CE0X = "CC6"
+CE0Y = "CC5"
+CE0Z = "CC4"
+...
+```
