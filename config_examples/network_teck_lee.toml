@@ -133,7 +133,6 @@ NE14 = "Hougang"
 NE15 = "Buangkok"
 NE16 = "Sengkang"
 NE17 = "Punggol"
-NE18 = "Punggol Coast"
 NS1 = "Jurong East"
 NS2 = "Bukit Batok"
 NS3 = "Bukit Gombak"
@@ -377,8 +376,7 @@ NE12-NE13 = {duration = 180, dwell_time_asc = 45, dwell_time_desc = 28}
 NE13-NE14 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 NE14-NE15 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 NE15-NE16 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 45}
-NE16-NE17 = {duration = 180, dwell_time_asc = 45, dwell_time_desc = 45}
-NE17-NE18 = {duration = 180, dwell_time_asc = 45, dwell_time_desc = 60}
+NE16-NE17 = {duration = 180, dwell_time_asc = 45, dwell_time_desc = 60}
 NS1-NS2 = {duration = 180, dwell_time_asc = 60, dwell_time_desc = 28}
 NS2-NS3 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
 NS3-NS4 = {duration = 240, dwell_time_asc = 28, dwell_time_desc = 45}

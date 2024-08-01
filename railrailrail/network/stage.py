@@ -330,8 +330,8 @@ class StageMeta(type):
                     Station("TE28", "Siglap"),
                     Station("TE29", "Bayshore"),
                 ),  # 23 June 2024
+                "teck_lee": (Station("PW2", "Teck Lee"),),  # 15 August 2024
                 "punggol_coast_extension": (Station("NE18", "Punggol Coast"),),  # 2024
-                "teck_lee": (Station("PW2", "Teck Lee"),),  # 2024
                 "hume": (Station("DT4", "Hume"),),  # 2025
                 "tel_5_and_dtl_3e": (
                     Station("TE30", "Bedok South"),

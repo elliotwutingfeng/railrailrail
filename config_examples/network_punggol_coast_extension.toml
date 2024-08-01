@@ -170,6 +170,7 @@ PE6 = "Oasis"
 PE7 = "Damai"
 PTC = "Punggol"
 PW1 = "Sam Kee"
+PW2 = "Teck Lee"
 PW3 = "Punggol Point"
 PW4 = "Samudera"
 PW5 = "Nibong"
@@ -416,7 +417,8 @@ PTC-PE1 = {duration = 180, edge_type = "punggol_east_loop", dwell_time_asc = 28,
 PTC-PE7 = {duration = 120, edge_type = "punggol_east_loop", dwell_time_asc = 28, dwell_time_desc = 45}
 PTC-PW1 = {duration = 120, edge_type = "punggol_west_loop", dwell_time_asc = 45, dwell_time_desc = 28}
 PTC-PW7 = {duration = 180, edge_type = "punggol_west_loop", dwell_time_asc = 45, dwell_time_desc = 28}
-PW1-PW3 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+PW1-PW2 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
+PW2-PW3 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 PW3-PW4 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 PW4-PW5 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 PW5-PW6 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
