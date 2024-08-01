@@ -23,15 +23,15 @@ from railrailrail.railgraph import RailGraph
 
 
 def get_stage_journeys(stage: str) -> tuple[str, dict, RailGraph]:
-    network_path = pathlib.Path("config") / f"network_{stage}.toml"
-    coordinates_path = pathlib.Path("config") / "station_coordinates.csv"
+    network_path = pathlib.Path("config_examples") / f"network_{stage}.toml"
+    coordinates_path = pathlib.Path("config_examples") / "station_coordinates.csv"
     rail_graph = RailGraph.from_file(network_path, coordinates_path)
 
     real_stations = {
         station_code: station
         for (station_code, station) in rail_graph.station_code_to_station.items()
-        if not station.has_zero_station_code
-    }  # Exclude stations with zero station codes like CE0Z.
+        if not station.has_pseudo_station_code
+    }  # Exclude pseudo station codes like CE0Y.
 
     # Run all possible pair permutations of stations on the RailGraph.
     journeys = dict()

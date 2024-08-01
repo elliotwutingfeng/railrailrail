@@ -46,7 +46,7 @@ class TestConfig:
             "NS16-NS17 = {duration = 240, dwell_time_asc = 28, dwell_time_desc = 28}\n"
             "NS17-NS18 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}\n"
             "NS18-NS19 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 60}\n\n[transfers]\n\n"
-            "[conditional_transfers]\n\n[non_linear_line_terminals]\n"
+            "[conditional_transfers]\n\n[non_linear_line_terminals]\n\n[station_code_pseudonyms]\n"
         )
 
     def test_segment_adjacency_matrix(self):
@@ -451,8 +451,8 @@ class TestConfig:
     def test_compare_toml(self):
         original = self.config_phase_1_1_toml_str.split("\n")
         modified = original.copy()
-        modified.insert(-2, "\n")  # Add newline before [non_linear_line_terminals].
-        modified[-2] = (
+        modified.insert(-4, "\n")  # Add newline before [non_linear_line_terminals].
+        modified[-4] = (
             "[linear_line_terminals]"  # Modify [non_linear_line_terminals] to [linear_line_terminals].
         )
         del modified[2]  # Remove [stations].
@@ -468,7 +468,7 @@ class TestConfig:
             "NS16-NS17 = {duration = 240, dwell_time_asc = 28, dwell_time_desc = 28}\n"
             "NS17-NS18 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}\n"
             "NS18-NS19 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 60}\n\n[transfers]\n\n"
-            "[conditional_transfers]\n\n\n# [non_linear_line_terminals]\n[linear_line_terminals] # MODIFIED"
+            "[conditional_transfers]\n\n\n# [non_linear_line_terminals]\n[linear_line_terminals] # MODIFIED\n\n[station_code_pseudonyms]"
         )
 
     def test_update_network_config_file(self):

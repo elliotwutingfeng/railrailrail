@@ -228,9 +228,9 @@ class StageMeta(type):
                     Station("BP14", "Ten Mile Junction"),
                 ),  # 30 December 2011
                 "ccl_e": (
-                    Station("CE0X", "Stadium"),  # Zero station_code
-                    Station("CE0Y", "Nicoll Highway"),  # Zero station_code
-                    Station("CE0Z", "Promenade"),  # Zero station_code
+                    Station("CE0X", "Stadium"),  # Pseudo station_code
+                    Station("CE0Y", "Nicoll Highway"),  # Pseudo station_code
+                    Station("CE0Z", "Promenade"),  # Pseudo station_code
                     Station("CE1", "Bayfront"),
                     Station("CE2", "Marina Bay"),
                 ),  # 14 January 2012
@@ -360,7 +360,7 @@ class StageMeta(type):
                 ),  # 2027
                 "founders_memorial": (Station("TE22A", "Founders' Memorial"),),  # 2028
                 "jrl_2": (
-                    Station("JE0", "Tengah"),  # Zero station_code
+                    Station("JE0", "Tengah"),  # Pseudo station_code
                     Station("JE1", "Tengah Plantation"),
                     Station("JE2", "Tengah Park"),
                     Station("JE3", "Bukit Batok West"),
@@ -430,9 +430,9 @@ class StageMeta(type):
         immutabledict.immutabledict(
             {
                 "ccl_6": (
-                    Station("CE0X", "Stadium"),  # Zero station_code
-                    Station("CE0Y", "Nicoll Highway"),  # Zero station_code
-                    Station("CE0Z", "Promenade"),  # Zero station_code
+                    Station("CE0X", "Stadium"),  # Pseudo station_code
+                    Station("CE0Y", "Nicoll Highway"),  # Pseudo station_code
+                    Station("CE0Z", "Promenade"),  # Pseudo station_code
                     Station("CE1", "Bayfront"),
                     Station("CE2", "Marina Bay"),
                 ),

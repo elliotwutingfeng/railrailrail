@@ -102,3 +102,5 @@ NS26-EW14 = {duration = 360}
 [conditional_transfers]
 
 [non_linear_line_terminals]
+
+[station_code_pseudonyms]

@@ -395,3 +395,8 @@ PW.PTC = 1
 SE.STC = 1
 STC.STC = 1
 SW.STC = 1
+
+[station_code_pseudonyms]
+CE0X = "CC6"
+CE0Y = "CC5"
+CE0Z = "CC4"

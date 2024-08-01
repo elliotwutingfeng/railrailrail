@@ -42,6 +42,7 @@ class RailGraph:
         transfers: dict[tuple[str, str], dict],
         conditional_transfers: dict[str, dict[str, int]],
         non_linear_line_terminals: dict[str, dict[str, int]],
+        station_code_pseudonyms: dict[str, str],
         stations: dict[str, str],
         station_coordinates: dict[str, Coordinates],
     ):
@@ -53,6 +54,7 @@ class RailGraph:
             transfers (dict[tuple[str, str], dict]): Every pair of stations that belong to the same interchange.
             conditional_transfers (dict[str, dict[str, int]]): Edge type sequences for conditional transfers.
             non_linear_line_terminals (dict[str, dict[str, int]]): Map of non-linear line codes to terminal station codes.
+            station_code_pseudonyms (dict[str, str]): Map of pseudo station codes to real station codes.
             stations (dict[str, str]): Map of station codes to station names.
             station_coordinates (dict[str, Coordinates]): Map of station codes to station latitude and longitude.
         """
@@ -66,7 +68,11 @@ class RailGraph:
         self.conditional_transfers = conditional_transfers
         self.non_linear_line_terminals = non_linear_line_terminals
         self.station_code_to_station = {
-            station_code: Station(station_code, station_name)
+            station_code: Station(
+                station_code,
+                station_name,
+                station_code_pseudonyms.get(station_code, None),
+            )
             for station_code, station_name in stations.items()
         }
         self.station_coordinates = station_coordinates
@@ -278,7 +284,7 @@ class RailGraph:
     ) -> PathInfo:
         """Find shortest path between 2 stations `start` and `end`.
 
-        Zero station codes like "CE0Y" are considered invalid.
+        Pseudo station codes are considered invalid.
 
         Args:
             start_station_code (str): Station code of station to start from.
@@ -295,8 +301,8 @@ class RailGraph:
             station = self.station_code_to_station.get(station_code, None)
             if station is None:
                 raise ValueError(f"Station code not found: {station_code}")
-            if station.has_zero_station_code:
-                raise ValueError(f"Zero station code not allowed: {station_code}")
+            if station.has_pseudo_station_code:
+                raise ValueError(f"Station code pseudonym not allowed: {station_code}")
 
         pathinfo = find_path(
             self._graph if walk else self._graph_without_walk_segments,
@@ -329,9 +335,9 @@ class RailGraph:
         ) in enumerate(zip(pathinfo.nodes[:-1], pathinfo.nodes[1:], pathinfo.edges)):
             current_station = self.station_code_to_station[current_station_code]
             next_station = self.station_code_to_station[next_station_code]
-            at_zero_station = (
-                current_station.has_zero_station_code
-                or next_station.has_zero_station_code
+            at_pseudo_station = (
+                current_station.has_pseudo_station_code
+                or next_station.has_pseudo_station_code
             )
             current_station_full_name = current_station.full_station_name
             next_station_full_name = next_station.full_station_name
@@ -375,7 +381,7 @@ class RailGraph:
                     next_station_code,
                 ) in self.transfers:  # Interchange transfer.
                     steps.append(
-                        f"{'Switch over at' if at_zero_station else 'Transfer to'} {next_station_full_name}"
+                        f"{'Switch over at' if at_pseudo_station else 'Transfer to'} {next_station_full_name}"
                     )
                 elif edge_details[2] == "walk":  # Walk to the next station.
                     steps.append(f"Walk to {next_station_full_name}")
@@ -409,7 +415,7 @@ class RailGraph:
                 ) in self.transfers:  # Interchange transfer.
                     steps.append(f"Alight at {current_station_full_name}")
                     steps.append(
-                        f"{'Switch over at' if at_zero_station else 'Transfer to'} {next_station_full_name}"
+                        f"{'Switch over at' if at_pseudo_station else 'Transfer to'} {next_station_full_name}"
                     )
                     status = "at_station"
                 elif edge_details[2] == "walk":  # Walk to the next station.
@@ -434,7 +440,7 @@ class RailGraph:
                     )
                     status = "in_train"
         if steps and steps[-1].startswith("Switch over"):
-            steps.pop()  # Special case: Final edge is interchange transfer from zero station like JE0 -> JS3.
+            steps.pop()  # Special case: Final edge is interchange transfer from pseudo station code like JE0 -> JS3.
         if status == "in_train":
             steps.append(f"Alight at {next_station_full_name}")
         steps.append(

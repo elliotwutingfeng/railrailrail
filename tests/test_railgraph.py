@@ -59,6 +59,7 @@ class TestRailGraph:
                 transfers=dict(),
                 conditional_transfers=dict(),
                 non_linear_line_terminals=dict(),
+                station_code_pseudonyms=dict(),
                 stations=dict(),
                 station_coordinates=dict(),
             )
@@ -68,6 +69,7 @@ class TestRailGraph:
                 transfers=dict(),
                 conditional_transfers=dict(),
                 non_linear_line_terminals=dict(),
+                station_code_pseudonyms=dict(),
                 stations=dict(),
                 station_coordinates=dict(),
             )
@@ -77,6 +79,7 @@ class TestRailGraph:
                 transfers=dict(),
                 conditional_transfers=dict(),
                 non_linear_line_terminals=dict(),
+                station_code_pseudonyms=dict(),
                 stations=dict(),
                 station_coordinates=dict(),
             )
@@ -86,6 +89,7 @@ class TestRailGraph:
                 transfers=dict(),
                 conditional_transfers=dict(),
                 non_linear_line_terminals=dict(),
+                station_code_pseudonyms=dict(),
                 stations={"EX1": ["Easy"]},
                 station_coordinates=dict(),
             )
@@ -95,6 +99,7 @@ class TestRailGraph:
                 transfers=dict(),
                 conditional_transfers=dict(),
                 non_linear_line_terminals=dict(),
+                station_code_pseudonyms=dict(),
                 stations={"EX1": "Easy", "HX1": "How"},
                 station_coordinates=dict(),
             )

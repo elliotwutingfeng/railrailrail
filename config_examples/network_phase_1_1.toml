@@ -18,3 +18,5 @@ NS18-NS19 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 60}
 [conditional_transfers]
 
 [non_linear_line_terminals]
+
+[station_code_pseudonyms]

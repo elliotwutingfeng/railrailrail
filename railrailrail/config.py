@@ -77,6 +77,9 @@ class Config:
         self.conditional_transfers: dict[str, dict[str, int]] = (
             self._generate_conditional_transfers()
         )
+        self.station_code_pseudonyms: dict[str, str] = (
+            self._generate_station_code_pseudonyms()
+        )
 
     def _get_stations(self) -> list[Station]:
         """Generate list of operational train station codes and station names,
@@ -210,7 +213,25 @@ class Config:
                     "dwell_time_desc": dwell_time_desc,
                 }
 
-        return adjacency_matrix
+        pairs = [
+            (start, end)
+            for start in adjacency_matrix
+            for end in adjacency_matrix[start]
+        ]
+        pairs.sort(
+            key=lambda station_codes: (
+                Station.to_station_code_components(station_codes[0]),
+                Station.to_station_code_components(station_codes[1]),
+            )
+        )
+
+        sorted_adjacency_matrix: defaultdict[str, OrderedDict[str, dict]] = defaultdict(
+            OrderedDict
+        )
+        for start, end in pairs:
+            sorted_adjacency_matrix[start][end] = adjacency_matrix[start][end]
+
+        return sorted_adjacency_matrix
 
     def _generate_transfer_adjacency_matrix(
         self,
@@ -325,6 +346,27 @@ class Config:
             non_linear_line_terminals["NS"] = terminals.copy()
         return non_linear_line_terminals
 
+    def _generate_station_code_pseudonyms(self) -> dict[str, str]:
+        """Generate a lookup table for station code pseudonyms.
+
+        This lookup table maps an imaginary station code (e.g. CE0Y) to its real station code.
+
+        Returns:
+            dict[str, str]: Station code pseudonyms lookup table,
+            sorted by pseudo station code in ascending order.
+        """
+
+        # Filter out unused station codes
+        return {
+            pseudo_station_code: Station.pseudo_station_codes[pseudo_station_code]
+            for pseudo_station_code in sorted(
+                set(Station.pseudo_station_codes).intersection(
+                    self.station_code_to_station
+                ),
+                key=Station.to_station_code_components,
+            )
+        }
+
     @classmethod
     def __shallow_dict_to_inline_table(cls, d: dict) -> tomlkit.items.InlineTable:
         """Convert shallow dictionary to tomlkit InlineTable.
@@ -381,6 +423,10 @@ class Config:
                 self.non_linear_line_terminals[line_code],
                 key=Station.to_station_code_components,
             )
+        }
+        network["station_code_pseudonyms"] = {
+            pseudo_station_code: real_station_code
+            for pseudo_station_code, real_station_code in self.station_code_pseudonyms.items()
         }
 
         return network
@@ -523,6 +569,12 @@ class Config:
                 "Invalid config file: 'non_linear_line_terminals' key must exist, even if there are no values."
             )
 
+        station_code_pseudonyms = network.get("station_code_pseudonyms", None)
+        if not isinstance(station_code_pseudonyms, dict):
+            raise ValueError(
+                "Invalid config file: 'station_code_pseudonyms' key must exist, even if there are no values."
+            )
+
         station_coordinates: dict[str, Coordinates] = dict()
         with open(coordinates_path, "r") as f:
             csv_reader = csv.reader(f)
@@ -539,6 +591,7 @@ class Config:
             transfers_,
             conditional_transfers,
             non_linear_line_terminals,
+            station_code_pseudonyms,
             stations,
             station_coordinates,
         )

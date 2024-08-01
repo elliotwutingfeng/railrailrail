@@ -255,3 +255,5 @@ PTC.PTC = 1
 SE.STC = 1
 STC.STC = 1
 SW.STC = 1
+
+[station_code_pseudonyms]
