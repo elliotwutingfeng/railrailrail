@@ -30,7 +30,7 @@ railrailrail finds fastest routes between any 2 stations on the Singapore MRT/LR
 
 - Python 3.12+
 - [Python Poetry](https://python-poetry.org)
-- GNU Make (optional if you want to use the [Makefile](Makefile))
+- GNU Make
 
 Works natively on a POSIX environment like Linux/macOS. Windows users should use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install).
 
@@ -39,15 +39,14 @@ Works natively on a POSIX environment like Linux/macOS. Windows users should use
 Install dependencies.
 
 ```bash
-poetry install
+make install
 ```
 
 Then generate a coordinates file (station_coordinates.csv), and network config files for all stages.
 These files will be saved to the `config/` folder.
 
 ```bash
-poetry run python railrailrail/cli.py generate --coordinates
-poetry run python railrailrail/cli.py generate --network all
+make generate_all
 ```
 
 ## Commands

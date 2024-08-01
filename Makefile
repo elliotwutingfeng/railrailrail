@@ -1,6 +1,6 @@
 generate_all:
-	poetry run python railrailrail/cli.py generate --coordinates
-	poetry run python railrailrail/cli.py generate --network all
+	poetry run python railrailrail/cli.py generate --coordinates --path config/station_coordinates.csv
+	poetry run python railrailrail/cli.py generate --network all --path config
 
 markdown_lint:
 	markdownlint --disable MD013 MD033 MD041 --fix . --ignore CODE_OF_CONDUCT.md

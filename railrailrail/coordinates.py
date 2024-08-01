@@ -17,7 +17,10 @@ limitations under the License.
 from __future__ import annotations
 
 import dataclasses
+import difflib
 import math
+import pathlib
+import shutil
 
 
 @dataclasses.dataclass(frozen=True)
@@ -59,3 +62,31 @@ class Coordinates:
         c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
         return cls.__earth_radius_in_metres * c
+
+    @classmethod
+    def update_coordinates_file(cls, path: pathlib.Path):
+        example_coordinates_path = (
+            pathlib.Path(__file__).resolve().parent.parent
+            / "config_examples"
+            / "station_coordinates.csv"
+        )
+        with open(example_coordinates_path, "r") as f:
+            example_coordinates = f.read().splitlines()
+        try:
+            with open(path, "r") as f:
+                coordinates = f.read().splitlines()
+        except OSError:
+            coordinates = None
+        if coordinates is None or all(not line for line in coordinates):
+            shutil.copy(src=example_coordinates_path, dst=path)
+        else:
+            with open(path, "w") as f:
+                f.write(
+                    "\n".join(
+                        line.removeprefix("  ").rstrip("\n")
+                        for line in difflib.Differ().compare(
+                            coordinates, example_coordinates
+                        )
+                        if not line.startswith("? ")
+                    )
+                )

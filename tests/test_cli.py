@@ -39,3 +39,8 @@ class TestCli:
 
         with pytest.raises(SystemExit):
             assert parse_args(["route", "--network-file", "network_tel_4.toml"])
+
+        with pytest.raises(SystemExit):
+            assert parse_args(
+                ["generate", "--network", "all", "--path", "not_real_directory_path"]
+            )

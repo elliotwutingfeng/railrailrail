@@ -15,15 +15,13 @@ limitations under the License.
 """
 
 import pathlib
-import shutil
 import sys
 from argparse import ArgumentParser, Namespace
 
 from railrailrail.config import Config, Stage
+from railrailrail.coordinates import Coordinates
 from railrailrail.logger import logger
 from railrailrail.railgraph import RailGraph
-
-STATION_COORDINATES_FILENAME = "station_coordinates.csv"
 
 
 def parse_args(args: list[str]) -> Namespace:
@@ -56,13 +54,19 @@ def parse_args(args: list[str]) -> Namespace:
     generate_group.add_argument(
         "--coordinates",
         action="store_true",
-        help=f"Generate train station coordinates file ({STATION_COORDINATES_FILENAME}).",
+        help="Generate train station coordinates file.",
     )
     generate_group.add_argument(
         "--network",
         choices=["all", *Stage.stages],
-        default="all",
-        help="Generate preset network config file(s) for train network stage. Use 'all' to generate preset network config files for all stages. Defaults to 'all'.",
+        help="Generate preset network config file(s) for train network stage. Use 'all' to generate preset network config files for all stages.",
+    )
+
+    generate_parser.add_argument(
+        "--path",
+        type=str,
+        required=True,
+        help="Path to save generated file at.",
     )
 
     route_group = route_parser.add_argument_group("route arguments")
@@ -100,6 +104,14 @@ def parse_args(args: list[str]) -> Namespace:
 
     parsed_args = parser.parse_args(args)
 
+    if (
+        parsed_args.command == "generate"
+        and parsed_args.network == "all"
+        and not pathlib.Path(parsed_args.path).is_dir()
+    ):
+        raise parser.error(
+            "when --network is 'all', --path must be path to an existing directory."
+        )
     return parsed_args
 
 
@@ -109,33 +121,22 @@ if __name__ == "__main__":  # pragma: no cover
     if args.debug:
         logger.setLevel("INFO")
 
-    parent_path: pathlib.Path = pathlib.Path(__file__).resolve().parent
-
     if args.command == "generate":
         if args.network:
             networks: list[str] = (
                 list(Stage.stages) if args.network == "all" else [args.network]
             )
+            network_path = pathlib.Path(args.path)
             for network in networks:
                 config = Config(Stage(stage=network))
-                network_path = parent_path.parent / "config" / f"network_{network}.toml"
-                network_path.parent.mkdir(parents=True, exist_ok=True)
-                # No inline comments (e.g. # NEW) will be added if file does not exist yet.
-                config.update_network_config_file(
-                    network_path, do_not_comment_new_lines=not network_path.is_file()
+                network_filepath = (
+                    network_path / f"network_{network}.toml"
+                    if args.network == "all"
+                    else network_path
                 )
+                config.update_network_config_file(network_filepath)
         if args.coordinates:
-            coordinates_path = (
-                parent_path.parent / "config" / STATION_COORDINATES_FILENAME
-            )
-            example_coordinates_path = (
-                parent_path.parent / "config_examples" / STATION_COORDINATES_FILENAME
-            )
-            if coordinates_path.is_file():
-                raise FileExistsError(
-                    f"Coordinates file already exists at {coordinates_path}. Remove it before generating a new coordinates file."
-                )
-            shutil.copy(src=example_coordinates_path, dst=coordinates_path)
+            Coordinates.update_coordinates_file(pathlib.Path(args.path))
 
     if args.command == "route":
         rail_graph = RailGraph.from_file(args.network_file, args.coordinates_file)

@@ -38,6 +38,17 @@ class TestConfig:
         self.config_dover = Config(Stage("dover"))
         self.config_tel_3 = Config(Stage("tel_3"))
 
+        self.config_phase_1_1_toml_str = (
+            "schema = 1\n\n"
+            '[stations]\nNS15 = "Yio Chu Kang"\n'
+            'NS16 = "Ang Mo Kio"\nNS17 = "Bishan"\nNS18 = "Braddell"\nNS19 = "Toa Payoh"\n\n'
+            "[segments]\nNS15-NS16 = {duration = 180, dwell_time_asc = 60, dwell_time_desc = 28}\n"
+            "NS16-NS17 = {duration = 240, dwell_time_asc = 28, dwell_time_desc = 28}\n"
+            "NS17-NS18 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}\n"
+            "NS18-NS19 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 60}\n\n[transfers]\n\n"
+            "[conditional_transfers]\n\n[non_linear_line_terminals]\n"
+        )
+
     def test_segment_adjacency_matrix(self):
         expected_phase_2b_3_segment_adjacency_matrix = defaultdict(
             OrderedDict[str, dict],
@@ -433,67 +444,42 @@ class TestConfig:
             self.config_phase_2b_3.transfer_adjacency_matrix
         ) == json.dumps(expected_phase_2b_3_transfer_adjacency_matrix)
 
-    def test_update_network(self):
-        # Updated from blank slate; everything is NEW.
-        network = tomlkit.TOMLDocument()
-        self.config_phase_1_1.update_network(network)
-        assert tomlkit.dumps(network) == (
-            "schema = 1\n\n"
-            '[stations]\nNS15 = "Yio Chu Kang" # NEW\n'
-            'NS16 = "Ang Mo Kio" # NEW\nNS17 = "Bishan" # NEW\nNS18 = "Braddell" # NEW\nNS19 = "Toa Payoh" # NEW\n\n'
-            "[segments]\nNS15-NS16 = {duration = 180, dwell_time_asc = 60, dwell_time_desc = 28} # NEW\n"
-            "NS16-NS17 = {duration = 240, dwell_time_asc = 28, dwell_time_desc = 28} # NEW\n"
-            "NS17-NS18 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28} # NEW\n"
-            "NS18-NS19 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 60} # NEW\n\n[transfers]\n\n"
-            "[conditional_transfers]\n\n[non_linear_line_terminals]\n"
+    def test_make_network(self):
+        network = self.config_phase_1_1.make_network()
+        assert tomlkit.dumps(network) == self.config_phase_1_1_toml_str
+
+    def test_compare_toml(self):
+        original = self.config_phase_1_1_toml_str.split("\n")
+        modified = original.copy()
+        modified.insert(-2, "\n")  # Add newline before [non_linear_line_terminals].
+        modified[-2] = (
+            "[linear_line_terminals]"  # Modify [non_linear_line_terminals] to [linear_line_terminals].
+        )
+        del modified[2]  # Remove [stations].
+        del modified[0]  # Remove schema = 1.
+        del modified[-1]  # Remove last blank line.
+        diffed = Config.compare_toml(original, modified)
+        # Only blank lines will be silently added or removed.
+        assert diffed == (
+            "# schema = 1\n\n"
+            '# [stations]\nNS15 = "Yio Chu Kang"\n'
+            'NS16 = "Ang Mo Kio"\nNS17 = "Bishan"\nNS18 = "Braddell"\nNS19 = "Toa Payoh"\n\n'
+            "[segments]\nNS15-NS16 = {duration = 180, dwell_time_asc = 60, dwell_time_desc = 28}\n"
+            "NS16-NS17 = {duration = 240, dwell_time_asc = 28, dwell_time_desc = 28}\n"
+            "NS17-NS18 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}\n"
+            "NS18-NS19 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 60}\n\n[transfers]\n\n"
+            "[conditional_transfers]\n\n\n# [non_linear_line_terminals]\n[linear_line_terminals] # MODIFIED"
         )
 
-        # Add Expo station.
-        network = tomlkit.TOMLDocument()
-        self.config_ewl_expo.update_network(network)
-        assert "CG-EW4" in network["transfers"]
-        assert "EW4-CG" in network["transfers"]
-        assert "EW21-EW22" not in network["segments"]
-        assert "EW22-EW23" not in network["segments"]
-
-        # Add Dover infill station.
-        self.config_dover.update_network(network)
-        assert "EW21-EW22" in network["segments"]
-        assert "EW22-EW23" in network["segments"]
-        assert "EW21-EW23" in network["segments"]
-        assert network["segments"]["EW21-EW23"].trivia.comment == "# DEFUNCT | # NEW"
-
-        # Modify existing station and segment details.
-        network["stations"]["EW22"] = "Dover Test"
-        network["segments"]["EW21-EW22"]["duration"] = 42
-        self.config_dover.update_network(network)
-        assert network["stations"]["EW22"].trivia.comment.startswith("# NEW ->")
-        assert network["segments"]["EW21-EW22"].trivia.comment.startswith("# NEW ->")
-
-        # Defunct station.
-        network["stations"]["XY1"] = "Test"
-        network["segments"]["EW21-XY1"] = {"duration": 300}
-        self.config_dover.update_network(network)
-        assert network["stations"]["XY1"].trivia.comment == "# DEFUNCT"
-        assert network["segments"]["EW21-XY1"].trivia.comment == "# DEFUNCT"
-
-        # Defunct transfers
-        network["transfers"]["BP1-NS4"].trivia.comment = ""
-        self.config_phase_2b_3.update_network(network)
-        assert network["transfers"]["BP1-NS4"].trivia.comment == "# DEFUNCT"
-        assert network["transfers"]["NS4-BP1"].trivia.comment == "# DEFUNCT | # NEW"
-        assert network["transfers"]["CG-EW4"].trivia.comment == "# DEFUNCT | # NEW"
-        assert network["transfers"]["EW4-CG"].trivia.comment == "# DEFUNCT | # NEW"
-
     def test_update_network_config_file(self):
-        path = pathlib.Path("network_test.toml")
+        config_file_path = pathlib.Path("network_test.toml")
 
-        calls = [
-            self.mocker.call(path, "rb"),
+        open_calls = [
+            self.mocker.call(config_file_path, "r"),
             self.mocker.call().__enter__(),
             self.mocker.call().read(),
             self.mocker.call().__exit__(None, None, None),
-            self.mocker.call(path, "w"),
+            self.mocker.call(config_file_path, "w"),
             self.mocker.call().__enter__(),
             self.mocker.call().write(self.mocker.ANY),
             self.mocker.call().__exit__(None, None, None),
@@ -501,16 +487,16 @@ class TestConfig:
         mocked_open = self.mocker.patch(
             "railrailrail.config.open", self.mocker.mock_open()
         )
-        self.config_tel_3.update_network_config_file(path)
-        mocked_open.assert_has_calls(calls, any_order=False)
+        self.config_tel_3.update_network_config_file(config_file_path)
+        mocked_open.assert_has_calls(open_calls, any_order=False)
 
-        calls = [
-            self.mocker.call(path, "rb"),
-            self.mocker.call(path, "w"),
+        open_calls = [
+            self.mocker.call(config_file_path, "r"),
+            self.mocker.call(config_file_path, "w"),
         ]
         mocked_open = self.mocker.patch(
             "railrailrail.config.open",
             side_effect=[OSError, self.mocker.mock_open().return_value],
         )
-        self.config_tel_3.update_network_config_file(path)
-        mocked_open.assert_has_calls(calls, any_order=False)
+        self.config_tel_3.update_network_config_file(config_file_path)
+        mocked_open.assert_has_calls(open_calls, any_order=False)

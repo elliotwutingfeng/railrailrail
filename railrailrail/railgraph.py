@@ -24,10 +24,10 @@ from dijkstar import Graph
 from dijkstar.algorithm import PathInfo, find_path
 
 from railrailrail.config import Config
+from railrailrail.coordinates import Coordinates
 from railrailrail.logger import logger
 from railrailrail.network.station import Station
 from railrailrail.network.terminal import Terminal
-from railrailrail.utils import Coordinates
 
 
 class RailGraph:
