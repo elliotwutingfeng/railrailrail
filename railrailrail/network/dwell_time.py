@@ -35,7 +35,7 @@ class DwellTime:
         current_station: str,
         next_station: str,
     ) -> tuple[int, int]:
-        """Dynamically assign dwell time based on whether origin station is a non-interchange, interchange or terminus.
+        """Assign dwell time based on whether origin station is a non-interchange, interchange or terminus.
 
         Args:
             terminal_station_codes (set[str]): Station codes belonging to terminals.

@@ -16,6 +16,7 @@ limitations under the License.
 
 import pathlib
 import math
+import re
 import pytest
 import tomllib
 import tomlkit
@@ -52,56 +53,162 @@ class TestRailGraph:
 
         self.single_node_path = PathInfo(nodes=[""], edges=[], costs=[], total_cost=0)
 
-    def test_init(self):
-        with pytest.raises(ValueError):
+    @pytest.mark.parametrize(
+        (
+            "segments,transfers,conditional_transfers,non_linear_line_terminals,"
+            "station_code_pseudonyms,stations,station_coordinates,match"
+        ),
+        [
+            (
+                dict(),
+                dict(),
+                dict(),
+                dict(),
+                dict(),
+                dict(),
+                dict(),
+                "stations must be non-empty dict.",
+            ),
+            (
+                dict(),
+                dict(),
+                dict(),
+                dict(),
+                dict(),
+                {"EX1": ["Easy"]},
+                dict(),
+                "stations must be dict[str, str]",
+            ),
+            (
+                {
+                    ("EX1", "HX1"): {
+                        "duration_asc": 999999,
+                        "duration_desc": 999999,
+                        "dwell_time_asc": 999999,
+                        "dwell_time_desc": 999999,
+                    }
+                },
+                dict(),
+                dict(),
+                dict(),
+                dict(),
+                {"EX1": "Easy", "HX1": "How"},
+                dict(),
+                "Segment duration_asc must be number in range 0-3600",
+            ),
+            (
+                {
+                    ("EX1", "HX1"): {
+                        "duration_asc": 0,
+                        "duration_desc": 999999,
+                        "dwell_time_asc": 999999,
+                        "dwell_time_desc": 999999,
+                    }
+                },
+                dict(),
+                dict(),
+                dict(),
+                dict(),
+                {"EX1": "Easy", "HX1": "How"},
+                dict(),
+                "Segment duration_desc must be number in range 0-3600",
+            ),
+            (
+                {
+                    ("EX1", "HX1"): {
+                        "duration_asc": 0,
+                        "duration_desc": 0,
+                        "dwell_time_asc": 999999,
+                        "dwell_time_desc": 999999,
+                    }
+                },
+                dict(),
+                dict(),
+                dict(),
+                dict(),
+                {"EX1": "Easy", "HX1": "How"},
+                dict(),
+                "Segment dwell_time_asc must be number in range 0-3600",
+            ),
+            (
+                {
+                    ("EX1", "HX1"): {
+                        "duration_asc": 0,
+                        "duration_desc": 0,
+                        "dwell_time_asc": 0,
+                        "dwell_time_desc": 999999,
+                    }
+                },
+                dict(),
+                dict(),
+                dict(),
+                dict(),
+                {"EX1": "Easy", "HX1": "How"},
+                dict(),
+                "Segment dwell_time_desc must be number in range 0-3600",
+            ),
+            (
+                {
+                    ("EX1", "HX1"): {
+                        "duration_asc": 0,
+                        "duration_desc": 0,
+                        "dwell_time_asc": 0,
+                        "dwell_time_desc": 0,
+                    },
+                    ("EX1", "GX1"): {
+                        "duration_asc": 0,
+                        "duration_desc": 0,
+                        "dwell_time_asc": 0,
+                        "dwell_time_desc": 0,
+                    },
+                },
+                dict(),
+                dict(),
+                dict(),
+                dict(),
+                {"EX1": "Easy", "HX1": "How"},
+                dict(),
+                "Station GX1 in segment EX1-GX1 does not have a name.",
+            ),
+            (
+                {
+                    ("EX1", "GX1"): {
+                        "duration_asc": 0,
+                        "duration_desc": 0,
+                        "dwell_time_asc": 0,
+                        "dwell_time_desc": 0,
+                    },
+                },
+                dict(),
+                dict(),
+                dict(),
+                dict(),
+                {"EX1": "Easy", "HX1": "How", "GX1": "How", "KX1": "Get"},
+                dict(),
+                "GX1-HX1 not found in [transfers].",
+            ),
+        ],
+    )
+    def test_init(
+        self,
+        segments,
+        transfers,
+        conditional_transfers,
+        non_linear_line_terminals,
+        station_code_pseudonyms,
+        stations,
+        station_coordinates,
+        match,
+    ):
+        with pytest.raises(ValueError, match=re.escape(match)):
             RailGraph(
-                segments=dict(),
-                transfers=dict(),
-                conditional_transfers=dict(),
-                non_linear_line_terminals=dict(),
-                station_code_pseudonyms=dict(),
-                stations=dict(),
-                station_coordinates=dict(),
-            )
-        with pytest.raises(ValueError):
-            RailGraph(
-                segments=dict(),
-                transfers=dict(),
-                conditional_transfers=dict(),
-                non_linear_line_terminals=dict(),
-                station_code_pseudonyms=dict(),
-                stations=dict(),
-                station_coordinates=dict(),
-            )
-        with pytest.raises(ValueError):
-            RailGraph(
-                segments=dict(),
-                transfers=dict(),
-                conditional_transfers=dict(),
-                non_linear_line_terminals=dict(),
-                station_code_pseudonyms=dict(),
-                stations=dict(),
-                station_coordinates=dict(),
-            )
-        with pytest.raises(ValueError):
-            RailGraph(
-                segments=dict(),
-                transfers=dict(),
-                conditional_transfers=dict(),
-                non_linear_line_terminals=dict(),
-                station_code_pseudonyms=dict(),
-                stations={"EX1": ["Easy"]},
-                station_coordinates=dict(),
-            )
-        with pytest.raises(ValueError):
-            RailGraph(
-                segments={("EX1", "HX1"): {"duration": 999999}},
-                transfers=dict(),
-                conditional_transfers=dict(),
-                non_linear_line_terminals=dict(),
-                station_code_pseudonyms=dict(),
-                stations={"EX1": "Easy", "HX1": "How"},
-                station_coordinates=dict(),
+                segments,
+                transfers,
+                conditional_transfers,
+                non_linear_line_terminals,
+                station_code_pseudonyms,
+                stations,
+                station_coordinates,
             )
 
     def test_find_shortest_path(self):

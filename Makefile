@@ -27,4 +27,4 @@ update:
 	poetry install
 
 test: ruff_format_check ruff_check
-	poetry run pytest -vv --cov=./ --cov-report html
+	poetry run pytest -vv --cov=./ --cov-report html -n auto

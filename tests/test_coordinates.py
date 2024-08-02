@@ -45,6 +45,13 @@ class TestCoordinates:
             / "config_examples"
             / "station_coordinates.csv"
         )
+
+        mocked_copy = self.mocker.patch("shutil.copy")
+
+        # Modify in-place.
+        mocked_open = self.mocker.mock_open()
+        mocked_open.return_value.read.side_effect = ["a", "b"]
+        mocked_open = self.mocker.patch("builtins.open", mocked_open)
         open_calls = [
             self.mocker.call(example_coordinates_path, "r"),
             self.mocker.call().__enter__(),
@@ -54,11 +61,19 @@ class TestCoordinates:
             self.mocker.call().__enter__(),
             self.mocker.call().read(),
             self.mocker.call().__exit__(None, None, None),
+            self.mocker.call(coordinates_path, "w"),
+            self.mocker.call().__enter__(),
+            self.mocker.call().write("- b\n+ a"),
+            self.mocker.call().__exit__(None, None, None),
         ]
-        mocked_open = self.mocker.patch("builtins.open", self.mocker.mock_open())
-        mocked_copy = self.mocker.patch("shutil.copy")
+
         Coordinates.update_coordinates_file(coordinates_path)
-        mocked_open.assert_has_calls(open_calls, any_order=False)
+        mocked_open.assert_has_calls(open_calls)
+
+        # Direct copy.
+        mocked_open = self.mocker.mock_open()
+        self.mocker.patch("builtins.open", mocked_open)
+        Coordinates.update_coordinates_file(coordinates_path)
         mocked_copy.assert_called_once_with(
             src=example_coordinates_path, dst=coordinates_path
         )

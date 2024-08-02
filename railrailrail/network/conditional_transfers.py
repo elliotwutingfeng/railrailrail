@@ -38,6 +38,10 @@ class ConditionalTransfersSegment:
             raise ValueError("station_code_pair must be 2 different station codes.")
         if self.interchange_station_code not in self.station_code_pair:
             raise ValueError("station_code_pair must contain interchange_station_code.")
+        if self.defunct_with_station_code in self.station_code_pair:
+            raise ValueError(
+                "defunct_with_station_code must not be in station_code_pair."
+            )
 
 
 @dataclasses.dataclass(frozen=True)

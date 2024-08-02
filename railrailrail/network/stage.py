@@ -408,8 +408,12 @@ class StageMeta(type):
                 ),  # 2032
                 "brickland": (Station("NS3A", "Brickland"),),  # 2034
                 "cg_tel_c": (
-                    Station("CR1", "Changi Airport Terminal 5"),
-                    Station("TE32", "Changi Airport Terminal 5"),
+                    Station(
+                        "CR1", "Changi Airport Terminal 5"
+                    ),  # Unknown official name
+                    Station(
+                        "TE32", "Changi Airport Terminal 5"
+                    ),  # Unknown official name
                     Station("TE33", "Changi Airport"),
                     Station("TE34", "Expo"),
                     Station("TE35", "Tanah Merah"),

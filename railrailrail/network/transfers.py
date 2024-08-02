@@ -30,7 +30,7 @@ class TransfersMeta(type):
     - underground/elevated -> 12 min
     """
 
-    __interchange_transfers: tuple = (
+    __interchange_transfers: tuple[tuple[str, int]] = (
         ("Ang Mo Kio", 600),
         ("Bayfront", 360),
         ("Bishan", 480),
@@ -85,6 +85,10 @@ class TransfersMeta(type):
         if len(cls.interchange_transfers) != len(cls.__interchange_transfers):
             raise AttributeError(
                 "Duplicate station names are not allowed."
+            )  # pragma: no cover
+        if any(duration <= 0 for duration in cls.interchange_transfers.values()):
+            raise AttributeError(
+                "Transfer duration must be positive."
             )  # pragma: no cover
 
         return super().__new__(cls, name, bases, dct)

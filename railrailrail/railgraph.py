@@ -112,14 +112,14 @@ class RailGraph:
                 self.__minimum_duration <= dwell_time_asc <= self.__maximum_duration
             ):
                 raise ValueError(
-                    f"dwell_time_asc must be number in range {self.__minimum_duration}-{self.__maximum_duration}"
+                    f"Segment dwell_time_asc must be number in range {self.__minimum_duration}-{self.__maximum_duration}"
                 )
             dwell_time_desc = segment_details.get("dwell_time_desc", None)
             if type(dwell_time_desc) is not int or not (
                 self.__minimum_duration <= dwell_time_desc <= self.__maximum_duration
             ):
                 raise ValueError(
-                    f"dwell_time_desc must be number in range {self.__minimum_duration}-{self.__maximum_duration}"
+                    f"Segment dwell_time_desc must be number in range {self.__minimum_duration}-{self.__maximum_duration}"
                 )
 
             is_ascending: bool = Station.to_station_code_components(
@@ -146,14 +146,18 @@ class RailGraph:
             if mode != "walk":
                 self._graph_without_walk_segments.add_edge(end, start, edge)
 
-        self._interchanges = Station.get_interchanges(
+        self.__add_interchange_transfers()
+
+    def __add_interchange_transfers(self):
+        interchanges = Station.get_interchanges(
             list(self.station_code_to_station.values())
         )
-
         for interchange_substations in (
-            self._interchanges
+            interchanges
         ):  # Link up unique pairs of substations on the same interchange station.
-            for start, end in itertools.permutations(interchange_substations, 2):
+            for start, end in itertools.permutations(
+                sorted(interchange_substations, key=Station.sort_key), 2
+            ):
                 if (start.station_code, end.station_code) not in self.transfers:
                     raise ValueError(
                         f"{start.station_code}-{end.station_code} not found in [transfers]."
@@ -377,7 +381,7 @@ class RailGraph:
                         get_terminal_full_station_name()
                     )
                     steps.append(
-                        f"Board train in direction of {next_station_full_name}"  # Unusual terminal. Use next station instead.
+                        f"Board train in direction of {next_station_full_name}"  # Non linear line. Use next station instead.
                         if terminal_full_station_name is None
                         else f"Board train towards terminus {terminal_full_station_name}"
                     )
@@ -401,7 +405,7 @@ class RailGraph:
                     is not None
                 ):  # Conditional interchange transfer
                     raise RuntimeError(
-                        "Something is not right; this conditional interchange transfer is also an interchange transfer. "
+                        "Something is not right; conditional interchange transfers should not be interchange transfers. "
                         "Check ConditionalInterchange class and rail network structure. PathInfo: %s"
                         % pathinfo
                     )
@@ -410,7 +414,7 @@ class RailGraph:
                         get_terminal_full_station_name()
                     )
                     steps.append(
-                        f"Board train in direction of {next_station_full_name}"  # Unusual terminal. Use next station instead.
+                        f"Board train in direction of {next_station_full_name}"  # Non linear line. Use next station instead.
                         if terminal_full_station_name is None
                         else f"Board train towards terminus {terminal_full_station_name}"
                     )
@@ -441,7 +445,7 @@ class RailGraph:
                         get_terminal_full_station_name()
                     )
                     steps.append(
-                        f"Board train in direction of {next_station_full_name}"  # Unusual terminal. Use next station instead.
+                        f"Board train in direction of {next_station_full_name}"  # Non linear line. Use next station instead.
                         if terminal_full_station_name is None
                         else f"Board train towards terminus {terminal_full_station_name}"
                     )

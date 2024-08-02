@@ -16,6 +16,7 @@ limitations under the License.
 
 from collections import OrderedDict, defaultdict
 
+import immutabledict
 from dijkstar import Graph
 
 from railrailrail.network.station import Station
@@ -28,17 +29,21 @@ class Terminal:
     the combined NSL-EWL line before year 1989.
     """
 
-    looped_line_code_to_terminals: dict[str, set[str]] = {
-        "BP": {"BP1", "BP14"},
-        "JS": {"JS1"},
-        "JW": {"JS1"},
-        "PE": {"PTC"},
-        "PTC": {"PTC"},
-        "PW": {"PTC"},
-        "SE": {"STC"},
-        "STC": {"STC"},
-        "SW": {"STC"},
-    }  # Jurong Region Line and all LRT lines terminate at one station like JS1,
+    looped_line_code_to_terminals: immutabledict.immutabledict[str, set[str]] = (
+        immutabledict.immutabledict(
+            {
+                "BP": {"BP1", "BP14"},
+                "JS": {"JS1"},
+                "JW": {"JS1"},
+                "PE": {"PTC"},
+                "PTC": {"PTC"},
+                "PW": {"PTC"},
+                "SE": {"STC"},
+                "STC": {"STC"},
+                "SW": {"STC"},
+            }
+        )
+    )  # Jurong Region Line and all LRT lines terminate at one station like JS1,
     # except for BPLRT (Service A/B -> BP1, Service C -> BP14).
 
     @classmethod

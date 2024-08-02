@@ -40,7 +40,7 @@ class Station:
 
     missing_station_codes: immutabledict.immutabledict[str, str] = (
         immutabledict.immutabledict({"CG": "EW4"})
-    )
+    )  # Missing from LTA DataMall Train Station Codes and Chinese Names.
     future_station_codes: immutabledict.immutabledict[str, str] = (
         immutabledict.immutabledict(
             {
@@ -84,18 +84,19 @@ class Station:
         line_code, station_number, station_number_suffix = (
             self.to_station_code_components(self.station_code)
         )  # Based on pseudo station code, if any.
-        if self.real_station_code is None:
-            object.__setattr__(self, "real_station_code", self.station_code)
-        object.__setattr__(
-            self, "full_station_name", f"{self.real_station_code} {self.station_name}"
-        )
         object.__setattr__(self, "line_code", line_code)
         object.__setattr__(self, "station_number", int(station_number))
         object.__setattr__(self, "station_number_suffix", station_number_suffix)
+
+        if self.real_station_code is None:
+            object.__setattr__(self, "real_station_code", self.station_code)
         object.__setattr__(
             self,
             "has_pseudo_station_code",
             self.station_code != self.real_station_code,
+        )
+        object.__setattr__(
+            self, "full_station_name", f"{self.real_station_code} {self.station_name}"
         )
 
     @classmethod
@@ -135,10 +136,10 @@ class Station:
 
     @classmethod
     def get_interchanges(cls, stations: list[Station]) -> tuple[set[Station]]:
-        """Group stations by interchange. Non-interchange stations are excluded.
+        """Group stations by station name. A group with at least 2 stations is an interchange.
 
         Args:
-            stations (list[Station]): Stations to be grouped.
+            stations (list[Station]): Stations to be grouped by name.
 
         Raises:
             ValueError: Duplicate line codes not allowed at interchange.
@@ -161,12 +162,13 @@ class Station:
             unique_line_codes = set(station.line_code for station in interchange)
             if len(unique_line_codes) != len(interchange):
                 raise ValueError(
-                    f"Stations with same line code are not allowed to have same name. Station: {next(iter(interchange)).station_name}."
+                    f"Stations with same line code are not allowed to have same name. Station name: {next(iter(interchange)).station_name}."
                 )
         return interchanges
 
     @classmethod
     def sort_key(cls, station: Station):
+        """For sorting stations by station code components."""
         return (
             station.line_code,
             station.station_number,
