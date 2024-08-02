@@ -88,12 +88,19 @@ class RailGraph:
                         f"Station {station_code} in segment {start}-{end} does not have a name."
                     )
 
-            duration = segment_details.get("duration", None)
-            if (type(duration) is not int) or not (
-                self.__minimum_duration <= duration <= self.__maximum_duration
+            duration_asc = segment_details.get("duration_asc", None)
+            if (type(duration_asc) is not int) or not (
+                self.__minimum_duration <= duration_asc <= self.__maximum_duration
             ):
                 raise ValueError(
-                    f"Segment duration must be number in range {self.__minimum_duration}-{self.__maximum_duration}"
+                    f"Segment duration_asc must be number in range {self.__minimum_duration}-{self.__maximum_duration}"
+                )
+            duration_desc = segment_details.get("duration_desc", None)
+            if (type(duration_desc) is not int) or not (
+                self.__minimum_duration <= duration_desc <= self.__maximum_duration
+            ):
+                raise ValueError(
+                    f"Segment duration_desc must be number in range {self.__minimum_duration}-{self.__maximum_duration}"
                 )
 
             edge_type = segment_details.get("edge_type", "")
@@ -120,7 +127,7 @@ class RailGraph:
             ) < Station.to_station_code_components(end)
 
             edge = (
-                duration,
+                duration_asc if is_ascending else duration_desc,
                 edge_type,
                 mode,
                 dwell_time_asc if is_ascending else dwell_time_desc,
@@ -130,7 +137,7 @@ class RailGraph:
                 self._graph_without_walk_segments.add_edge(start, end, edge)
 
             edge = (
-                duration,
+                duration_desc if is_ascending else duration_asc,
                 edge_type,
                 mode,
                 dwell_time_desc if is_ascending else dwell_time_asc,

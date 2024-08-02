@@ -17,19 +17,19 @@ NS25 = "City Hall"
 NS26 = "Raffles Place"
 
 [segments]
-EW15-EW16 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 60}
-EW15-NS26 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-NS15-NS16 = {duration = 180, dwell_time_asc = 60, dwell_time_desc = 28}
-NS16-NS17 = {duration = 240, dwell_time_asc = 28, dwell_time_desc = 28}
-NS17-NS18 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-NS18-NS19 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-NS19-NS20 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-NS20-NS21 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-NS21-NS22 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-NS22-NS23 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-NS23-NS24 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-NS24-NS25 = {duration = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-NS25-NS26 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+EW15-EW16 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 60}
+EW15-NS26 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+NS15-NS16 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 60, dwell_time_desc = 28}
+NS16-NS17 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 28, dwell_time_desc = 28}
+NS17-NS18 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+NS18-NS19 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+NS19-NS20 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+NS20-NS21 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+NS21-NS22 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+NS22-NS23 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+NS23-NS24 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+NS24-NS25 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+NS25-NS26 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 
 [transfers]
 

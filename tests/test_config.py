@@ -42,10 +42,10 @@ class TestConfig:
             "schema = 1\n\n"
             '[stations]\nNS15 = "Yio Chu Kang"\n'
             'NS16 = "Ang Mo Kio"\nNS17 = "Bishan"\nNS18 = "Braddell"\nNS19 = "Toa Payoh"\n\n'
-            "[segments]\nNS15-NS16 = {duration = 180, dwell_time_asc = 60, dwell_time_desc = 28}\n"
-            "NS16-NS17 = {duration = 240, dwell_time_asc = 28, dwell_time_desc = 28}\n"
-            "NS17-NS18 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}\n"
-            "NS18-NS19 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 60}\n\n[transfers]\n\n"
+            "[segments]\nNS15-NS16 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 60, dwell_time_desc = 28}\n"
+            "NS16-NS17 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 28, dwell_time_desc = 28}\n"
+            "NS17-NS18 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}\n"
+            "NS18-NS19 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 60}\n\n[transfers]\n\n"
             "[conditional_transfers]\n\n[non_linear_line_terminals]\n\n[station_code_pseudonyms]\n"
         )
 
@@ -56,7 +56,8 @@ class TestConfig:
                 "EW1": OrderedDict(
                     {
                         "EW2": {
-                            "duration": 180,
+                            "duration_asc": 180,
+                            "duration_desc": 180,
                             "dwell_time_asc": 60,
                             "dwell_time_desc": 28,
                         }
@@ -65,7 +66,8 @@ class TestConfig:
                 "EW2": OrderedDict(
                     {
                         "EW3": {
-                            "duration": 180,
+                            "duration_asc": 180,
+                            "duration_desc": 180,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -74,7 +76,8 @@ class TestConfig:
                 "EW3": OrderedDict(
                     {
                         "EW4": {
-                            "duration": 180,
+                            "duration_asc": 180,
+                            "duration_desc": 180,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -83,7 +86,8 @@ class TestConfig:
                 "EW4": OrderedDict(
                     {
                         "EW5": {
-                            "duration": 180,
+                            "duration_asc": 180,
+                            "duration_desc": 180,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -92,7 +96,8 @@ class TestConfig:
                 "EW5": OrderedDict(
                     {
                         "EW6": {
-                            "duration": 180,
+                            "duration_asc": 180,
+                            "duration_desc": 180,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -101,7 +106,8 @@ class TestConfig:
                 "EW6": OrderedDict(
                     {
                         "EW7": {
-                            "duration": 180,
+                            "duration_asc": 180,
+                            "duration_desc": 180,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -110,7 +116,8 @@ class TestConfig:
                 "EW7": OrderedDict(
                     {
                         "EW8": {
-                            "duration": 120,
+                            "duration_asc": 120,
+                            "duration_desc": 120,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -119,7 +126,8 @@ class TestConfig:
                 "EW8": OrderedDict(
                     {
                         "EW9": {
-                            "duration": 120,
+                            "duration_asc": 120,
+                            "duration_desc": 120,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -128,7 +136,8 @@ class TestConfig:
                 "EW9": OrderedDict(
                     {
                         "EW10": {
-                            "duration": 180,
+                            "duration_asc": 180,
+                            "duration_desc": 180,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -137,7 +146,8 @@ class TestConfig:
                 "EW10": OrderedDict(
                     {
                         "EW11": {
-                            "duration": 120,
+                            "duration_asc": 120,
+                            "duration_desc": 120,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -146,7 +156,8 @@ class TestConfig:
                 "EW11": OrderedDict(
                     {
                         "EW12": {
-                            "duration": 180,
+                            "duration_asc": 180,
+                            "duration_desc": 180,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -155,7 +166,8 @@ class TestConfig:
                 "EW12": OrderedDict(
                     {
                         "EW13": {
-                            "duration": 120,
+                            "duration_asc": 120,
+                            "duration_desc": 120,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 45,
                         }
@@ -164,7 +176,8 @@ class TestConfig:
                 "EW13": OrderedDict(
                     {
                         "EW14": {
-                            "duration": 120,
+                            "duration_asc": 120,
+                            "duration_desc": 120,
                             "dwell_time_asc": 45,
                             "dwell_time_desc": 45,
                         }
@@ -173,7 +186,8 @@ class TestConfig:
                 "EW14": OrderedDict(
                     {
                         "EW15": {
-                            "duration": 120,
+                            "duration_asc": 120,
+                            "duration_desc": 120,
                             "dwell_time_asc": 45,
                             "dwell_time_desc": 28,
                         }
@@ -182,7 +196,8 @@ class TestConfig:
                 "EW15": OrderedDict(
                     {
                         "EW16": {
-                            "duration": 120,
+                            "duration_asc": 120,
+                            "duration_desc": 120,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -191,7 +206,8 @@ class TestConfig:
                 "EW16": OrderedDict(
                     {
                         "EW17": {
-                            "duration": 180,
+                            "duration_asc": 180,
+                            "duration_desc": 180,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -200,7 +216,8 @@ class TestConfig:
                 "EW17": OrderedDict(
                     {
                         "EW18": {
-                            "duration": 180,
+                            "duration_asc": 180,
+                            "duration_desc": 180,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -209,7 +226,8 @@ class TestConfig:
                 "EW18": OrderedDict(
                     {
                         "EW19": {
-                            "duration": 120,
+                            "duration_asc": 120,
+                            "duration_desc": 120,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -218,7 +236,8 @@ class TestConfig:
                 "EW19": OrderedDict(
                     {
                         "EW20": {
-                            "duration": 180,
+                            "duration_asc": 180,
+                            "duration_desc": 180,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -227,7 +246,8 @@ class TestConfig:
                 "EW20": OrderedDict(
                     {
                         "EW21": {
-                            "duration": 120,
+                            "duration_asc": 120,
+                            "duration_desc": 120,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -236,7 +256,8 @@ class TestConfig:
                 "EW21": OrderedDict(
                     {
                         "EW23": {
-                            "duration": 300,
+                            "duration_asc": 300,
+                            "duration_desc": 300,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -245,7 +266,8 @@ class TestConfig:
                 "EW23": OrderedDict(
                     {
                         "EW24": {
-                            "duration": 300,
+                            "duration_asc": 300,
+                            "duration_desc": 300,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 45,
                         }
@@ -254,7 +276,8 @@ class TestConfig:
                 "EW24": OrderedDict(
                     {
                         "EW25": {
-                            "duration": 120,
+                            "duration_asc": 120,
+                            "duration_desc": 120,
                             "dwell_time_asc": 45,
                             "dwell_time_desc": 28,
                         }
@@ -263,7 +286,8 @@ class TestConfig:
                 "EW25": OrderedDict(
                     {
                         "EW26": {
-                            "duration": 180,
+                            "duration_asc": 180,
+                            "duration_desc": 180,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 60,
                         }
@@ -272,7 +296,8 @@ class TestConfig:
                 "NS1": OrderedDict(
                     {
                         "NS2": {
-                            "duration": 180,
+                            "duration_asc": 180,
+                            "duration_desc": 180,
                             "dwell_time_asc": 60,
                             "dwell_time_desc": 28,
                         }
@@ -281,7 +306,8 @@ class TestConfig:
                 "NS2": OrderedDict(
                     {
                         "NS3": {
-                            "duration": 180,
+                            "duration_asc": 180,
+                            "duration_desc": 180,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -290,7 +316,8 @@ class TestConfig:
                 "NS3": OrderedDict(
                     {
                         "NS4": {
-                            "duration": 240,
+                            "duration_asc": 240,
+                            "duration_desc": 240,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 60,
                         }
@@ -299,7 +326,8 @@ class TestConfig:
                 "NS13": OrderedDict(
                     {
                         "NS14": {
-                            "duration": 120,
+                            "duration_asc": 120,
+                            "duration_desc": 120,
                             "dwell_time_asc": 60,
                             "dwell_time_desc": 28,
                         }
@@ -308,7 +336,8 @@ class TestConfig:
                 "NS14": OrderedDict(
                     {
                         "NS15": {
-                            "duration": 300,
+                            "duration_asc": 300,
+                            "duration_desc": 300,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -317,7 +346,8 @@ class TestConfig:
                 "NS15": OrderedDict(
                     {
                         "NS16": {
-                            "duration": 180,
+                            "duration_asc": 180,
+                            "duration_desc": 180,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -326,7 +356,8 @@ class TestConfig:
                 "NS16": OrderedDict(
                     {
                         "NS17": {
-                            "duration": 240,
+                            "duration_asc": 240,
+                            "duration_desc": 240,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -335,7 +366,8 @@ class TestConfig:
                 "NS17": OrderedDict(
                     {
                         "NS18": {
-                            "duration": 120,
+                            "duration_asc": 120,
+                            "duration_desc": 120,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -344,7 +376,8 @@ class TestConfig:
                 "NS18": OrderedDict(
                     {
                         "NS19": {
-                            "duration": 120,
+                            "duration_asc": 120,
+                            "duration_desc": 120,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -353,7 +386,8 @@ class TestConfig:
                 "NS19": OrderedDict(
                     {
                         "NS20": {
-                            "duration": 180,
+                            "duration_asc": 180,
+                            "duration_desc": 180,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -362,7 +396,8 @@ class TestConfig:
                 "NS20": OrderedDict(
                     {
                         "NS21": {
-                            "duration": 120,
+                            "duration_asc": 120,
+                            "duration_desc": 120,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -371,7 +406,8 @@ class TestConfig:
                 "NS21": OrderedDict(
                     {
                         "NS22": {
-                            "duration": 180,
+                            "duration_asc": 180,
+                            "duration_desc": 180,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -380,7 +416,8 @@ class TestConfig:
                 "NS22": OrderedDict(
                     {
                         "NS23": {
-                            "duration": 120,
+                            "duration_asc": 120,
+                            "duration_desc": 120,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -389,7 +426,8 @@ class TestConfig:
                 "NS23": OrderedDict(
                     {
                         "NS24": {
-                            "duration": 120,
+                            "duration_asc": 120,
+                            "duration_desc": 120,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -398,7 +436,8 @@ class TestConfig:
                 "NS24": OrderedDict(
                     {
                         "NS25": {
-                            "duration": 180,
+                            "duration_asc": 180,
+                            "duration_desc": 180,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 45,
                         }
@@ -407,7 +446,8 @@ class TestConfig:
                 "NS25": OrderedDict(
                     {
                         "NS26": {
-                            "duration": 120,
+                            "duration_asc": 120,
+                            "duration_desc": 120,
                             "dwell_time_asc": 45,
                             "dwell_time_desc": 45,
                         }
@@ -416,7 +456,8 @@ class TestConfig:
                 "NS26": OrderedDict(
                     {
                         "NS27": {
-                            "duration": 120,
+                            "duration_asc": 120,
+                            "duration_desc": 120,
                             "dwell_time_asc": 45,
                             "dwell_time_desc": 60,
                         }
@@ -464,10 +505,10 @@ class TestConfig:
             "# schema = 1\n\n"
             '# [stations]\nNS15 = "Yio Chu Kang"\n'
             'NS16 = "Ang Mo Kio"\nNS17 = "Bishan"\nNS18 = "Braddell"\nNS19 = "Toa Payoh"\n\n'
-            "[segments]\nNS15-NS16 = {duration = 180, dwell_time_asc = 60, dwell_time_desc = 28}\n"
-            "NS16-NS17 = {duration = 240, dwell_time_asc = 28, dwell_time_desc = 28}\n"
-            "NS17-NS18 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 28}\n"
-            "NS18-NS19 = {duration = 120, dwell_time_asc = 28, dwell_time_desc = 60}\n\n[transfers]\n\n"
+            "[segments]\nNS15-NS16 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 60, dwell_time_desc = 28}\n"
+            "NS16-NS17 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 28, dwell_time_desc = 28}\n"
+            "NS17-NS18 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}\n"
+            "NS18-NS19 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 60}\n\n[transfers]\n\n"
             "[conditional_transfers]\n\n\n# [non_linear_line_terminals]\n[linear_line_terminals] # MODIFIED\n\n[station_code_pseudonyms]"
         )
 

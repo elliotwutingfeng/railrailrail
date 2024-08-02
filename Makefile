@@ -16,6 +16,9 @@ ruff_format_check:
 	poetry run ruff format --check
 
 install:
+	poetry install
+
+update:
 	poetry lock
 	poetry install
 

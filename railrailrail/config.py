@@ -105,8 +105,10 @@ class Config:
         Returns:
             defaultdict[str, OrderedDict[str, dict]]: Travel time adjacency matrix.
         """
-        # Uni-directionally link up all adjacent stations on same line based on the fact that most adjacent stations
+        # Uni-directionally link up adjacent stations on same line based on the fact that most adjacent stations
         # are arranged by station code in sequential order (same line code and in ascending station number order).
+        # Some stations in non-sequential order will not be linked up, like BP6-BP13, which all happen to be conditional
+        # transfer segments.
         adjacency_matrix: defaultdict[str, OrderedDict[str, dict]] = defaultdict(
             OrderedDict
         )
@@ -124,13 +126,13 @@ class Config:
                     continue  # Special case: No link between BP13 and BP14.
                 if (station_code, next_station_code) == ("NS4", "NS13"):
                     continue  # Special case: No link between NS4 and NS13.
+                duration = TrainSegments.train_segments[
+                    f"{station_code}-{next_station_code}"
+                ]["duration"]
                 adjacency_matrix[station_code][next_station_code] = {
-                    "duration": TrainSegments.train_segments.get(
-                        f"{station_code}-{next_station_code}", dict()
-                    ).get(
-                        "duration", -1
-                    ),  # Invalid negative value, to be manually updated by user.
-                }
+                    "duration_asc": duration,
+                    "duration_desc": duration,
+                }  # Assume duration for both directions is the same.
 
         if (
             "EW14" not in self.station_code_to_station
@@ -139,13 +141,13 @@ class Config:
         ):
             # Special case: EWL still part of NSL.
             station_code, next_station_code = "EW15", "NS26"
+            duration = TrainSegments.train_segments[
+                f"{station_code}-{next_station_code}"
+            ]["duration"]
             adjacency_matrix[station_code][next_station_code] = {
-                "duration": TrainSegments.train_segments.get(
-                    f"{station_code}-{next_station_code}", dict()
-                ).get(
-                    "duration", -1
-                ),  # Invalid negative value, to be manually updated by user.
-            }
+                "duration_asc": duration,
+                "duration_desc": duration,
+            }  # Assume duration for both directions is the same.
 
         # Add dwell time for each train segment.
         terminal_station_codes: set[str] = Terminal.get_terminals(
@@ -179,21 +181,20 @@ class Config:
                     end_station_name
                 ]:
                     adjacency_matrix[start_station_code][end_station_code] = {
-                        "duration": duration,
+                        "duration_asc": duration,
+                        "duration_desc": duration,
                         "mode": "walk",
                         "dwell_time_asc": 0,
                         "dwell_time_desc": 0,
-                    }  # No dwell time for walking routes.
+                    }  # No dwell time for walking routes. Assume duration for both directions is the same.
 
-        # Create and mark segments that need to be treated differently from
-        # most other segments. Currently this only means checking if a segment is
-        # adjacent to a conditional interchange.
+        # Create and mark conditional transfer segments. All non sequential segments are coincidentally
+        # conditional transfer segments.
         for segment in ConditionalTransfers.conditional_transfer_segments:
-            # Skip conditional interchange segments made obsolete by new stations.
             if (
                 isinstance(segment.defunct_with_station_code, str)
                 and segment.defunct_with_station_code in self.station_code_to_station
-            ):
+            ):  # Skip conditional interchange segments made obsolete by new stations.
                 continue
             station_a, station_b = segment.station_code_pair
             if (
@@ -206,23 +207,27 @@ class Config:
                     station_a,
                     station_b,
                 )
+                duration = TrainSegments.train_segments[f"{station_a}-{station_b}"][
+                    "duration"
+                ]
                 adjacency_matrix[station_a][station_b] = {
-                    **TrainSegments.train_segments[f"{station_a}-{station_b}"],
+                    "duration_asc": duration,
+                    "duration_desc": duration,
                     "edge_type": segment.edge_type,
                     "dwell_time_asc": dwell_time_asc,
                     "dwell_time_desc": dwell_time_desc,
                 }
 
-        pairs = [
-            (start, end)
-            for start in adjacency_matrix
-            for end in adjacency_matrix[start]
-        ]
-        pairs.sort(
+        pairs = sorted(
+            [
+                (start, end)
+                for start in adjacency_matrix
+                for end in adjacency_matrix[start]
+            ],
             key=lambda station_codes: (
                 Station.to_station_code_components(station_codes[0]),
                 Station.to_station_code_components(station_codes[1]),
-            )
+            ),
         )
 
         sorted_adjacency_matrix: defaultdict[str, OrderedDict[str, dict]] = defaultdict(
