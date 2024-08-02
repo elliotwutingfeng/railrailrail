@@ -49,14 +49,17 @@ A segment in the "opposite direction" should not be defined; do not add `BP2-BP1
 
 A segment must have the following fields:
 
-- `duration`: Travel time in seconds.
-- `dwell_time_asc`: Dwell time when moving from the smaller station code
-to the larger station code.
-- `dwell_time_desc`: Dwell time when moving from the larger station code
-to the smaller station code.
+- `duration_asc`: Travel time in seconds when moving from smaller station code
+to larger station code.
+- `duration_desc`: Travel time in seconds when moving from smaller station code
+to larger station code.
+- `dwell_time_asc`: Dwell time in seconds when moving from smaller station code
+to larger station code.
+- `dwell_time_desc`: Dwell time in seconds when moving from larger station code
+to smaller station code.
 
 > [!NOTE]
-> Dwell time is time spent in seconds waiting at station for passengers before train departure.
+> Dwell time is time spent waiting at station for passengers before train departure.
 >
 > Station codes are compared by splitting them into their line code, station number, and station number suffix (if any), and
 > comparing their fields in that order.
@@ -64,8 +67,8 @@ to the smaller station code.
 
 ```toml
 [segments]
-BP1-BP2 = {duration = 120, dwell_time_asc = 60, dwell_time_desc = 28}
-BP2-BP3 = {duration = 60, dwell_time_asc = 28, dwell_time_desc = 28}
+BP1-BP2 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 60, dwell_time_desc = 28}
+BP2-BP3 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 ...
 ```
 
@@ -74,7 +77,7 @@ Walking segments are denoted by `mode = "walk"`. The dwell times are set to 0 as
 ```toml
 [segments]
 ...
-CC2-NS25 = {duration = 420, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
+CC2-NS25 = {duration_asc = 420, duration_desc = 420, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 ...
 ```
 
@@ -83,7 +86,7 @@ Some segments have an **edge_type**. This is used for conditional interchange tr
 ```toml
 [segments]
 ...
-CC3-CC4 = {duration = 180, edge_type = "promenade_west", dwell_time_asc = 28, dwell_time_desc = 45}
+CC3-CC4 = {duration_asc = 180, duration_desc = 180, edge_type = "promenade_west", dwell_time_asc = 28, dwell_time_desc = 45}
 ...
 ```
 
@@ -92,8 +95,7 @@ CC3-CC4 = {duration = 180, edge_type = "promenade_west", dwell_time_asc = 28, dw
 This section defines interchange transfers and their transfer details. An interchange transfer is a connection between
 2 stations with the same name, but different station codes. Transfer details only contains the duration in seconds.
 
-Unlike segments, transfers in both directions need to be specified (`BP1-NS4` and `NS4-BP1`). This may change in the
-future.
+Unlike segments, transfers in both directions must be listed separately (`BP1-NS4` and `NS4-BP1`).
 
 ```toml
 [transfers]

@@ -19,7 +19,6 @@ import difflib
 import itertools
 import pathlib
 import tomllib
-import warnings
 from collections import OrderedDict, defaultdict
 
 import tomlkit
@@ -261,13 +260,14 @@ class Config:
         pairs = []
         for station_name, station_codes in interchanges.items():
             if station_name in Transfers.interchange_transfers:
-                for start, end in itertools.combinations(station_codes, 2):
-                    # As a simplification, treat transfer time in both directions as equal.
-                    # TODO: Update in the future when more direction-specific transfer time is available.
+                for start, end in itertools.combinations(
+                    sorted(station_codes, key=Station.to_station_code_components), 2
+                ):
+                    # Combinations on sorted set to keep pairs order predictable.
                     pairs.append((start, end, station_name))
                     pairs.append((end, start, station_name))
             else:
-                warnings.warn(
+                raise ValueError(
                     f"No transfer durations available for station {station_name}."
                 )
         pairs.sort(
@@ -277,6 +277,8 @@ class Config:
             )
         )
         for start, end, station_name in pairs:
+            # As a simplification, treat transfer time in both directions as equal.
+            # TODO: Update in the future when more direction-specific transfer time is available.
             duration = Transfers.interchange_transfers[station_name]
             adjacency_matrix[start][end] = {"duration": duration}
 

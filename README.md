@@ -46,7 +46,7 @@ Then generate a coordinates file (station_coordinates.csv), and network config f
 These files will be saved to the `config/` folder.
 
 ```bash
-make generate_all
+make generate_config
 ```
 
 ## Commands
@@ -148,7 +148,7 @@ poetry run python railrailrail/cli.py route --network-file config/network_crl_2.
 ### generate
 
 > [!TIP]
-> You do not need to do this if you already ran `make generate_all` in the Setup section.
+> You do not need to do this if you already ran `make generate_config` in the Setup section.
 
 Use `generate` to generate the station coordinates file and network config files for the route planner.
 
