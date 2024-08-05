@@ -19,7 +19,7 @@ from collections import OrderedDict, defaultdict
 import immutabledict
 from dijkstar import Graph
 
-from railrailrail.network.station import Station
+from railrailrail.network.station import SingaporeStation
 
 
 class Terminal:
@@ -72,7 +72,7 @@ class Terminal:
                 bi_directional_adjacency_matrix[next_station_code][station_code] = None
 
         for station_code, neighbours in bi_directional_adjacency_matrix.items():
-            line_code, _, _ = Station.to_station_code_components(station_code)
+            line_code, _, _ = SingaporeStation.to_station_code_components(station_code)
             if line_code in non_linear_line_terminals:
                 if station_code in non_linear_line_terminals[line_code]:
                     terminals.add(station_code)
@@ -111,10 +111,10 @@ class Terminal:
             raise ValueError(
                 f"start_station_code and end_station_code must be different. Got {start_station_code} and {end_station_code}"
             )
-        start_station_code_components = Station.to_station_code_components(
+        start_station_code_components = SingaporeStation.to_station_code_components(
             start_station_code
         )
-        end_station_code_components = Station.to_station_code_components(
+        end_station_code_components = SingaporeStation.to_station_code_components(
             end_station_code
         )
         start_line_code, _, _ = start_station_code_components
@@ -137,12 +137,12 @@ class Terminal:
                     *(
                         station_code
                         for station_code in graph.get_incoming(next_station_code)
-                        if Station.to_station_code_components(station_code)[0]
+                        if SingaporeStation.to_station_code_components(station_code)[0]
                         == start_line_code
                     ),
                     next_station_code,
                 ],
-                key=Station.to_station_code_components,
+                key=SingaporeStation.to_station_code_components,
             )
             next_station_index = station_and_neighbours.index(next_station_code) + (
                 1 if is_ascending else -1

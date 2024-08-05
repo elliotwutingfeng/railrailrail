@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from railrailrail.network.station import Station
+from railrailrail.network.station import SingaporeStation
 
 
 class DwellTime:
@@ -46,9 +46,9 @@ class DwellTime:
         Returns:
             tuple[int, int]: Direction-specific dwell times; in ascending and in descending order of station codes.
         """
-        is_ascending: bool = Station.to_station_code_components(
+        is_ascending: bool = SingaporeStation.to_station_code_components(
             current_station
-        ) < Station.to_station_code_components(next_station)
+        ) < SingaporeStation.to_station_code_components(next_station)
         smaller = current_station if is_ascending else next_station
         larger = next_station if is_ascending else current_station
 

@@ -23,8 +23,12 @@ from railrailrail.railgraph import RailGraph
 
 
 def get_stage_journeys(stage: str) -> tuple[str, dict, RailGraph]:
-    network_path = pathlib.Path("config_examples") / f"network_{stage}.toml"
-    coordinates_path = pathlib.Path("config_examples") / "station_coordinates.csv"
+    network_path = (
+        pathlib.Path(__file__).parent.parent / "config" / f"network_{stage}.toml"
+    )
+    coordinates_path = (
+        pathlib.Path(__file__).parent.parent / "config" / "station_coordinates.csv"
+    )
     rail_graph = RailGraph.from_file(network_path, coordinates_path)
 
     real_stations = {

@@ -168,187 +168,187 @@ SW7 = "Tongkang"
 SW8 = "Renjong"
 
 [segments]
-BP1-BP2 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 60, dwell_time_desc = 28}
-BP2-BP3 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-BP3-BP4 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+BP1-BP2 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 60, dwell_time_desc = 28}
+BP2-BP3 = {duration_asc = 50, duration_desc = 50, dwell_time_asc = 28, dwell_time_desc = 28}
+BP3-BP4 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 BP4-BP5 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-BP5-BP6 = {duration_asc = 60, duration_desc = 60, edge_type = "bukit_panjang_main", dwell_time_asc = 28, dwell_time_desc = 45}
+BP5-BP6 = {duration_asc = 90, duration_desc = 90, edge_type = "bukit_panjang_main", dwell_time_asc = 28, dwell_time_desc = 45}
 BP6-BP7 = {duration_asc = 60, duration_desc = 60, edge_type = "bukit_panjang_service_b", dwell_time_asc = 45, dwell_time_desc = 28}
-BP6-BP13 = {duration_asc = 120, duration_desc = 120, edge_type = "bukit_panjang_service_a", dwell_time_asc = 45, dwell_time_desc = 28}
-BP6-BP14 = {duration_asc = 60, duration_desc = 60, edge_type = "bukit_panjang_service_c", dwell_time_asc = 45, dwell_time_desc = 28}
-BP7-BP8 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+BP6-BP13 = {duration_asc = 70, duration_desc = 70, edge_type = "bukit_panjang_service_a", dwell_time_asc = 45, dwell_time_desc = 28}
+BP6-BP14 = {duration_asc = 120, duration_desc = 120, edge_type = "bukit_panjang_service_c", dwell_time_asc = 45, dwell_time_desc = 28}
+BP7-BP8 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 28, dwell_time_desc = 28}
 BP8-BP9 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-BP9-BP10 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+BP9-BP10 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 28, dwell_time_desc = 28}
 BP10-BP11 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-BP11-BP12 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-BP12-BP13 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-CC1-CC2 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 60, dwell_time_desc = 28}
-CC2-CC3 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
+BP11-BP12 = {duration_asc = 80, duration_desc = 80, dwell_time_asc = 28, dwell_time_desc = 28}
+BP12-BP13 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
+CC1-CC2 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 60, dwell_time_desc = 28}
+CC2-CC3 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 28, dwell_time_desc = 28}
 CC2-DT14 = {duration_asc = 600, duration_desc = 600, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 CC2-EW12 = {duration_asc = 600, duration_desc = 600, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 CC2-EW13 = {duration_asc = 420, duration_desc = 420, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 CC2-NS25 = {duration_asc = 420, duration_desc = 420, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
-CC3-CC4 = {duration_asc = 180, duration_desc = 180, edge_type = "promenade_west", dwell_time_asc = 28, dwell_time_desc = 45}
+CC3-CC4 = {duration_asc = 110, duration_desc = 110, edge_type = "promenade_west", dwell_time_asc = 28, dwell_time_desc = 45}
 CC3-DT14 = {duration_asc = 720, duration_desc = 720, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 CC3-EW12 = {duration_asc = 720, duration_desc = 720, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 CC3-EW13 = {duration_asc = 300, duration_desc = 300, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 CC3-NS25 = {duration_asc = 300, duration_desc = 300, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
-CC4-CC5 = {duration_asc = 360, duration_desc = 360, edge_type = "promenade_east", dwell_time_asc = 45, dwell_time_desc = 45}
+CC4-CC5 = {duration_asc = 105, duration_desc = 105, edge_type = "promenade_east", dwell_time_asc = 45, dwell_time_desc = 45}
 CC5-CC6 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 45}
-CC6-CC7 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
-CC7-CC8 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-CC8-CC9 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
-CC9-CC10 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
-CC10-CC11 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-CC11-CC12 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-CC12-CC13 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
-CC13-CC14 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
-CC14-CC15 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
-CC15-CC16 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
-CC16-CC17 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-CC17-CC19 = {duration_asc = 300, duration_desc = 300, dwell_time_asc = 28, dwell_time_desc = 45}
-CC19-CC20 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
-CC20-CC21 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-CC21-CC22 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
-CC22-CC23 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
-CC23-CC24 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+CC6-CC7 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 45, dwell_time_desc = 28}
+CC7-CC8 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 28, dwell_time_desc = 28}
+CC8-CC9 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 28, dwell_time_desc = 45}
+CC9-CC10 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 45, dwell_time_desc = 28}
+CC10-CC11 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 28, dwell_time_desc = 28}
+CC11-CC12 = {duration_asc = 110, duration_desc = 110, dwell_time_asc = 28, dwell_time_desc = 28}
+CC12-CC13 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 28, dwell_time_desc = 45}
+CC13-CC14 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 45, dwell_time_desc = 28}
+CC14-CC15 = {duration_asc = 135, duration_desc = 135, dwell_time_asc = 28, dwell_time_desc = 45}
+CC15-CC16 = {duration_asc = 130, duration_desc = 130, dwell_time_asc = 45, dwell_time_desc = 28}
+CC16-CC17 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 28, dwell_time_desc = 28}
+CC17-CC19 = {duration_asc = 245, duration_desc = 245, dwell_time_asc = 28, dwell_time_desc = 45}
+CC19-CC20 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 45, dwell_time_desc = 28}
+CC20-CC21 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 28, dwell_time_desc = 28}
+CC21-CC22 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 45}
+CC22-CC23 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 45, dwell_time_desc = 28}
+CC23-CC24 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 28, dwell_time_desc = 28}
 CC24-CC25 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-CC25-CC26 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-CC26-CC27 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-CC27-CC28 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-CC28-CC29 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 60}
+CC25-CC26 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 28, dwell_time_desc = 28}
+CC26-CC27 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 28, dwell_time_desc = 28}
+CC27-CC28 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 28, dwell_time_desc = 28}
+CC28-CC29 = {duration_asc = 195, duration_desc = 195, dwell_time_asc = 28, dwell_time_desc = 60}
 CE0X-CE0Y = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 60, dwell_time_desc = 45}
-CE0Y-CE0Z = {duration_asc = 360, duration_desc = 360, dwell_time_asc = 45, dwell_time_desc = 45}
-CE0Z-CE1 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 45, dwell_time_desc = 45}
-CE1-CE2 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 60}
+CE0Y-CE0Z = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 45, dwell_time_desc = 45}
+CE0Z-CE1 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 45, dwell_time_desc = 45}
+CE1-CE2 = {duration_asc = 110, duration_desc = 110, dwell_time_asc = 45, dwell_time_desc = 60}
 CE2-DT17 = {duration_asc = 300, duration_desc = 300, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
-CG-CG1 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 60, dwell_time_desc = 28}
-CG1-CG2 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 28, dwell_time_desc = 60}
-DT1-DT2 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 60, dwell_time_desc = 28}
-DT2-DT3 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-DT3-DT5 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-DT5-DT6 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-DT6-DT7 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-DT7-DT8 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-DT8-DT9 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
-DT9-DT10 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
-DT10-DT11 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
-DT11-DT12 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 45, dwell_time_desc = 45}
-DT12-DT13 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 45, dwell_time_desc = 28}
-DT13-DT14 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
-DT14-DT15 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 45}
-DT15-DT16 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 45}
-DT16-DT17 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
+CG-CG1 = {duration_asc = 135, duration_desc = 135, dwell_time_asc = 60, dwell_time_desc = 28}
+CG1-CG2 = {duration_asc = 255, duration_desc = 255, dwell_time_asc = 28, dwell_time_desc = 60}
+DT1-DT2 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 60, dwell_time_desc = 28}
+DT2-DT3 = {duration_asc = 75, duration_desc = 75, dwell_time_asc = 28, dwell_time_desc = 28}
+DT3-DT5 = {duration_asc = 175, duration_desc = 175, dwell_time_asc = 28, dwell_time_desc = 28}
+DT5-DT6 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 28, dwell_time_desc = 28}
+DT6-DT7 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 28, dwell_time_desc = 28}
+DT7-DT8 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 28, dwell_time_desc = 28}
+DT8-DT9 = {duration_asc = 80, duration_desc = 80, dwell_time_asc = 28, dwell_time_desc = 45}
+DT9-DT10 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 45, dwell_time_desc = 28}
+DT10-DT11 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 28, dwell_time_desc = 45}
+DT11-DT12 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 45, dwell_time_desc = 45}
+DT12-DT13 = {duration_asc = 55, duration_desc = 55, dwell_time_asc = 45, dwell_time_desc = 28}
+DT13-DT14 = {duration_asc = 70, duration_desc = 70, dwell_time_asc = 28, dwell_time_desc = 45}
+DT14-DT15 = {duration_asc = 80, duration_desc = 80, dwell_time_asc = 45, dwell_time_desc = 45}
+DT15-DT16 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 45, dwell_time_desc = 45}
+DT16-DT17 = {duration_asc = 70, duration_desc = 70, dwell_time_asc = 45, dwell_time_desc = 28}
 DT17-DT18 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 DT17-EW14 = {duration_asc = 420, duration_desc = 420, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 DT17-NS26 = {duration_asc = 420, duration_desc = 420, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
-DT18-DT19 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 60}
+DT18-DT19 = {duration_asc = 55, duration_desc = 55, dwell_time_asc = 28, dwell_time_desc = 60}
 DT18-EW14 = {duration_asc = 300, duration_desc = 300, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 DT18-EW15 = {duration_asc = 480, duration_desc = 480, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 DT18-NS26 = {duration_asc = 300, duration_desc = 300, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 DT19-EW14 = {duration_asc = 660, duration_desc = 660, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 DT19-NS26 = {duration_asc = 660, duration_desc = 660, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
-EW1-EW2 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 60, dwell_time_desc = 28}
-EW2-EW3 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-EW3-EW4 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 45}
-EW4-EW5 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 45, dwell_time_desc = 28}
-EW5-EW6 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-EW6-EW7 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-EW7-EW8 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
-EW8-EW9 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
-EW9-EW10 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-EW10-EW11 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-EW11-EW12 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 45}
-EW12-EW13 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 45}
-EW13-EW14 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 45}
-EW14-EW15 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
-EW15-EW16 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
-EW16-EW17 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 45, dwell_time_desc = 28}
-EW17-EW18 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-EW18-EW19 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-EW19-EW20 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-EW20-EW21 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
-EW21-EW22 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 45, dwell_time_desc = 28}
+EW1-EW2 = {duration_asc = 150, duration_desc = 150, dwell_time_asc = 60, dwell_time_desc = 28}
+EW2-EW3 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 28, dwell_time_desc = 28}
+EW3-EW4 = {duration_asc = 150, duration_desc = 150, dwell_time_asc = 28, dwell_time_desc = 45}
+EW4-EW5 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 45, dwell_time_desc = 28}
+EW5-EW6 = {duration_asc = 140, duration_desc = 140, dwell_time_asc = 28, dwell_time_desc = 28}
+EW6-EW7 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 28, dwell_time_desc = 28}
+EW7-EW8 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 28, dwell_time_desc = 45}
+EW8-EW9 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 45, dwell_time_desc = 28}
+EW9-EW10 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 28, dwell_time_desc = 28}
+EW10-EW11 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 28, dwell_time_desc = 28}
+EW11-EW12 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 28, dwell_time_desc = 45}
+EW12-EW13 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 45, dwell_time_desc = 45}
+EW13-EW14 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 45, dwell_time_desc = 45}
+EW14-EW15 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 45, dwell_time_desc = 28}
+EW15-EW16 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 28, dwell_time_desc = 45}
+EW16-EW17 = {duration_asc = 130, duration_desc = 130, dwell_time_asc = 45, dwell_time_desc = 28}
+EW17-EW18 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 28, dwell_time_desc = 28}
+EW18-EW19 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 28, dwell_time_desc = 28}
+EW19-EW20 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 28, dwell_time_desc = 28}
+EW20-EW21 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 28, dwell_time_desc = 45}
+EW21-EW22 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 45, dwell_time_desc = 28}
 EW22-EW23 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-EW23-EW24 = {duration_asc = 300, duration_desc = 300, dwell_time_asc = 28, dwell_time_desc = 45}
-EW24-EW25 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
-EW25-EW26 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-EW26-EW27 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-EW27-EW28 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-EW28-EW29 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 60}
-NE1-NE3 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 60, dwell_time_desc = 45}
-NE3-NE4 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 45, dwell_time_desc = 45}
+EW23-EW24 = {duration_asc = 260, duration_desc = 260, dwell_time_asc = 28, dwell_time_desc = 45}
+EW24-EW25 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 45, dwell_time_desc = 28}
+EW25-EW26 = {duration_asc = 110, duration_desc = 110, dwell_time_asc = 28, dwell_time_desc = 28}
+EW26-EW27 = {duration_asc = 145, duration_desc = 145, dwell_time_asc = 28, dwell_time_desc = 28}
+EW27-EW28 = {duration_asc = 80, duration_desc = 80, dwell_time_asc = 28, dwell_time_desc = 28}
+EW28-EW29 = {duration_asc = 170, duration_desc = 170, dwell_time_asc = 28, dwell_time_desc = 60}
+NE1-NE3 = {duration_asc = 170, duration_desc = 170, dwell_time_asc = 60, dwell_time_desc = 45}
+NE3-NE4 = {duration_asc = 75, duration_desc = 75, dwell_time_asc = 45, dwell_time_desc = 45}
 NE4-EW14 = {duration_asc = 660, duration_desc = 660, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
-NE4-NE5 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
+NE4-NE5 = {duration_asc = 70, duration_desc = 70, dwell_time_asc = 45, dwell_time_desc = 28}
 NE4-NS26 = {duration_asc = 660, duration_desc = 660, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 NE5-EW14 = {duration_asc = 600, duration_desc = 600, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
-NE5-NE6 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 45}
+NE5-NE6 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 28, dwell_time_desc = 45}
 NE5-NS26 = {duration_asc = 600, duration_desc = 600, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
-NE6-NE7 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 45, dwell_time_desc = 45}
-NE7-NE8 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 45, dwell_time_desc = 28}
-NE8-NE9 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-NE9-NE10 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-NE10-NE11 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-NE11-NE12 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
-NE12-NE13 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 45, dwell_time_desc = 28}
+NE6-NE7 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 45, dwell_time_desc = 45}
+NE7-NE8 = {duration_asc = 80, duration_desc = 80, dwell_time_asc = 45, dwell_time_desc = 28}
+NE8-NE9 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 28}
+NE9-NE10 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 28, dwell_time_desc = 28}
+NE10-NE11 = {duration_asc = 80, duration_desc = 80, dwell_time_asc = 28, dwell_time_desc = 28}
+NE11-NE12 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 28, dwell_time_desc = 45}
+NE12-NE13 = {duration_asc = 130, duration_desc = 130, dwell_time_asc = 45, dwell_time_desc = 28}
 NE13-NE14 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-NE14-NE15 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-NE15-NE16 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
-NE16-NE17 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 45, dwell_time_desc = 60}
-NS1-NS2 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 60, dwell_time_desc = 28}
-NS2-NS3 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-NS3-NS4 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 28, dwell_time_desc = 45}
+NE14-NE15 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 28, dwell_time_desc = 28}
+NE15-NE16 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 28, dwell_time_desc = 45}
+NE16-NE17 = {duration_asc = 130, duration_desc = 130, dwell_time_asc = 45, dwell_time_desc = 60}
+NS1-NS2 = {duration_asc = 225, duration_desc = 225, dwell_time_asc = 60, dwell_time_desc = 28}
+NS2-NS3 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 28}
+NS3-NS4 = {duration_asc = 205, duration_desc = 205, dwell_time_asc = 28, dwell_time_desc = 45}
 NS4-NS5 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
-NS5-NS7 = {duration_asc = 300, duration_desc = 300, dwell_time_asc = 28, dwell_time_desc = 28}
-NS7-NS8 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-NS8-NS9 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-NS9-NS10 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-NS10-NS11 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-NS11-NS13 = {duration_asc = 300, duration_desc = 300, dwell_time_asc = 28, dwell_time_desc = 28}
-NS13-NS14 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+NS5-NS7 = {duration_asc = 250, duration_desc = 250, dwell_time_asc = 28, dwell_time_desc = 28}
+NS7-NS8 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 28, dwell_time_desc = 28}
+NS8-NS9 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 28, dwell_time_desc = 28}
+NS9-NS10 = {duration_asc = 135, duration_desc = 135, dwell_time_asc = 28, dwell_time_desc = 28}
+NS10-NS11 = {duration_asc = 150, duration_desc = 150, dwell_time_asc = 28, dwell_time_desc = 28}
+NS11-NS13 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 28, dwell_time_desc = 28}
+NS13-NS14 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 28, dwell_time_desc = 28}
 NS14-NS15 = {duration_asc = 300, duration_desc = 300, dwell_time_asc = 28, dwell_time_desc = 28}
-NS15-NS16 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-NS16-NS17 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 28, dwell_time_desc = 45}
-NS17-NS18 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
-NS18-NS19 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-NS19-NS20 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-NS20-NS21 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
-NS21-NS22 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 45, dwell_time_desc = 28}
-NS22-NS23 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-NS23-NS24 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
-NS24-NS25 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 45, dwell_time_desc = 45}
-NS25-NS26 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 45}
-NS26-NS27 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 45}
+NS15-NS16 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 28, dwell_time_desc = 28}
+NS16-NS17 = {duration_asc = 160, duration_desc = 160, dwell_time_asc = 28, dwell_time_desc = 45}
+NS17-NS18 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 45, dwell_time_desc = 28}
+NS18-NS19 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 28}
+NS19-NS20 = {duration_asc = 110, duration_desc = 110, dwell_time_asc = 28, dwell_time_desc = 28}
+NS20-NS21 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 28, dwell_time_desc = 45}
+NS21-NS22 = {duration_asc = 110, duration_desc = 110, dwell_time_asc = 45, dwell_time_desc = 28}
+NS22-NS23 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 28, dwell_time_desc = 28}
+NS23-NS24 = {duration_asc = 75, duration_desc = 75, dwell_time_asc = 28, dwell_time_desc = 45}
+NS24-NS25 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 45, dwell_time_desc = 45}
+NS25-NS26 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 45, dwell_time_desc = 45}
+NS26-NS27 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 45, dwell_time_desc = 45}
 NS27-DT17 = {duration_asc = 300, duration_desc = 300, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
-NS27-NS28 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 60}
-PE1-PE2 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
+NS27-NS28 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 45, dwell_time_desc = 60}
+PE1-PE2 = {duration_asc = 55, duration_desc = 55, dwell_time_asc = 28, dwell_time_desc = 28}
 PE2-PE3 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
 PE3-PE4 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-PE4-PE5 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-PE5-PE6 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-PE6-PE7 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-PTC-PE1 = {duration_asc = 180, duration_desc = 180, edge_type = "punggol_east_loop", dwell_time_asc = 28, dwell_time_desc = 45}
-PTC-PE7 = {duration_asc = 120, duration_desc = 120, edge_type = "punggol_east_loop", dwell_time_asc = 28, dwell_time_desc = 45}
-PTC-PW1 = {duration_asc = 120, duration_desc = 120, edge_type = "punggol_west_loop", dwell_time_asc = 45, dwell_time_desc = 28}
-PTC-PW7 = {duration_asc = 180, duration_desc = 180, edge_type = "punggol_west_loop", dwell_time_asc = 45, dwell_time_desc = 28}
-PW1-PW5 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 28, dwell_time_desc = 28}
-PW5-PW6 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-PW6-PW7 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-SE1-SE2 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-SE2-SE3 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-SE3-SE4 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-SE4-SE5 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-STC-SE1 = {duration_asc = 120, duration_desc = 120, edge_type = "sengkang_east_loop", dwell_time_asc = 28, dwell_time_desc = 45}
-STC-SE5 = {duration_asc = 180, duration_desc = 180, edge_type = "sengkang_east_loop", dwell_time_asc = 28, dwell_time_desc = 45}
-STC-SW1 = {duration_asc = 120, duration_desc = 120, edge_type = "sengkang_west_loop", dwell_time_asc = 45, dwell_time_desc = 28}
-STC-SW8 = {duration_asc = 180, duration_desc = 180, edge_type = "sengkang_west_loop", dwell_time_asc = 45, dwell_time_desc = 28}
-SW1-SW2 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-SW2-SW3 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-SW3-SW4 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-SW4-SW5 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-SW5-SW6 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-SW6-SW7 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
-SW7-SW8 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 28, dwell_time_desc = 28}
+PE4-PE5 = {duration_asc = 75, duration_desc = 75, dwell_time_asc = 28, dwell_time_desc = 28}
+PE5-PE6 = {duration_asc = 55, duration_desc = 55, dwell_time_asc = 28, dwell_time_desc = 28}
+PE6-PE7 = {duration_asc = 55, duration_desc = 55, dwell_time_asc = 28, dwell_time_desc = 28}
+PTC-PE1 = {duration_asc = 120, duration_desc = 120, edge_type = "punggol_east_loop", dwell_time_asc = 28, dwell_time_desc = 45}
+PTC-PE7 = {duration_asc = 135, duration_desc = 135, edge_type = "punggol_east_loop", dwell_time_asc = 28, dwell_time_desc = 45}
+PTC-PW1 = {duration_asc = 90, duration_desc = 90, edge_type = "punggol_west_loop", dwell_time_asc = 45, dwell_time_desc = 28}
+PTC-PW7 = {duration_asc = 145, duration_desc = 145, edge_type = "punggol_west_loop", dwell_time_asc = 45, dwell_time_desc = 28}
+PW1-PW5 = {duration_asc = 265, duration_desc = 265, dwell_time_asc = 28, dwell_time_desc = 28}
+PW5-PW6 = {duration_asc = 50, duration_desc = 50, dwell_time_asc = 28, dwell_time_desc = 28}
+PW6-PW7 = {duration_asc = 55, duration_desc = 55, dwell_time_asc = 28, dwell_time_desc = 28}
+SE1-SE2 = {duration_asc = 75, duration_desc = 75, dwell_time_asc = 28, dwell_time_desc = 28}
+SE2-SE3 = {duration_asc = 55, duration_desc = 55, dwell_time_asc = 28, dwell_time_desc = 28}
+SE3-SE4 = {duration_asc = 70, duration_desc = 70, dwell_time_asc = 28, dwell_time_desc = 28}
+SE4-SE5 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 28, dwell_time_desc = 28}
+STC-SE1 = {duration_asc = 100, duration_desc = 100, edge_type = "sengkang_east_loop", dwell_time_asc = 28, dwell_time_desc = 45}
+STC-SE5 = {duration_asc = 150, duration_desc = 150, edge_type = "sengkang_east_loop", dwell_time_asc = 28, dwell_time_desc = 45}
+STC-SW1 = {duration_asc = 125, duration_desc = 125, edge_type = "sengkang_west_loop", dwell_time_asc = 45, dwell_time_desc = 28}
+STC-SW8 = {duration_asc = 155, duration_desc = 155, edge_type = "sengkang_west_loop", dwell_time_asc = 45, dwell_time_desc = 28}
+SW1-SW2 = {duration_asc = 55, duration_desc = 55, dwell_time_asc = 28, dwell_time_desc = 28}
+SW2-SW3 = {duration_asc = 75, duration_desc = 75, dwell_time_asc = 28, dwell_time_desc = 28}
+SW3-SW4 = {duration_asc = 80, duration_desc = 80, dwell_time_asc = 28, dwell_time_desc = 28}
+SW4-SW5 = {duration_asc = 75, duration_desc = 75, dwell_time_asc = 28, dwell_time_desc = 28}
+SW5-SW6 = {duration_asc = 65, duration_desc = 65, dwell_time_asc = 28, dwell_time_desc = 28}
+SW6-SW7 = {duration_asc = 70, duration_desc = 70, dwell_time_asc = 28, dwell_time_desc = 28}
+SW7-SW8 = {duration_asc = 65, duration_desc = 65, dwell_time_asc = 28, dwell_time_desc = 28}
 
 [transfers]
 BP1-NS4 = {duration = 420}

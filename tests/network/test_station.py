@@ -16,7 +16,7 @@ limitations under the License.
 
 import pytest
 
-from railrailrail.network.station import Station
+from railrailrail.network.station import SingaporeStation
 
 
 class TestStation:
@@ -42,16 +42,22 @@ class TestStation:
     def test_to_station_code_components(self, station_code, station_code_components):
         if station_code_components is None:
             with pytest.raises(ValueError):  # Invalid station codes
-                Station.to_station_code_components(station_code)
+                SingaporeStation.to_station_code_components(station_code)
         else:
             assert (
-                Station.to_station_code_components(station_code)
+                SingaporeStation.to_station_code_components(station_code)
                 == station_code_components
             )  # Valid station codes
 
     def test_get_interchanges(self):
-        assert Station.get_interchanges(
-            [Station("AB1", "X"), Station("AC1", "X"), Station("AC2", "Y")]
-        ) == ({Station("AB1", "X"), Station("AC1", "X")},)
+        assert SingaporeStation.get_interchanges(
+            [
+                SingaporeStation("AB1", "X"),
+                SingaporeStation("AC1", "X"),
+                SingaporeStation("AC2", "Y"),
+            ]
+        ) == ({SingaporeStation("AB1", "X"), SingaporeStation("AC1", "X")},)
         with pytest.raises(ValueError):
-            Station.get_interchanges([Station("AB1", "X"), Station("AB2", "X")])
+            SingaporeStation.get_interchanges(
+                [SingaporeStation("AB1", "X"), SingaporeStation("AB2", "X")]
+            )

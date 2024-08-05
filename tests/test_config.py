@@ -34,6 +34,7 @@ class TestConfig:
     def setup_method(self):
         self.config_phase_2b_3 = Config(Stage("phase_2b_3"))
         self.config_phase_1_1 = Config(Stage("phase_1_1"))
+        self.config_phase_1_2 = Config(Stage("phase_1_2"))
         self.config_ewl_expo = Config(Stage("ewl_expo"))
         self.config_dover = Config(Stage("dover"))
         self.config_tel_3 = Config(Stage("tel_3"))
@@ -42,313 +43,39 @@ class TestConfig:
             "schema = 1\n\n"
             '[stations]\nNS15 = "Yio Chu Kang"\n'
             'NS16 = "Ang Mo Kio"\nNS17 = "Bishan"\nNS18 = "Braddell"\nNS19 = "Toa Payoh"\n\n'
-            "[segments]\nNS15-NS16 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 60, dwell_time_desc = 28}\n"
-            "NS16-NS17 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 28, dwell_time_desc = 28}\n"
-            "NS17-NS18 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}\n"
-            "NS18-NS19 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 60}\n\n[transfers]\n\n"
+            "[segments]\nNS15-NS16 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 60, dwell_time_desc = 28}\n"
+            "NS16-NS17 = {duration_asc = 160, duration_desc = 160, dwell_time_asc = 28, dwell_time_desc = 28}\n"
+            "NS17-NS18 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 28}\n"
+            "NS18-NS19 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 60}\n\n[transfers]\n\n"
             "[conditional_transfers]\n\n[non_linear_line_terminals]\n\n[station_code_pseudonyms]\n"
         )
 
     def test_segment_adjacency_matrix(self):
-        expected_phase_2b_3_segment_adjacency_matrix = defaultdict(
+        expected_phase_1_2_segment_adjacency_matrix = defaultdict(
             OrderedDict[str, dict],
             {
-                "EW1": OrderedDict(
-                    {
-                        "EW2": {
-                            "duration_asc": 180,
-                            "duration_desc": 180,
-                            "dwell_time_asc": 60,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW2": OrderedDict(
-                    {
-                        "EW3": {
-                            "duration_asc": 180,
-                            "duration_desc": 180,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW3": OrderedDict(
-                    {
-                        "EW4": {
-                            "duration_asc": 180,
-                            "duration_desc": 180,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW4": OrderedDict(
-                    {
-                        "EW5": {
-                            "duration_asc": 180,
-                            "duration_desc": 180,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW5": OrderedDict(
-                    {
-                        "EW6": {
-                            "duration_asc": 180,
-                            "duration_desc": 180,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW6": OrderedDict(
-                    {
-                        "EW7": {
-                            "duration_asc": 180,
-                            "duration_desc": 180,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW7": OrderedDict(
-                    {
-                        "EW8": {
-                            "duration_asc": 120,
-                            "duration_desc": 120,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW8": OrderedDict(
-                    {
-                        "EW9": {
-                            "duration_asc": 120,
-                            "duration_desc": 120,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW9": OrderedDict(
-                    {
-                        "EW10": {
-                            "duration_asc": 180,
-                            "duration_desc": 180,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW10": OrderedDict(
-                    {
-                        "EW11": {
-                            "duration_asc": 120,
-                            "duration_desc": 120,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW11": OrderedDict(
-                    {
-                        "EW12": {
-                            "duration_asc": 180,
-                            "duration_desc": 180,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW12": OrderedDict(
-                    {
-                        "EW13": {
-                            "duration_asc": 120,
-                            "duration_desc": 120,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 45,
-                        }
-                    }
-                ),
-                "EW13": OrderedDict(
-                    {
-                        "EW14": {
-                            "duration_asc": 120,
-                            "duration_desc": 120,
-                            "dwell_time_asc": 45,
-                            "dwell_time_desc": 45,
-                        }
-                    }
-                ),
-                "EW14": OrderedDict(
-                    {
-                        "EW15": {
-                            "duration_asc": 120,
-                            "duration_desc": 120,
-                            "dwell_time_asc": 45,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
                 "EW15": OrderedDict(
                     {
                         "EW16": {
-                            "duration_asc": 120,
-                            "duration_desc": 120,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW16": OrderedDict(
-                    {
-                        "EW17": {
-                            "duration_asc": 180,
-                            "duration_desc": 180,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW17": OrderedDict(
-                    {
-                        "EW18": {
-                            "duration_asc": 180,
-                            "duration_desc": 180,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW18": OrderedDict(
-                    {
-                        "EW19": {
-                            "duration_asc": 120,
-                            "duration_desc": 120,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW19": OrderedDict(
-                    {
-                        "EW20": {
-                            "duration_asc": 180,
-                            "duration_desc": 180,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW20": OrderedDict(
-                    {
-                        "EW21": {
-                            "duration_asc": 120,
-                            "duration_desc": 120,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW21": OrderedDict(
-                    {
-                        "EW23": {
-                            "duration_asc": 300,
-                            "duration_desc": 300,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW23": OrderedDict(
-                    {
-                        "EW24": {
-                            "duration_asc": 300,
-                            "duration_desc": 300,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 45,
-                        }
-                    }
-                ),
-                "EW24": OrderedDict(
-                    {
-                        "EW25": {
-                            "duration_asc": 120,
-                            "duration_desc": 120,
-                            "dwell_time_asc": 45,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "EW25": OrderedDict(
-                    {
-                        "EW26": {
-                            "duration_asc": 180,
-                            "duration_desc": 180,
+                            "duration_asc": 85,
+                            "duration_desc": 85,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 60,
-                        }
-                    }
-                ),
-                "NS1": OrderedDict(
-                    {
-                        "NS2": {
-                            "duration_asc": 180,
-                            "duration_desc": 180,
-                            "dwell_time_asc": 60,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "NS2": OrderedDict(
-                    {
-                        "NS3": {
-                            "duration_asc": 180,
-                            "duration_desc": 180,
+                        },
+                        "NS26": {
+                            "duration_asc": 105,
+                            "duration_desc": 105,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "NS3": OrderedDict(
-                    {
-                        "NS4": {
-                            "duration_asc": 240,
-                            "duration_desc": 240,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 60,
-                        }
-                    }
-                ),
-                "NS13": OrderedDict(
-                    {
-                        "NS14": {
-                            "duration_asc": 120,
-                            "duration_desc": 120,
-                            "dwell_time_asc": 60,
-                            "dwell_time_desc": 28,
-                        }
-                    }
-                ),
-                "NS14": OrderedDict(
-                    {
-                        "NS15": {
-                            "duration_asc": 300,
-                            "duration_desc": 300,
-                            "dwell_time_asc": 28,
-                            "dwell_time_desc": 28,
-                        }
+                        },
                     }
                 ),
                 "NS15": OrderedDict(
                     {
                         "NS16": {
-                            "duration_asc": 180,
-                            "duration_desc": 180,
-                            "dwell_time_asc": 28,
+                            "duration_asc": 115,
+                            "duration_desc": 115,
+                            "dwell_time_asc": 60,
                             "dwell_time_desc": 28,
                         }
                     }
@@ -356,8 +83,8 @@ class TestConfig:
                 "NS16": OrderedDict(
                     {
                         "NS17": {
-                            "duration_asc": 240,
-                            "duration_desc": 240,
+                            "duration_asc": 160,
+                            "duration_desc": 160,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -366,8 +93,8 @@ class TestConfig:
                 "NS17": OrderedDict(
                     {
                         "NS18": {
-                            "duration_asc": 120,
-                            "duration_desc": 120,
+                            "duration_asc": 95,
+                            "duration_desc": 95,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -376,8 +103,8 @@ class TestConfig:
                 "NS18": OrderedDict(
                     {
                         "NS19": {
-                            "duration_asc": 120,
-                            "duration_desc": 120,
+                            "duration_asc": 95,
+                            "duration_desc": 95,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -386,8 +113,8 @@ class TestConfig:
                 "NS19": OrderedDict(
                     {
                         "NS20": {
-                            "duration_asc": 180,
-                            "duration_desc": 180,
+                            "duration_asc": 110,
+                            "duration_desc": 110,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -396,8 +123,8 @@ class TestConfig:
                 "NS20": OrderedDict(
                     {
                         "NS21": {
-                            "duration_asc": 120,
-                            "duration_desc": 120,
+                            "duration_asc": 100,
+                            "duration_desc": 100,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -406,8 +133,8 @@ class TestConfig:
                 "NS21": OrderedDict(
                     {
                         "NS22": {
-                            "duration_asc": 180,
-                            "duration_desc": 180,
+                            "duration_asc": 110,
+                            "duration_desc": 110,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -416,8 +143,8 @@ class TestConfig:
                 "NS22": OrderedDict(
                     {
                         "NS23": {
-                            "duration_asc": 120,
-                            "duration_desc": 120,
+                            "duration_asc": 100,
+                            "duration_desc": 100,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -426,8 +153,8 @@ class TestConfig:
                 "NS23": OrderedDict(
                     {
                         "NS24": {
-                            "duration_asc": 120,
-                            "duration_desc": 120,
+                            "duration_asc": 75,
+                            "duration_desc": 75,
                             "dwell_time_asc": 28,
                             "dwell_time_desc": 28,
                         }
@@ -436,38 +163,28 @@ class TestConfig:
                 "NS24": OrderedDict(
                     {
                         "NS25": {
-                            "duration_asc": 180,
-                            "duration_desc": 180,
+                            "duration_asc": 85,
+                            "duration_desc": 85,
                             "dwell_time_asc": 28,
-                            "dwell_time_desc": 45,
+                            "dwell_time_desc": 28,
                         }
                     }
                 ),
                 "NS25": OrderedDict(
                     {
                         "NS26": {
-                            "duration_asc": 120,
-                            "duration_desc": 120,
-                            "dwell_time_asc": 45,
-                            "dwell_time_desc": 45,
-                        }
-                    }
-                ),
-                "NS26": OrderedDict(
-                    {
-                        "NS27": {
-                            "duration_asc": 120,
-                            "duration_desc": 120,
-                            "dwell_time_asc": 45,
-                            "dwell_time_desc": 60,
+                            "duration_asc": 100,
+                            "duration_desc": 100,
+                            "dwell_time_asc": 28,
+                            "dwell_time_desc": 28,
                         }
                     }
                 ),
             },
         )
-        assert json.dumps(
-            self.config_phase_2b_3.segment_adjacency_matrix
-        ) == json.dumps(expected_phase_2b_3_segment_adjacency_matrix)
+        assert json.dumps(self.config_phase_1_2.segment_adjacency_matrix) == json.dumps(
+            expected_phase_1_2_segment_adjacency_matrix
+        )
 
     def test_transfer_adjacency_matrix(self):
         expected_phase_2b_3_transfer_adjacency_matrix = defaultdict(
@@ -505,10 +222,10 @@ class TestConfig:
             "# schema = 1\n\n"
             '# [stations]\nNS15 = "Yio Chu Kang"\n'
             'NS16 = "Ang Mo Kio"\nNS17 = "Bishan"\nNS18 = "Braddell"\nNS19 = "Toa Payoh"\n\n'
-            "[segments]\nNS15-NS16 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 60, dwell_time_desc = 28}\n"
-            "NS16-NS17 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 28, dwell_time_desc = 28}\n"
-            "NS17-NS18 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}\n"
-            "NS18-NS19 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 60}\n\n[transfers]\n\n"
+            "[segments]\nNS15-NS16 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 60, dwell_time_desc = 28}\n"
+            "NS16-NS17 = {duration_asc = 160, duration_desc = 160, dwell_time_asc = 28, dwell_time_desc = 28}\n"
+            "NS17-NS18 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 28}\n"
+            "NS18-NS19 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 60}\n\n[transfers]\n\n"
             "[conditional_transfers]\n\n\n# [non_linear_line_terminals]\n[linear_line_terminals] # MODIFIED\n\n[station_code_pseudonyms]"
         )
 

@@ -16,6 +16,7 @@ limitations under the License.
 
 from __future__ import annotations
 
+import abc
 import dataclasses
 import re
 from collections import defaultdict
@@ -23,9 +24,26 @@ from collections import defaultdict
 import immutabledict
 
 
+class Station(abc.ABC):
+    @classmethod
+    @abc.abstractmethod
+    def to_station_code_components(cls, station_code: str):
+        pass
+
+    @classmethod
+    @abc.abstractmethod
+    def get_interchanges(cls, stations: list[Station]):
+        pass
+
+    @classmethod
+    @abc.abstractmethod
+    def sort_key(cls, station: Station):
+        pass
+
+
 @dataclasses.dataclass(frozen=True)
-class Station:
-    """Train Station."""
+class SingaporeStation(Station):
+    """Singapore Train Station."""
 
     station_code: str
     station_name: str
@@ -135,7 +153,9 @@ class Station:
         return line_code, station_number, station_number_suffix
 
     @classmethod
-    def get_interchanges(cls, stations: list[Station]) -> tuple[set[Station]]:
+    def get_interchanges(
+        cls, stations: list[SingaporeStation]
+    ) -> tuple[set[SingaporeStation]]:
         """Group stations by station name. A group with at least 2 stations is an interchange.
 
         Args:
@@ -147,12 +167,12 @@ class Station:
         Returns:
             tuple[set[Station]]: Stations grouped by interchange.
         """
-        interchange_stations_by_station_name: defaultdict[str, set[Station]] = (
-            defaultdict(set)
-        )
+        interchange_stations_by_station_name: defaultdict[
+            str, set[SingaporeStation]
+        ] = defaultdict(set)
         for station in stations:
             interchange_stations_by_station_name[station.station_name].add(station)
-        interchanges: tuple[set[Station]] = tuple(
+        interchanges: tuple[set[SingaporeStation]] = tuple(
             stations
             for stations in interchange_stations_by_station_name.values()
             if len(stations) >= 2
@@ -167,7 +187,7 @@ class Station:
         return interchanges
 
     @classmethod
-    def sort_key(cls, station: Station):
+    def sort_key(cls, station: SingaporeStation):
         """For sorting stations by station code components."""
         return (
             station.line_code,

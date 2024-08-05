@@ -26,7 +26,7 @@ from dijkstar.algorithm import PathInfo, find_path
 from railrailrail.config import Config
 from railrailrail.coordinates import Coordinates
 from railrailrail.logger import logger
-from railrailrail.network.station import Station
+from railrailrail.network.station import SingaporeStation
 from railrailrail.network.terminal import Terminal
 
 
@@ -68,7 +68,7 @@ class RailGraph:
         self.conditional_transfers = conditional_transfers
         self.non_linear_line_terminals = non_linear_line_terminals
         self.station_code_to_station = {
-            station_code: Station(
+            station_code: SingaporeStation(
                 station_code,
                 station_name,
                 station_code_pseudonyms.get(station_code, None),
@@ -122,9 +122,9 @@ class RailGraph:
                     f"Segment dwell_time_desc must be number in range {self.__minimum_duration}-{self.__maximum_duration}"
                 )
 
-            is_ascending: bool = Station.to_station_code_components(
+            is_ascending: bool = SingaporeStation.to_station_code_components(
                 start
-            ) < Station.to_station_code_components(end)
+            ) < SingaporeStation.to_station_code_components(end)
 
             edge = (
                 duration_asc if is_ascending else duration_desc,
@@ -149,14 +149,14 @@ class RailGraph:
         self.__add_interchange_transfers()
 
     def __add_interchange_transfers(self):
-        interchanges = Station.get_interchanges(
+        interchanges = SingaporeStation.get_interchanges(
             list(self.station_code_to_station.values())
         )
         for interchange_substations in (
             interchanges
         ):  # Link up unique pairs of substations on the same interchange station.
             for start, end in itertools.permutations(
-                sorted(interchange_substations, key=Station.sort_key), 2
+                sorted(interchange_substations, key=SingaporeStation.sort_key), 2
             ):
                 if (start.station_code, end.station_code) not in self.transfers:
                     raise ValueError(
@@ -218,7 +218,7 @@ class RailGraph:
         ) -> int:
             """Compute time cost of travelling from current station to next station.
 
-            Transfer time is added if the preceding and succeeding edges imply a sub-interchange transfer.
+            Transfer time is added if the preceding and succeeding edge types imply a conditional interchange transfer.
 
             Dwell time is added for every station unless if walking away from the station.
 
@@ -354,14 +354,16 @@ class RailGraph:
             next_station_full_name = next_station.full_station_name
 
             def get_terminal_full_station_name() -> str | None:
-                terminal_station: Station | None = self.station_code_to_station.get(
-                    Terminal.get_approaching_terminal(
-                        self._graph,
-                        self.non_linear_line_terminals,
-                        current_station_code,
-                        next_station_code,
-                    ),
-                    None,
+                terminal_station: SingaporeStation | None = (
+                    self.station_code_to_station.get(
+                        Terminal.get_approaching_terminal(
+                            self._graph,
+                            self.non_linear_line_terminals,
+                            current_station_code,
+                            next_station_code,
+                        ),
+                        None,
+                    )
                 )
                 return (
                     None

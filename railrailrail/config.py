@@ -26,7 +26,7 @@ import tomlkit
 from railrailrail.network.conditional_transfers import ConditionalTransfers
 from railrailrail.network.dwell_time import DwellTime
 from railrailrail.network.stage import Stage
-from railrailrail.network.station import Station
+from railrailrail.network.station import SingaporeStation
 from railrailrail.network.terminal import Terminal
 from railrailrail.network.train_segments import TrainSegments
 from railrailrail.network.transfers import Transfers
@@ -48,7 +48,7 @@ class Config:
             stage (Stage): Rail network stage.
         """
         self.stage = stage
-        self.stations: list[Station] = self._get_stations()
+        self.stations: list[SingaporeStation] = self._get_stations()
 
         # Station lookup tables.
         self._station_codes_by_station_name: dict[str, set[str]] = defaultdict(set)
@@ -56,12 +56,14 @@ class Config:
             self._station_codes_by_station_name[station.station_name].add(
                 station.station_code
             )
-        self._stations_by_line_code: defaultdict[str, set[Station]] = defaultdict(set)
+        self._stations_by_line_code: defaultdict[str, set[SingaporeStation]] = (
+            defaultdict(set)
+        )
         for station in self.stations:
             self._stations_by_line_code[station.line_code].add(station)
 
         # Network config sections.
-        self.station_code_to_station: dict[str, Station] = {
+        self.station_code_to_station: dict[str, SingaporeStation] = {
             station.station_code: station for station in self.stations
         }
         self.non_linear_line_terminals: dict[str, set[str]] = (
@@ -80,7 +82,7 @@ class Config:
             self._generate_station_code_pseudonyms()
         )
 
-    def _get_stations(self) -> list[Station]:
+    def _get_stations(self) -> list[SingaporeStation]:
         """Generate list of operational train station codes and station names,
         sorted by station code in ascending order.
 
@@ -92,7 +94,7 @@ class Config:
 
         return sorted(
             self.stage.stations,
-            key=Station.sort_key,
+            key=SingaporeStation.sort_key,
         )
 
     def _generate_segment_adjacency_matrix(
@@ -114,7 +116,7 @@ class Config:
         for stations in self._stations_by_line_code.values():
             line_stations = sorted(
                 stations,
-                key=Station.sort_key,
+                key=SingaporeStation.sort_key,
             )
             for station, next_station in zip(line_stations[:-1], line_stations[1:]):
                 station_code, next_station_code = (
@@ -154,7 +156,9 @@ class Config:
         )
         interchange_station_codes: set[str] = {
             station.station_code
-            for station in set().union(*Station.get_interchanges(self.stations))
+            for station in set().union(
+                *SingaporeStation.get_interchanges(self.stations)
+            )
         }
         for station_code in adjacency_matrix:
             for next_station_code in adjacency_matrix[station_code]:
@@ -224,8 +228,8 @@ class Config:
                 for end in adjacency_matrix[start]
             ],
             key=lambda station_codes: (
-                Station.to_station_code_components(station_codes[0]),
-                Station.to_station_code_components(station_codes[1]),
+                SingaporeStation.to_station_code_components(station_codes[0]),
+                SingaporeStation.to_station_code_components(station_codes[1]),
             ),
         )
 
@@ -261,7 +265,10 @@ class Config:
         for station_name, station_codes in interchanges.items():
             if station_name in Transfers.interchange_transfers:
                 for start, end in itertools.combinations(
-                    sorted(station_codes, key=Station.to_station_code_components), 2
+                    sorted(
+                        station_codes, key=SingaporeStation.to_station_code_components
+                    ),
+                    2,
                 ):
                     # Combinations on sorted set to keep pairs order predictable.
                     pairs.append((start, end, station_name))
@@ -272,8 +279,8 @@ class Config:
                 )
         pairs.sort(
             key=lambda station_codes: (
-                Station.to_station_code_components(station_codes[0]),
-                Station.to_station_code_components(station_codes[1]),
+                SingaporeStation.to_station_code_components(station_codes[0]),
+                SingaporeStation.to_station_code_components(station_codes[1]),
             )
         )
         for start, end, station_name in pairs:
@@ -342,11 +349,11 @@ class Config:
             terminals = {
                 sorted(
                     self._stations_by_line_code["EW"],
-                    key=Station.sort_key,
+                    key=SingaporeStation.sort_key,
                 )[-1].station_code,
                 sorted(
                     self._stations_by_line_code["NS"],
-                    key=Station.sort_key,
+                    key=SingaporeStation.sort_key,
                 )[0].station_code,
             }  # Highest EW and Lowest NS
             non_linear_line_terminals["EW"] = terminals.copy()
@@ -365,12 +372,14 @@ class Config:
 
         # Filter out unused station codes
         return {
-            pseudo_station_code: Station.pseudo_station_codes[pseudo_station_code]
+            pseudo_station_code: SingaporeStation.pseudo_station_codes[
+                pseudo_station_code
+            ]
             for pseudo_station_code in sorted(
-                set(Station.pseudo_station_codes).intersection(
+                set(SingaporeStation.pseudo_station_codes).intersection(
                     self.station_code_to_station
                 ),
-                key=Station.to_station_code_components,
+                key=SingaporeStation.to_station_code_components,
             )
         }
 
@@ -428,7 +437,7 @@ class Config:
             for line_code in sorted(self.non_linear_line_terminals)
             for station_code in sorted(
                 self.non_linear_line_terminals[line_code],
-                key=Station.to_station_code_components,
+                key=SingaporeStation.to_station_code_components,
             )
         }
         network["station_code_pseudonyms"] = {
@@ -590,7 +599,7 @@ class Config:
                 station_coordinates[row[0]] = Coordinates(float(row[2]), float(row[3]))
 
         # Assign coordinates to missing/future/zero station codes.
-        for code1, code2 in Station.equivalent_station_code_pairs:
+        for code1, code2 in SingaporeStation.equivalent_station_code_pairs:
             station_coordinates[code1] = station_coordinates[code2]
 
         return (
