@@ -136,3 +136,5 @@ See [LICENSE](LICENSE) and [LICENSE-DATASET](LICENSE-DATASET).
   - [Timetable](https://docs.google.com/spreadsheets/d/1e-Tuf6rHBFsgsuFN7XqbFL8ec_vdRjQw)
 - Singapore Train Station Coordinates
   - [GitHub Repo](https://github.com/elliotwutingfeng/singapore_train_station_coordinates)
+- Train Spotters from YouTube
+  - [Link](TRAIN_SPOTTERS.md)
