@@ -22,6 +22,7 @@ trip_15.input = { start = "EW13", end = "DT18", network = "tel_4", walk = true }
 trip_16.input = { start = "DT23", end = "CC3", network = "tel_4", walk = true } # $ _ $$ walk $$ _ $
 trip_17.input = { start = "NE5", end = "CC2", network = "tel_4", walk = true } # $ _ $$ walk $ walk $
 
+trip_91.input = { start = "TE22", end = "DT15", network = "teck_lee", walk = false } # Transfer from CE to DT
 trip_92.input = { start = "DT4", end = "NS7", network = "future", walk = false } # Transfer at DT
 trip_93.input = { start = "CG1", end = "EW5", network = "jrl_1", walk = false } # Transfer at CG
 trip_94.input = { start = "NS22", end = "EW24", network = "phase_2b_2", walk = false } # Before EWL open
@@ -192,6 +193,15 @@ total_cost = 563
 path_distance = 2045.6381323781065
 haversine_distance = 1048.6397897137483
 directions = ["Start at NE5 Clarke Quay", "Board train towards terminus NE17 Punggol", "Alight at NE6 Dhoby Ghaut", "Walk to CC2 Bras Basah", "Total duration: 9 minutes 23 seconds", "Approximate path distance: 2.0 km, Haversine distance: 1.0 km, Circuity ratio: 2.0"]
+
+[trip_91.output]
+nodes = ["TE22", "TE20", "CE2", "CE1", "CE0Z", "DT15"]
+edges = [[130, "", "", 28], [600, "", "", 0], [110, "", "", 60], [115, "", "", 45], [420, "", "", 0]]
+costs = [158, 600, 170, 160, 0]
+total_cost = 1088
+path_distance = 3823
+haversine_distance = 1762
+directions =["Start at TE22 Gardens by the Bay", "Board train towards terminus TE1 Woodlands North", "Alight at TE20 Marina Bay", "Transfer to CE2 Marina Bay", "Board train towards terminus CC6 Stadium", "Alight at CC4 Promenade", "Transfer to DT15 Promenade", "Total duration: 18 minutes 8 seconds", "Approximate path distance: 3.8 km, Haversine distance: 1.8 km, Circuity ratio: 2.2"]
 
 [trip_92.output]
 nodes = ["DT4", "DT3", "DT2", "DT1", "DT", "NS6", "NS7"]

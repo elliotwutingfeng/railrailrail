@@ -346,9 +346,12 @@ class RailGraph:
         ) in enumerate(zip(pathinfo.nodes[:-1], pathinfo.nodes[1:], pathinfo.edges)):
             current_station = self.station_code_to_station[current_station_code]
             next_station = self.station_code_to_station[next_station_code]
-            at_pseudo_station = (
-                current_station.has_pseudo_station_code
-                or next_station.has_pseudo_station_code
+            is_pseudo_transfer = (
+                current_station.real_station_code == next_station.real_station_code
+                and (
+                    current_station.has_pseudo_station_code
+                    or next_station.has_pseudo_station_code
+                )
             )
             current_station_full_name = current_station.full_station_name
             next_station_full_name = next_station.full_station_name
@@ -394,7 +397,7 @@ class RailGraph:
                     next_station_code,
                 ) in self.transfers:  # Interchange transfer.
                     steps.append(
-                        f"{'Switch over at' if at_pseudo_station else 'Transfer to'} {next_station_full_name}"
+                        f"{'Switch over at' if is_pseudo_transfer else 'Transfer to'} {next_station_full_name}"
                     )
                 elif edge_details[2] == "walk":  # Walk to the next station.
                     steps.append(f"Walk to {next_station_full_name}")
@@ -428,7 +431,7 @@ class RailGraph:
                 ) in self.transfers:  # Interchange transfer.
                     steps.append(f"Alight at {current_station_full_name}")
                     steps.append(
-                        f"{'Switch over at' if at_pseudo_station else 'Transfer to'} {next_station_full_name}"
+                        f"{'Switch over at' if is_pseudo_transfer else 'Transfer to'} {next_station_full_name}"
                     )
                     status = "at_station"
                 elif edge_details[2] == "walk":  # Walk to the next station.
