@@ -89,7 +89,7 @@ class Config:
         Order is important as stations are almost always connected in sequential order.
 
         Returns:
-            list[Station]: Train stations sorted by station code in ascending order.
+            list[SingaporeStation]: Train stations sorted by station code in ascending order.
         """
 
         return sorted(

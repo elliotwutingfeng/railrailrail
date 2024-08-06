@@ -20,7 +20,7 @@ poetry run python railrailrail/cli.py route --coordinates-file config/station_co
 # Transfer to TE14 Orchard
 # Board train towards terminus TE29 Bayshore
 # Alight at TE29 Bayshore
-# Total duration: 73 minutes 41 seconds
+# Total duration: 62 minutes 11 seconds
 # Approximate path distance: 29.7 km, Haversine distance: 16.8 km, Circuity ratio: 1.8
 ```
 
@@ -37,7 +37,7 @@ poetry run python railrailrail/cli.py route --walk --coordinates-file config/sta
 # Walk to TE20 Marina Bay
 # Board train towards terminus TE29 Bayshore
 # Alight at TE29 Bayshore
-# Total duration: 38 minutes 44 seconds
+# Total duration: 33 minutes 39 seconds
 # Approximate path distance: 15.6 km, Haversine distance: 10.0 km, Circuity ratio: 1.6
 ```
 
@@ -45,53 +45,35 @@ poetry run python railrailrail/cli.py route --walk --coordinates-file config/sta
 
 Use a different `--network-file` to calculate fastest routes for both past and future versions of the network.
 
-**Example:** EW1 Pasir Ris to NS17 Bishan
+**Example:** EW1 Pasir Ris to NS16 Ang Mo Kio
 
-EW22 Dover opened.
+EW1 Pasir Ris opened (1989).
 
 ```bash
-poetry run python railrailrail/cli.py route --network-file config/network_dover.toml --coordinates-file config/station_coordinates.csv --start EW1 --end NS17
+poetry run python railrailrail/cli.py route --network-file config/network_phase_2a_2.toml --coordinates-file config/station_coordinates.csv --start EW1 --end NS16
 
 # Start at EW1 Pasir Ris
-# Board train towards terminus EW27 Boon Lay
+# Board train towards terminus EW26 Lakeside
 # Alight at EW13 City Hall
 # Transfer to NS25 City Hall
-# Board train towards terminus NS1 Jurong East
-# Alight at NS17 Bishan
-# Total duration: 67 minutes 26 seconds
-# Approximate path distance: 25.6 km, Haversine distance: 11.5 km, Circuity ratio: 2.2
+# Board train towards terminus NS13 Yishun
+# Alight at NS16 Ang Mo Kio
+# Total duration: 53 minutes 37 seconds
+# Approximate path distance: 27.7 km, Haversine distance: 11.1 km, Circuity ratio: 2.5
 ```
 
-Circle Line Stage 4 and Stage 5 opened.
+Cross Island Line 2 opened (est. 2032).
 
 ```bash
-poetry run python railrailrail/cli.py route --network-file config/network_ccl_4_and_ccl_5.toml --coordinates-file config/station_coordinates.csv --start EW1 --end NS17
-
-# Start at EW1 Pasir Ris
-# Board train towards terminus EW29 Joo Koon
-# Alight at EW8 Paya Lebar
-# Transfer to CC9 Paya Lebar
-# Board train towards terminus CC29 HarbourFront
-# Alight at CC15 Bishan
-# Transfer to NS17 Bishan
-# Total duration: 47 minutes 27 seconds
-# Approximate path distance: 19.0 km, Haversine distance: 11.5 km, Circuity ratio: 1.7
-```
-
-Cross Island Line 2 opened.
-
-```bash
-poetry run python railrailrail/cli.py route --network-file config/network_crl_2.toml --coordinates-file config/station_coordinates.csv --start EW1 --end NS17
+poetry run python railrailrail/cli.py route --network-file config/network_crl_2.toml --coordinates-file config/station_coordinates.csv --start EW1 --end NS16
 
 # Start at EW1 Pasir Ris
 # Transfer to CR5 Pasir Ris
 # Board train towards terminus CR19 Jurong Lake District
 # Alight at CR11 Ang Mo Kio
 # Transfer to NS16 Ang Mo Kio
-# Board train towards terminus NS28 Marina South Pier
-# Alight at NS17 Bishan
-# Total duration: 40 minutes 7 seconds
-# Approximate path distance: 13.9 km, Haversine distance: 11.5 km, Circuity ratio: 1.2
+# Total duration: 25 minutes 22 seconds
+# Approximate path distance: 11.8 km, Haversine distance: 11.1 km, Circuity ratio: 1.1
 ```
 
 ## generate

@@ -24,20 +24,24 @@ from collections import defaultdict
 import immutabledict
 
 
+@dataclasses.dataclass(frozen=True)
 class Station(abc.ABC):
+    station_code: str
+    station_name: str
+
     @classmethod
     @abc.abstractmethod
-    def to_station_code_components(cls, station_code: str):
+    def to_station_code_components(cls, station_code: str) -> tuple:
         pass
 
     @classmethod
     @abc.abstractmethod
-    def get_interchanges(cls, stations: list[Station]):
+    def get_interchanges(cls, stations: list[Station]) -> tuple[set[Station]]:
         pass
 
     @classmethod
     @abc.abstractmethod
-    def sort_key(cls, station: Station):
+    def sort_key(cls, station: Station) -> tuple:
         pass
 
 
@@ -45,8 +49,6 @@ class Station(abc.ABC):
 class SingaporeStation(Station):
     """Singapore Train Station."""
 
-    station_code: str
-    station_name: str
     real_station_code: str | None = None
 
     # The following fields are excluded from hashing.
@@ -159,13 +161,13 @@ class SingaporeStation(Station):
         """Group stations by station name. A group with at least 2 stations is an interchange.
 
         Args:
-            stations (list[Station]): Stations to be grouped by name.
+            stations (list[SingaporeStation]): Stations to be grouped by name.
 
         Raises:
             ValueError: Duplicate line codes not allowed at interchange.
 
         Returns:
-            tuple[set[Station]]: Stations grouped by interchange.
+            tuple[set[SingaporeStation]]: Stations grouped by interchange.
         """
         interchange_stations_by_station_name: defaultdict[
             str, set[SingaporeStation]
@@ -187,7 +189,7 @@ class SingaporeStation(Station):
         return interchanges
 
     @classmethod
-    def sort_key(cls, station: SingaporeStation):
+    def sort_key(cls, station: SingaporeStation) -> tuple:
         """For sorting stations by station code components."""
         return (
             station.line_code,

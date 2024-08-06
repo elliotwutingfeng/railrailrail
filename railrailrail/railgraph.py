@@ -71,7 +71,7 @@ class RailGraph:
             station_code: SingaporeStation(
                 station_code,
                 station_name,
-                station_code_pseudonyms.get(station_code, None),
+                real_station_code=station_code_pseudonyms.get(station_code, None),
             )
             for station_code, station_name in stations.items()
         }

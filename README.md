@@ -46,25 +46,7 @@ make generate_config
 
 ## Basic Usage
 
-Now lets find the fastest route between Pasir Ris and Hougang in 2024.
-
-```bash
-poetry run python railrailrail/cli.py route --network-file config/network_tel_4.toml --coordinates-file config/station_coordinates.csv --start EW1 --end NE14
-
-# Start at EW1 Pasir Ris
-# Board train towards terminus EW33 Tuas Link
-# Alight at EW8 Paya Lebar
-# Transfer to CC9 Paya Lebar
-# Board train towards terminus CC29 HarbourFront
-# Alight at CC13 Serangoon
-# Transfer to NE12 Serangoon
-# Board train towards terminus NE17 Punggol
-# Alight at NE14 Hougang
-# Total duration: 57 minutes 1 seconds
-# Approximate path distance: 19.6 km, Haversine distance: 6.3 km, Circuity ratio: 3.1
-```
-
-In 2003.
+Now lets find the fastest route between Pasir Ris and Hougang in 2003.
 
 ```bash
 poetry run python railrailrail/cli.py route --network-file config/network_nel.toml --coordinates-file config/station_coordinates.csv --start EW1 --end NE14
@@ -78,8 +60,26 @@ poetry run python railrailrail/cli.py route --network-file config/network_nel.to
 # Transfer to NE6 Dhoby Ghaut
 # Board train towards terminus NE17 Punggol
 # Alight at NE14 Hougang
-# Total duration: 74 minutes 43 seconds
+# Total duration: 61 minutes 28 seconds
 # Approximate path distance: 28.1 km, Haversine distance: 6.3 km, Circuity ratio: 4.4
+```
+
+In 2024.
+
+```bash
+poetry run python railrailrail/cli.py route --network-file config/network_tel_4.toml --coordinates-file config/station_coordinates.csv --start EW1 --end NE14
+
+# Start at EW1 Pasir Ris
+# Board train towards terminus EW33 Tuas Link
+# Alight at EW8 Paya Lebar
+# Transfer to CC9 Paya Lebar
+# Board train towards terminus CC29 HarbourFront
+# Alight at CC13 Serangoon
+# Transfer to NE12 Serangoon
+# Board train towards terminus NE17 Punggol
+# Alight at NE14 Hougang
+# Total duration: 49 minutes 26 seconds
+# Approximate path distance: 19.6 km, Haversine distance: 6.3 km, Circuity ratio: 3.1
 ```
 
 In 2030.
