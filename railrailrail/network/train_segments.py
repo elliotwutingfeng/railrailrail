@@ -57,9 +57,9 @@ class TrainSegmentsMeta(type):
         ("CC14-CC15", ("duration", 135)),
         ("CC15-CC16", ("duration", 130)),
         ("CC16-CC17", ("duration", 100)),
-        ("CC17-CC18", ("duration", 140)),  # future
+        ("CC17-CC18", ("duration", 110)),  # future
         ("CC17-CC19", ("duration", 245)),
-        ("CC18-CC19", ("duration", 140)),  # future
+        ("CC18-CC19", ("duration", 175)),  # future
         ("CC19-CC20", ("duration", 100)),
         ("CC20-CC21", ("duration", 125)),
         ("CC21-CC22", ("duration", 95)),
@@ -70,10 +70,10 @@ class TrainSegmentsMeta(type):
         ("CC26-CC27", ("duration", 115)),
         ("CC27-CC28", ("duration", 90)),
         ("CC28-CC29", ("duration", 195)),
-        ("CC29-CC30", ("duration", 120)),  # future
-        ("CC30-CC31", ("duration", 80)),  # future
-        ("CC31-CC32", ("duration", 80)),  # future
-        ("CC32-CC33", ("duration", 80)),  # future
+        ("CC29-CC30", ("duration", 110)),  # future
+        ("CC30-CC31", ("duration", 95)),  # future
+        ("CC31-CC32", ("duration", 115)),  # future
+        ("CC32-CC33", ("duration", 105)),  # future
         ("CC33-CC34", ("duration", 110)),
         ("CE0X-CE0Y", ("duration", 120)),
         ("CE0Y-CE0Z", ("duration", 105)),
@@ -85,9 +85,9 @@ class TrainSegmentsMeta(type):
         ("CP2-CP3", ("duration", 360)),  # future
         ("CP3-CP4", ("duration", 240)),  # future
         ("CR1-CR2", ("duration", 240)),  # future
-        ("CR2-CR3", ("duration", 360)),  # future
-        ("CR3-CR4", ("duration", 180)),  # future
-        ("CR4-CR5", ("duration", 180)),  # future
+        ("CR2-CR3", ("duration", 270)),  # future
+        ("CR3-CR4", ("duration", 120)),  # future
+        ("CR4-CR5", ("duration", 120)),  # future
         ("CR5-CR6", ("duration", 120)),  # future
         ("CR6-CR7", ("duration", 480)),  # future
         ("CR7-CR8", ("duration", 120)),  # future
@@ -102,12 +102,12 @@ class TrainSegmentsMeta(type):
         ("CR16-CR17", ("duration", 240)),  # future
         ("CR17-CR18", ("duration", 120)),  # future
         ("CR18-CR19", ("duration", 300)),  # future
-        ("DT-DT1", ("duration", 420)),  # future
+        ("DT-DT1", ("duration", 245)),  # future
         ("DT1-DT2", ("duration", 85)),
         ("DT2-DT3", ("duration", 75)),
-        ("DT3-DT4", ("duration", 100)),  # future
+        ("DT3-DT4", ("duration", 75)),  # future
         ("DT3-DT5", ("duration", 175)),
-        ("DT4-DT5", ("duration", 100)),  # future
+        ("DT4-DT5", ("duration", 120)),  # future
         ("DT5-DT6", ("duration", 90)),
         ("DT6-DT7", ("duration", 105)),
         ("DT7-DT8", ("duration", 90)),
@@ -138,8 +138,8 @@ class TrainSegmentsMeta(type):
         ("DT32-DT33", ("duration", 100)),
         ("DT33-DT34", ("duration", 160)),
         ("DT34-DT35", ("duration", 75)),
-        ("DT35-DT36", ("duration", 60)),  # future
-        ("DT36-DT37", ("duration", 120)),  # future
+        ("DT35-DT36", ("duration", 70)),  # future
+        ("DT36-DT37", ("duration", 95)),  # future
         ("EW1-EW2", ("duration", 150)),
         ("EW2-EW3", ("duration", 105)),
         ("EW3-EW4", ("duration", 150)),
@@ -177,29 +177,29 @@ class TrainSegmentsMeta(type):
         ("EW30-EW31", ("duration", 125)),
         ("EW31-EW32", ("duration", 95)),
         ("EW32-EW33", ("duration", 105)),
-        ("JE0-JE1", ("duration", 180)),  # future
-        ("JE1-JE2", ("duration", 120)),  # future
-        ("JE2-JE3", ("duration", 120)),  # future
-        ("JE3-JE4", ("duration", 180)),  # future
-        ("JE4-JE5", ("duration", 120)),  # future
-        ("JE5-JE6", ("duration", 120)),  # future
-        ("JE6-JE7", ("duration", 120)),  # future
-        ("JS1-JS2", ("duration", 120)),  # future
-        ("JS2-JS3", ("duration", 240)),  # future
-        ("JS3-JS4", ("duration", 120)),  # future
-        ("JS4-JS5", ("duration", 180)),  # future
-        ("JS5-JS6", ("duration", 120)),  # future
-        ("JS6-JS7", ("duration", 120)),  # future
-        ("JS7-JS8", ("duration", 120)),  # future
-        ("JS7-JW1", ("duration", 120)),  # future
-        ("JS8-JS9", ("duration", 120)),  # future
-        ("JS9-JS10", ("duration", 120)),  # future
-        ("JS10-JS11", ("duration", 120)),  # future
-        ("JS11-JS12", ("duration", 120)),  # future
-        ("JW1-JW2", ("duration", 120)),  # future
-        ("JW2-JW3", ("duration", 120)),  # future
-        ("JW3-JW4", ("duration", 120)),  # future
-        ("JW4-JW5", ("duration", 120)),  # future
+        ("JE0-JE1", ("duration", 100)),  # future
+        ("JE1-JE2", ("duration", 80)),  # future
+        ("JE2-JE3", ("duration", 85)),  # future
+        ("JE3-JE4", ("duration", 80)),  # future
+        ("JE4-JE5", ("duration", 85)),  # future
+        ("JE5-JE6", ("duration", 90)),  # future
+        ("JE6-JE7", ("duration", 80)),  # future
+        ("JS1-JS2", ("duration", 90)),  # future
+        ("JS2-JS3", ("duration", 140)),  # future
+        ("JS3-JS4", ("duration", 100)),  # future
+        ("JS4-JS5", ("duration", 125)),  # future
+        ("JS5-JS6", ("duration", 85)),  # future
+        ("JS6-JS7", ("duration", 80)),  # future
+        ("JS7-JS8", ("duration", 95)),  # future
+        ("JS7-JW1", ("duration", 75)),  # future
+        ("JS8-JS9", ("duration", 85)),  # future
+        ("JS9-JS10", ("duration", 85)),  # future
+        ("JS10-JS11", ("duration", 85)),  # future
+        ("JS11-JS12", ("duration", 75)),  # future
+        ("JW1-JW2", ("duration", 85)),  # future
+        ("JW2-JW3", ("duration", 80)),  # future
+        ("JW3-JW4", ("duration", 90)),  # future
+        ("JW4-JW5", ("duration", 80)),  # future
         ("NE1-NE3", ("duration", 170)),
         ("NE3-NE4", ("duration", 75)),
         ("NE4-NE5", ("duration", 70)),
@@ -217,16 +217,16 @@ class TrainSegmentsMeta(type):
         ("NE14-NE16", ("duration", 215)),  # defunct
         ("NE15-NE16", ("duration", 90)),
         ("NE16-NE17", ("duration", 130)),
-        ("NE17-NE18", ("duration", 180)),  # future
+        ("NE17-NE18", ("duration", 115)),  # future
         ("NS1-NS2", ("duration", 225)),
         ("NS2-NS3", ("duration", 95)),
         ("NS3-NS3A", ("duration", 120)),  # future
         ("NS3-NS4", ("duration", 205)),
-        ("NS3A-NS4", ("duration", 120)),  # future
+        ("NS3A-NS4", ("duration", 135)),  # future
         ("NS4-NS5", ("duration", 120)),
-        ("NS5-NS6", ("duration", 120)),  # future
+        ("NS5-NS6", ("duration", 140)),  # future
         ("NS5-NS7", ("duration", 250)),
-        ("NS6-NS7", ("duration", 120)),  # future
+        ("NS6-NS7", ("duration", 155)),  # future
         ("NS7-NS8", ("duration", 125)),
         ("NS8-NS9", ("duration", 125)),
         ("NS9-NS10", ("duration", 135)),
@@ -292,14 +292,14 @@ class TrainSegmentsMeta(type):
         ("TE1-TE2", ("duration", 125)),
         ("TE2-TE3", ("duration", 105)),
         ("TE3-TE4", ("duration", 250)),
-        ("TE4-TE4A", ("duration", 100)),  # future
+        ("TE4-TE4A", ("duration", 110)),  # future
         ("TE4-TE5", ("duration", 160)),
-        ("TE4A-TE5", ("duration", 100)),  # future
+        ("TE4A-TE5", ("duration", 105)),  # future
         ("TE5-TE6", ("duration", 125)),
         ("TE6-TE7", ("duration", 95)),
         ("TE7-TE8", ("duration", 115)),
         ("TE8-TE9", ("duration", 165)),
-        ("TE9-TE10", ("duration", 120)),  # future
+        ("TE9-TE10", ("duration", 105)),  # future
         ("TE9-TE11", ("duration", 185)),
         ("TE10-TE11", ("duration", 120)),  # future
         ("TE11-TE12", ("duration", 135)),
@@ -311,24 +311,24 @@ class TrainSegmentsMeta(type):
         ("TE17-TE18", ("duration", 60)),
         ("TE18-TE19", ("duration", 75)),
         ("TE19-TE20", ("duration", 65)),
-        ("TE20-TE21", ("duration", 120)),  # future
+        ("TE20-TE21", ("duration", 95)),  # future
         ("TE20-TE22", ("duration", 130)),
-        ("TE21-TE22", ("duration", 60)),  # future
+        ("TE21-TE22", ("duration", 75)),  # future
         ("TE22-TE22A", ("duration", 120)),  # future
         ("TE22-TE23", ("duration", 195)),
-        ("TE22A-TE23", ("duration", 120)),  # future
+        ("TE22A-TE23", ("duration", 90)),  # future
         ("TE23-TE24", ("duration", 115)),
         ("TE24-TE25", ("duration", 115)),
         ("TE25-TE26", ("duration", 100)),
         ("TE26-TE27", ("duration", 95)),
         ("TE27-TE28", ("duration", 125)),
         ("TE28-TE29", ("duration", 125)),
-        ("TE29-TE30", ("duration", 95)),  # future
+        ("TE29-TE30", ("duration", 90)),  # future
         ("TE30-TE31", ("duration", 95)),  # future
-        ("TE31-TE32", ("duration", 600)),  # future
-        ("TE32-TE33", ("duration", 180)),  # future
-        ("TE33-TE34", ("duration", 240)),  # future
-        ("TE34-TE35", ("duration", 180)),  # future
+        ("TE31-TE32", ("duration", 290)),  # future
+        ("TE32-TE33", ("duration", 185)),  # future
+        ("TE33-TE34", ("duration", 250)),  # future
+        ("TE34-TE35", ("duration", 145)),  # future
     )
 
     def __new__(cls, name, bases, dct):

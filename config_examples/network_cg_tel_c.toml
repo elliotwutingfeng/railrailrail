@@ -326,19 +326,19 @@ CC25-CC26 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 28, dwell
 CC26-CC27 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 28, dwell_time_desc = 28}
 CC27-CC28 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 28, dwell_time_desc = 28}
 CC28-CC29 = {duration_asc = 195, duration_desc = 195, dwell_time_asc = 28, dwell_time_desc = 45}
-CC29-CC30 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
-CC30-CC31 = {duration_asc = 80, duration_desc = 80, dwell_time_asc = 28, dwell_time_desc = 28}
-CC31-CC32 = {duration_asc = 80, duration_desc = 80, dwell_time_asc = 28, dwell_time_desc = 28}
-CC32-CC33 = {duration_asc = 80, duration_desc = 80, dwell_time_asc = 28, dwell_time_desc = 45}
+CC29-CC30 = {duration_asc = 110, duration_desc = 110, dwell_time_asc = 45, dwell_time_desc = 28}
+CC30-CC31 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 28}
+CC31-CC32 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 28, dwell_time_desc = 28}
+CC32-CC33 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 28, dwell_time_desc = 45}
 CC33-CC34 = {duration_asc = 110, duration_desc = 110, dwell_time_asc = 45, dwell_time_desc = 45}
 CC33-DT17 = {duration_asc = 300, duration_desc = 300, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 CP1-CP2 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 60, dwell_time_desc = 28}
 CP2-CP3 = {duration_asc = 360, duration_desc = 360, dwell_time_asc = 28, dwell_time_desc = 45}
 CP3-CP4 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 45, dwell_time_desc = 60}
 CR1-CR2 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 60, dwell_time_desc = 28}
-CR2-CR3 = {duration_asc = 360, duration_desc = 360, dwell_time_asc = 28, dwell_time_desc = 28}
-CR3-CR4 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-CR4-CR5 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 45}
+CR2-CR3 = {duration_asc = 270, duration_desc = 270, dwell_time_asc = 28, dwell_time_desc = 28}
+CR3-CR4 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+CR4-CR5 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
 CR5-CR6 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
 CR6-CR7 = {duration_asc = 480, duration_desc = 480, dwell_time_asc = 28, dwell_time_desc = 28}
 CR7-CR8 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
@@ -355,8 +355,8 @@ CR17-CR18 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell
 CR18-CR19 = {duration_asc = 300, duration_desc = 300, dwell_time_asc = 28, dwell_time_desc = 60}
 DT1-DT2 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 60, dwell_time_desc = 28}
 DT2-DT3 = {duration_asc = 75, duration_desc = 75, dwell_time_asc = 28, dwell_time_desc = 28}
-DT3-DT4 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 28, dwell_time_desc = 28}
-DT4-DT5 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 28, dwell_time_desc = 28}
+DT3-DT4 = {duration_asc = 75, duration_desc = 75, dwell_time_asc = 28, dwell_time_desc = 28}
+DT4-DT5 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 DT5-DT6 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 28, dwell_time_desc = 45}
 DT6-DT7 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 45, dwell_time_desc = 28}
 DT7-DT8 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 28, dwell_time_desc = 28}
@@ -401,8 +401,8 @@ DT31-DT32 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 28, dwell
 DT32-DT33 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 45, dwell_time_desc = 28}
 DT33-DT34 = {duration_asc = 160, duration_desc = 160, dwell_time_asc = 28, dwell_time_desc = 28}
 DT34-DT35 = {duration_asc = 75, duration_desc = 75, dwell_time_asc = 28, dwell_time_desc = 45}
-DT35-DT36 = {duration_asc = 60, duration_desc = 60, dwell_time_asc = 45, dwell_time_desc = 28}
-DT36-DT37 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 60}
+DT35-DT36 = {duration_asc = 70, duration_desc = 70, dwell_time_asc = 45, dwell_time_desc = 28}
+DT36-DT37 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 60}
 EW1-EW2 = {duration_asc = 150, duration_desc = 150, dwell_time_asc = 60, dwell_time_desc = 45}
 EW2-EW3 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 45, dwell_time_desc = 28}
 EW3-EW4 = {duration_asc = 150, duration_desc = 150, dwell_time_asc = 28, dwell_time_desc = 45}
@@ -435,29 +435,29 @@ EW29-EW30 = {duration_asc = 150, duration_desc = 150, dwell_time_asc = 28, dwell
 EW30-EW31 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 28, dwell_time_desc = 28}
 EW31-EW32 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 28}
 EW32-EW33 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 28, dwell_time_desc = 60}
-JE0-JE1 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 60, dwell_time_desc = 28}
-JE1-JE2 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-JE2-JE3 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-JE3-JE4 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-JE4-JE5 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
-JE5-JE6 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
-JE6-JE7 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 60}
-JS1-JS2 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 60, dwell_time_desc = 28}
-JS2-JS3 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 28, dwell_time_desc = 45}
-JS3-JS4 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
-JS4-JS5 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 28, dwell_time_desc = 28}
-JS5-JS6 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-JS6-JS7 = {duration_asc = 120, duration_desc = 120, edge_type = "bahar_east", dwell_time_asc = 28, dwell_time_desc = 45}
-JS7-JS8 = {duration_asc = 120, duration_desc = 120, edge_type = "bahar_south", dwell_time_asc = 45, dwell_time_desc = 45}
-JS7-JW1 = {duration_asc = 120, duration_desc = 120, edge_type = "bahar_west", dwell_time_asc = 45, dwell_time_desc = 28}
-JS8-JS9 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
-JS9-JS10 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-JS10-JS11 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-JS11-JS12 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-JW1-JW2 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-JW2-JW3 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-JW3-JW4 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-JW4-JW5 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+JE0-JE1 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 60, dwell_time_desc = 28}
+JE1-JE2 = {duration_asc = 80, duration_desc = 80, dwell_time_asc = 28, dwell_time_desc = 28}
+JE2-JE3 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 28, dwell_time_desc = 28}
+JE3-JE4 = {duration_asc = 80, duration_desc = 80, dwell_time_asc = 28, dwell_time_desc = 28}
+JE4-JE5 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 28, dwell_time_desc = 45}
+JE5-JE6 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 45, dwell_time_desc = 28}
+JE6-JE7 = {duration_asc = 80, duration_desc = 80, dwell_time_asc = 28, dwell_time_desc = 60}
+JS1-JS2 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 60, dwell_time_desc = 28}
+JS2-JS3 = {duration_asc = 140, duration_desc = 140, dwell_time_asc = 28, dwell_time_desc = 45}
+JS3-JS4 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 45, dwell_time_desc = 28}
+JS4-JS5 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 28, dwell_time_desc = 28}
+JS5-JS6 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 28, dwell_time_desc = 28}
+JS6-JS7 = {duration_asc = 80, duration_desc = 80, edge_type = "bahar_east", dwell_time_asc = 28, dwell_time_desc = 45}
+JS7-JS8 = {duration_asc = 95, duration_desc = 95, edge_type = "bahar_south", dwell_time_asc = 45, dwell_time_desc = 45}
+JS7-JW1 = {duration_asc = 75, duration_desc = 75, edge_type = "bahar_west", dwell_time_asc = 45, dwell_time_desc = 28}
+JS8-JS9 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 45, dwell_time_desc = 28}
+JS9-JS10 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 28, dwell_time_desc = 28}
+JS10-JS11 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 28, dwell_time_desc = 28}
+JS11-JS12 = {duration_asc = 75, duration_desc = 75, dwell_time_asc = 28, dwell_time_desc = 28}
+JW1-JW2 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 28, dwell_time_desc = 28}
+JW2-JW3 = {duration_asc = 80, duration_desc = 80, dwell_time_asc = 28, dwell_time_desc = 28}
+JW3-JW4 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 28, dwell_time_desc = 28}
+JW4-JW5 = {duration_asc = 80, duration_desc = 80, dwell_time_asc = 28, dwell_time_desc = 28}
 NE1-NE3 = {duration_asc = 170, duration_desc = 170, dwell_time_asc = 60, dwell_time_desc = 45}
 NE3-NE4 = {duration_asc = 75, duration_desc = 75, dwell_time_asc = 45, dwell_time_desc = 45}
 NE4-EW14 = {duration_asc = 660, duration_desc = 660, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
@@ -481,11 +481,11 @@ NE13-NE14 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell
 NE14-NE15 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 45, dwell_time_desc = 28}
 NE15-NE16 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 28, dwell_time_desc = 45}
 NE16-NE17 = {duration_asc = 130, duration_desc = 130, dwell_time_asc = 45, dwell_time_desc = 45}
-NE17-NE18 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 45, dwell_time_desc = 60}
+NE17-NE18 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 45, dwell_time_desc = 60}
 NS1-NS2 = {duration_asc = 225, duration_desc = 225, dwell_time_asc = 60, dwell_time_desc = 28}
 NS2-NS3 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 28}
 NS3-NS3A = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-NS3A-NS4 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
+NS3A-NS4 = {duration_asc = 135, duration_desc = 135, dwell_time_asc = 28, dwell_time_desc = 45}
 NS4-NS5 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
 NS5-NS7 = {duration_asc = 250, duration_desc = 250, dwell_time_asc = 28, dwell_time_desc = 28}
 NS7-NS8 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 28, dwell_time_desc = 28}
@@ -569,19 +569,19 @@ TE19-TE20 = {duration_asc = 65, duration_desc = 65, dwell_time_asc = 28, dwell_t
 TE20-DT17 = {duration_asc = 300, duration_desc = 300, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 TE20-TE22 = {duration_asc = 130, duration_desc = 130, dwell_time_asc = 45, dwell_time_desc = 28}
 TE22-TE22A = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
-TE22A-TE23 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+TE22A-TE23 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 28, dwell_time_desc = 28}
 TE23-TE24 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 28, dwell_time_desc = 28}
 TE24-TE25 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 28, dwell_time_desc = 28}
 TE25-TE26 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 28, dwell_time_desc = 28}
 TE26-TE27 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 28}
 TE27-TE28 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 28, dwell_time_desc = 28}
 TE28-TE29 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 28, dwell_time_desc = 28}
-TE29-TE30 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 28}
+TE29-TE30 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 28, dwell_time_desc = 28}
 TE30-TE31 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 45}
-TE31-TE32 = {duration_asc = 600, duration_desc = 600, dwell_time_asc = 45, dwell_time_desc = 45}
-TE32-TE33 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 45, dwell_time_desc = 28}
-TE33-TE34 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 28, dwell_time_desc = 45}
-TE34-TE35 = {duration_asc = 180, duration_desc = 180, dwell_time_asc = 45, dwell_time_desc = 60}
+TE31-TE32 = {duration_asc = 290, duration_desc = 290, dwell_time_asc = 45, dwell_time_desc = 45}
+TE32-TE33 = {duration_asc = 185, duration_desc = 185, dwell_time_asc = 45, dwell_time_desc = 28}
+TE33-TE34 = {duration_asc = 250, duration_desc = 250, dwell_time_asc = 28, dwell_time_desc = 45}
+TE34-TE35 = {duration_asc = 145, duration_desc = 145, dwell_time_asc = 45, dwell_time_desc = 60}
 
 [transfers]
 BP1-JS1 = {duration = 420}
@@ -601,19 +601,19 @@ CC29-NE1 = {duration = 420}
 CC33-NS27 = {duration = 600}
 CC33-TE20 = {duration = 600}
 CC34-DT16 = {duration = 360}
-CP1-CR5 = {duration = 720}
-CP1-EW1 = {duration = 720}
-CP3-PE4 = {duration = 720}
+CP1-CR5 = {duration = 480}
+CP1-EW1 = {duration = 480}
+CP3-PE4 = {duration = 480}
 CP4-NE17 = {duration = 420}
 CP4-PTC = {duration = 420}
 CR1-TE32 = {duration = 540}
-CR5-CP1 = {duration = 720}
-CR5-EW1 = {duration = 720}
+CR5-CP1 = {duration = 480}
+CR5-EW1 = {duration = 480}
 CR8-NE14 = {duration = 540}
 CR11-NS16 = {duration = 600}
 CR13-TE7 = {duration = 540}
 CR15-DT6 = {duration = 540}
-CR17-EW23 = {duration = 720}
+CR17-EW23 = {duration = 480}
 DT1-BP6 = {duration = 600}
 DT6-CR15 = {duration = 540}
 DT9-CC19 = {duration = 480}
@@ -628,8 +628,8 @@ DT26-CC10 = {duration = 360}
 DT32-EW2 = {duration = 720}
 DT35-TE34 = {duration = 480}
 DT37-TE31 = {duration = 540}
-EW1-CP1 = {duration = 720}
-EW1-CR5 = {duration = 720}
+EW1-CP1 = {duration = 480}
+EW1-CR5 = {duration = 480}
 EW2-DT32 = {duration = 720}
 EW4-TE35 = {duration = 420}
 EW8-CC9 = {duration = 480}
@@ -639,7 +639,7 @@ EW14-NS26 = {duration = 360}
 EW16-NE3 = {duration = 480}
 EW16-TE17 = {duration = 480}
 EW21-CC22 = {duration = 480}
-EW23-CR17 = {duration = 720}
+EW23-CR17 = {duration = 480}
 EW24-JE5 = {duration = 420}
 EW24-NS1 = {duration = 420}
 EW27-JS8 = {duration = 600}
@@ -677,7 +677,7 @@ NS25-EW13 = {duration = 360}
 NS26-EW14 = {duration = 360}
 NS27-CC33 = {duration = 600}
 NS27-TE20 = {duration = 600}
-PE4-CP3 = {duration = 720}
+PE4-CP3 = {duration = 480}
 PTC-CP4 = {duration = 420}
 PTC-NE17 = {duration = 420}
 STC-NE16 = {duration = 420}
