@@ -12,7 +12,7 @@
 
   <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/SOURCE_CODE_LICENSE-Apache--2.0-GREEN?style=for-the-badge" alt="Apache-2.0 license"/></a>
-  <a href="LICENSE-DATASET"><img src="https://img.shields.io/badge/DATASET_LICENSE-SODL--1.0%20AND%20ODbL--1.0-GREEN?style=for-the-badge" alt="SODL-1.0 and ODbL-1.0 License"/></a>
+  <a href="LICENSE-DATASET"><img src="https://img.shields.io/badge/DATASET_LICENSE-SODL--1.0-GREEN?style=for-the-badge" alt="SODL-1.0 License"/></a>
   </p>
 </div>
 
@@ -115,26 +115,22 @@ A Jupyter notebook for analysing the route planner output is available at [analy
 
 ## License
 
-Source code is under Apache-2.0. Most of the dataset is under the Singapore Open Data Licence version 1.0, while some of the coordinate
-data are under Open Data Commons Open Database License (ODbL).
+Source code is under Apache-2.0. Most of the datasets are under the Singapore Open Data Licence version 1.0.
 
 See [LICENSE](LICENSE) and [LICENSE-DATASET](LICENSE-DATASET).
 
 ## References
 
+- Train Spotters from YouTube
+  - [Link](TRAIN_SPOTTERS.md)
+- Measured interchange transfer times by a deleted user on Reddit
+  - [Reddit post](https://www.reddit.com/r/singapore/comments/10wkygf/mrt_map_with_transfer_timing)
+  - [Timetable](https://docs.google.com/spreadsheets/d/1e-Tuf6rHBFsgsuFN7XqbFL8ec_vdRjQw)
 - TransitLink
   - [MRT/LRT Journey Information](https://www.transitlink.com.sg/eservice/eguide/rail_idx.php)
 - SMRT
   - [SMRT Journey Planner](https://journey.smrt.com.sg)
 - SBS Transit
   - [Travel Time](https://www.sbstransit.com.sg/travel-time)
-- Thomson-East Coast Line (TEL) Dwell times by u/xavierang2 on Reddit
-  - [Reddit post](https://www.reddit.com/r/singapore/comments/z6i58u/some_observations_about_the_thomsoneast_coast)
-  - [Timetable](https://docs.google.com/document/d/1LO1lB0jptt8UJnlUYUd3KxYqSmKoyvIauf6DNYVlb5w)
-- Measured interchange transfer times by a deleted user on Reddit
-  - [Reddit post](https://www.reddit.com/r/singapore/comments/10wkygf/mrt_map_with_transfer_timing)
-  - [Timetable](https://docs.google.com/spreadsheets/d/1e-Tuf6rHBFsgsuFN7XqbFL8ec_vdRjQw)
 - Singapore Train Station Coordinates
   - [GitHub Repo](https://github.com/elliotwutingfeng/singapore_train_station_coordinates)
-- Train Spotters from YouTube
-  - [Link](TRAIN_SPOTTERS.md)

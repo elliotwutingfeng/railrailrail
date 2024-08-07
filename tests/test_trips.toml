@@ -199,18 +199,18 @@ nodes = ["TE22", "TE20", "CE2", "CE1", "CE0Z", "DT15"]
 edges = [[130, "", "", 28], [600, "", "", 0], [110, "", "", 60], [115, "", "", 45], [420, "", "", 0]]
 costs = [158, 600, 170, 160, 0]
 total_cost = 1088
-path_distance = 3823
-haversine_distance = 1762
-directions =["Start at TE22 Gardens by the Bay", "Board train towards terminus TE1 Woodlands North", "Alight at TE20 Marina Bay", "Transfer to CE2 Marina Bay", "Board train towards terminus CC6 Stadium", "Alight at CC4 Promenade", "Transfer to DT15 Promenade", "Total duration: 18 minutes 8 seconds", "Approximate path distance: 3.8 km, Haversine distance: 1.8 km, Circuity ratio: 2.2"]
+path_distance = 3822.5526304800915
+haversine_distance = 1762.0120177142949
+directions = ["Start at TE22 Gardens by the Bay", "Board train towards terminus TE1 Woodlands North", "Alight at TE20 Marina Bay", "Transfer to CE2 Marina Bay", "Board train towards terminus CC6 Stadium", "Alight at CC4 Promenade", "Transfer to DT15 Promenade", "Total duration: 18 minutes 8 seconds", "Approximate path distance: 3.8 km, Haversine distance: 1.8 km, Circuity ratio: 2.2"]
 
 [trip_92.output]
 nodes = ["DT4", "DT3", "DT2", "DT1", "DT", "NS6", "NS7"]
 edges = [[100, "", "", 28], [75, "", "", 28], [85, "", "", 28], [420, "", "", 45], [720, "", "", 0], [120, "", "", 45]]
 costs = [128, 103, 113, 465, 720, 165]
 total_cost = 1694
-path_distance = 8821.174930307048
+path_distance = 8967.541080648396
 haversine_distance = 7894.659781099744
-directions = ["Start at DT4 Hume", "Board train towards terminus DT Sungei Kadut", "Alight at DT Sungei Kadut", "Transfer to NS6 Sungei Kadut", "Board train towards terminus NS28 Marina South Pier", "Alight at NS7 Kranji", "Total duration: 28 minutes 14 seconds", "Approximate path distance: 8.8 km, Haversine distance: 7.9 km, Circuity ratio: 1.1"]
+directions = ["Start at DT4 Hume", "Board train towards terminus DT Sungei Kadut", "Alight at DT Sungei Kadut", "Transfer to NS6 Sungei Kadut", "Board train towards terminus NS28 Marina South Pier", "Alight at NS7 Kranji", "Total duration: 28 minutes 14 seconds", "Approximate path distance: 9.0 km, Haversine distance: 7.9 km, Circuity ratio: 1.1"]
 
 [trip_93.output]
 nodes = ["CG1", "CG", "EW4", "EW5"]
