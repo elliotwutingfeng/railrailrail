@@ -15,6 +15,7 @@ limitations under the License.
 """
 
 import collections
+import datetime
 
 import immutabledict
 
@@ -45,17 +46,23 @@ class StageMeta(type):
     * Woodlands Extension | Woodlands extension almost ready (The Straits Times, 4 October 1995, Page 3) | https://eresources.nlb.gov.sg/newspapers/digitised/article/straitstimes19951004-1.2.64.3.2
     """
 
-    __stages: immutabledict.immutabledict[str, tuple[SingaporeStation]] = (
-        immutabledict.immutabledict(
-            {
-                "phase_1_1": (
+    __stages: immutabledict.immutabledict[
+        str, tuple[tuple[SingaporeStation], str, datetime.datetime]
+    ] = immutabledict.immutabledict(
+        {
+            "phase_1_1": (
+                (
                     SingaporeStation("NS15", "Yio Chu Kang"),
                     SingaporeStation("NS16", "Ang Mo Kio"),
                     SingaporeStation("NS17", "Bishan"),
                     SingaporeStation("NS18", "Braddell"),
                     SingaporeStation("NS19", "Toa Payoh"),
-                ),  # 7 November 1987
-                "phase_1_2": (
+                ),
+                "Phase 1 1",
+                datetime.datetime.strptime("7 November 1987", "%d %B %Y"),
+            ),
+            "phase_1_2": (
+                (
                     SingaporeStation("EW15", "Tanjong Pagar"),
                     SingaporeStation("EW16", "Outram Park"),
                     SingaporeStation("NS20", "Novena"),
@@ -65,25 +72,41 @@ class StageMeta(type):
                     SingaporeStation("NS24", "Dhoby Ghaut"),
                     SingaporeStation("NS25", "City Hall"),
                     SingaporeStation("NS26", "Raffles Place"),
-                ),  # 12 December 1987
-                "phase_1a": (
+                ),
+                "Phase 1 2",
+                datetime.datetime.strptime("12 December 1987", "%d %B %Y"),
+            ),
+            "phase_1a": (
+                (
                     SingaporeStation("EW17", "Tiong Bahru"),
                     SingaporeStation("EW18", "Redhill"),
                     SingaporeStation("EW19", "Queenstown"),
                     SingaporeStation("EW20", "Commonwealth"),
                     SingaporeStation("EW21", "Buona Vista"),
                     SingaporeStation("EW23", "Clementi"),
-                ),  # 12 March 1988
-                "phase_2b_1": (
+                ),
+                "Phase 1A",
+                datetime.datetime.strptime("12 March 1988", "%d %B %Y"),
+            ),
+            "phase_2b_1": (
+                (
                     SingaporeStation("EW24", "Jurong East"),
                     SingaporeStation("EW25", "Chinese Garden"),
                     SingaporeStation("EW26", "Lakeside"),
-                ),  # 5 November 1988
-                "phase_2b_2": (
+                ),
+                "Phase 2B 1",
+                datetime.datetime.strptime("5 November 1988", "%d %B %Y"),
+            ),
+            "phase_2b_2": (
+                (
                     SingaporeStation("NS13", "Yishun"),
                     SingaporeStation("NS14", "Khatib"),
-                ),  # 20 December 1988
-                "phase_2a_1": (
+                ),
+                "Phase 2B 2",
+                datetime.datetime.strptime("20 December 1988", "%d %B %Y"),
+            ),
+            "phase_2a_1": (
+                (
                     SingaporeStation("EW4", "Tanah Merah"),
                     SingaporeStation("EW5", "Bedok"),
                     SingaporeStation("EW6", "Kembangan"),
@@ -93,31 +116,51 @@ class StageMeta(type):
                     SingaporeStation("EW10", "Kallang"),
                     SingaporeStation("EW11", "Lavender"),
                     SingaporeStation("EW12", "Bugis"),
-                    SingaporeStation("EW13", "City Hall"),  # EWL section.
-                    SingaporeStation("EW14", "Raffles Place"),  # EWL section.
+                    SingaporeStation("EW13", "City Hall"),  #   EWL section.
+                    SingaporeStation("EW14", "Raffles Place"),  #   EWL section.
                     SingaporeStation("NS27", "Marina Bay"),
-                ),  # 4 November 1989
-                "phase_2a_2": (
+                ),
+                "Phase 2A 1",
+                datetime.datetime.strptime("4 November 1989", "%d %B %Y"),
+            ),
+            "phase_2a_2": (
+                (
                     SingaporeStation("EW1", "Pasir Ris"),
                     SingaporeStation("EW2", "Tampines"),
                     SingaporeStation("EW3", "Simei"),
-                ),  # 16 December 1989
-                "phase_2b_3": (
+                ),
+                "Phase 2A 2",
+                datetime.datetime.strptime("16 December 1989", "%d %B %Y"),
+            ),
+            "phase_2b_3": (
+                (
                     SingaporeStation("NS1", "Jurong East"),
                     SingaporeStation("NS2", "Bukit Batok"),
                     SingaporeStation("NS3", "Bukit Gombak"),
                     SingaporeStation("NS4", "Choa Chu Kang"),
-                ),  # 10 March 1990
-                "phase_2b_4": (SingaporeStation("EW27", "Boon Lay"),),  # 6 July 1990
-                "woodlands_extension": (
+                ),
+                "Phase 2B 3",
+                datetime.datetime.strptime("10 March 1990", "%d %B %Y"),
+            ),
+            "phase_2b_4": (
+                (SingaporeStation("EW27", "Boon Lay"),),
+                "",
+                datetime.datetime.strptime("6 July 1990", "%d %B %Y"),
+            ),
+            "woodlands_extension": (
+                (
                     SingaporeStation("NS5", "Yew Tee"),
                     SingaporeStation("NS7", "Kranji"),
                     SingaporeStation("NS8", "Marsiling"),
                     SingaporeStation("NS9", "Woodlands"),
                     SingaporeStation("NS10", "Admiralty"),
                     SingaporeStation("NS11", "Sembawang"),
-                ),  # 10 February 1996
-                "bplrt": (
+                ),
+                "Phase 2B 4",
+                datetime.datetime.strptime("10 February 1996", "%d %B %Y"),
+            ),
+            "bplrt": (
+                (
                     SingaporeStation("BP1", "Choa Chu Kang"),
                     SingaporeStation("BP2", "South View"),
                     SingaporeStation("BP3", "Keat Hong"),
@@ -132,24 +175,42 @@ class StageMeta(type):
                     SingaporeStation("BP12", "Jelapang"),
                     SingaporeStation("BP13", "Senja"),
                     SingaporeStation("BP14", "Ten Mile Junction"),
-                ),  # 6 November 1999
-                "ewl_expo": (
+                ),
+                "Bukit Panjang LRT",
+                datetime.datetime.strptime("6 November 1999", "%d %B %Y"),
+            ),
+            "ewl_expo": (
+                (
                     SingaporeStation("CG", "Tanah Merah"),
                     SingaporeStation("CG1", "Expo"),
-                ),  # 10 January 2001
-                "dover": (SingaporeStation("EW22", "Dover"),),  # 18 October 2001
-                "ewl_changi_airport": (
-                    SingaporeStation("CG2", "Changi Airport"),
-                ),  # 8 February 2002
-                "sklrt_east_loop": (
+                ),
+                "East West Line Expo",
+                datetime.datetime.strptime("10 January 2001", "%d %B %Y"),
+            ),
+            "dover": (
+                (SingaporeStation("EW22", "Dover"),),
+                "Dover",
+                datetime.datetime.strptime("18 October 2001", "%d %B %Y"),
+            ),
+            "ewl_changi_airport": (
+                (SingaporeStation("CG2", "Changi Airport"),),
+                "East West Line Changi Airport",
+                datetime.datetime.strptime("8 February 2002", "%d %B %Y"),
+            ),
+            "sklrt_east_loop": (
+                (
                     SingaporeStation("STC", "Sengkang"),
                     SingaporeStation("SE1", "Compassvale"),
                     SingaporeStation("SE2", "Rumbia"),
                     SingaporeStation("SE3", "Bakau"),
                     SingaporeStation("SE4", "Kangkar"),
                     SingaporeStation("SE5", "Ranggung"),
-                ),  # 18 January 2003
-                "nel": (
+                ),
+                "Sengkang LRT East Loop",
+                datetime.datetime.strptime("18 January 2003", "%d %B %Y"),
+            ),
+            "nel": (
+                (
                     SingaporeStation("NE1", "HarbourFront"),
                     SingaporeStation("NE3", "Outram Park"),
                     SingaporeStation("NE4", "Chinatown"),
@@ -164,8 +225,12 @@ class StageMeta(type):
                     SingaporeStation("NE14", "Hougang"),
                     SingaporeStation("NE16", "Sengkang"),
                     SingaporeStation("NE17", "Punggol"),
-                ),  # 20 June 2003
-                "pglrt_east_loop_and_sklrt_west_loop": (
+                ),
+                "North East Line",
+                datetime.datetime.strptime("20 June 2003", "%d %B %Y"),
+            ),
+            "pglrt_east_loop_and_sklrt_west_loop": (
+                (
                     SingaporeStation("PTC", "Punggol"),
                     SingaporeStation("PE1", "Cove"),
                     SingaporeStation("PE2", "Meridian"),
@@ -177,22 +242,46 @@ class StageMeta(type):
                     SingaporeStation("SW6", "Layar"),
                     SingaporeStation("SW7", "Tongkang"),
                     SingaporeStation("SW8", "Renjong"),
-                ),  # 29 January 2005
-                "buangkok": (SingaporeStation("NE15", "Buangkok"),),  # 15 January 2006
-                "oasis": (SingaporeStation("PE6", "Oasis"),),  # 15 June 2007
-                "farmway": (SingaporeStation("SW2", "Farmway"),),  # 15 November 2007
-                "ewl_boon_lay_extension": (
+                ),
+                "Punggol LRT East Loop and Sengkang LRT West Loop",
+                datetime.datetime.strptime("29 January 2005", "%d %B %Y"),
+            ),
+            "buangkok": (
+                (SingaporeStation("NE15", "Buangkok"),),
+                "Buangkok",
+                datetime.datetime.strptime("15 January 2006", "%d %B %Y"),
+            ),
+            "oasis": (
+                (SingaporeStation("PE6", "Oasis"),),
+                "Oasis",
+                datetime.datetime.strptime("15 June 2007", "%d %B %Y"),
+            ),
+            "farmway": (
+                (SingaporeStation("SW2", "Farmway"),),
+                "Farmway",
+                datetime.datetime.strptime("15 November 2007", "%d %B %Y"),
+            ),
+            "ewl_boon_lay_extension": (
+                (
                     SingaporeStation("EW28", "Pioneer"),
                     SingaporeStation("EW29", "Joo Koon"),
-                ),  # 28 February 2009
-                "ccl_3": (
+                ),
+                "East West Line Boon Lay Extension",
+                datetime.datetime.strptime("28 February 2009", "%d %B %Y"),
+            ),
+            "ccl_3": (
+                (
                     SingaporeStation("CC12", "Bartley"),
                     SingaporeStation("CC13", "Serangoon"),
                     SingaporeStation("CC14", "Lorong Chuan"),
                     SingaporeStation("CC15", "Bishan"),
                     SingaporeStation("CC16", "Marymount"),
-                ),  # 28 May 2009
-                "ccl_1_and_ccl_2": (
+                ),
+                "Circle Line Stage 3",
+                datetime.datetime.strptime("28 May 2009", "%d %B %Y"),
+            ),
+            "ccl_1_and_ccl_2": (
+                (
                     SingaporeStation("CC1", "Dhoby Ghaut"),
                     SingaporeStation("CC2", "Bras Basah"),
                     SingaporeStation("CC3", "Esplanade"),
@@ -204,13 +293,25 @@ class StageMeta(type):
                     SingaporeStation("CC9", "Paya Lebar"),
                     SingaporeStation("CC10", "MacPherson"),
                     SingaporeStation("CC11", "Tai Seng"),
-                ),  # 17 April 2010
-                "ten_mile_junction_temporary_closure": (),  # 10 December 2010
-                "woodleigh_and_damai": (
+                ),
+                "Circle Line Stage 1 and Circle Line Stage 2",
+                datetime.datetime.strptime("17 April 2010", "%d %B %Y"),
+            ),
+            "ten_mile_junction_temporary_closure": (
+                (),
+                "Ten Mile Junction Temporary Closure",
+                datetime.datetime.strptime("10 December 2010", "%d %B %Y"),
+            ),
+            "woodleigh_and_damai": (
+                (
                     SingaporeStation("NE11", "Woodleigh"),
                     SingaporeStation("PE7", "Damai"),
-                ),  # 20 June 2011
-                "ccl_4_and_ccl_5": (
+                ),
+                "Woodleigh and Damai",
+                datetime.datetime.strptime("20 June 2011", "%d %B %Y"),
+            ),
+            "ccl_4_and_ccl_5": (
+                (
                     SingaporeStation("CC17", "Caldecott"),
                     SingaporeStation("CC19", "Botanic Gardens"),
                     SingaporeStation("CC20", "Farrer Road"),
@@ -223,36 +324,64 @@ class StageMeta(type):
                     SingaporeStation("CC27", "Labrador Park"),
                     SingaporeStation("CC28", "Telok Blangah"),
                     SingaporeStation("CC29", "HarbourFront"),
-                ),  # 8 October 2011
-                "ten_mile_junction_reopen": (
-                    SingaporeStation("BP14", "Ten Mile Junction"),
-                ),  # 30 December 2011
-                "ccl_e": (
-                    SingaporeStation("CE0X", "Stadium"),  # Pseudo station_code
-                    SingaporeStation("CE0Y", "Nicoll Highway"),  # Pseudo station_code
-                    SingaporeStation("CE0Z", "Promenade"),  # Pseudo station_code
+                ),
+                "Circle Line Stage 4 and Circle Line Stage 5",
+                datetime.datetime.strptime("8 October 2011", "%d %B %Y"),
+            ),
+            "ten_mile_junction_reopen": (
+                (SingaporeStation("BP14", "Ten Mile Junction"),),
+                "Ten Mile Junction Reopen",
+                datetime.datetime.strptime("30 December 2011", "%d %B %Y"),
+            ),
+            "ccl_e": (
+                (
+                    SingaporeStation("CE0X", "Stadium"),  #   Pseudo station_code
+                    SingaporeStation("CE0Y", "Nicoll Highway"),  #   Pseudo station_code
+                    SingaporeStation("CE0Z", "Promenade"),  #   Pseudo station_code
                     SingaporeStation("CE1", "Bayfront"),
                     SingaporeStation("CE2", "Marina Bay"),
-                ),  # 14 January 2012
-                "cheng_lim": (SingaporeStation("SW1", "Cheng Lim"),),  # 1 January 2013
-                "dtl_1": (
+                ),
+                "Circle Line Extension",
+                datetime.datetime.strptime("14 January 2012", "%d %B %Y"),
+            ),
+            "cheng_lim": (
+                (SingaporeStation("SW1", "Cheng Lim"),),
+                "Cheng Lim",
+                datetime.datetime.strptime("1 January 2013", "%d %B %Y"),
+            ),
+            "dtl_1": (
+                (
                     SingaporeStation("DT14", "Bugis"),
                     SingaporeStation("DT15", "Promenade"),
                     SingaporeStation("DT16", "Bayfront"),
                     SingaporeStation("DT17", "Downtown"),
                     SingaporeStation("DT18", "Telok Ayer"),
                     SingaporeStation("DT19", "Chinatown"),
-                ),  # 22 December 2013
-                "pglrt_west_loop": (
+                ),
+                "Downtown Line 1",
+                datetime.datetime.strptime("22 December 2013", "%d %B %Y"),
+            ),
+            "pglrt_west_loop": (
+                (
                     SingaporeStation("PW5", "Nibong"),
                     SingaporeStation("PW6", "Sumang"),
                     SingaporeStation("PW7", "Soo Teck"),
-                ),  # 29 June 2014
-                "marina_south_pier": (
-                    SingaporeStation("NS28", "Marina South Pier"),
-                ),  # 23 November 2014
-                "kupang": (SingaporeStation("SW3", "Kupang"),),  # 27 June 2015
-                "dtl_2": (
+                ),
+                "Punggol LRT West Loop",
+                datetime.datetime.strptime("29 June 2014", "%d %B %Y"),
+            ),
+            "marina_south_pier": (
+                (SingaporeStation("NS28", "Marina South Pier"),),
+                "Marina South Pier",
+                datetime.datetime.strptime("23 November 2014", "%d %B %Y"),
+            ),
+            "kupang": (
+                (SingaporeStation("SW3", "Kupang"),),
+                "Kupang",
+                datetime.datetime.strptime("27 June 2015", "%d %B %Y"),
+            ),
+            "dtl_2": (
+                (
                     SingaporeStation("DT1", "Bukit Panjang"),
                     SingaporeStation("DT2", "Cashew"),
                     SingaporeStation("DT3", "Hillview"),
@@ -265,19 +394,37 @@ class StageMeta(type):
                     SingaporeStation("DT11", "Newton"),
                     SingaporeStation("DT12", "Little India"),
                     SingaporeStation("DT13", "Rochor"),
-                ),  # 27 December 2015
-                "sam_kee": (SingaporeStation("PW1", "Sam Kee"),),  # 29 February 2016
-                "punggol_point": (
-                    SingaporeStation("PW3", "Punggol Point"),
-                ),  # 29 December 2016
-                "samudera": (SingaporeStation("PW4", "Samudera"),),  # 31 March 2017
-                "ewl_tuas_extension": (
+                ),
+                "Downtown Line 2",
+                datetime.datetime.strptime("27 December 2015", "%d %B %Y"),
+            ),
+            "sam_kee": (
+                (SingaporeStation("PW1", "Sam Kee"),),
+                "Sam Kee",
+                datetime.datetime.strptime("29 February 2016", "%d %B %Y"),
+            ),
+            "punggol_point": (
+                (SingaporeStation("PW3", "Punggol Point"),),
+                "Punggol Point",
+                datetime.datetime.strptime("29 December 2016", "%d %B %Y"),
+            ),
+            "samudera": (
+                (SingaporeStation("PW4", "Samudera"),),
+                "Samudera",
+                datetime.datetime.strptime("31 March 2017", "%d %B %Y"),
+            ),
+            "ewl_tuas_extension": (
+                (
                     SingaporeStation("EW30", "Gul Circle"),
                     SingaporeStation("EW31", "Tuas Crescent"),
                     SingaporeStation("EW32", "Tuas West Road"),
                     SingaporeStation("EW33", "Tuas Link"),
-                ),  # 18 June 2017
-                "dtl_3": (
+                ),
+                "East West Line Tuas Extension",
+                datetime.datetime.strptime("18 June 2017", "%d %B %Y"),
+            ),
+            "dtl_3": (
+                (
                     SingaporeStation("DT20", "Fort Canning"),
                     SingaporeStation("DT21", "Bencoolen"),
                     SingaporeStation("DT22", "Jalan Besar"),
@@ -294,23 +441,43 @@ class StageMeta(type):
                     SingaporeStation("DT33", "Tampines East"),
                     SingaporeStation("DT34", "Upper Changi"),
                     SingaporeStation("DT35", "Expo"),
-                ),  # 21 October 2017
-                "ten_mile_junction_permanent_closure": (),  # 13 January 2019
-                "canberra": (SingaporeStation("NS12", "Canberra"),),  # 2 November 2019
-                "tel_1": (
+                ),
+                "Downtown Line 3",
+                datetime.datetime.strptime("21 October 2017", "%d %B %Y"),
+            ),
+            "ten_mile_junction_permanent_closure": (
+                (),
+                "Ten Mile Junction Permanent Closure",
+                datetime.datetime.strptime("13 January 2019", "%d %B %Y"),
+            ),
+            "canberra": (
+                (SingaporeStation("NS12", "Canberra"),),
+                "Canberra",
+                datetime.datetime.strptime("2 November 2019", "%d %B %Y"),
+            ),
+            "tel_1": (
+                (
                     SingaporeStation("TE1", "Woodlands North"),
                     SingaporeStation("TE2", "Woodlands"),
                     SingaporeStation("TE3", "Woodlands South"),
-                ),  # 31 January 2020
-                "tel_2": (
+                ),
+                "Thomson-East Coast Line 1",
+                datetime.datetime.strptime("31 January 2020", "%d %B %Y"),
+            ),
+            "tel_2": (
+                (
                     SingaporeStation("TE4", "Springleaf"),
                     SingaporeStation("TE5", "Lentor"),
                     SingaporeStation("TE6", "Mayflower"),
                     SingaporeStation("TE7", "Bright Hill"),
                     SingaporeStation("TE8", "Upper Thomson"),
                     SingaporeStation("TE9", "Caldecott"),
-                ),  # 28 August 2021
-                "tel_3": (
+                ),
+                "Thomson-East Coast Line 2",
+                datetime.datetime.strptime("28 August 2021", "%d %B %Y"),
+            ),
+            "tel_3": (
+                (
                     SingaporeStation("TE11", "Stevens"),
                     SingaporeStation("TE12", "Napier"),
                     SingaporeStation("TE13", "Orchard Boulevard"),
@@ -322,8 +489,12 @@ class StageMeta(type):
                     SingaporeStation("TE19", "Shenton Way"),
                     SingaporeStation("TE20", "Marina Bay"),
                     SingaporeStation("TE22", "Gardens by the Bay"),
-                ),  # 13 November 2022
-                "tel_4": (
+                ),
+                "Thomson-East Coast Line 3",
+                datetime.datetime.strptime("13 November 2022", "%d %B %Y"),
+            ),
+            "tel_4": (
+                (
                     SingaporeStation("TE23", "Tanjong Rhu"),
                     SingaporeStation("TE24", "Katong Park"),
                     SingaporeStation("TE25", "Tanjong Katong"),
@@ -331,26 +502,48 @@ class StageMeta(type):
                     SingaporeStation("TE27", "Marine Terrace"),
                     SingaporeStation("TE28", "Siglap"),
                     SingaporeStation("TE29", "Bayshore"),
-                ),  # 23 June 2024
-                "teck_lee": (SingaporeStation("PW2", "Teck Lee"),),  # 15 August 2024
-                "punggol_coast_extension": (
-                    SingaporeStation("NE18", "Punggol Coast"),
-                ),  # 2024
-                "hume": (SingaporeStation("DT4", "Hume"),),  # 2025
-                "tel_5_and_dtl_3e": (
+                ),
+                "Thomson-East Coast Line 4",
+                datetime.datetime.strptime("23 June 2024", "%d %B %Y"),
+            ),
+            "teck_lee": (
+                (SingaporeStation("PW2", "Teck Lee"),),
+                "Teck Lee",
+                datetime.datetime.strptime("15 August 2024", "%d %B %Y"),
+            ),
+            "nel_extension": (
+                (SingaporeStation("NE18", "Punggol Coast"),),
+                "North East Line Extension",
+                datetime.datetime.strptime("31 December 2024", "%d %B %Y"),  # TBC
+            ),
+            "hume": (
+                (SingaporeStation("DT4", "Hume"),),
+                "Hume",
+                datetime.datetime.strptime("31 December 2025", "%d %B %Y"),  # TBC
+            ),
+            "tel_5_and_dtl_3e": (
+                (
                     SingaporeStation("TE30", "Bedok South"),
                     SingaporeStation("TE31", "Sungei Bedok"),
                     SingaporeStation("DT36", "Xilin"),
                     SingaporeStation("DT37", "Sungei Bedok"),
-                ),  # 2026
-                "ccl_6": (
+                ),
+                "Thomson-East Coast Line 5 and Downtown Line 3 Extension",
+                datetime.datetime.strptime("30 November 2026", "%d %B %Y"),  # TBC
+            ),
+            "ccl_6": (
+                (
                     SingaporeStation("CC30", "Keppel"),
                     SingaporeStation("CC31", "Cantonment"),
                     SingaporeStation("CC32", "Prince Edward Road"),
                     SingaporeStation("CC33", "Marina Bay"),
                     SingaporeStation("CC34", "Bayfront"),
-                ),  # 2026
-                "jrl_1": (
+                ),
+                "Circle Line 6",
+                datetime.datetime.strptime("31 December 2026", "%d %B %Y"),  # TBC
+            ),
+            "jrl_1": (
+                (
                     SingaporeStation("JS1", "Choa Chu Kang"),
                     SingaporeStation("JS2", "Choa Chu Kang West"),
                     SingaporeStation("JS3", "Tengah"),
@@ -361,12 +554,18 @@ class StageMeta(type):
                     SingaporeStation("JS8", "Boon Lay"),
                     SingaporeStation("JW1", "Gek Poh"),
                     SingaporeStation("JW2", "Tawas"),
-                ),  # 2027
-                "founders_memorial": (
-                    SingaporeStation("TE22A", "Founders' Memorial"),
-                ),  # 2028
-                "jrl_2": (
-                    SingaporeStation("JE0", "Tengah"),  # Pseudo station_code
+                ),
+                "Jurong Region Line 1",
+                datetime.datetime.strptime("31 December 2027", "%d %B %Y"),  # TBC
+            ),
+            "founders_memorial": (
+                (SingaporeStation("TE22A", "Founders' Memorial"),),
+                "Founders' Memorial",
+                datetime.datetime.strptime("30 November 2028", "%d %B %Y"),  # TBC
+            ),
+            "jrl_2": (
+                (
+                    SingaporeStation("JE0", "Tengah"),  #   Pseudo station_code
                     SingaporeStation("JE1", "Tengah Plantation"),
                     SingaporeStation("JE2", "Tengah Park"),
                     SingaporeStation("JE3", "Bukit Batok West"),
@@ -374,8 +573,12 @@ class StageMeta(type):
                     SingaporeStation("JE5", "Jurong East"),
                     SingaporeStation("JE6", "Jurong Town Hall"),
                     SingaporeStation("JE7", "Pandan Reservoir"),
-                ),  # 2028
-                "jrl_3": (
+                ),
+                "Jurong Region Line 2",
+                datetime.datetime.strptime("31 December 2028", "%d %B %Y"),  # TBC
+            ),
+            "jrl_3": (
+                (
                     SingaporeStation("JS9", "Enterprise"),
                     SingaporeStation("JS10", "Tukang"),
                     SingaporeStation("JS11", "Jurong Hill"),
@@ -383,8 +586,12 @@ class StageMeta(type):
                     SingaporeStation("JW3", "Nanyang Gateway"),
                     SingaporeStation("JW4", "Nanyang Crescent"),
                     SingaporeStation("JW5", "Peng Kang Hill"),
-                ),  # 2029
-                "crl_1": (
+                ),
+                "Jurong Region Line 3",
+                datetime.datetime.strptime("31 December 2029", "%d %B %Y"),  # TBC
+            ),
+            "crl_1": (
+                (
                     SingaporeStation("CR2", "Aviation Park"),
                     SingaporeStation("CR3", "Loyang"),
                     SingaporeStation("CR4", "Pasir Ris East"),
@@ -397,43 +604,65 @@ class StageMeta(type):
                     SingaporeStation("CR11", "Ang Mo Kio"),
                     SingaporeStation("CR12", "Teck Ghee"),
                     SingaporeStation("CR13", "Bright Hill"),
-                ),  # 2030
-                "crl_2": (
+                ),
+                "Cross Island Line 1",
+                datetime.datetime.strptime("31 December 2030", "%d %B %Y"),  # TBC
+            ),
+            "crl_2": (
+                (
                     SingaporeStation("CR14", "Turf City"),
                     SingaporeStation("CR15", "King Albert Park"),
                     SingaporeStation("CR16", "Maju"),
                     SingaporeStation("CR17", "Clementi"),
                     SingaporeStation("CR18", "West Coast"),
                     SingaporeStation("CR19", "Jurong Lake District"),
-                ),  # 2032
-                "crl_pe": (
+                ),
+                "Cross Island Line 2",
+                datetime.datetime.strptime("30 November 2032", "%d %B %Y"),  # TBC
+            ),
+            "crl_pe": (
+                (
                     SingaporeStation("CP1", "Pasir Ris"),
                     SingaporeStation("CP2", "Elias"),
                     SingaporeStation("CP3", "Riviera"),
                     SingaporeStation("CP4", "Punggol"),
-                ),  # 2032
-                "brickland": (SingaporeStation("NS3A", "Brickland"),),  # 2034
-                "cg_tel_c": (
+                ),
+                "Cross Island Line Punggol Extension",
+                datetime.datetime.strptime("31 December 2032", "%d %B %Y"),  # TBC
+            ),
+            "brickland": (
+                (SingaporeStation("NS3A", "Brickland"),),
+                "Brickland",
+                datetime.datetime.strptime("31 December 2034", "%d %B %Y"),  # TBC
+            ),
+            "cg_tel_c": (
+                (
                     SingaporeStation(
                         "CR1", "Changi Airport Terminal 5"
-                    ),  # Unknown official name
+                    ),  #   Unknown official name
                     SingaporeStation(
                         "TE32", "Changi Airport Terminal 5"
-                    ),  # Unknown official name
+                    ),  #   Unknown official name
                     SingaporeStation("TE33", "Changi Airport"),
                     SingaporeStation("TE34", "Expo"),
                     SingaporeStation("TE35", "Tanah Merah"),
-                ),  # 2040
-                "future": (
+                ),
+                "Changi Airport Branch - Thomson-East Coast Line Conversion",
+                datetime.datetime.strptime("31 December 2040", "%d %B %Y"),  # TBC
+            ),
+            "future": (
+                (
                     SingaporeStation("CC18", "Bukit Brown"),
                     SingaporeStation("DT", "Sungei Kadut"),
                     SingaporeStation("NS6", "Sungei Kadut"),
                     SingaporeStation("TE4A", "Tagore"),
                     SingaporeStation("TE10", "Mount Pleasant"),
                     SingaporeStation("TE21", "Marina South"),
-                ),  # Unknown opening dates
-            }
-        )
+                ),
+                "Future",
+                datetime.datetime.strptime("9999", "%Y"),  # TBC
+            ),  #   Unknown opening dates
+        }
     )
 
     __stages_defunct: immutabledict.immutabledict[str, tuple[SingaporeStation]] = (
@@ -463,7 +692,18 @@ class StageMeta(type):
 
     def __new__(cls, name, bases, dct):
         stations: set[SingaporeStation] = set()
-        for stage, stage_stations in cls.__stages.items():
+        if not set(cls.__stages_defunct).issubset(cls.__stages):
+            raise AttributeError(
+                "__stages must contain all stages in __stages_defunct."
+            )  # pragma: no cover
+        stages_descriptions: set[str] = set()
+        for stage, stage_details in cls.__stages.items():
+            stage_stations, stage_description, _ = stage_details
+            if stage_description in stages_descriptions:
+                raise AttributeError(
+                    f"Duplicate stage description not allowed: {stage_description}"
+                )  # pragma: no cover
+            stages_descriptions.add(stage_description)
             stage_stations_set = set(stage_stations)
             stage_defunct_stations_set = set(cls.__stages_defunct.get(stage, ()))
 
@@ -500,8 +740,14 @@ class StageMeta(type):
                         f"Not allowed: Multiple stations with station code {station_code} must not exist concurrently."
                     )  # pragma: no cover
 
-        cls.stages = cls.__stages
+        cls.stages = immutabledict.immutabledict(
+            {stage: stations for stage, (stations, _, _) in cls.__stages.items()}
+        )
         cls.stages_defunct = cls.__stages_defunct
+        cls.stages_info = {
+            stage: (stage_description, stage_timestamp)
+            for stage, (_, stage_description, stage_timestamp) in cls.__stages.items()
+        }
         return super().__new__(cls, name, bases, dct)
 
 
