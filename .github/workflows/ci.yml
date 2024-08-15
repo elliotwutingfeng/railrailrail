@@ -25,7 +25,7 @@ jobs:
 
             - uses: actions/setup-python@v5
               with:
-                python-version: '3.12' 
+                python-version: '3.12'
 
             - name: Install poetry
               run: |
@@ -33,7 +33,7 @@ jobs:
 
             - name: Check lock file consistency
               run: |
-                  poetry lock --check
+                  poetry --check lock
 
             - name: Install dependencies
               run: |
