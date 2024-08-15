@@ -24,6 +24,10 @@ jobs:
             - name: checkout repo content
               uses: actions/checkout@v4
 
+            - name: Install poetry
+              run: |
+                  pipx install poetry
+
             - name: Check lock file consistency
               run: |
                   poetry lock --check
