@@ -55,6 +55,8 @@ def get_stage_journeys(stage: str) -> tuple[str, dict, RailGraph]:
         path_distance, haversine_distance = rail_graph.path_and_haversine_distance(
             pathinfo
         )
+        path_distance = int(path_distance)
+        haversine_distance = int(haversine_distance)
         if path_distance and haversine_distance:
             journeys[(start, end)] = (
                 path_distance,
@@ -88,7 +90,7 @@ def make_stage_journeys_dataframe(stage: str, journeys: dict):
     df[["start", "end"]] = pd.DataFrame(df["start_and_end"].tolist(), index=df.index)
     df.drop(columns=["start_and_end"], inplace=True)
 
-    df["circuity"] = df["path_distance"] / df["haversine_distance"]
+    df["circuity"] = (df["path_distance"] / df["haversine_distance"]).round(2)
 
     df.sort_values(
         by=["circuity", "haversine_distance", "path_distance", "start", "end"],
@@ -113,6 +115,7 @@ def get_station_agg_stats(df: pd.DataFrame, rail_graph: RailGraph) -> pd.DataFra
                 "haversine_distance": agg_functions,
             }
         )
+        .round(2)
         .reset_index(0)
     )
     df.columns = ["_".join(col).strip("_") for col in df.columns.values]
@@ -123,10 +126,10 @@ def get_station_agg_stats(df: pd.DataFrame, rail_graph: RailGraph) -> pd.DataFra
     )
 
     df["latitude"] = df["start"].apply(
-        lambda start: rail_graph.station_coordinates[start].latitude
+        lambda start: round(rail_graph.station_coordinates[start].latitude, 5)
     )
     df["longitude"] = df["start"].apply(
-        lambda start: rail_graph.station_coordinates[start].longitude
+        lambda start: round(rail_graph.station_coordinates[start].longitude, 5)
     )
 
     return df
