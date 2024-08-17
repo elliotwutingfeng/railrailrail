@@ -12,7 +12,7 @@
 
   <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/SOURCE_CODE_LICENSE-Apache--2.0-GREEN?style=for-the-badge" alt="Apache-2.0 license"/></a>
-  <a href="LICENSE-DATASET"><img src="https://img.shields.io/badge/DATASET_LICENSE-SODL--1.0-GREEN?style=for-the-badge" alt="SODL-1.0 License"/></a>
+  <a href="LICENSE-DATASET.md"><img src="https://img.shields.io/badge/DATASET_LICENSE-SODL--1.0-GREEN?style=for-the-badge" alt="SODL-1.0 License"/></a>
   </p>
 </div>
 
