@@ -33,7 +33,7 @@ jobs:
 
             - name: Check lock file consistency
               run: |
-                  poetry --check lock
+                  poetry check --lock
 
             - name: Install dependencies
               run: |
