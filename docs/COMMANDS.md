@@ -8,8 +8,8 @@ Four arguments are required:
 
 - `--start`: Origin station code. Example: **NS14**.
 - `--end`: Destination station code. Example: **TE29**.
-- `--coordinates-file`: Path to CSV file with location coordinates for every station. Example: [station_coordinates.csv](config_examples/station_coordinates.csv)
-- `--network-file`: Path to network config file with rail network [graph](https://en.wikipedia.org/wiki/Graph_theory) node and edge details. Example: [network_tel_4.toml](config_examples/network_tel_4.toml)
+- `--coordinates-file`: Path to CSV file with location coordinates for every station. Example: [station_coordinates.csv](/config_examples/station_coordinates.csv)
+- `--network-file`: Path to network config file with rail network [graph](https://en.wikipedia.org/wiki/Graph_theory) node and edge details. Example: [network_tel_4.toml](/config_examples/network_tel_4.toml)
 
 ```bash
 poetry run python railrailrail/cli.py route --coordinates-file config/station_coordinates.csv --network-file config/network_tel_4.toml  --start NS14 --end TE29

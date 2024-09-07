@@ -9,11 +9,11 @@ There are 2 types of config files:
 
 ## Station Coordinates
 
-[station_coordinates.csv](config_examples/station_coordinates.csv) maps stations to their latitude and longitude in decimal degrees. This includes both future and defunct stations.
+[station_coordinates.csv](/config_examples/station_coordinates.csv) maps stations to their latitude and longitude in decimal degrees. This includes both future and defunct stations.
 
 ## Network Config
 
-Each network config file contains rail network [graph](https://en.wikipedia.org/wiki/Graph_theory) node and edge details for a given stage, stored in the [TOML](https://toml.io) format. For example, [network_nel.toml](config_examples/network_nel.toml) represents the rail network as of 20 June 2003, when the North East Line opened.
+Each network config file contains rail network [graph](https://en.wikipedia.org/wiki/Graph_theory) node and edge details for a given stage, stored in the [TOML](https://toml.io) format. For example, [network_nel.toml](/config_examples/network_nel.toml) represents the rail network as of 20 June 2003, when the North East Line opened.
 
 > [!TIP]
 > For `[segments]`, `[transfers]`, and `[conditional_transfers]`, you can change any of the time durations (`duration`, `dwell_time_asc`, `dwell_time_desc`) to values in the range 0-3600 seconds inclusive.
