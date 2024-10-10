@@ -514,7 +514,7 @@ class StageMeta(type):
             "nel_extension": (
                 (SingaporeStation("NE18", "Punggol Coast"),),
                 "North East Line Extension",
-                datetime.datetime.strptime("31 December 2024", "%d %B %Y"),  # TBC
+                datetime.datetime.strptime("10 December 2024", "%d %B %Y"),
             ),
             "hume": (
                 (SingaporeStation("DT4", "Hume"),),
