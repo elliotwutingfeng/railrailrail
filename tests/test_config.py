@@ -246,7 +246,11 @@ class TestConfig:
             "railrailrail.config.open", self.mocker.mock_open()
         )
         self.config_tel_3.update_network_config_file(config_file_path)
-        mocked_open.assert_has_calls(open_calls, any_order=False)
+        mock_calls_without_close = [
+            c for c in mocked_open.mock_calls if c != self.mocker.call().close()
+        ]  # self.mocker.call().close() may not always be called.
+        if mock_calls_without_close != open_calls:
+            pytest.fail(f"Expected: {open_calls} \nGot: {mock_calls_without_close}")
 
         open_calls = [
             self.mocker.call(config_file_path, "r"),
