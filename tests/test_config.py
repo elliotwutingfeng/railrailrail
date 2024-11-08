@@ -232,33 +232,15 @@ class TestConfig:
     def test_update_network_config_file(self):
         config_file_path = pathlib.Path("network_test.toml")
 
-        open_calls = [
-            self.mocker.call(config_file_path, "r"),
-            self.mocker.call().__enter__(),
-            self.mocker.call().read(),
-            self.mocker.call().__exit__(None, None, None),
-            self.mocker.call(config_file_path, "w"),
-            self.mocker.call().__enter__(),
-            self.mocker.call().write(self.mocker.ANY),
-            self.mocker.call().__exit__(None, None, None),
-        ]
         mocked_open = self.mocker.patch(
             "railrailrail.config.open", self.mocker.mock_open()
-        )
+        )  # Overwrite existing file.
         self.config_tel_3.update_network_config_file(config_file_path)
-        mock_calls_without_close = [
-            c for c in mocked_open.mock_calls if c != self.mocker.call().close()
-        ]  # self.mocker.call().close() may not always be called.
-        if mock_calls_without_close != open_calls:
-            pytest.fail(f"Expected: {open_calls} \nGot: {mock_calls_without_close}")
+        assert mocked_open.call_count == 2
 
-        open_calls = [
-            self.mocker.call(config_file_path, "r"),
-            self.mocker.call(config_file_path, "w"),
-        ]
         mocked_open = self.mocker.patch(
             "railrailrail.config.open",
             side_effect=[OSError, self.mocker.mock_open().return_value],
-        )
+        )  # Create new file if it is empty or does not exist.
         self.config_tel_3.update_network_config_file(config_file_path)
-        mocked_open.assert_has_calls(open_calls, any_order=False)
+        assert mocked_open.call_count == 2

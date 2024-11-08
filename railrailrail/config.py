@@ -23,6 +23,7 @@ from collections import OrderedDict, defaultdict
 
 import tomlkit
 
+from railrailrail.coordinates import Coordinates
 from railrailrail.network.conditional_transfers import ConditionalTransfers
 from railrailrail.network.dwell_time import DwellTime
 from railrailrail.network.stage import Stage
@@ -31,7 +32,6 @@ from railrailrail.network.terminal import Terminal
 from railrailrail.network.train_segments import TrainSegments
 from railrailrail.network.transfers import Transfers
 from railrailrail.network.walks import Walks
-from railrailrail.coordinates import Coordinates
 
 
 class Config:
@@ -509,7 +509,7 @@ class Config:
         updated: list[str] = tomlkit.dumps(network).splitlines()
         with open(path, "w") as f:
             if original is None or all(not line for line in original):
-                tomlkit.dump(network, f)
+                tomlkit.dump(network, f)  # File at path is empty or non-existent.
             else:
                 f.write(Config.compare_toml(original, updated))
 
