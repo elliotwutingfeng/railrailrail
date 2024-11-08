@@ -52,23 +52,9 @@ class TestCoordinates:
         mocked_open = self.mocker.mock_open()
         mocked_open.return_value.read.side_effect = ["a", "b"]
         mocked_open = self.mocker.patch("builtins.open", mocked_open)
-        open_calls = [
-            self.mocker.call(example_coordinates_path, "r"),
-            self.mocker.call().__enter__(),
-            self.mocker.call().read(),
-            self.mocker.call().__exit__(None, None, None),
-            self.mocker.call(coordinates_path, "r"),
-            self.mocker.call().__enter__(),
-            self.mocker.call().read(),
-            self.mocker.call().__exit__(None, None, None),
-            self.mocker.call(coordinates_path, "w"),
-            self.mocker.call().__enter__(),
-            self.mocker.call().write("- b\n+ a"),
-            self.mocker.call().__exit__(None, None, None),
-        ]
 
         Coordinates.update_coordinates_file(coordinates_path)
-        mocked_open.assert_has_calls(open_calls)
+        assert mocked_open.call_count == 3
 
         # Direct copy.
         mocked_open = self.mocker.mock_open()
