@@ -24,6 +24,11 @@
 
 These stages are tentative and subject to detailed planning.
 
+### Downtown Line 2 Extension
+
+- DE1
+- DE2/NS6 Sungei Kadut
+
 ### CRL Phase 3
 
 <https://www.straitstimes.com/singapore/possible-interchanges-in-king-albert-park-clementi-jurong-pier-gul-circle-for-cross-island>
