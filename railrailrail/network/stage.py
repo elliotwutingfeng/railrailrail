@@ -637,7 +637,9 @@ class StageMeta(type):
             ),
             "dtl_2e": (
                 (
-                    SingaporeStation("DE1", "Yew Tee East"),  #   Unknown official name
+                    SingaporeStation(
+                        "DE1", "Yew Tee Village"
+                    ),  #   Unknown official name
                     SingaporeStation("DE2", "Sungei Kadut"),
                     SingaporeStation("NS6", "Sungei Kadut"),
                 ),
