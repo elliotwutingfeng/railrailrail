@@ -102,7 +102,8 @@ class TrainSegmentsMeta(type):
         ("CR16-CR17", ("duration", 240)),  # future
         ("CR17-CR18", ("duration", 120)),  # future
         ("CR18-CR19", ("duration", 300)),  # future
-        ("DT-DT1", ("duration", 245)),  # future
+        ("DE1-DT1", ("duration", 120)),  # future
+        ("DE1-DE2", ("duration", 120)),  # future
         ("DT1-DT2", ("duration", 85)),
         ("DT2-DT3", ("duration", 75)),
         ("DT3-DT4", ("duration", 75)),  # future

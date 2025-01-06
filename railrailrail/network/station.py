@@ -81,7 +81,7 @@ class SingaporeStation(Station):
                 "JE0": "JS3",
             }
         )
-    )  # For temporary Circle Line Extension, and Jurong Region Line East Branch.
+    )  # For temporary Circle Line Extension and Jurong Region Line East Branch.
 
     match_expr: re.Pattern[str] = re.compile(
         r"^([A-Z]{2})([0-9]|[1-9][0-9]?)([A-Z]?)$", re.ASCII
