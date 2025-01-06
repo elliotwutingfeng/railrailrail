@@ -9,7 +9,7 @@
 The source of each station coordinate is indicated in the `source` field. Coordinates with `source` marked as `manual` are manual estimates.
 
 - Contains information from the Singapore Land Authority accessed via the OneMap API which is made available under the terms of the Singapore Open Data Licence version 1.0 <https://www.onemap.gov.sg/legal/opendatalicence.html>.
-- Contains information from the Urban Redevelopment Authority accessed via the data.gov.sg API which is made available under the terms of the Singapore Open Data Licence version 1.0 <https://beta.data.gov.sg/open-data-license>. Source: <https://beta.data.gov.sg/datasets/d_9a6bdc9d93bd041eb0cfbb6a8cb3248f/view>
+- Contains information from the Urban Redevelopment Authority accessed via the data.gov.sg API which is made available under the terms of the Singapore Open Data Licence version 1.0 <https://data.gov.sg/open-data-licence>. Source: <https://data.gov.sg/datasets/d_9a6bdc9d93bd041eb0cfbb6a8cb3248f/view>
 
 Some coordinates were derived from maps in LTA news releases.
 
@@ -22,15 +22,15 @@ Some coordinates were derived from maps in LTA news releases.
 
 ## Master Plan 2019 Planning Area Boundary Map
 
-Source: <https://beta.data.gov.sg/datasets/d_4765db0e87b9c86336792efe8a1f7a66/view>
+Source: <https://data.gov.sg/datasets/d_4765db0e87b9c86336792efe8a1f7a66/view>
 
-- Contains information from the Urban Redevelopment Authority accessed via the Data.gov.sg API which is made available under the terms of the Singapore Open Data Licence version 1.0 <https://beta.data.gov.sg/open-data-license>.
+- Contains information from the Urban Redevelopment Authority accessed via the Data.gov.sg API which is made available under the terms of the Singapore Open Data Licence version 1.0 <https://data.gov.sg/open-data-licence>.
 
 ## Resident Population by Planning Area/Subzone and Type of Dwelling
 
-Source: <https://beta.data.gov.sg/datasets/d_ae8f6f7e9184361a187dd335fa04b684/view>
+Source: <https://data.gov.sg/datasets/d_ae8f6f7e9184361a187dd335fa04b684/view>
 
-- Contains information from the Singapore Department of Statistics accessed via the Data.gov.sg API which is made available under the terms of the Singapore Open Data Licence version 1.0 <https://beta.data.gov.sg/open-data-license>.
+- Contains information from the Singapore Department of Statistics accessed via the Data.gov.sg API which is made available under the terms of the Singapore Open Data Licence version 1.0 <https://data.gov.sg/open-data-licence>.
 
 ## Travel duration
 
