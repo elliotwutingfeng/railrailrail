@@ -1,24 +1,24 @@
-[tool.poetry]
-name = "railrailrail"
-version = "0.0.1"
+[project]
+authors = [{name = "Wu Tingfeng", email = "wutingfeng@outlook.com"}]
+requires-python = ">=3.12"
+dependencies = [
+  "dijkstar>=2.6.0",
+  "geopandas>=1.0.1",
+  "immutabledict>=4.2.1",
+  "ipykernel>=6.29.5",
+  "nbformat>=5.10.4",
+  "plotly>=5.24.1",
+  "psutil>=6.1.1",
+  "requests>=2.32.3",
+  "statsmodels>=0.14.4",
+  "tomlkit>=0.13.2",
+  "xlrd>=2.0.1",
+]
 description = "Route planner for the Singapore MRT/LRT rail network."
-authors = ["Wu Tingfeng <wutingfeng@outlook.com>"]
 license = "Apache-2.0"
+name = "railrailrail"
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.12"
-dijkstar = "^2.6.0"
-geopandas = "^1.0.1"
-immutabledict = "^4.2.1"
-ipykernel = "^6.29.5"
-nbformat = "^5.10.4"
-plotly = "^5.24.1"
-psutil = "^6.1.1"
-requests = "^2.32.3"
-statsmodels = "^0.14.4"
-tomlkit = "^0.13.2"
-xlrd = "^2.0.1"
+version = "0.0.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.8.6"
@@ -28,5 +28,5 @@ pytest-mock = "^3.14.0"
 pytest-xdist = "^3.6.1"
 
 [build-system]
-requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
