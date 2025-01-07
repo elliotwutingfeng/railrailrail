@@ -13,6 +13,7 @@ dependencies = [
   "statsmodels>=0.14.4",
   "tomlkit>=0.13.2",
   "xlrd>=2.0.1",
+  "jupyter>=1.1.1",
 ]
 description = "Route planner for the Singapore MRT/LRT rail network."
 license = "Apache-2.0"
