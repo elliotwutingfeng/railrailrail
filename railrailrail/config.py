@@ -150,6 +150,17 @@ class Config:
                 "duration_desc": duration,
             }  # Assume duration for both directions is the same.
 
+        if "DE1" in self.station_code_to_station:
+            # Special case: Downtown Line 2 Extension.
+            station_code, next_station_code = "DE1", "DT1"
+            duration = TrainSegments.train_segments[
+                f"{station_code}-{next_station_code}"
+            ]["duration"]
+            adjacency_matrix[station_code][next_station_code] = {
+                "duration_asc": duration,
+                "duration_desc": duration,
+            }  # Assume duration for both directions is the same.
+
         # Add dwell time for each train segment.
         terminal_station_codes: set[str] = Terminal.get_terminals(
             self.non_linear_line_terminals, adjacency_matrix
@@ -358,6 +369,23 @@ class Config:
             }  # Highest EW and Lowest NS
             non_linear_line_terminals["EW"] = terminals.copy()
             non_linear_line_terminals["NS"] = terminals.copy()
+
+        if (
+            "DE1" in self.station_code_to_station
+        ):  # Special case: Downtown Line 2 Extension.
+            terminals = {
+                sorted(
+                    self._stations_by_line_code["DE"],
+                    key=SingaporeStation.sort_key,
+                )[-1].station_code,
+                sorted(
+                    self._stations_by_line_code["DT"],
+                    key=SingaporeStation.sort_key,
+                )[-1].station_code,
+            }  # Highest DE and Highest DT
+            non_linear_line_terminals["DE"] = terminals.copy()
+            non_linear_line_terminals["DT"] = terminals.copy()
+
         return non_linear_line_terminals
 
     def _generate_station_code_pseudonyms(self) -> dict[str, str]:

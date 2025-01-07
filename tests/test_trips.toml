@@ -204,13 +204,13 @@ haversine_distance = 1762.0120177142949
 directions = ["Start at TE22 Gardens by the Bay", "Board train towards terminus TE1 Woodlands North", "Alight at TE20 Marina Bay", "Transfer to CE2 Marina Bay", "Board train towards terminus CC6 Stadium", "Alight at CC4 Promenade", "Transfer to DT15 Promenade", "Total duration: 18 minutes 8 seconds", "Approximate path distance: 3.8 km, Haversine distance: 1.8 km, Circuity ratio: 2.2"]
 
 [trip_92.output]
-nodes = ["DT4", "DT3", "DT2", "DT1", "DT", "NS6", "NS7"]
-edges = [[75, "", "", 28], [75, "", "", 28], [85, "", "", 28], [245, "", "", 45], [480, "", "", 0], [155, "", "", 45]]
-costs = [103, 103, 113, 290, 480, 200]
-total_cost = 1289
+nodes = ["DT4", "DT3", "DT2", "DT1", "DE1", "DE2", "NS6", "NS7"]
+edges = [[75, "", "", 28], [75, "", "", 28], [85, "", "", 28], [120, "", "", 45], [120, "", "", 28], [480, "", "", 0], [155, "", "", 45]]
+costs = [103, 103, 113, 165, 148, 480, 200]
+total_cost = 1312
 path_distance = 8967.541080648396
 haversine_distance = 7894.659781099744
-directions = ["Start at DT4 Hume", "Board train towards terminus DT Sungei Kadut", "Alight at DT Sungei Kadut", "Transfer to NS6 Sungei Kadut", "Board train towards terminus NS28 Marina South Pier", "Alight at NS7 Kranji", "Total duration: 21 minutes 29 seconds", "Approximate path distance: 9.0 km, Haversine distance: 7.9 km, Circuity ratio: 1.1"]
+directions = ["Start at DT4 Hume", "Board train in direction of DT3 Hillview", "Alight at DE2 Sungei Kadut", "Transfer to NS6 Sungei Kadut", "Board train towards terminus NS28 Marina South Pier", "Alight at NS7 Kranji", "Total duration: 21 minutes 52 seconds", "Approximate path distance: 9.0 km, Haversine distance: 7.9 km, Circuity ratio: 1.1"]
 
 [trip_93.output]
 nodes = ["CG1", "CG", "EW4", "EW5"]
@@ -273,4 +273,4 @@ costs = [278, 190, 420, 170, 168, 113, 113, 140, 128, 113, 113, 540, 115, 83, 15
 total_cost = 5096
 path_distance = 33731.126412441256
 haversine_distance = 24336.62840960097
-directions = ["Start at TE33 Changi Airport", "Board train towards terminus TE35 Tanah Merah", "Alight at TE35 Tanah Merah", "Transfer to EW4 Tanah Merah", "Board train towards terminus EW33 Tuas Link", "Alight at EW12 Bugis", "Transfer to DT14 Bugis", "Board train towards terminus DT1 Bukit Panjang", "Alight at DT1 Bukit Panjang", "Transfer to BP6 Bukit Panjang", "Board train in direction of BP13 Senja", "Alight at BP10 Fajar", "Total duration: 84 minutes 56 seconds", "Approximate path distance: 33.7 km, Haversine distance: 24.3 km, Circuity ratio: 1.4"]
+directions = ["Start at TE33 Changi Airport", "Board train towards terminus TE35 Tanah Merah", "Alight at TE35 Tanah Merah", "Transfer to EW4 Tanah Merah", "Board train towards terminus EW33 Tuas Link", "Alight at EW12 Bugis", "Transfer to DT14 Bugis", "Board train in direction of DT13 Rochor", "Alight at DT1 Bukit Panjang", "Transfer to BP6 Bukit Panjang", "Board train in direction of BP13 Senja", "Alight at BP10 Fajar", "Total duration: 84 minutes 56 seconds", "Approximate path distance: 33.7 km, Haversine distance: 24.3 km, Circuity ratio: 1.4"]

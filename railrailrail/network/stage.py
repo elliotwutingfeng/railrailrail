@@ -635,6 +635,17 @@ class StageMeta(type):
                 "Brickland",
                 datetime.datetime.strptime("31 December 2034", "%d %B %Y"),  # TBC
             ),
+            "dtl_2e": (
+                (
+                    SingaporeStation(
+                        "DE1", "Yew Tee Village"
+                    ),  #   Unknown official name
+                    SingaporeStation("DE2", "Sungei Kadut"),
+                    SingaporeStation("NS6", "Sungei Kadut"),
+                ),
+                "Downtown Line 2 Extension",
+                datetime.datetime.strptime("31 December 2035", "%d %B %Y"),  # TBC
+            ),
             "cg_tel_c": (
                 (
                     SingaporeStation(
@@ -653,8 +664,6 @@ class StageMeta(type):
             "future": (
                 (
                     SingaporeStation("CC18", "Bukit Brown"),
-                    SingaporeStation("DT", "Sungei Kadut"),
-                    SingaporeStation("NS6", "Sungei Kadut"),
                     SingaporeStation("TE4A", "Tagore"),
                     SingaporeStation("TE10", "Mount Pleasant"),
                     SingaporeStation("TE21", "Marina South"),

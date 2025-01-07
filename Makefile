@@ -20,12 +20,12 @@ ruff_format_check:
 	poetry run ruff format --check
 
 install:
-	poetry lock --no-update
-	poetry install
+	poetry lock
+	poetry install --with dev
 
 update:
-	poetry lock
-	poetry install
+	poetry lock --regenerate
+	poetry install --with dev
 
 test: ruff_format_check ruff_check
 	poetry run pytest -vv --cov=./ --cov-report html -n auto
