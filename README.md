@@ -23,7 +23,7 @@ railrailrail finds fastest routes between any 2 stations on the Singapore MRT/LR
 - Preset configurations for all known stages of the MRT/LRT network, in the [TOML](https://toml.io) file format.
 - Customize every station-to-station travel time, interchange transfer time, and station dwell time, by editing the TOML config file directly.
 - Optionally enable walking routes between nearby stations.
-- Find the circuity ratio of a fastest route. The circuity ratio is the total distance travelled divided by the great-circle distance between origin station and destination station. Smaller circuity ratio implies a more direct and efficient route.
+- Find the circuity ratio of a fastest route. The circuity ratio is the total distance travelled divided by the [great-circle (haversine) distance](https://en.wikipedia.org/wiki/Great-circle_distance) between origin station and destination station. Smaller circuity ratio implies a more direct and efficient route.
 
 ## Requirements
 

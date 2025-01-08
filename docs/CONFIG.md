@@ -93,7 +93,7 @@ CC3-CC4 = {duration_asc = 180, duration_desc = 180, edge_type = "promenade_west"
 ### Transfers
 
 This section defines interchange transfers and their transfer details. An interchange transfer is a connection between
-2 stations with the same name, but different station codes. Transfer details only contains the duration in seconds.
+2 stations with the same name, but different station codes. Transfer details only include the duration in seconds.
 
 Unlike segments, transfers in both directions must be listed separately (`BP1-NS4` and `NS4-BP1`).
 

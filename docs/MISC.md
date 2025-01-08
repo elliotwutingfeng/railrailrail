@@ -12,9 +12,9 @@
 - The preset travel duration estimates are manually recorded in fair weather conditions.
 - Travel durations for defunct segments and future segments are estimates based on their rail path length.
 - Train speeds were different in the past, and are expected to change in the future.
-- Real travel duration can be affected by bad weather, traffic congestion, ongoing construction works, or train serivce disruption.
+- Real travel duration can be affected by bad weather, traffic congestion, ongoing construction works, or train service disruption.
 - A trip begins when you board the train at the origin and ends when you alight at your destination. So when calculating the fastest route, any interchange transfer time before and after the trip is excluded (i.e. NS1 -> EW24 -> EW21 -> CC22 will be treated as the same as EW24 -> EW21).
-- Dwell time at the end of the journey is also excluded; once you have reached your destination, you are not waiting for the train to depart anymore.
+- Dwell time at the end of the journey is also excluded; once you have reached your destination, you no longer care how long the train takes to depart.
 
 ### Path distance
 
