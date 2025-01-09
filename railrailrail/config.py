@@ -510,7 +510,7 @@ class Config:
                     modified_delta.append("")
                 else:
                     modified_delta.append(
-                        f"{line.removeprefix("+ ").rstrip("\n")}{' # MODIFIED' if modified else ' # NEW'}"
+                        f"{line.removeprefix('+ ').rstrip('\n')}{' # MODIFIED' if modified else ' # NEW'}"
                     )
                 modified = False
             elif line.startswith("? "):

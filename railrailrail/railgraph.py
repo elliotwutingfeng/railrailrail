@@ -464,9 +464,9 @@ class RailGraph:
         )
         path_distance, haversine_distance = self.path_and_haversine_distance(pathinfo)
         steps.append(
-            f"Approximate path distance: {path_distance/ 1000 :.1f} km, "
-            f"Haversine distance: {haversine_distance / 1000 :.1f} km, "
-            f"Circuity ratio: {(path_distance / haversine_distance ) if haversine_distance > 0 else 1 :.1f}"
+            f"Approximate path distance: {path_distance / 1000:.1f} km, "
+            f"Haversine distance: {haversine_distance / 1000:.1f} km, "
+            f"Circuity ratio: {(path_distance / haversine_distance) if haversine_distance > 0 else 1:.1f}"
         )
         return steps
 

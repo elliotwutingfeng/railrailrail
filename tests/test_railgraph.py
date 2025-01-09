@@ -39,7 +39,7 @@ class TestRailGraph:
             test_network_path = (
                 parent_path.parent
                 / "config_examples"
-                / f"network_{self.trips[trip]["input"]["network"]}.toml"
+                / f"network_{self.trips[trip]['input']['network']}.toml"
             )
             self.trips[trip]["rail_graph"] = RailGraph.from_file(
                 test_network_path, test_coordinates_path
@@ -220,21 +220,21 @@ class TestRailGraph:
             expected_pathinfo = trip_details["pathinfo"]
 
             actual_pathinfo = rail_graph.find_shortest_path(start, end, walk)
-            assert (
-                expected_pathinfo.nodes == actual_pathinfo.nodes
-            ), f"{start}-{end} | Expected {expected_pathinfo.nodes}. Got {actual_pathinfo.nodes}."
+            assert expected_pathinfo.nodes == actual_pathinfo.nodes, (
+                f"{start}-{end} | Expected {expected_pathinfo.nodes}. Got {actual_pathinfo.nodes}."
+            )
 
-            assert (
-                expected_pathinfo.edges == actual_pathinfo.edges
-            ), f"{start}-{end} | Expected {expected_pathinfo.edges}. Got {actual_pathinfo.edges}."
+            assert expected_pathinfo.edges == actual_pathinfo.edges, (
+                f"{start}-{end} | Expected {expected_pathinfo.edges}. Got {actual_pathinfo.edges}."
+            )
 
-            assert (
-                expected_pathinfo.costs == actual_pathinfo.costs
-            ), f"{start}-{end} | Expected {expected_pathinfo.costs}. Got {actual_pathinfo.costs}."
+            assert expected_pathinfo.costs == actual_pathinfo.costs, (
+                f"{start}-{end} | Expected {expected_pathinfo.costs}. Got {actual_pathinfo.costs}."
+            )
 
-            assert (
-                expected_pathinfo.total_cost == actual_pathinfo.total_cost
-            ), f"{start}-{end} | Expected {expected_pathinfo.total_cost}. Got {actual_pathinfo.total_cost}."
+            assert expected_pathinfo.total_cost == actual_pathinfo.total_cost, (
+                f"{start}-{end} | Expected {expected_pathinfo.total_cost}. Got {actual_pathinfo.total_cost}."
+            )
 
             with pytest.raises(ValueError):
                 rail_graph.find_shortest_path("AA1", "BB2")
@@ -258,9 +258,9 @@ class TestRailGraph:
             rail_graph = trip_details["rail_graph"]
 
             actual_directions = rail_graph.make_directions(trip_details["pathinfo"])
-            assert (
-                trip_details["output"]["directions"] == actual_directions
-            ), f"{start}-{end} | Wrong directions."
+            assert trip_details["output"]["directions"] == actual_directions, (
+                f"{start}-{end} | Wrong directions."
+            )
 
             # At least 2 stations needed for journey.
             with pytest.raises(ValueError):
