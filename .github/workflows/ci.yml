@@ -39,14 +39,6 @@ jobs:
               run: |
                   make install
 
-            - name: Ruff format check
-              run: |
-                  make ruff_format_check
-
-            - name: Ruff lint check
-              run: |
-                  make ruff_check
-
             - name: Test
               run: |
-                  poetry run pytest -vv --cov=./ --cov-report html
+                  make test
