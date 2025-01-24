@@ -519,7 +519,7 @@ class StageMeta(type):
             "hume": (
                 (SingaporeStation("DT4", "Hume"),),
                 "Hume",
-                datetime.datetime.strptime("31 December 2025", "%d %B %Y"),  # TBC
+                datetime.datetime.strptime("28 February 2025", "%d %B %Y"),
             ),
             "tel_5_and_dtl_3e": (
                 (
