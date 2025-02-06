@@ -51,8 +51,8 @@ A segment must have the following fields:
 
 - `duration_asc`: Travel time in seconds when moving from smaller station code
 to larger station code.
-- `duration_desc`: Travel time in seconds when moving from smaller station code
-to larger station code.
+- `duration_desc`: Travel time in seconds when moving from larger station code
+to smaller station code.
 - `dwell_time_asc`: Dwell time in seconds when moving from smaller station code
 to larger station code.
 - `dwell_time_desc`: Dwell time in seconds when moving from larger station code
@@ -135,6 +135,9 @@ where the terminal stations are tricky to determine lexicographically.
 
 This includes looped lines like the Jurong Region Line and all LRT Lines, and the North South Line
 before year 1989, where some East West Line stations used to be part of the North South Line.
+
+The Downtown Line 2 Extension also requires this workaround as it uses the line code DE while the rest
+of the Downtown Line uses the line code DT.
 
 The `1` is a placeholder for the TOML key-value format; it has no significant meaning.
 
