@@ -25,8 +25,9 @@ from railrailrail.network.station import SingaporeStation
 class Terminal:
     """For identifying terminal stations.
 
-    Some lines are non-linear, which include the looped lines in `looped_line_code_to_terminals`, and
-    the combined NSL-EWL line before year 1989.
+    Some lines are non-linear, which include the looped lines in `looped_line_code_to_terminals`,
+    the combined NSL-EWL line before year 1989, and the Downtown Line 2 Extension (est. 2035)
+    which uses the line code DE while the rest of the Downtown Line uses the line code DT.
     """
 
     looped_line_code_to_terminals: immutabledict.immutabledict[str, set[str]] = (

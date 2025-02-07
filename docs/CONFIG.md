@@ -59,7 +59,7 @@ to larger station code.
 to smaller station code.
 
 > [!NOTE]
-> Dwell time is time spent waiting at station for passengers before train departure.
+> Dwell time is time spent by a train waiting at a station for passengers before departure.
 >
 > Station codes are compared by splitting them into their line code, station number, and station number suffix (if any), and
 > comparing their fields in that order.
@@ -136,7 +136,7 @@ where the terminal stations are tricky to determine lexicographically.
 This includes looped lines like the Jurong Region Line and all LRT Lines, and the North South Line
 before year 1989, where some East West Line stations used to be part of the North South Line.
 
-The Downtown Line 2 Extension also requires this workaround as it uses the line code DE while the rest
+The Downtown Line 2 Extension (est. 2035) also requires this workaround as it uses the line code DE while the rest
 of the Downtown Line uses the line code DT.
 
 The `1` is a placeholder for the TOML key-value format; it has no significant meaning.

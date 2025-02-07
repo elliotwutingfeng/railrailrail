@@ -21,8 +21,12 @@ class TrainSegmentsMeta(type):
     """Duration presets for all train segments, which includes future train segments (e.g. NS3 -> NS3A),
     defunct train segments, and soon-to-be-defunct train segments (e.g. BP6 -> BP14, NS3 -> NS4).
 
-    A train segment is an edge between any 2 adjacent stations traversed via train; not a transfer and not a walking route.
-    The two stations almost always have the same line code, except for "EW15-NS26" before EWL opening.
+    A train segment is an edge between any 2 adjacent stations
+    traversed via train; not a transfer and not a walking route.
+
+    The two stations almost always have the same line code. Notable exceptions include the "EW15-NS26"
+    before EWL opening, "DE1-DT1" when the Downtown Line 2 Extension opens, and the
+    central interchange stations ("STC"/"PTC") of the Sengkang/Punggol LRT lines.
     """
 
     __train_segments: tuple = (

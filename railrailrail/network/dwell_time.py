@@ -20,6 +20,8 @@ from railrailrail.network.station import SingaporeStation
 class DwellTime:
     """Standard dwell time presets.
 
+    Dwell time is time spent by a train waiting at a station for passengers before departure.
+
     Reference: https://www.railengineer.co.uk/an-international-metro-review
     """
 
