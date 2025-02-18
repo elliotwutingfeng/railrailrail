@@ -108,8 +108,7 @@ class Config:
         """
         # Uni-directionally link up adjacent stations on same line based on the fact that most adjacent stations
         # are arranged by station code in sequential order (same line code and in ascending station number order).
-        # Some stations in non-sequential order will not be linked up, like BP6-BP13, which all happen to be conditional
-        # transfer segments.
+        # Some stations in non-sequential order will not be linked up, like BP6-BP13 and DE1-DT1.
         adjacency_matrix: defaultdict[str, OrderedDict[str, dict]] = defaultdict(
             OrderedDict
         )
