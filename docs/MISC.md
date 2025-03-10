@@ -5,7 +5,7 @@
 ### Station code
 
 - For convenience, instead of the old scheme (e.g. W2, E11), networks before 2001 will use the contemporary station code scheme (e.g. EW14, NS11).
-- Likewise, the Changi Airport Branch stations (before TEL conversion) will only use the "CG" line code instead of their old "EW" line codes.
+- Likewise, the Changi Airport Branch stations (before TELe conversion) will only use the "CG" line code instead of their old "EW" line codes.
 
 ### Travel duration
 
@@ -34,6 +34,26 @@ These stages are tentative and subject to detailed planning.
 - CR23
 - CR24/EW30 Gul Circle
 
-### Changi Airport Branch Conversion
+### Thomson-East Coast Line Extension (TELe)
+
+<https://www.lta.gov.sg/content/ltagov/en/newsroom/2025/3/news-releases/expanding_our_rail_network_and_strengthening_rail_reliability.html>
 
 - The official name and location coordinates for TE32 Changi Airport Terminal 5 has not been released.
+
+### West Coast Extension
+
+<https://www.lta.gov.sg/content/ltagov/en/newsroom/2025/3/news-releases/expanding_our_rail_network_and_strengthening_rail_reliability.html>
+
+Extends the Jurong Region Line to connect with the Circle Line and Cross Island Line.
+
+### Seletar Line
+
+<https://www.lta.gov.sg/content/ltagov/en/newsroom/2025/3/news-releases/expanding_our_rail_network_and_strengthening_rail_reliability.html>
+
+Serves areas such as Woodlands, Sembawang, Sengkang West, Serangoon North, Whampoa, Kallang, and the Greater Southern Waterfront.
+
+### Tengah Line
+
+<https://www.lta.gov.sg/content/ltagov/en/newsroom/2025/3/news-releases/expanding_our_rail_network_and_strengthening_rail_reliability.html>
+
+Serves areas such as Tengah, Bukit Batok, Queensway, and Bukit Merah.
