@@ -85,8 +85,6 @@ DT32 = "Tampines"
 DT33 = "Tampines East"
 DT34 = "Upper Changi"
 DT35 = "Expo"
-DT36 = "Xilin"
-DT37 = "Sungei Bedok"
 EW1 = "Pasir Ris"
 EW2 = "Tampines"
 EW3 = "Simei"
@@ -220,8 +218,6 @@ TE26 = "Marine Parade"
 TE27 = "Marine Terrace"
 TE28 = "Siglap"
 TE29 = "Bayshore"
-TE30 = "Bedok South"
-TE31 = "Sungei Bedok"
 
 [segments]
 BP1-BP2 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 60, dwell_time_desc = 28}
@@ -330,9 +326,7 @@ DT30-DT31 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 28, dwell
 DT31-DT32 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 28, dwell_time_desc = 45}
 DT32-DT33 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 45, dwell_time_desc = 28}
 DT33-DT34 = {duration_asc = 160, duration_desc = 160, dwell_time_asc = 28, dwell_time_desc = 28}
-DT34-DT35 = {duration_asc = 75, duration_desc = 75, dwell_time_asc = 28, dwell_time_desc = 45}
-DT35-DT36 = {duration_asc = 70, duration_desc = 70, dwell_time_asc = 45, dwell_time_desc = 28}
-DT36-DT37 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 60}
+DT34-DT35 = {duration_asc = 75, duration_desc = 75, dwell_time_asc = 28, dwell_time_desc = 60}
 EW1-EW2 = {duration_asc = 150, duration_desc = 150, dwell_time_asc = 60, dwell_time_desc = 45}
 EW2-EW3 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 45, dwell_time_desc = 28}
 EW3-EW4 = {duration_asc = 150, duration_desc = 150, dwell_time_asc = 28, dwell_time_desc = 45}
@@ -480,9 +474,7 @@ TE24-TE25 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 28, dwell
 TE25-TE26 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 28, dwell_time_desc = 28}
 TE26-TE27 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 28}
 TE27-TE28 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 28, dwell_time_desc = 28}
-TE28-TE29 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 28, dwell_time_desc = 28}
-TE29-TE30 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 28, dwell_time_desc = 28}
-TE30-TE31 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 60}
+TE28-TE29 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 28, dwell_time_desc = 60}
 
 [transfers]
 BP1-NS4 = {duration = 420}
@@ -515,7 +507,6 @@ DT19-NE4 = {duration = 420}
 DT26-CC10 = {duration = 360}
 DT32-EW2 = {duration = 720}
 DT35-CG1 = {duration = 480}
-DT37-TE31 = {duration = 540}
 EW2-DT32 = {duration = 720}
 EW4-CG = {duration = 420}
 EW8-CC9 = {duration = 480}
@@ -558,7 +549,6 @@ TE17-EW16 = {duration = 480}
 TE17-NE3 = {duration = 480}
 TE20-CC33 = {duration = 600}
 TE20-NS27 = {duration = 600}
-TE31-DT37 = {duration = 540}
 
 [conditional_transfers]
 bukit_panjang_service_a.bukit_panjang_service_b = 420

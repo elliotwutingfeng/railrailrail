@@ -521,16 +521,6 @@ class StageMeta(type):
                 "Hume",
                 datetime.datetime.strptime("28 February 2025", "%d %B %Y"),
             ),
-            "tel_5_and_dtl_3e": (
-                (
-                    SingaporeStation("TE30", "Bedok South"),
-                    SingaporeStation("TE31", "Sungei Bedok"),
-                    SingaporeStation("DT36", "Xilin"),
-                    SingaporeStation("DT37", "Sungei Bedok"),
-                ),
-                "Thomson-East Coast Line 5 and Downtown Line 3 Extension",
-                datetime.datetime.strptime("30 November 2026", "%d %B %Y"),  # TBC
-            ),
             "ccl_6": (
                 (
                     SingaporeStation("CC30", "Keppel"),
@@ -540,7 +530,17 @@ class StageMeta(type):
                     SingaporeStation("CC34", "Bayfront"),
                 ),
                 "Circle Line 6",
-                datetime.datetime.strptime("31 December 2026", "%d %B %Y"),  # TBC
+                datetime.datetime.strptime("30 June 2026", "%d %B %Y"),  # TBC
+            ),
+            "tel_5_and_dtl_3e": (
+                (
+                    SingaporeStation("TE30", "Bedok South"),
+                    SingaporeStation("TE31", "Sungei Bedok"),
+                    SingaporeStation("DT36", "Xilin"),
+                    SingaporeStation("DT37", "Sungei Bedok"),
+                ),
+                "Thomson-East Coast Line 5 and Downtown Line 3 Extension",
+                datetime.datetime.strptime("30 November 2026", "%d %B %Y"),  # TBC
             ),
             "jrl_1": (
                 (
@@ -646,7 +646,7 @@ class StageMeta(type):
                 "Downtown Line 2 Extension",
                 datetime.datetime.strptime("31 December 2035", "%d %B %Y"),  # TBC
             ),
-            "cg_tel_c": (
+            "tel_e": (
                 (
                     SingaporeStation(
                         "CR1", "Changi Airport Terminal 5"
@@ -658,7 +658,7 @@ class StageMeta(type):
                     SingaporeStation("TE34", "Expo"),
                     SingaporeStation("TE35", "Tanah Merah"),
                 ),
-                "Changi Airport Branch - Thomson-East Coast Line Conversion",
+                "Thomson-East Coast Line Extension",
                 datetime.datetime.strptime("31 December 2040", "%d %B %Y"),  # TBC
             ),
             "future": (
@@ -690,7 +690,7 @@ class StageMeta(type):
                 "ten_mile_junction_permanent_closure": (
                     SingaporeStation("BP14", "Ten Mile Junction"),
                 ),
-                "cg_tel_c": (
+                "tel_e": (
                     SingaporeStation("CG2", "Changi Airport"),
                     SingaporeStation("CG1", "Expo"),
                     SingaporeStation("CG", "Tanah Merah"),

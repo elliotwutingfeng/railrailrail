@@ -30,7 +30,7 @@ trip_95.input = { start = "SE3", end = "SE5", network = "sklrt_east_loop", walk 
 trip_96.input = { start = "EW23", end = "BP14", network = "bplrt", walk = false } # BP14
 trip_97.input = { start = "JE5", end = "JS3", network = "jrl_3", walk = false } # JE terminal
 trip_98.input = { start = "CC31", end = "CC2", network = "ccl_6", walk = false } # CCL6
-trip_99.input = { start = "TE33", end = "BP10", network = "cg_tel_c", walk = false } # TEL conversion
+trip_99.input = { start = "TE33", end = "BP10", network = "tel_e", walk = false } # TELe
 
 [trip_0.output]
 nodes = ["DT3", "DT5", "DT6", "DT7"]

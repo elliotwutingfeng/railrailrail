@@ -42,11 +42,11 @@ CC26 = "Pasir Panjang"
 CC27 = "Labrador Park"
 CC28 = "Telok Blangah"
 CC29 = "HarbourFront"
-CE0X = "Stadium"
-CE0Y = "Nicoll Highway"
-CE0Z = "Promenade"
-CE1 = "Bayfront"
-CE2 = "Marina Bay"
+CC30 = "Keppel"
+CC31 = "Cantonment"
+CC32 = "Prince Edward Road"
+CC33 = "Marina Bay"
+CC34 = "Bayfront"
 CG = "Tanah Merah"
 CG1 = "Expo"
 CG2 = "Changi Airport"
@@ -250,9 +250,10 @@ CC3-DT14 = {duration_asc = 720, duration_desc = 720, mode = "walk", dwell_time_a
 CC3-EW12 = {duration_asc = 720, duration_desc = 720, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 CC3-EW13 = {duration_asc = 300, duration_desc = 300, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 CC3-NS25 = {duration_asc = 300, duration_desc = 300, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
-CC4-CC5 = {duration_asc = 105, duration_desc = 105, edge_type = "promenade_east", dwell_time_asc = 45, dwell_time_desc = 45}
-CC5-CC6 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 45}
-CC6-CC7 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 45, dwell_time_desc = 28}
+CC4-CC5 = {duration_asc = 105, duration_desc = 105, edge_type = "promenade_east", dwell_time_asc = 45, dwell_time_desc = 28}
+CC4-CC34 = {duration_asc = 115, duration_desc = 115, edge_type = "promenade_south", dwell_time_asc = 45, dwell_time_desc = 45}
+CC5-CC6 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
+CC6-CC7 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 28, dwell_time_desc = 28}
 CC7-CC8 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 28, dwell_time_desc = 28}
 CC8-CC9 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 28, dwell_time_desc = 45}
 CC9-CC10 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 45, dwell_time_desc = 45}
@@ -273,12 +274,13 @@ CC24-CC25 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell
 CC25-CC26 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 28, dwell_time_desc = 28}
 CC26-CC27 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 28, dwell_time_desc = 28}
 CC27-CC28 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 28, dwell_time_desc = 28}
-CC28-CC29 = {duration_asc = 195, duration_desc = 195, dwell_time_asc = 28, dwell_time_desc = 60}
-CE0X-CE0Y = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 60, dwell_time_desc = 45}
-CE0Y-CE0Z = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 45, dwell_time_desc = 45}
-CE0Z-CE1 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 45, dwell_time_desc = 45}
-CE1-CE2 = {duration_asc = 110, duration_desc = 110, dwell_time_asc = 45, dwell_time_desc = 60}
-CE2-DT17 = {duration_asc = 300, duration_desc = 300, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
+CC28-CC29 = {duration_asc = 195, duration_desc = 195, dwell_time_asc = 28, dwell_time_desc = 45}
+CC29-CC30 = {duration_asc = 110, duration_desc = 110, dwell_time_asc = 45, dwell_time_desc = 28}
+CC30-CC31 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 28}
+CC31-CC32 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 28, dwell_time_desc = 28}
+CC32-CC33 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 28, dwell_time_desc = 45}
+CC33-CC34 = {duration_asc = 110, duration_desc = 110, dwell_time_asc = 45, dwell_time_desc = 45}
+CC33-DT17 = {duration_asc = 300, duration_desc = 300, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
 CG-CG1 = {duration_asc = 135, duration_desc = 135, dwell_time_asc = 60, dwell_time_desc = 45}
 CG1-CG2 = {duration_asc = 255, duration_desc = 255, dwell_time_asc = 45, dwell_time_desc = 60}
 DT1-DT2 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 60, dwell_time_desc = 28}
@@ -487,10 +489,7 @@ BP1-NS4 = {duration = 420}
 BP6-DT1 = {duration = 600}
 CC1-NE6 = {duration = 480}
 CC1-NS24 = {duration = 480}
-CC4-CE0Z = {duration = 420}
 CC4-DT15 = {duration = 420}
-CC5-CE0Y = {duration = 360}
-CC6-CE0X = {duration = 360}
 CC9-EW8 = {duration = 480}
 CC10-DT26 = {duration = 360}
 CC13-NE12 = {duration = 480}
@@ -499,13 +498,9 @@ CC17-TE9 = {duration = 540}
 CC19-DT9 = {duration = 480}
 CC22-EW21 = {duration = 480}
 CC29-NE1 = {duration = 420}
-CE0X-CC6 = {duration = 360}
-CE0Y-CC5 = {duration = 360}
-CE0Z-CC4 = {duration = 420}
-CE0Z-DT15 = {duration = 420}
-CE1-DT16 = {duration = 360}
-CE2-NS27 = {duration = 600}
-CE2-TE20 = {duration = 600}
+CC33-NS27 = {duration = 600}
+CC33-TE20 = {duration = 600}
+CC34-DT16 = {duration = 360}
 CG-EW4 = {duration = 420}
 CG1-DT35 = {duration = 480}
 DT1-BP6 = {duration = 600}
@@ -515,8 +510,7 @@ DT11-NS21 = {duration = 540}
 DT12-NE7 = {duration = 480}
 DT14-EW12 = {duration = 540}
 DT15-CC4 = {duration = 420}
-DT15-CE0Z = {duration = 420}
-DT16-CE1 = {duration = 360}
+DT16-CC34 = {duration = 360}
 DT19-NE4 = {duration = 420}
 DT26-CC10 = {duration = 360}
 DT32-EW2 = {duration = 720}
@@ -552,7 +546,7 @@ NS24-CC1 = {duration = 480}
 NS24-NE6 = {duration = 480}
 NS25-EW13 = {duration = 360}
 NS26-EW14 = {duration = 360}
-NS27-CE2 = {duration = 600}
+NS27-CC33 = {duration = 600}
 NS27-TE20 = {duration = 600}
 PTC-NE17 = {duration = 420}
 STC-NE16 = {duration = 420}
@@ -562,13 +556,16 @@ TE11-DT10 = {duration = 420}
 TE14-NS22 = {duration = 480}
 TE17-EW16 = {duration = 480}
 TE17-NE3 = {duration = 480}
-TE20-CE2 = {duration = 600}
+TE20-CC33 = {duration = 600}
 TE20-NS27 = {duration = 600}
 TE31-DT37 = {duration = 540}
 
 [conditional_transfers]
 bukit_panjang_service_a.bukit_panjang_service_b = 420
 bukit_panjang_service_b.bukit_panjang_service_a = 420
+promenade_east.promenade_south = 420
+promenade_south.promenade_west = 420
+promenade_west.promenade_south = 420
 punggol_east_loop.punggol_west_loop = 360
 punggol_west_loop.punggol_east_loop = 360
 sengkang_east_loop.sengkang_west_loop = 360
@@ -576,6 +573,7 @@ sengkang_west_loop.sengkang_east_loop = 360
 
 [non_linear_line_terminals]
 BP.BP1 = 1
+CC.CC1 = 1
 PE.PTC = 1
 PTC.PTC = 1
 PW.PTC = 1
@@ -584,6 +582,3 @@ STC.STC = 1
 SW.STC = 1
 
 [station_code_pseudonyms]
-CE0X = "CC6"
-CE0Y = "CC5"
-CE0Z = "CC4"
