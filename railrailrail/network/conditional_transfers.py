@@ -25,7 +25,7 @@ class ConditionalTransfersSegment:
     edge_type: str
     interchange_station_code: str
     defunct_with_station_code: str | None = (
-        None  # If this station code is present, this segment will no longer exist.
+        None  # If this station code is present in the network, then this segment will not be included in the network.
     )
 
     def __post_init__(self):
@@ -144,4 +144,4 @@ class ConditionalTransfers:
             "bahar_west": immutabledict.immutabledict({"bahar_south": 360}),
             "bahar_south": immutabledict.immutabledict({"bahar_east": 360}),
         }
-    )  # Order is important; bahar_east -> bahar_west != bahar_west -> bahar_east
+    )  # Order is important; `bahar_east -> bahar_west` is not the same as `bahar_west -> bahar_east`

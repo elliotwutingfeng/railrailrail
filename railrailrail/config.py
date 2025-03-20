@@ -100,7 +100,7 @@ class Config:
     def _generate_segment_adjacency_matrix(
         self,
     ) -> defaultdict[str, OrderedDict[str, dict]]:
-        """Create an travel time / dwell time adjacency matrix for all segments between stations with different names
+        """Create a travel time / dwell time adjacency matrix for all segments between stations with different names
         on the network.
 
         Returns:
@@ -254,7 +254,7 @@ class Config:
     def _generate_transfer_adjacency_matrix(
         self,
     ) -> defaultdict[str, OrderedDict[str, dict]]:
-        """Create an travel time adjacency matrix for all transfers between stations with same names
+        """Create a travel time adjacency matrix for all transfers between stations with same names
         on the network.
 
         Returns:

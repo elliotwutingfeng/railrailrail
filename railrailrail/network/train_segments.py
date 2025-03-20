@@ -110,9 +110,9 @@ class TrainSegmentsMeta(type):
         ("DE1-DE2", ("duration", 120)),  # future
         ("DT1-DT2", ("duration", 85)),
         ("DT2-DT3", ("duration", 75)),
-        ("DT3-DT4", ("duration", 75)),  # future
-        ("DT3-DT5", ("duration", 175)),
-        ("DT4-DT5", ("duration", 120)),  # future
+        ("DT3-DT4", ("duration", 75)),
+        ("DT3-DT5", ("duration", 175)),  # defunct
+        ("DT4-DT5", ("duration", 120)),
         ("DT5-DT6", ("duration", 90)),
         ("DT6-DT7", ("duration", 105)),
         ("DT7-DT8", ("duration", 90)),
@@ -222,7 +222,7 @@ class TrainSegmentsMeta(type):
         ("NE14-NE16", ("duration", 215)),  # defunct
         ("NE15-NE16", ("duration", 90)),
         ("NE16-NE17", ("duration", 130)),
-        ("NE17-NE18", ("duration", 115)),  # future
+        ("NE17-NE18", ("duration", 115)),
         ("NS1-NS2", ("duration", 225)),
         ("NS2-NS3", ("duration", 95)),
         ("NS3-NS3A", ("duration", 120)),  # future
@@ -267,10 +267,10 @@ class TrainSegmentsMeta(type):
         ("PTC-PW1", ("duration", 90)),
         ("PTC-PW5", ("duration", 270)),  # defunct
         ("PTC-PW7", ("duration", 145)),
-        ("PW1-PW2", ("duration", 50)),  # future
-        ("PW1-PW3", ("duration", 125)),
+        ("PW1-PW2", ("duration", 50)),
+        ("PW1-PW3", ("duration", 125)),  # defunct
         ("PW1-PW5", ("duration", 265)),  # defunct
-        ("PW2-PW3", ("duration", 65)),  # future
+        ("PW2-PW3", ("duration", 65)),
         ("PW3-PW4", ("duration", 70)),
         ("PW3-PW5", ("duration", 140)),  # defunct
         ("PW4-PW5", ("duration", 60)),
