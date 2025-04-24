@@ -1,33 +1,35 @@
 [project]
-authors = [{name = "Wu Tingfeng", email = "wutingfeng@outlook.com"}]
-requires-python = ">=3.12"
-dependencies = [
-  "dijkstar>=2.6.0",
-  "geopandas>=1.0.1",
-  "immutabledict>=4.2.1",
-  "ipykernel>=6.29.5",
-  "nbformat>=5.10.4",
-  "plotly>=5.24.1",
-  "psutil>=6.1.1",
-  "requests>=2.32.3",
-  "statsmodels>=0.14.4",
-  "tomlkit>=0.13.2",
-  "xlrd>=2.0.1",
-  "jupyter>=1.1.1",
-]
-description = "Route planner for the Singapore MRT/LRT rail network."
-license = "Apache-2.0"
 name = "railrailrail"
-readme = "README.md"
 version = "0.0.1"
+description = "Route planner for the Singapore MRT/LRT rail network."
+authors = [{ name = "Wu Tingfeng", email = "wutingfeng@outlook.com" }]
+requires-python = ">=3.12"
+readme = "README.md"
+license = "Apache-2.0"
+dependencies = [
+    "dijkstar>=2.6.0",
+    "geopandas>=1.0.1",
+    "immutabledict>=4.2.1",
+    "ipykernel>=6.29.5",
+    "nbformat>=5.10.4",
+    "plotly>=5.24.1",
+    "psutil>=6.1.1",
+    "requests>=2.32.3",
+    "statsmodels>=0.14.4",
+    "tomlkit>=0.13.2",
+    "xlrd>=2.0.1",
+    "jupyter>=1.1.1",
+]
 
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.11.0"
-pytest = "^8.3.5"
-pytest-cov = "^6.0.0"
-pytest-mock = "^3.14.0"
-pytest-xdist = "^3.6.1"
+[dependency-groups]
+dev = [
+    "ruff>=0.11.0,<0.12",
+    "pytest>=8.3.5,<9",
+    "pytest-cov>=6.0.0,<7",
+    "pytest-mock>=3.14.0,<4",
+    "pytest-xdist>=3.6.1,<4",
+]
 
 [build-system]
-build-backend = "poetry.core.masonry.api"
-requires = ["poetry-core"]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

@@ -12,7 +12,7 @@ Four arguments are required:
 - `--network-file`: Path to network config file with rail network [graph](https://en.wikipedia.org/wiki/Graph_theory) node and edge details. Example: [network_tel_4.toml](/config_examples/network_tel_4.toml)
 
 ```bash
-poetry run python railrailrail/cli.py route --coordinates-file config/station_coordinates.csv --network-file config/network_tel_4.toml  --start NS14 --end TE29
+uv run python railrailrail/cli.py route --coordinates-file config/station_coordinates.csv --network-file config/network_tel_4.toml  --start NS14 --end TE29
 
 # Start at NS14 Khatib
 # Board train towards terminus NS28 Marina South Pier
@@ -29,7 +29,7 @@ poetry run python railrailrail/cli.py route --coordinates-file config/station_co
 Walking routes can be enabled with the optional `--walk` flag. These routes are taken from the [LTA Walking Train Map (WTM)](https://www.lta.gov.sg/content/dam/ltagov/who_we_are/statistics_and_publications/pdf/connect_nov_2018_fa_12nov.pdf)
 
 ```bash
-poetry run python railrailrail/cli.py route --walk --coordinates-file config/station_coordinates.csv --network-file config/network_tel_4.toml  --start DT13 --end TE29
+uv run python railrailrail/cli.py route --walk --coordinates-file config/station_coordinates.csv --network-file config/network_tel_4.toml  --start DT13 --end TE29
 
 # Start at DT13 Rochor
 # Board train towards terminus DT35 Expo
@@ -50,7 +50,7 @@ Use a different `--network-file` to calculate fastest routes for both past and f
 EW1 Pasir Ris opened (1989).
 
 ```bash
-poetry run python railrailrail/cli.py route --network-file config/network_phase_2a_2.toml --coordinates-file config/station_coordinates.csv --start EW1 --end NS16
+uv run python railrailrail/cli.py route --network-file config/network_phase_2a_2.toml --coordinates-file config/station_coordinates.csv --start EW1 --end NS16
 
 # Start at EW1 Pasir Ris
 # Board train towards terminus EW26 Lakeside
@@ -65,7 +65,7 @@ poetry run python railrailrail/cli.py route --network-file config/network_phase_
 Cross Island Line 2 opened (est. 2032).
 
 ```bash
-poetry run python railrailrail/cli.py route --network-file config/network_crl_2.toml --coordinates-file config/station_coordinates.csv --start EW1 --end NS16
+uv run python railrailrail/cli.py route --network-file config/network_crl_2.toml --coordinates-file config/station_coordinates.csv --start EW1 --end NS16
 
 # Start at EW1 Pasir Ris
 # Transfer to CR5 Pasir Ris
@@ -88,7 +88,7 @@ Use `generate` to generate the station coordinates file and network config files
 Generate a station `--coordinates` file (**station_coordinates.csv**).
 
 ```bash
-poetry run python railrailrail/cli.py generate --coordinates
+uv run python railrailrail/cli.py generate --coordinates
 ```
 
 ### Network Config File
@@ -98,6 +98,6 @@ Generate a `--network` config file with preset time durations for a given stage 
 Run `generate --help` to get all possible options for `--network`.
 
 ```bash
-poetry run python railrailrail/cli.py generate --help
-poetry run python railrailrail/cli.py generate --network sklrt_east_loop
+uv run python railrailrail/cli.py generate --help
+uv run python railrailrail/cli.py generate --network sklrt_east_loop
 ```

@@ -23,19 +23,20 @@ jobs:
             - name: checkout repo content
               uses: actions/checkout@v4
 
+            - name: Install uv
+              uses: astral-sh/setup-uv@v5
+              with:
+                version: "0.6.16"
+
             - uses: actions/setup-python@v5
               with:
-                python-version: '3.x'
-
-            - name: Install poetry
-              run: |
-                  pipx install poetry
+                python-version-file: ".python-version"
 
             - name: Check lock file consistency
               run: |
-                  poetry check --lock
+                  uv lock --check
 
-            - name: Install dependencies
+            - name: Install the project
               run: |
                   make install
 
