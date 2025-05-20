@@ -38,7 +38,7 @@ Source: <https://data.gov.sg/datasets/d_ae8f6f7e9184361a187dd335fa04b684/view>
 License: Unknown (derived factual information)
 
 - Train Spotters from YouTube
-  - [Link](docs/TRAIN_SPOTTERS.md)
+  - [More information](docs/TRAIN_SPOTTERS.md)
 
 ## Transfer duration
 
