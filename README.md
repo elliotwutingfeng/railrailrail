@@ -121,7 +121,7 @@ See [LICENSE](LICENSE) and [LICENSE-DATASET.md](LICENSE-DATASET.md).
 ## References
 
 - Train Spotters from YouTube
-  - [Link](docs/TRAIN_SPOTTERS.md)
+  - [More information](docs/TRAIN_SPOTTERS.md)
 - Measured interchange transfer times by a deleted user on Reddit
   - [Reddit post](https://www.reddit.com/r/singapore/comments/10wkygf/mrt_map_with_transfer_timing)
   - [Timetable](https://docs.google.com/spreadsheets/d/1e-Tuf6rHBFsgsuFN7XqbFL8ec_vdRjQw)
