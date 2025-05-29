@@ -28,4 +28,4 @@ update:
 upgrade: update install
 
 test: ruff_format_check ruff_check
-	uv run pytest -vv --cov=./ --cov-report html --cov-branch -n auto
+	uv run pytest -vv --cov=./ --cov-report html --cov-report=lcov --cov-branch -n auto
