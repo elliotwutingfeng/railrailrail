@@ -30,6 +30,7 @@ def parse_args(args: list[str]) -> Namespace:
         description="Route planner for all stages of the Singapore MRT/LRT rail network (1987-2040+).",
         epilog="",
     )
+    parser.color = True
     parser.add_argument("--debug", action="store_true", help="Enable debug output.")
 
     subparser_description = "Calculate fastest route or generate preset config files."
