@@ -41,7 +41,7 @@ class TransfersMeta(type):
         ("Bukit Panjang", 600),
         ("Buona Vista", 480),
         ("Caldecott", 540),
-        ("Changi Airport Terminal 5", 540),
+        ("Changi Terminal 5", 540),
         ("Chinatown", 420),
         ("Choa Chu Kang", 420),
         ("City Hall", 360),
