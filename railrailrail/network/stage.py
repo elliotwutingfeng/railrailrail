@@ -649,10 +649,10 @@ class StageMeta(type):
             "tel_e": (
                 (
                     SingaporeStation(
-                        "CR1", "Changi Airport Terminal 5"
+                        "CR1", "Changi Terminal 5"
                     ),  #   Unknown official name
                     SingaporeStation(
-                        "TE32", "Changi Airport Terminal 5"
+                        "TE32", "Changi Terminal 5"
                     ),  #   Unknown official name
                     SingaporeStation("TE33", "Changi Airport"),
                     SingaporeStation("TE34", "Expo"),
