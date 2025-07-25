@@ -38,7 +38,7 @@ These stages are tentative and subject to detailed planning.
 
 <https://www.lta.gov.sg/content/ltagov/en/newsroom/2025/3/news-releases/expanding_our_rail_network_and_strengthening_rail_reliability.html>
 
-- The official name and location coordinates for TE32 Changi Airport Terminal 5 has not been released.
+- The official name and location coordinates for TE32 Changi Terminal 5 has not been released.
 
 ### West Coast Extension
 
