@@ -8,26 +8,26 @@ readme = "README.md"
 license = "Apache-2.0"
 dependencies = [
     "dijkstar>=2.6.0",
-    "geopandas>=1.0.1",
+    "geopandas>=1.1.1",
     "immutabledict>=4.2.1",
-    "ipykernel>=6.29.5",
+    "ipykernel>=6.30.0",
     "nbformat>=5.10.4",
     "plotly>=5.24.1",
     "psutil>=6.1.1",
-    "requests>=2.32.3",
-    "statsmodels>=0.14.4",
-    "tomlkit>=0.13.2",
-    "xlrd>=2.0.1",
+    "requests>=2.32.4",
+    "statsmodels>=0.14.5",
+    "tomlkit>=0.13.3",
+    "xlrd>=2.0.2",
     "jupyter>=1.1.1",
 ]
 
 [dependency-groups]
 dev = [
-    "ruff>=0.11.12",
-    "pytest>=8.4.0",
-    "pytest-cov>=6.1.1",
+    "ruff>=0.12.5",
+    "pytest>=8.4.1",
+    "pytest-cov>=6.2.1",
     "pytest-mock>=3.14.1",
-    "pytest-xdist>=3.7.0",
+    "pytest-xdist>=3.8.0",
 ]
 
 [build-system]
