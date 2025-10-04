@@ -42,6 +42,7 @@ class TestCoordinates:
         coordinates_path = pathlib.Path("station_coordinates.csv")
         example_coordinates_path = (
             pathlib.Path(__file__).resolve().parent.parent
+            / "src"
             / "config_examples"
             / "station_coordinates.csv"
         )
