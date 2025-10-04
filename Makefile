@@ -24,8 +24,7 @@ install:
 
 update:
 	uv lock --upgrade
-
-upgrade: update install
+	uv sync --all-groups
 
 test: ruff_format_check ruff_check
 	uv run pytest -vv --cov=./ --cov-report html --cov-report=lcov --cov-branch -n auto
