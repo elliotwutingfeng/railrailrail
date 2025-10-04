@@ -50,7 +50,7 @@ make generate_config
 Now lets find the fastest route between Pasir Ris and Hougang in 2003.
 
 ```bash
-uv run python railrailrail/cli.py route --network-file config/network_nel.toml --coordinates-file config/station_coordinates.csv --start EW1 --end NE14
+uv run python src/railrailrail/cli.py route --network-file config/network_nel.toml --coordinates-file config/station_coordinates.csv --start EW1 --end NE14
 
 # Start at EW1 Pasir Ris
 # Board train towards terminus EW27 Boon Lay
@@ -68,7 +68,7 @@ uv run python railrailrail/cli.py route --network-file config/network_nel.toml -
 In 2024.
 
 ```bash
-uv run python railrailrail/cli.py route --network-file config/network_tel_4.toml --coordinates-file config/station_coordinates.csv --start EW1 --end NE14
+uv run python src/railrailrail/cli.py route --network-file config/network_tel_4.toml --coordinates-file config/station_coordinates.csv --start EW1 --end NE14
 
 # Start at EW1 Pasir Ris
 # Board train towards terminus EW33 Tuas Link
@@ -86,7 +86,7 @@ uv run python railrailrail/cli.py route --network-file config/network_tel_4.toml
 In 2030.
 
 ```bash
-uv run python railrailrail/cli.py route --network-file config/network_crl_1.toml --coordinates-file config/station_coordinates.csv --start EW1 --end NE14
+uv run python src/railrailrail/cli.py route --network-file config/network_crl_1.toml --coordinates-file config/station_coordinates.csv --start EW1 --end NE14
 
 # Start at EW1 Pasir Ris
 # Transfer to CR5 Pasir Ris
