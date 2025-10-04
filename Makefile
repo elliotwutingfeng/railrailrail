@@ -21,6 +21,7 @@ ruff_format_check:
 
 install:
 	uv sync --locked --all-extras --dev
+	uv run pre-commit install
 
 update:
 	uv lock --upgrade
