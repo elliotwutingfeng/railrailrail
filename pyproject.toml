@@ -3,17 +3,17 @@ name = "railrailrail"
 version = "0.0.1"
 description = "Route planner for the Singapore MRT/LRT rail network."
 authors = [{ name = "Wu Tingfeng", email = "wutingfeng@outlook.com" }]
-requires-python = ">=3.12"
+requires-python = ">=3.12,<3.14"
 readme = "README.md"
 license = "Apache-2.0"
 dependencies = [
     "dijkstar>=2.6.0",
     "geopandas>=1.1.1",
-    "immutabledict>=4.2.1",
-    "ipykernel>=6.30.0",
+    "immutabledict>=4.2.2",
+    "ipykernel>=7.0.1",
     "nbformat>=5.10.4",
     "plotly>=5.24.1",
-    "psutil>=7.1.0",
+    "psutil>=7.1.1",
     "requests>=2.32.5",
     "statsmodels>=0.14.5",
     "tomlkit>=0.13.3",
@@ -23,7 +23,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "ruff>=0.13.3",
+    "ruff>=0.14.1",
     "pytest>=8.4.2",
     "pytest-cov>=7.0.0",
     "pytest-mock>=3.15.1",
@@ -32,5 +32,5 @@ dev = [
 ]
 
 [build-system]
-requires = ["uv_build >=0.9.0, <0.10.0"]
+requires = ["uv_build >=0.9.5, <0.10.0"]
 build-backend = "uv_build"

@@ -505,12 +505,12 @@ class Config:
                     modified_delta.append(line.replace("- ", "# ", 1).rstrip("\n"))
                 modified = False
             elif line.startswith("+ "):
-                if line.strip() == "+":  # Add missing newlines directly
+                if line.strip() == "+":  # Add missing newlines directly.
                     modified_delta.append("")
                 else:
                     modified_delta.append(
-                        f"{line.removeprefix('+ ').rstrip('\n')}{' # MODIFIED' if modified else ' # NEW'}"
-                    )
+                        f"{line.removeprefix('+ ').rstrip(chr(10))}{' # MODIFIED' if modified else ' # NEW'}"
+                    )  # chr(10) == "\n"; workaround for no escape sequence support in f-strings on Python <=3.11.
                 modified = False
             elif line.startswith("? "):
                 if delta[idx - 1].startswith("- "):
