@@ -74,14 +74,16 @@ def make_stage_journeys_dataframe(stage: str, journeys: dict):
         pd.DataFrame.from_dict(
             journeys,
             orient="index",
-            columns=[
-                "path_distance",
-                "haversine_distance",
-                "nodes",
-                "edges",
-                "costs",
-                "total_cost",
-            ],
+            columns=pd.array(
+                [
+                    "path_distance",
+                    "haversine_distance",
+                    "nodes",
+                    "edges",
+                    "costs",
+                    "total_cost",
+                ]
+            ),
         )
         .reset_index()
         .rename(columns={"index": "start_and_end"})
@@ -195,7 +197,7 @@ def get_planning_area_to_region_df():
     }
     return (
         pd.DataFrame.from_dict(
-            planning_area_to_region, orient="index", columns=["region"]
+            planning_area_to_region, orient="index", columns=pd.array(["region"])
         )
         .reset_index(0)
         .rename(columns={"index": "planning_area"})

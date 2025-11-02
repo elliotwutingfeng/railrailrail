@@ -36,12 +36,12 @@ class Station(abc.ABC):
 
     @classmethod
     @abc.abstractmethod
-    def get_interchanges(cls, stations: list[Station]) -> tuple[set[Station]]:
+    def get_interchanges(cls, stations: list) -> tuple[set, ...]:
         pass
 
     @classmethod
     @abc.abstractmethod
-    def sort_key(cls, station: Station) -> tuple:
+    def sort_key(cls, station) -> tuple:
         pass
 
 
@@ -88,7 +88,7 @@ class SingaporeStation(Station):
     )
 
     # Missing/future/zero station codes.
-    equivalent_station_code_pairs: tuple[tuple[str, str]] = dataclasses.field(
+    equivalent_station_code_pairs: tuple[tuple[str, str], ...] = dataclasses.field(
         compare=False,
         default=tuple(
             (k, v)
@@ -147,7 +147,7 @@ class SingaporeStation(Station):
         station_code_components_match = cls.match_expr.match(station_code)
         if station_code_components_match is None:
             raise ValueError(f"Invalid station code: {station_code}")
-        matcher_groups: tuple[str, str, str] = station_code_components_match.groups(
+        matcher_groups: tuple[str, ...] = station_code_components_match.groups(
             default=""
         )
         line_code, station_number_str, station_number_suffix = matcher_groups
@@ -157,7 +157,7 @@ class SingaporeStation(Station):
     @classmethod
     def get_interchanges(
         cls, stations: list[SingaporeStation]
-    ) -> tuple[set[SingaporeStation]]:
+    ) -> tuple[set[SingaporeStation], ...]:
         """Group stations by station name. A group with at least 2 stations is an interchange.
 
         Args:
@@ -167,14 +167,14 @@ class SingaporeStation(Station):
             ValueError: Duplicate line codes not allowed at interchange.
 
         Returns:
-            tuple[set[SingaporeStation]]: Stations grouped by interchange.
+            tuple[set[SingaporeStation], ...]: Stations grouped by interchange.
         """
         interchange_stations_by_station_name: defaultdict[
             str, set[SingaporeStation]
         ] = defaultdict(set)
         for station in stations:
             interchange_stations_by_station_name[station.station_name].add(station)
-        interchanges: tuple[set[SingaporeStation]] = tuple(
+        interchanges: tuple[set[SingaporeStation], ...] = tuple(
             stations
             for stations in interchange_stations_by_station_name.values()
             if len(stations) >= 2

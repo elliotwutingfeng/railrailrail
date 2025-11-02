@@ -50,14 +50,14 @@ class Terminal:
     @classmethod
     def get_terminals(
         cls,
-        non_linear_line_terminals: dict[str, dict[str, int]],
+        non_linear_line_terminals: dict[str, set[str]],
         adjacency_matrix: defaultdict[str, OrderedDict[str, dict]],
     ) -> set[str]:
         """Identify terminal stations from a uni-directional adjacency matrix by counting their neighbours.
         Stations with purely alphabetic station codes will be identified as terminals.
 
         Args:
-            non_linear_line_terminals (dict[str, dict[str, int]]): Map of non-linear line codes to terminal station codes.
+            non_linear_line_terminals (dict[str, set[str]]): Map of non-linear line codes to terminal station codes.
             adjacency_matrix (defaultdict[str, OrderedDict[str, dict]]): Uni-directional adjacency matrix
             of station codes linked in ascending order.
 
@@ -135,14 +135,13 @@ class Terminal:
         while True:
             station_and_neighbours = sorted(
                 [
-                    *(
-                        station_code
-                        for station_code in graph.get_incoming(next_station_code)
-                        if SingaporeStation.to_station_code_components(station_code)[0]
-                        == start_line_code
-                    ),
-                    next_station_code,
-                ],
+                    station_code
+                    for station_code in graph.get_incoming(next_station_code)
+                    if type(station_code) is str
+                    and SingaporeStation.to_station_code_components(station_code)[0]
+                    == start_line_code
+                ]
+                + [next_station_code],
                 key=SingaporeStation.to_station_code_components,
             )
             next_station_index = station_and_neighbours.index(next_station_code) + (

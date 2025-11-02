@@ -339,6 +339,8 @@ class RailGraph:
         steps: list[str] = [
             f"Start at {self.station_code_to_station[pathinfo.nodes[0]].full_station_name}"
         ]
+        current_station_full_name = "Undefined"
+        next_station_full_name = "Undefined"
         for edge_idx, (
             current_station_code,
             next_station_code,
@@ -359,14 +361,18 @@ class RailGraph:
             def get_terminal_full_station_name() -> str | None:
                 terminal_station: SingaporeStation | None = (
                     self.station_code_to_station.get(
-                        Terminal.get_approaching_terminal(
+                        approaching_terminal,
+                        None,
+                    )
+                    if (
+                        approaching_terminal := Terminal.get_approaching_terminal(
                             self._graph,
                             self.non_linear_line_terminals,
                             current_station_code,
                             next_station_code,
-                        ),
-                        None,
+                        )
                     )
+                    else None
                 )
                 return (
                     None

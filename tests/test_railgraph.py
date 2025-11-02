@@ -320,7 +320,7 @@ def __generate_test_trips():  # pragma: no cover
         data["haversine_distance"] = haversine_distance
         data["directions"] = rail_graph.make_directions(pathinfo)
 
-    rows = []
+    rows: list[str] = []
     for row in tomlkit.dumps(data_).split("\n"):
         if row.startswith("[trip_") and row.endswith("]"):
             row = row.removesuffix("]") + ".output]"

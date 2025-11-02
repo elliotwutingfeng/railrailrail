@@ -61,7 +61,7 @@ class ConditionalTransfers:
     except for BP6-BP7, JS6-JS7, JS7-JS8 which are sequential.
     """
 
-    conditional_transfer_segments: tuple[ConditionalTransfersSegment] = (
+    conditional_transfer_segments: tuple[ConditionalTransfersSegment, ...] = (
         ConditionalTransfersSegment(("BP5", "BP6"), "bukit_panjang_main", "BP6"),
         ConditionalTransfersSegment(("BP6", "BP13"), "bukit_panjang_service_a", "BP6"),
         ConditionalTransfersSegment(("BP6", "BP7"), "bukit_panjang_service_b", "BP6"),

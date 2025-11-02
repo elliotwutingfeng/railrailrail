@@ -21,7 +21,7 @@ class WalksMeta(type):
     From [LTA Walking Train Map (WTM)](https://www.lta.gov.sg/content/dam/ltagov/who_we_are/statistics_and_publications/pdf/connect_nov_2018_fa_12nov.pdf)
     """
 
-    __routes: tuple[tuple[str, str, int]] = (
+    __routes: tuple[tuple[str, str, int], ...] = (
         ("Bras Basah", "Bencoolen", 120),
         ("Dhoby Ghaut", "Bencoolen", 300),
         ("Esplanade", "City Hall", 300),
@@ -61,13 +61,17 @@ class WalksMeta(type):
                 raise AttributeError(
                     f"Route must be between 2 different names with a positive duration. Got {station_name_1}, {station_name_2}, {duration}"
                 )  # pragma: no cover
-            pair = tuple(sorted([station_name_1, station_name_2]))
+            pair = (
+                (station_name_1, station_name_2)
+                if station_name_1 < station_name_2
+                else (station_name_2, station_name_1)
+            )
             if pair in pairs:
                 raise AttributeError(
                     f"Duplicate route not allowed: {station_name_1}, {station_name_2}"
                 )  # pragma: no cover
             pairs.add(pair)
-        cls.routes = cls.__routes
+        cls.routes = cls.__routes  # pyrefly: ignore
         return super().__new__(cls, name, bases, dct)
 
 

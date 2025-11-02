@@ -22,6 +22,7 @@ import tomllib
 from collections import OrderedDict, defaultdict
 
 import tomlkit
+import tomlkit.items
 
 from railrailrail.coordinates import Coordinates
 from railrailrail.network.conditional_transfers import ConditionalTransfers
