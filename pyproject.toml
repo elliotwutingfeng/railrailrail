@@ -3,7 +3,7 @@ name = "railrailrail"
 version = "0.0.1"
 description = "Route planner for the Singapore MRT/LRT rail network."
 authors = [{ name = "Wu Tingfeng", email = "wutingfeng@outlook.com" }]
-requires-python = ">=3.13,<3.14"
+requires-python = ">=3.14,<3.15"
 readme = "README.md"
 license = "Apache-2.0"
 dependencies = [
