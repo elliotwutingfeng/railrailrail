@@ -135,13 +135,15 @@ class Terminal:
         while True:
             station_and_neighbours = sorted(
                 [
-                    station_code
-                    for station_code in graph.get_incoming(next_station_code)
-                    if type(station_code) is str
-                    and SingaporeStation.to_station_code_components(station_code)[0]
-                    == start_line_code
-                ]
-                + [next_station_code],
+                    *(
+                        station_code
+                        for station_code in graph.get_incoming(next_station_code)
+                        if type(station_code) is str
+                        and SingaporeStation.to_station_code_components(station_code)[0]
+                        == start_line_code
+                    ),
+                    next_station_code,
+                ],
                 key=SingaporeStation.to_station_code_components,
             )
             next_station_index = station_and_neighbours.index(next_station_code) + (
