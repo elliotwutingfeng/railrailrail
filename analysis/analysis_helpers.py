@@ -122,9 +122,9 @@ def get_station_agg_stats(df: pd.DataFrame, rail_graph: RailGraph) -> pd.DataFra
     )
     df.columns = ["_".join(col).strip("_") for col in df.columns.values]
     df["station_name"] = df["start"].apply(
-        lambda station_code: rail_graph.station_code_to_station[
-            station_code
-        ].station_name
+        lambda station_code: (
+            rail_graph.station_code_to_station[station_code].station_name
+        )
     )
 
     df["latitude"] = df["start"].apply(

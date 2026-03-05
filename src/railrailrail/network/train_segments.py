@@ -191,6 +191,8 @@ class TrainSegmentsMeta(type):
         ("JE6-JE7", ("duration", 80)),  # future
         ("JS1-JS2", ("duration", 90)),  # future
         ("JS2-JS3", ("duration", 140)),  # future
+        ("JS2-JS2A", ("duration", 80)),  # future
+        ("JS2A-JS3", ("duration", 80)),  # future
         ("JS3-JS4", ("duration", 100)),  # future
         ("JS4-JS5", ("duration", 125)),  # future
         ("JS5-JS6", ("duration", 85)),  # future

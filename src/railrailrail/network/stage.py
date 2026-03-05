@@ -47,7 +47,7 @@ class StageMeta(type):
     """
 
     __stages: immutabledict.immutabledict[
-        str, tuple[tuple[SingaporeStation], str, datetime.datetime]
+        str, tuple[tuple[SingaporeStation, ...], str, datetime.datetime]
     ] = immutabledict.immutabledict(
         {
             "phase_1_1": (
@@ -556,7 +556,7 @@ class StageMeta(type):
                     SingaporeStation("JW2", "Tawas"),
                 ),
                 "Jurong Region Line 1",
-                datetime.datetime.strptime("31 December 2027", "%d %B %Y"),  # TBC
+                datetime.datetime.strptime("31 July 2028", "%d %B %Y"),  # TBC
             ),
             "founders_memorial": (
                 (SingaporeStation("TE22A", "Founders' Memorial"),),
@@ -575,7 +575,7 @@ class StageMeta(type):
                     SingaporeStation("JE7", "Pandan Reservoir"),
                 ),
                 "Jurong Region Line 2",
-                datetime.datetime.strptime("31 December 2028", "%d %B %Y"),  # TBC
+                datetime.datetime.strptime("31 July 2029", "%d %B %Y"),  # TBC
             ),
             "jrl_3": (
                 (
@@ -588,7 +588,7 @@ class StageMeta(type):
                     SingaporeStation("JW5", "Peng Kang Hill"),
                 ),
                 "Jurong Region Line 3",
-                datetime.datetime.strptime("31 December 2029", "%d %B %Y"),  # TBC
+                datetime.datetime.strptime("31 July 2030", "%d %B %Y"),  # TBC
             ),
             "crl_1": (
                 (
@@ -635,11 +635,17 @@ class StageMeta(type):
                 "Brickland",
                 datetime.datetime.strptime("31 December 2034", "%d %B %Y"),  # TBC
             ),
+            "jrl_js2a": (
+                (
+                    SingaporeStation("JS2A", "Forest Hill"),
+                    # Unknown official name
+                ),
+                "Forest Hill",
+                datetime.datetime.strptime("31 December 2035", "%d %B %Y"),  # TBC
+            ),
             "dtl_2e": (
                 (
-                    SingaporeStation(
-                        "DE1", "Yew Tee Village"
-                    ),  #   Unknown official name
+                    SingaporeStation("DE1", "Yew Tee Village"),  # Unknown official name
                     SingaporeStation("DE2", "Sungei Kadut"),
                     SingaporeStation("NS6", "Sungei Kadut"),
                 ),
@@ -674,7 +680,7 @@ class StageMeta(type):
         }
     )
 
-    __stages_defunct: immutabledict.immutabledict[str, tuple[SingaporeStation]] = (
+    __stages_defunct: immutabledict.immutabledict[str, tuple[SingaporeStation, ...]] = (
         immutabledict.immutabledict(
             {
                 "ccl_6": (

@@ -153,6 +153,7 @@ JE6 = "Jurong Town Hall"
 JE7 = "Pandan Reservoir"
 JS1 = "Choa Chu Kang"
 JS2 = "Choa Chu Kang West"
+JS2A = "Forest Hill"
 JS3 = "Tengah"
 JS4 = "Hong Kah"
 JS5 = "Corporation"
@@ -453,7 +454,8 @@ JE4-JE5 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 28, dwell_tim
 JE5-JE6 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 45, dwell_time_desc = 28}
 JE6-JE7 = {duration_asc = 80, duration_desc = 80, dwell_time_asc = 28, dwell_time_desc = 60}
 JS1-JS2 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 60, dwell_time_desc = 28}
-JS2-JS3 = {duration_asc = 140, duration_desc = 140, dwell_time_asc = 28, dwell_time_desc = 45}
+JS2-JS2A = {duration_asc = 80, duration_desc = 80, dwell_time_asc = 28, dwell_time_desc = 28}
+JS2A-JS3 = {duration_asc = 80, duration_desc = 80, dwell_time_asc = 28, dwell_time_desc = 45}
 JS3-JS4 = {duration_asc = 100, duration_desc = 100, dwell_time_asc = 45, dwell_time_desc = 28}
 JS4-JS5 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 28, dwell_time_desc = 28}
 JS5-JS6 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 28, dwell_time_desc = 28}

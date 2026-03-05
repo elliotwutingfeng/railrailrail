@@ -47,11 +47,13 @@ CC31 = "Cantonment"
 CC32 = "Prince Edward Road"
 CC33 = "Marina Bay"
 CC34 = "Bayfront"
+CG = "Tanah Merah"
+CG1 = "Expo"
+CG2 = "Changi Airport"
 CP1 = "Pasir Ris"
 CP2 = "Elias"
 CP3 = "Riviera"
 CP4 = "Punggol"
-CR1 = "Changi Terminal 5"
 CR2 = "Aviation Park"
 CR3 = "Loyang"
 CR4 = "Pasir Ris East"
@@ -70,8 +72,6 @@ CR16 = "Maju"
 CR17 = "Clementi"
 CR18 = "West Coast"
 CR19 = "Jurong Lake District"
-DE1 = "Yew Tee Village"
-DE2 = "Sungei Kadut"
 DT1 = "Bukit Panjang"
 DT2 = "Cashew"
 DT3 = "Hillview"
@@ -191,7 +191,6 @@ NS3 = "Bukit Gombak"
 NS3A = "Brickland"
 NS4 = "Choa Chu Kang"
 NS5 = "Yew Tee"
-NS6 = "Sungei Kadut"
 NS7 = "Kranji"
 NS8 = "Marsiling"
 NS9 = "Woodlands"
@@ -273,10 +272,6 @@ TE28 = "Siglap"
 TE29 = "Bayshore"
 TE30 = "Bedok South"
 TE31 = "Sungei Bedok"
-TE32 = "Changi Terminal 5"
-TE33 = "Changi Airport"
-TE34 = "Expo"
-TE35 = "Tanah Merah"
 
 [segments]
 BP1-BP2 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 60, dwell_time_desc = 28}
@@ -336,11 +331,12 @@ CC31-CC32 = {duration_asc = 115, duration_desc = 115, dwell_time_asc = 28, dwell
 CC32-CC33 = {duration_asc = 105, duration_desc = 105, dwell_time_asc = 28, dwell_time_desc = 45}
 CC33-CC34 = {duration_asc = 110, duration_desc = 110, dwell_time_asc = 45, dwell_time_desc = 45}
 CC33-DT17 = {duration_asc = 300, duration_desc = 300, mode = "walk", dwell_time_asc = 0, dwell_time_desc = 0}
+CG-CG1 = {duration_asc = 135, duration_desc = 135, dwell_time_asc = 60, dwell_time_desc = 45}
+CG1-CG2 = {duration_asc = 255, duration_desc = 255, dwell_time_asc = 45, dwell_time_desc = 60}
 CP1-CP2 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 60, dwell_time_desc = 28}
 CP2-CP3 = {duration_asc = 360, duration_desc = 360, dwell_time_asc = 28, dwell_time_desc = 45}
 CP3-CP4 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 45, dwell_time_desc = 60}
-CR1-CR2 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 60, dwell_time_desc = 28}
-CR2-CR3 = {duration_asc = 270, duration_desc = 270, dwell_time_asc = 28, dwell_time_desc = 28}
+CR2-CR3 = {duration_asc = 270, duration_desc = 270, dwell_time_asc = 60, dwell_time_desc = 28}
 CR3-CR4 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 CR4-CR5 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
 CR5-CR6 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
@@ -357,9 +353,7 @@ CR15-CR16 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell
 CR16-CR17 = {duration_asc = 240, duration_desc = 240, dwell_time_asc = 28, dwell_time_desc = 45}
 CR17-CR18 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
 CR18-CR19 = {duration_asc = 300, duration_desc = 300, dwell_time_asc = 28, dwell_time_desc = 60}
-DE1-DE2 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 60}
-DE1-DT1 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 45}
-DT1-DT2 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 45, dwell_time_desc = 28}
+DT1-DT2 = {duration_asc = 85, duration_desc = 85, dwell_time_asc = 60, dwell_time_desc = 28}
 DT2-DT3 = {duration_asc = 75, duration_desc = 75, dwell_time_asc = 28, dwell_time_desc = 28}
 DT3-DT4 = {duration_asc = 75, duration_desc = 75, dwell_time_asc = 28, dwell_time_desc = 28}
 DT4-DT5 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
@@ -494,8 +488,7 @@ NS2-NS3 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_tim
 NS3-NS3A = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 28, dwell_time_desc = 28}
 NS3A-NS4 = {duration_asc = 135, duration_desc = 135, dwell_time_asc = 28, dwell_time_desc = 45}
 NS4-NS5 = {duration_asc = 120, duration_desc = 120, dwell_time_asc = 45, dwell_time_desc = 28}
-NS5-NS6 = {duration_asc = 140, duration_desc = 140, dwell_time_asc = 28, dwell_time_desc = 45}
-NS6-NS7 = {duration_asc = 155, duration_desc = 155, dwell_time_asc = 45, dwell_time_desc = 28}
+NS5-NS7 = {duration_asc = 250, duration_desc = 250, dwell_time_asc = 28, dwell_time_desc = 28}
 NS7-NS8 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 28, dwell_time_desc = 28}
 NS8-NS9 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 28, dwell_time_desc = 45}
 NS9-NS10 = {duration_asc = 135, duration_desc = 135, dwell_time_asc = 45, dwell_time_desc = 28}
@@ -585,11 +578,7 @@ TE26-TE27 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_t
 TE27-TE28 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 28, dwell_time_desc = 28}
 TE28-TE29 = {duration_asc = 125, duration_desc = 125, dwell_time_asc = 28, dwell_time_desc = 28}
 TE29-TE30 = {duration_asc = 90, duration_desc = 90, dwell_time_asc = 28, dwell_time_desc = 28}
-TE30-TE31 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 45}
-TE31-TE32 = {duration_asc = 290, duration_desc = 290, dwell_time_asc = 45, dwell_time_desc = 45}
-TE32-TE33 = {duration_asc = 185, duration_desc = 185, dwell_time_asc = 45, dwell_time_desc = 28}
-TE33-TE34 = {duration_asc = 250, duration_desc = 250, dwell_time_asc = 28, dwell_time_desc = 45}
-TE34-TE35 = {duration_asc = 145, duration_desc = 145, dwell_time_asc = 45, dwell_time_desc = 60}
+TE30-TE31 = {duration_asc = 95, duration_desc = 95, dwell_time_asc = 28, dwell_time_desc = 60}
 
 [transfers]
 BP1-JS1 = {duration = 420}
@@ -609,12 +598,13 @@ CC29-NE1 = {duration = 420}
 CC33-NS27 = {duration = 600}
 CC33-TE20 = {duration = 600}
 CC34-DT16 = {duration = 360}
+CG-EW4 = {duration = 420}
+CG1-DT35 = {duration = 480}
 CP1-CR5 = {duration = 480}
 CP1-EW1 = {duration = 480}
 CP3-PE4 = {duration = 480}
 CP4-NE17 = {duration = 420}
 CP4-PTC = {duration = 420}
-CR1-TE32 = {duration = 540}
 CR5-CP1 = {duration = 480}
 CR5-EW1 = {duration = 480}
 CR8-NE14 = {duration = 540}
@@ -622,7 +612,6 @@ CR11-NS16 = {duration = 600}
 CR13-TE7 = {duration = 540}
 CR15-DT6 = {duration = 540}
 CR17-EW23 = {duration = 480}
-DE2-NS6 = {duration = 480}
 DT1-BP6 = {duration = 600}
 DT6-CR15 = {duration = 540}
 DT9-CC19 = {duration = 480}
@@ -635,12 +624,12 @@ DT16-CC34 = {duration = 360}
 DT19-NE4 = {duration = 420}
 DT26-CC10 = {duration = 360}
 DT32-EW2 = {duration = 720}
-DT35-TE34 = {duration = 480}
+DT35-CG1 = {duration = 480}
 DT37-TE31 = {duration = 540}
 EW1-CP1 = {duration = 480}
 EW1-CR5 = {duration = 480}
 EW2-DT32 = {duration = 720}
-EW4-TE35 = {duration = 420}
+EW4-CG = {duration = 420}
 EW8-CC9 = {duration = 480}
 EW12-DT14 = {duration = 540}
 EW13-NS25 = {duration = 360}
@@ -675,7 +664,6 @@ NS1-EW24 = {duration = 420}
 NS1-JE5 = {duration = 420}
 NS4-BP1 = {duration = 420}
 NS4-JS1 = {duration = 420}
-NS6-DE2 = {duration = 480}
 NS9-TE2 = {duration = 540}
 NS16-CR11 = {duration = 600}
 NS17-CC15 = {duration = 480}
@@ -701,9 +689,6 @@ TE17-NE3 = {duration = 480}
 TE20-CC33 = {duration = 600}
 TE20-NS27 = {duration = 600}
 TE31-DT37 = {duration = 540}
-TE32-CR1 = {duration = 540}
-TE34-DT35 = {duration = 480}
-TE35-EW4 = {duration = 420}
 
 [conditional_transfers]
 bahar_east.bahar_west = 360
@@ -722,10 +707,6 @@ sengkang_west_loop.sengkang_east_loop = 360
 [non_linear_line_terminals]
 BP.BP1 = 1
 CC.CC1 = 1
-DE.DE2 = 1
-DE.DT37 = 1
-DT.DE2 = 1
-DT.DT37 = 1
 JS.JS1 = 1
 JW.JS1 = 1
 PE.PTC = 1

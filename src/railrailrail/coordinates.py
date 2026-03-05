@@ -66,7 +66,7 @@ class Coordinates:
     @classmethod
     def update_coordinates_file(cls, path: pathlib.Path):
         example_coordinates_path = (
-            pathlib.Path(__file__).resolve().parent.parent
+            pathlib.Path(__file__).resolve().parent.parent.parent
             / "config_examples"
             / "station_coordinates.csv"
         )
