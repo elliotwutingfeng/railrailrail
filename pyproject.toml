@@ -14,7 +14,7 @@ dependencies = [
     "nbformat>=5.10.4",
     "plotly>=5.24.1",
     "psutil>=7.2.2",
-    "requests>=2.32.5",
+    "requests>=2.33.1",
     "statsmodels>=0.14.6",
     "tomlkit>=0.14.0",
     "xlrd>=2.0.2",
@@ -26,9 +26,9 @@ project-includes = ["**/*.py*"]
 
 [dependency-groups]
 dev = [
-    "ruff>=0.15.6",
+    "ruff>=0.15.9",
     "pytest>=9.0.2",
-    "pytest-cov>=7.0.0",
+    "pytest-cov>=7.1.0",
     "pytest-mock>=3.15.1",
     "pytest-xdist>=3.8.0",
     "pre-commit>=4.5.1",
