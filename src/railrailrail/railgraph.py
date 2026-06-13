@@ -392,7 +392,7 @@ class RailGraph:
                         get_terminal_full_station_name()
                     )
                     steps.append(
-                        f"Board train in direction of {next_station_full_name}"  # Non linear line. Use next station instead.
+                        f"Board train in direction of {next_station_full_name}{Terminal.non_linear_ccl_direction(current_station, next_station)}"  # Non linear line. Use next station instead.
                         if terminal_full_station_name is None
                         else f"Board train towards terminus {terminal_full_station_name}"
                     )
@@ -425,7 +425,7 @@ class RailGraph:
                         get_terminal_full_station_name()
                     )
                     steps.append(
-                        f"Board train in direction of {next_station_full_name}"  # Non linear line. Use next station instead.
+                        f"Board train in direction of {next_station_full_name}{Terminal.non_linear_ccl_direction(current_station, next_station)}"  # Non linear line. Use next station instead.
                         if terminal_full_station_name is None
                         else f"Board train towards terminus {terminal_full_station_name}"
                     )
@@ -456,7 +456,7 @@ class RailGraph:
                         get_terminal_full_station_name()
                     )
                     steps.append(
-                        f"Board train in direction of {next_station_full_name}"  # Non linear line. Use next station instead.
+                        f"Board train in direction of {next_station_full_name}{Terminal.non_linear_ccl_direction(current_station, next_station)}"  # Non linear line. Use next station instead.
                         if terminal_full_station_name is None
                         else f"Board train towards terminus {terminal_full_station_name}"
                     )

@@ -154,3 +154,31 @@ class Terminal:
             ):
                 return next_station_code
             next_station_code = station_and_neighbours[next_station_index]
+
+    @classmethod
+    def non_linear_ccl_direction(
+        cls, current_station: SingaporeStation, next_station: SingaporeStation
+    ) -> str:
+        """Determine the direction of travel on the Circle line.
+
+        This method assumes that the Circle Line Stage 6 has been reached (i.e. the full circle is completed).
+
+        Args:
+            current_station (SingaporeStation): The current station.
+            next_station (SingaporeStation): The next station.
+
+        Returns:
+            str: The direction of travel on the non-linear CCL line. Empty string if either station is not on the Circle Line.
+        """
+        if not (current_station.line_code == next_station.line_code == "CC"):
+            return ""
+        if abs(current_station.station_number - next_station.station_number) == 1:
+            if current_station.station_number < next_station.station_number:
+                return " (Anticlockwise)"
+            else:
+                return " (Clockwise)"
+        else:  # Promenade and Bayfront are adjacent but their station numbers differ by more than 1, so direction is reversed.
+            if current_station.station_number < next_station.station_number:
+                return " (Clockwise)"
+            else:
+                return " (Anticlockwise)"
