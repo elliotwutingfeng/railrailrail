@@ -172,13 +172,15 @@ class Terminal:
         """
         if not (current_station.line_code == next_station.line_code == "CC"):
             return ""
-        if abs(current_station.station_number - next_station.station_number) == 1:
-            if current_station.station_number < next_station.station_number:
-                return " (Anticlockwise)"
-            else:
-                return " (Clockwise)"
-        else:  # Promenade and Bayfront are adjacent but their station numbers differ by more than 1, so direction is reversed.
-            if current_station.station_number < next_station.station_number:
-                return " (Clockwise)"
-            else:
-                return " (Anticlockwise)"
+
+        # Special case: Promenade (4) and Bayfront (34) are adjacent but their station numbers are not consecutive
+        is_promenade_and_bayfront = {
+            current_station.station_number,
+            next_station.station_number,
+        } == {4, 34}
+        is_ascending = current_station.station_number < next_station.station_number
+
+        # In special case, directions are reversed; otherwise normal
+        is_clockwise = is_ascending if is_promenade_and_bayfront else not is_ascending
+
+        return " (Clockwise)" if is_clockwise else " (Anticlockwise)"
