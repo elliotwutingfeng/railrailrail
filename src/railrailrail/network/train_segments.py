@@ -74,15 +74,15 @@ class TrainSegmentsMeta(type):
         ("CC26-CC27", ("duration", 115)),
         ("CC27-CC28", ("duration", 90)),
         ("CC28-CC29", ("duration", 195)),
-        ("CC29-CC30", ("duration", 110)),  # future
-        ("CC30-CC31", ("duration", 95)),  # future
-        ("CC31-CC32", ("duration", 115)),  # future
-        ("CC32-CC33", ("duration", 105)),  # future
+        ("CC29-CC30", ("duration", 120)),
+        ("CC30-CC31", ("duration", 90)),
+        ("CC31-CC32", ("duration", 100)),
+        ("CC32-CC33", ("duration", 110)),
         ("CC33-CC34", ("duration", 110)),
-        ("CE0X-CE0Y", ("duration", 120)),
-        ("CE0Y-CE0Z", ("duration", 105)),
-        ("CE0Z-CE1", ("duration", 115)),
-        ("CE1-CE2", ("duration", 110)),
+        ("CE0X-CE0Y", ("duration", 120)),  # defunct
+        ("CE0Y-CE0Z", ("duration", 105)),  # defunct
+        ("CE0Z-CE1", ("duration", 115)),  # defunct
+        ("CE1-CE2", ("duration", 110)),  # defunct
         ("CG-CG1", ("duration", 135)),
         ("CG1-CG2", ("duration", 255)),
         ("CP1-CP2", ("duration", 240)),  # future

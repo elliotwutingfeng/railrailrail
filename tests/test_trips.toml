@@ -259,12 +259,12 @@ directions = ["Start at JE5 Jurong East", "Board train towards terminus JS3 Teng
 
 [trip_98.output]
 nodes = ["CC31", "CC32", "CC33", "CC34", "CC4", "CC3", "CC2"]
-edges = [[115, "", "", 28], [105, "", "", 28], [110, "", "", 45], [115, "promenade_south", "", 45], [110, "promenade_west", "", 45], [85, "", "", 28]]
-costs = [143, 133, 155, 160, 575, 113]
-total_cost = 1279
+edges = [[100, "", "", 28], [110, "", "", 28], [110, "", "", 45], [115, "promenade_south", "", 45], [110, "promenade_west", "", 45], [85, "", "", 28]]
+costs = [128, 138, 155, 160, 575, 113]
+total_cost = 1269
 path_distance = 5405.101659572512
 haversine_distance = 3069.8811539678522
-directions = ["Start at CC31 Cantonment", "Board train in direction of CC32 Prince Edward Road (Anticlockwise)", "Switch over at CC4 Promenade", "Board train in direction of CC3 Esplanade (Clockwise)", "Alight at CC2 Bras Basah", "Total duration: 21 minutes 19 seconds", "Approximate path distance: 5.4 km, Haversine distance: 3.1 km, Circuity ratio: 1.8"]
+directions = ["Start at CC31 Cantonment", "Board train in direction of CC32 Prince Edward Road (Anticlockwise)", "Switch over at CC4 Promenade", "Board train in direction of CC3 Esplanade (Clockwise)", "Alight at CC2 Bras Basah", "Total duration: 21 minutes 9 seconds", "Approximate path distance: 5.4 km, Haversine distance: 3.1 km, Circuity ratio: 1.8"]
 
 [trip_99.output]
 nodes = ["TE33", "TE34", "TE35", "EW4", "EW5", "EW6", "EW7", "EW8", "EW9", "EW10", "EW11", "EW12", "DT14", "DT13", "DT12", "DT11", "DT10", "DT9", "DT8", "DT7", "DT6", "DT5", "DT4", "DT3", "DT2", "DT1", "BP6", "BP13", "BP12", "BP11", "BP10"]

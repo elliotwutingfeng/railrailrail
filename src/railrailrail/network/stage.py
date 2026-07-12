@@ -530,7 +530,7 @@ class StageMeta(type):
                     SingaporeStation("CC34", "Bayfront"),
                 ),
                 "Circle Line 6",
-                datetime.datetime.strptime("12 July 2026", "%d %B %Y"),  # TBC
+                datetime.datetime.strptime("12 July 2026", "%d %B %Y"),
             ),
             "tel_5_and_dtl_3e": (
                 (
