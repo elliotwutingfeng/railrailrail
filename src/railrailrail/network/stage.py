@@ -59,8 +59,8 @@ class StageMeta(type):
                     SingaporeStation("NS19", "Toa Payoh"),
                 ),
                 "Phase 1 1",
-                datetime.datetime.strptime("7 November 1987", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("7 November 1987", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "phase_1_2": (
@@ -76,8 +76,8 @@ class StageMeta(type):
                     SingaporeStation("NS26", "Raffles Place"),
                 ),
                 "Phase 1 2",
-                datetime.datetime.strptime("12 December 1987", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("12 December 1987", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "phase_1a": (
@@ -90,8 +90,8 @@ class StageMeta(type):
                     SingaporeStation("EW23", "Clementi"),
                 ),
                 "Phase 1A",
-                datetime.datetime.strptime("12 March 1988", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("12 March 1988", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "phase_2b_1": (
@@ -101,8 +101,8 @@ class StageMeta(type):
                     SingaporeStation("EW26", "Lakeside"),
                 ),
                 "Phase 2B 1",
-                datetime.datetime.strptime("5 November 1988", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("5 November 1988", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "phase_2b_2": (
@@ -111,8 +111,8 @@ class StageMeta(type):
                     SingaporeStation("NS14", "Khatib"),
                 ),
                 "Phase 2B 2",
-                datetime.datetime.strptime("20 December 1988", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("20 December 1988", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "phase_2a_1": (
@@ -131,8 +131,8 @@ class StageMeta(type):
                     SingaporeStation("NS27", "Marina Bay"),
                 ),
                 "Phase 2A 1",
-                datetime.datetime.strptime("4 November 1989", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("4 November 1989", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "phase_2a_2": (
@@ -142,8 +142,8 @@ class StageMeta(type):
                     SingaporeStation("EW3", "Simei"),
                 ),
                 "Phase 2A 2",
-                datetime.datetime.strptime("16 December 1989", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("16 December 1989", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "phase_2b_3": (
@@ -154,15 +154,15 @@ class StageMeta(type):
                     SingaporeStation("NS4", "Choa Chu Kang"),
                 ),
                 "Phase 2B 3",
-                datetime.datetime.strptime("10 March 1990", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("10 March 1990", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "phase_2b_4": (
                 (SingaporeStation("EW27", "Boon Lay"),),
                 "",
-                datetime.datetime.strptime("6 July 1990", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("6 July 1990", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "woodlands_extension": (
@@ -175,8 +175,8 @@ class StageMeta(type):
                     SingaporeStation("NS11", "Sembawang"),
                 ),
                 "Phase 2B 4",
-                datetime.datetime.strptime("10 February 1996", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("10 February 1996", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "bplrt": (
@@ -197,8 +197,8 @@ class StageMeta(type):
                     SingaporeStation("BP14", "Ten Mile Junction"),
                 ),
                 "Bukit Panjang LRT",
-                datetime.datetime.strptime("6 November 1999", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("6 November 1999", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "ewl_expo": (
@@ -207,22 +207,22 @@ class StageMeta(type):
                     SingaporeStation("CG1", "Expo"),
                 ),
                 "East West Line Expo",
-                datetime.datetime.strptime("10 January 2001", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("10 January 2001", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "dover": (
                 (SingaporeStation("EW22", "Dover"),),
                 "Dover",
-                datetime.datetime.strptime("18 October 2001", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("18 October 2001", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "ewl_changi_airport": (
                 (SingaporeStation("CG2", "Changi Airport"),),
                 "East West Line Changi Airport",
-                datetime.datetime.strptime("8 February 2002", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("8 February 2002", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "sklrt_east_loop": (
@@ -235,8 +235,8 @@ class StageMeta(type):
                     SingaporeStation("SE5", "Ranggung"),
                 ),
                 "Sengkang LRT East Loop",
-                datetime.datetime.strptime("18 January 2003", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("18 January 2003", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "nel": (
@@ -257,8 +257,8 @@ class StageMeta(type):
                     SingaporeStation("NE17", "Punggol"),
                 ),
                 "North East Line",
-                datetime.datetime.strptime("20 June 2003", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("20 June 2003", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "pglrt_east_loop_and_sklrt_west_loop": (
@@ -276,29 +276,29 @@ class StageMeta(type):
                     SingaporeStation("SW8", "Renjong"),
                 ),
                 "Punggol LRT East Loop and Sengkang LRT West Loop",
-                datetime.datetime.strptime("29 January 2005", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("29 January 2005", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "buangkok": (
                 (SingaporeStation("NE15", "Buangkok"),),
                 "Buangkok",
-                datetime.datetime.strptime("15 January 2006", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("15 January 2006", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "oasis": (
                 (SingaporeStation("PE6", "Oasis"),),
                 "Oasis",
-                datetime.datetime.strptime("15 June 2007", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("15 June 2007", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "farmway": (
                 (SingaporeStation("SW2", "Farmway"),),
                 "Farmway",
-                datetime.datetime.strptime("15 November 2007", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("15 November 2007", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "ewl_boon_lay_extension": (
@@ -307,8 +307,8 @@ class StageMeta(type):
                     SingaporeStation("EW29", "Joo Koon"),
                 ),
                 "East West Line Boon Lay Extension",
-                datetime.datetime.strptime("28 February 2009", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("28 February 2009", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "ccl_3": (
@@ -320,8 +320,8 @@ class StageMeta(type):
                     SingaporeStation("CC16", "Marymount"),
                 ),
                 "Circle Line Stage 3",
-                datetime.datetime.strptime("28 May 2009", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("28 May 2009", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "ccl_1_and_ccl_2": (
@@ -339,15 +339,15 @@ class StageMeta(type):
                     SingaporeStation("CC11", "Tai Seng"),
                 ),
                 "Circle Line Stage 1 and Circle Line Stage 2",
-                datetime.datetime.strptime("17 April 2010", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("17 April 2010", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "ten_mile_junction_temporary_closure": (
                 (),
                 "Ten Mile Junction Temporary Closure",
-                datetime.datetime.strptime("10 December 2010", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("10 December 2010", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "woodleigh_and_damai": (
@@ -356,8 +356,8 @@ class StageMeta(type):
                     SingaporeStation("PE7", "Damai"),
                 ),
                 "Woodleigh and Damai",
-                datetime.datetime.strptime("20 June 2011", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("20 June 2011", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "ccl_4_and_ccl_5": (
@@ -376,15 +376,15 @@ class StageMeta(type):
                     SingaporeStation("CC29", "HarbourFront"),
                 ),
                 "Circle Line Stage 4 and Circle Line Stage 5",
-                datetime.datetime.strptime("8 October 2011", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("8 October 2011", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "ten_mile_junction_reopen": (
                 (SingaporeStation("BP14", "Ten Mile Junction"),),
                 "Ten Mile Junction Reopen",
-                datetime.datetime.strptime("30 December 2011", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("30 December 2011", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "ccl_e": (
@@ -396,15 +396,15 @@ class StageMeta(type):
                     SingaporeStation("CE2", "Marina Bay"),
                 ),
                 "Circle Line Extension",
-                datetime.datetime.strptime("14 January 2012", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("14 January 2012", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "cheng_lim": (
                 (SingaporeStation("SW1", "Cheng Lim"),),
                 "Cheng Lim",
-                datetime.datetime.strptime("1 January 2013", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("1 January 2013", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "dtl_1": (
@@ -417,8 +417,8 @@ class StageMeta(type):
                     SingaporeStation("DT19", "Chinatown"),
                 ),
                 "Downtown Line 1",
-                datetime.datetime.strptime("22 December 2013", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("22 December 2013", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "pglrt_west_loop": (
@@ -428,22 +428,22 @@ class StageMeta(type):
                     SingaporeStation("PW7", "Soo Teck"),
                 ),
                 "Punggol LRT West Loop",
-                datetime.datetime.strptime("29 June 2014", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("29 June 2014", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "marina_south_pier": (
                 (SingaporeStation("NS28", "Marina South Pier"),),
                 "Marina South Pier",
-                datetime.datetime.strptime("23 November 2014", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("23 November 2014", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "kupang": (
                 (SingaporeStation("SW3", "Kupang"),),
                 "Kupang",
-                datetime.datetime.strptime("27 June 2015", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("27 June 2015", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "dtl_2": (
@@ -462,29 +462,29 @@ class StageMeta(type):
                     SingaporeStation("DT13", "Rochor"),
                 ),
                 "Downtown Line 2",
-                datetime.datetime.strptime("27 December 2015", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("27 December 2015", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "sam_kee": (
                 (SingaporeStation("PW1", "Sam Kee"),),
                 "Sam Kee",
-                datetime.datetime.strptime("29 February 2016", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("29 February 2016", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "punggol_point": (
                 (SingaporeStation("PW3", "Punggol Point"),),
                 "Punggol Point",
-                datetime.datetime.strptime("29 December 2016", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("29 December 2016", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "samudera": (
                 (SingaporeStation("PW4", "Samudera"),),
                 "Samudera",
-                datetime.datetime.strptime("31 March 2017", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("31 March 2017", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "ewl_tuas_extension": (
@@ -495,8 +495,8 @@ class StageMeta(type):
                     SingaporeStation("EW33", "Tuas Link"),
                 ),
                 "East West Line Tuas Extension",
-                datetime.datetime.strptime("18 June 2017", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("18 June 2017", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "dtl_3": (
@@ -519,22 +519,22 @@ class StageMeta(type):
                     SingaporeStation("DT35", "Expo"),
                 ),
                 "Downtown Line 3",
-                datetime.datetime.strptime("21 October 2017", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("21 October 2017", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "ten_mile_junction_permanent_closure": (
                 (),
                 "Ten Mile Junction Permanent Closure",
-                datetime.datetime.strptime("13 January 2019", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("13 January 2019", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "canberra": (
                 (SingaporeStation("NS12", "Canberra"),),
                 "Canberra",
-                datetime.datetime.strptime("2 November 2019", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("2 November 2019", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "tel_1": (
@@ -544,8 +544,8 @@ class StageMeta(type):
                     SingaporeStation("TE3", "Woodlands South"),
                 ),
                 "Thomson-East Coast Line 1",
-                datetime.datetime.strptime("31 January 2020", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("31 January 2020", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "tel_2": (
@@ -558,8 +558,8 @@ class StageMeta(type):
                     SingaporeStation("TE9", "Caldecott"),
                 ),
                 "Thomson-East Coast Line 2",
-                datetime.datetime.strptime("28 August 2021", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("28 August 2021", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "tel_3": (
@@ -577,8 +577,8 @@ class StageMeta(type):
                     SingaporeStation("TE22", "Gardens by the Bay"),
                 ),
                 "Thomson-East Coast Line 3",
-                datetime.datetime.strptime("13 November 2022", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("13 November 2022", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "tel_4": (
@@ -592,29 +592,29 @@ class StageMeta(type):
                     SingaporeStation("TE29", "Bayshore"),
                 ),
                 "Thomson-East Coast Line 4",
-                datetime.datetime.strptime("23 June 2024", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("23 June 2024", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "teck_lee": (
                 (SingaporeStation("PW2", "Teck Lee"),),
                 "Teck Lee",
-                datetime.datetime.strptime("15 August 2024", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("15 August 2024", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "nel_extension": (
                 (SingaporeStation("NE18", "Punggol Coast"),),
                 "North East Line Extension",
-                datetime.datetime.strptime("10 December 2024", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("10 December 2024", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "hume": (
                 (SingaporeStation("DT4", "Hume"),),
                 "Hume",
-                datetime.datetime.strptime("28 February 2025", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("28 February 2025", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "ccl_6": (
@@ -626,8 +626,8 @@ class StageMeta(type):
                     SingaporeStation("CC34", "Bayfront"),
                 ),
                 "Circle Line 6",
-                datetime.datetime.strptime("12 July 2026", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("12 July 2026", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),
             ),
             "tel_5_and_dtl_3e": (
@@ -638,8 +638,8 @@ class StageMeta(type):
                     SingaporeStation("DT37", "Sungei Bedok"),
                 ),
                 "Thomson-East Coast Line 5 and Downtown Line 3 Extension",
-                datetime.datetime.strptime("30 November 2026", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("30 November 2026", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),  # TBC
             ),
             "jrl_1": (
@@ -656,15 +656,15 @@ class StageMeta(type):
                     SingaporeStation("JW2", "Tawas"),
                 ),
                 "Jurong Region Line 1",
-                datetime.datetime.strptime("31 July 2028", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("31 July 2028", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),  # TBC
             ),
             "founders_memorial": (
                 (SingaporeStation("TE22A", "Founders' Memorial"),),
                 "Founders' Memorial",
-                datetime.datetime.strptime("30 November 2028", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("30 November 2028", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),  # TBC
             ),
             "jrl_2": (
@@ -679,8 +679,8 @@ class StageMeta(type):
                     SingaporeStation("JE7", "Pandan Reservoir"),
                 ),
                 "Jurong Region Line 2",
-                datetime.datetime.strptime("31 July 2029", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("31 July 2029", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),  # TBC
             ),
             "jrl_3": (
@@ -694,8 +694,8 @@ class StageMeta(type):
                     SingaporeStation("JW5", "Peng Kang Hill"),
                 ),
                 "Jurong Region Line 3",
-                datetime.datetime.strptime("31 July 2030", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("31 July 2030", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),  # TBC
             ),
             "crl_1": (
@@ -714,8 +714,8 @@ class StageMeta(type):
                     SingaporeStation("CR13", "Bright Hill"),
                 ),
                 "Cross Island Line 1",
-                datetime.datetime.strptime("31 December 2030", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("31 December 2030", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),  # TBC
             ),
             "crl_2": (
@@ -728,8 +728,8 @@ class StageMeta(type):
                     SingaporeStation("CR19", "Jurong Lake District"),
                 ),
                 "Cross Island Line 2",
-                datetime.datetime.strptime("30 November 2032", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("30 November 2032", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),  # TBC
             ),
             "crl_pe": (
@@ -740,15 +740,15 @@ class StageMeta(type):
                     SingaporeStation("CP4", "Punggol"),
                 ),
                 "Cross Island Line Punggol Extension",
-                datetime.datetime.strptime("31 December 2032", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("31 December 2032", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),  # TBC
             ),
             "brickland": (
                 (SingaporeStation("NS3A", "Brickland"),),
                 "Brickland",
-                datetime.datetime.strptime("31 December 2034", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("31 December 2034", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),  # TBC
             ),
             "jrl_js2a": (
@@ -757,8 +757,8 @@ class StageMeta(type):
                     # Unknown official name
                 ),
                 "Forest Hill",
-                datetime.datetime.strptime("31 December 2035", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("31 December 2035", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),  # TBC
             ),
             "dtl_2e": (
@@ -768,8 +768,8 @@ class StageMeta(type):
                     SingaporeStation("NS6", "Sungei Kadut"),
                 ),
                 "Downtown Line 2 Extension",
-                datetime.datetime.strptime("31 December 2035", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("31 December 2035", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),  # TBC
             ),
             "tel_e": (
@@ -785,8 +785,8 @@ class StageMeta(type):
                     SingaporeStation("TE35", "Tanah Merah"),
                 ),
                 "Thomson-East Coast Line Extension",
-                datetime.datetime.strptime("31 December 2040", "%d %B %Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("31 December 2040", "%d %B %Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),  # TBC
             ),
             "future": (
@@ -797,8 +797,8 @@ class StageMeta(type):
                     SingaporeStation("TE21", "Marina South"),
                 ),
                 "Future",
-                datetime.datetime.strptime("9999", "%Y").astimezone(
-                    datetime.timezone(datetime.timedelta(hours=8))
+                datetime.datetime.strptime("9999", "%Y").replace(
+                    tzinfo=datetime.timezone(datetime.timedelta(hours=8))
                 ),  # TBC
             ),  #   Unknown opening dates
         }
