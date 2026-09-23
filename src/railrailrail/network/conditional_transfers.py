@@ -66,14 +66,14 @@ class ConditionalTransfers:
         ConditionalTransfersSegment(("BP6", "BP13"), "bukit_panjang_service_a", "BP6"),
         ConditionalTransfersSegment(("BP6", "BP7"), "bukit_panjang_service_b", "BP6"),
         ConditionalTransfersSegment(("BP6", "BP14"), "bukit_panjang_service_c", "BP6"),
-        #
+        # ---
         ConditionalTransfersSegment(("STC", "SE1"), "sengkang_east_loop", "STC"),
         ConditionalTransfersSegment(("STC", "SE5"), "sengkang_east_loop", "STC"),
         ConditionalTransfersSegment(("STC", "SW1"), "sengkang_west_loop", "STC"),
         ConditionalTransfersSegment(("STC", "SW2"), "sengkang_west_loop", "STC", "SW1"),
         ConditionalTransfersSegment(("STC", "SW4"), "sengkang_west_loop", "STC", "SW2"),
         ConditionalTransfersSegment(("STC", "SW8"), "sengkang_west_loop", "STC"),
-        #
+        # ---
         ConditionalTransfersSegment(("PTC", "PE1"), "punggol_east_loop", "PTC"),
         ConditionalTransfersSegment(("PTC", "PE5"), "punggol_east_loop", "PTC", "PE6"),
         ConditionalTransfersSegment(("PTC", "PE6"), "punggol_east_loop", "PTC", "PE7"),
@@ -81,11 +81,11 @@ class ConditionalTransfers:
         ConditionalTransfersSegment(("PTC", "PW1"), "punggol_west_loop", "PTC"),
         ConditionalTransfersSegment(("PTC", "PW5"), "punggol_west_loop", "PTC", "PW1"),
         ConditionalTransfersSegment(("PTC", "PW7"), "punggol_west_loop", "PTC"),
-        #
+        # ---
         ConditionalTransfersSegment(("CC4", "CC5"), "promenade_east", "CC4"),
         ConditionalTransfersSegment(("CC3", "CC4"), "promenade_west", "CC4"),
         ConditionalTransfersSegment(("CC4", "CC34"), "promenade_south", "CC4"),
-        #
+        # ---
         ConditionalTransfersSegment(("JS6", "JS7"), "bahar_east", "JS7"),
         ConditionalTransfersSegment(("JS7", "JW1"), "bahar_west", "JS7"),
         ConditionalTransfersSegment(("JS7", "JS8"), "bahar_south", "JS7"),
@@ -97,7 +97,7 @@ class ConditionalTransfers:
     #
     conditional_transfers: immutabledict.immutabledict[
         str, immutabledict.immutabledict[str, int]
-    ] = immutabledict.immutabledict(
+    ] = immutabledict.immutabledict(  # noqa: RUF009
         {
             "punggol_west_loop": immutabledict.immutabledict(
                 {"punggol_east_loop": 360}
@@ -105,14 +105,14 @@ class ConditionalTransfers:
             "punggol_east_loop": immutabledict.immutabledict(
                 {"punggol_west_loop": 360}
             ),
-            #
+            # ---
             "sengkang_west_loop": immutabledict.immutabledict(
                 {"sengkang_east_loop": 360}
             ),
             "sengkang_east_loop": immutabledict.immutabledict(
                 {"sengkang_west_loop": 360}
             ),
-            #
+            # ---
             "bukit_panjang_service_a": immutabledict.immutabledict(
                 {
                     "bukit_panjang_service_b": 420,
@@ -135,11 +135,11 @@ class ConditionalTransfers:
             "bukit_panjang_main": immutabledict.immutabledict(
                 {"bukit_panjang_service_c": 420}
             ),
-            #
+            # ---
             "promenade_south": immutabledict.immutabledict({"promenade_west": 420}),
             "promenade_west": immutabledict.immutabledict({"promenade_south": 420}),
             "promenade_east": immutabledict.immutabledict({"promenade_south": 420}),
-            #
+            # ---
             "bahar_east": immutabledict.immutabledict({"bahar_west": 360}),
             "bahar_west": immutabledict.immutabledict({"bahar_south": 360}),
             "bahar_south": immutabledict.immutabledict({"bahar_east": 360}),

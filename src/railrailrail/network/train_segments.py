@@ -339,7 +339,7 @@ class TrainSegmentsMeta(type):
     )
 
     def __new__(cls, name, bases, dct):
-        cls.train_segments = dict()  # pyrefly: ignore
+        cls.train_segments = {}  # pyrefly: ignore
         pairs: set[tuple[str, str]] = set()
         for segment, *details in cls.__train_segments:
             # Validate segment format

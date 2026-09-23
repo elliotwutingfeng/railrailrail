@@ -118,7 +118,7 @@ class Config:
                 stations,
                 key=SingaporeStation.sort_key,
             )
-            for station, next_station in zip(line_stations[:-1], line_stations[1:]):
+            for station, next_station in itertools.pairwise(line_stations):
                 station_code, next_station_code = (
                     station.station_code,
                     next_station.station_code,
@@ -313,7 +313,7 @@ class Config:
         # Filter out unused conditional transfers.
         edge_types: set[str] = set()
         for start in self.segment_adjacency_matrix:
-            for _, segment_details in self.segment_adjacency_matrix[start].items():
+            for segment_details in self.segment_adjacency_matrix[start].values():
                 edge_type = segment_details.get("edge_type", None)
                 if isinstance(edge_type, str):
                     edge_types.add(edge_type)
@@ -333,7 +333,7 @@ class Config:
             dict[str, set[str]]: Map of non-linear line codes to terminal station codes.
         """
 
-        non_linear_line_terminals: dict[str, set[str]] = dict()
+        non_linear_line_terminals: dict[str, set[str]] = {}
 
         for line_code in (
             Terminal.looped_line_code_to_terminals
@@ -358,14 +358,12 @@ class Config:
             and "NS26" in self.station_code_to_station
         ):  # Special case: EWL still part of NSL.
             terminals = {
-                sorted(
-                    self._stations_by_line_code["EW"],
-                    key=SingaporeStation.sort_key,
-                )[-1].station_code,
-                sorted(
-                    self._stations_by_line_code["NS"],
-                    key=SingaporeStation.sort_key,
-                )[0].station_code,
+                max(
+                    self._stations_by_line_code["EW"], key=SingaporeStation.sort_key
+                ).station_code,
+                min(
+                    self._stations_by_line_code["NS"], key=SingaporeStation.sort_key
+                ).station_code,
             }  # Highest EW and Lowest NS
             non_linear_line_terminals["EW"] = terminals.copy()
             non_linear_line_terminals["NS"] = terminals.copy()
@@ -374,14 +372,12 @@ class Config:
             "DE1" in self.station_code_to_station
         ):  # Special case: Downtown Line 2 Extension.
             terminals = {
-                sorted(
-                    self._stations_by_line_code["DE"],
-                    key=SingaporeStation.sort_key,
-                )[-1].station_code,
-                sorted(
-                    self._stations_by_line_code["DT"],
-                    key=SingaporeStation.sort_key,
-                )[-1].station_code,
+                max(
+                    self._stations_by_line_code["DE"], key=SingaporeStation.sort_key
+                ).station_code,
+                max(
+                    self._stations_by_line_code["DT"], key=SingaporeStation.sort_key
+                ).station_code,
             }  # Highest DE and Highest DT
             non_linear_line_terminals["DE"] = terminals.copy()
             non_linear_line_terminals["DT"] = terminals.copy()
@@ -571,7 +567,7 @@ class Config:
         if not isinstance(segments, dict) or not segments:
             raise ValueError("Invalid config file: 'segments' must not be empty.")
 
-        segments_ = dict()
+        segments_ = {}
         for segment_link, segment_details in segments.items():
             vertices = tuple(segment_link.split("-", 2))
             if len(vertices) != 2:
@@ -579,16 +575,16 @@ class Config:
                     f"Invalid config file: Segment link must be in format 'AB1-AB2'. Got {segment_link}."
                 )
             if not isinstance(segment_details, dict):
-                raise ValueError("Invalid config file: Segment details must be a dict.")
+                raise TypeError("Invalid config file: Segment details must be a dict.")
             segments_[vertices] = segment_details
 
         transfers = network.get("transfers", None)
         if not isinstance(transfers, dict):
-            raise ValueError(
+            raise TypeError(
                 "Invalid config file: 'transfers' key must exist, even if there are no values."
             )
 
-        transfers_ = dict()
+        transfers_ = {}
         for transfer, transfer_details in transfers.items():
             vertices = tuple(transfer.split("-", 2))
             if len(vertices) != 2:
@@ -596,30 +592,28 @@ class Config:
                     f"Invalid config file: Transfer must be in format 'AB1-AB2'. Got {transfer}."
                 )
             if not isinstance(transfer_details, dict):
-                raise ValueError(
-                    "Invalid config file: Transfer details must be a dict."
-                )
+                raise TypeError("Invalid config file: Transfer details must be a dict.")
             transfers_[vertices] = transfer_details
 
         conditional_transfers = network.get("conditional_transfers", None)
         if not isinstance(conditional_transfers, dict):
-            raise ValueError(
+            raise TypeError(
                 "Invalid config file: 'conditional_transfers' key must exist, even if there are no values."
             )
 
         non_linear_line_terminals = network.get("non_linear_line_terminals", None)
         if not isinstance(non_linear_line_terminals, dict):
-            raise ValueError(
+            raise TypeError(
                 "Invalid config file: 'non_linear_line_terminals' key must exist, even if there are no values."
             )
 
         station_code_pseudonyms = network.get("station_code_pseudonyms", None)
         if not isinstance(station_code_pseudonyms, dict):
-            raise ValueError(
+            raise TypeError(
                 "Invalid config file: 'station_code_pseudonyms' key must exist, even if there are no values."
             )
 
-        station_coordinates: dict[str, Coordinates] = dict()
+        station_coordinates: dict[str, Coordinates] = {}
         with open(coordinates_path, "r") as f:
             csv_reader = csv.reader(f)
             next(csv_reader)  # Skip column headers.

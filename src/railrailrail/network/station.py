@@ -59,10 +59,10 @@ class SingaporeStation(Station):
     has_pseudo_station_code: bool = dataclasses.field(compare=False, init=False)
 
     missing_station_codes: immutabledict.immutabledict[str, str] = (
-        immutabledict.immutabledict({"CG": "EW4"})
+        immutabledict.immutabledict({"CG": "EW4"})  # noqa: RUF009
     )  # Missing from LTA DataMall Train Station Codes and Chinese Names.
     future_station_codes: immutabledict.immutabledict[str, str] = (
-        immutabledict.immutabledict(
+        immutabledict.immutabledict(  # noqa: RUF009
             {
                 "TE33": "CG2",
                 "TE34": "CG1",
@@ -73,7 +73,7 @@ class SingaporeStation(Station):
         )
     )
     pseudo_station_codes: immutabledict.immutabledict[str, str] = (
-        immutabledict.immutabledict(
+        immutabledict.immutabledict(  # noqa: RUF009
             {
                 "CE0X": "CC6",
                 "CE0Y": "CC5",
@@ -181,7 +181,7 @@ class SingaporeStation(Station):
         )
         # Ensure all line codes are unique within each interchange.
         for interchange in interchanges:
-            unique_line_codes = set(station.line_code for station in interchange)
+            unique_line_codes = {station.line_code for station in interchange}
             if len(unique_line_codes) != len(interchange):
                 raise ValueError(
                     f"Stations with same line code are not allowed to have same name. Station name: {next(iter(interchange)).station_name}."

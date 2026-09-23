@@ -14,13 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import pathlib
 import math
+import pathlib
 import re
-import pytest
 import tomllib
+
+import pytest
 import tomlkit
-from dijkstar.algorithm import PathInfo, NoPathError
+from dijkstar.algorithm import NoPathError, PathInfo
 
 from railrailrail.railgraph import RailGraph
 
@@ -60,23 +61,23 @@ class TestRailGraph:
         ),
         [
             (
-                dict(),
-                dict(),
-                dict(),
-                dict(),
-                dict(),
-                dict(),
-                dict(),
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
                 "stations must be non-empty dict.",
             ),
             (
-                dict(),
-                dict(),
-                dict(),
-                dict(),
-                dict(),
+                {},
+                {},
+                {},
+                {},
+                {},
                 {"EX1": ["Easy"]},
-                dict(),
+                {},
                 "stations must be dict[str, str]",
             ),
             (
@@ -88,12 +89,12 @@ class TestRailGraph:
                         "dwell_time_desc": 999999,
                     }
                 },
-                dict(),
-                dict(),
-                dict(),
-                dict(),
+                {},
+                {},
+                {},
+                {},
                 {"EX1": "Easy", "HX1": "How"},
-                dict(),
+                {},
                 "Segment duration_asc must be number in range 0-3600",
             ),
             (
@@ -105,12 +106,12 @@ class TestRailGraph:
                         "dwell_time_desc": 999999,
                     }
                 },
-                dict(),
-                dict(),
-                dict(),
-                dict(),
+                {},
+                {},
+                {},
+                {},
                 {"EX1": "Easy", "HX1": "How"},
-                dict(),
+                {},
                 "Segment duration_desc must be number in range 0-3600",
             ),
             (
@@ -122,12 +123,12 @@ class TestRailGraph:
                         "dwell_time_desc": 999999,
                     }
                 },
-                dict(),
-                dict(),
-                dict(),
-                dict(),
+                {},
+                {},
+                {},
+                {},
                 {"EX1": "Easy", "HX1": "How"},
-                dict(),
+                {},
                 "Segment dwell_time_asc must be number in range 0-3600",
             ),
             (
@@ -139,12 +140,12 @@ class TestRailGraph:
                         "dwell_time_desc": 999999,
                     }
                 },
-                dict(),
-                dict(),
-                dict(),
-                dict(),
+                {},
+                {},
+                {},
+                {},
                 {"EX1": "Easy", "HX1": "How"},
-                dict(),
+                {},
                 "Segment dwell_time_desc must be number in range 0-3600",
             ),
             (
@@ -162,12 +163,12 @@ class TestRailGraph:
                         "dwell_time_desc": 0,
                     },
                 },
-                dict(),
-                dict(),
-                dict(),
-                dict(),
+                {},
+                {},
+                {},
+                {},
                 {"EX1": "Easy", "HX1": "How"},
-                dict(),
+                {},
                 "Station GX1 in segment EX1-GX1 does not have a name.",
             ),
             (
@@ -179,12 +180,12 @@ class TestRailGraph:
                         "dwell_time_desc": 0,
                     },
                 },
-                dict(),
-                dict(),
-                dict(),
-                dict(),
+                {},
+                {},
+                {},
+                {},
                 {"EX1": "Easy", "HX1": "How", "GX1": "How", "KX1": "Get"},
-                dict(),
+                {},
                 "GX1-HX1 not found in [transfers].",
             ),
         ],
@@ -212,7 +213,7 @@ class TestRailGraph:
             )
 
     def test_find_shortest_path(self):
-        for trip, trip_details in self.trips.items():
+        for trip_details in self.trips.values():
             rail_graph = trip_details["rail_graph"]
             start = trip_details["input"]["start"]
             end = trip_details["input"]["end"]
@@ -252,7 +253,7 @@ class TestRailGraph:
                     )  # Sengkang East Loop was isolated.
 
     def test_make_directions(self):
-        for trip, trip_details in self.trips.items():
+        for trip_details in self.trips.values():
             start = trip_details["input"]["start"]
             end = trip_details["input"]["end"]
             rail_graph = trip_details["rail_graph"]
@@ -267,7 +268,7 @@ class TestRailGraph:
                 rail_graph.make_directions(self.single_node_path)
 
     def test_path_and_haversine_distance(self):
-        for trip, trip_details in self.trips.items():
+        for trip_details in self.trips.values():
             start = trip_details["input"]["start"]
             end = trip_details["input"]["end"]
             rail_graph = trip_details["rail_graph"]
@@ -296,7 +297,7 @@ def __generate_test_trips():  # pragma: no cover
     with open(parent_path / "test_trips.toml", "rb") as f:
         trips = tomllib.load(f)
 
-    data_ = dict()
+    data_ = {}
     for trip, trip_details in trips.items():
         network = trip_details["input"]["network"]
         start = trip_details["input"]["start"]
@@ -310,7 +311,7 @@ def __generate_test_trips():  # pragma: no cover
         path_distance, haversine_distance = rail_graph.path_and_haversine_distance(
             pathinfo
         )
-        data_[trip] = dict()
+        data_[trip] = {}
         data = data_[trip]
         data["nodes"] = pathinfo.nodes
         data["edges"] = pathinfo.edges

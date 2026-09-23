@@ -269,19 +269,18 @@ class RailGraph:
             ):  # Walking away from station -> Not waiting for train to depart.
                 dwell_time = 0
 
-            cost += self.conditional_transfers.get(previous_edge_type, dict()).get(
+            cost += self.conditional_transfers.get(previous_edge_type, {}).get(
                 next_edge_type, 0
             )
 
-            if current_station == start or next_station == end:
+            if (current_station == start or next_station == end) and (
+                (current_station, next_station) in self.transfers
+            ):  # Exclude transfer time for transfers at start or end of journey.
+                cost -= next_edge_duration
                 if (
-                    (current_station, next_station) in self.transfers
-                ):  # Exclude transfer time for transfers at start or end of journey.
-                    cost -= next_edge_duration
-                    if (
-                        next_station == end
-                    ):  # Exclude dwell time for transfer at end of journey.
-                        dwell_time = 0
+                    next_station == end
+                ):  # Exclude dwell time for transfer at end of journey.
+                    dwell_time = 0
 
             return cost + dwell_time
 
@@ -358,7 +357,10 @@ class RailGraph:
             current_station_full_name = current_station.full_station_name
             next_station_full_name = next_station.full_station_name
 
-            def get_terminal_full_station_name() -> str | None:
+            def get_terminal_full_station_name(
+                current_station_code: str = current_station_code,  # Handles B023 late binding
+                next_station_code: str = next_station_code,  # Handles B023 late binding
+            ) -> str | None:
                 terminal_station: SingaporeStation | None = (
                     self.station_code_to_station.get(
                         approaching_terminal,
@@ -411,14 +413,13 @@ class RailGraph:
                 elif (
                     0 < edge_idx
                     and self.conditional_transfers.get(
-                        pathinfo.edges[edge_idx - 1][1], dict()
+                        pathinfo.edges[edge_idx - 1][1], {}
                     ).get(pathinfo.edges[edge_idx][1], None)
                     is not None
                 ):  # Conditional interchange transfer
                     raise RuntimeError(
                         "Something is not right; conditional interchange transfers should not be interchange transfers. "
-                        "Check ConditionalInterchange class and rail network structure. PathInfo: %s"
-                        % pathinfo
+                        f"Check ConditionalInterchange class and rail network structure. PathInfo: {pathinfo}"
                     )
                 else:  # Board a train.
                     terminal_full_station_name: str | None = (
@@ -447,7 +448,7 @@ class RailGraph:
                 elif (
                     0 < edge_idx
                     and self.conditional_transfers.get(
-                        pathinfo.edges[edge_idx - 1][1], dict()
+                        pathinfo.edges[edge_idx - 1][1], {}
                     ).get(pathinfo.edges[edge_idx][1], None)
                     is not None
                 ):  # Conditional interchange transfer
@@ -503,7 +504,7 @@ class RailGraph:
                 self.station_coordinates[current_node],
                 self.station_coordinates[next_node],
             )
-            for current_node, next_node in zip(nodes[:-1], nodes[1:])
+            for current_node, next_node in itertools.pairwise(nodes)
         )
 
         logger.info(

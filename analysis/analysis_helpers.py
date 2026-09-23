@@ -46,7 +46,7 @@ def get_stage_journeys(stage: str) -> tuple[str, dict, RailGraph]:
     }  # Exclude pseudo station codes like CE0Y.
 
     # Run all possible pair permutations of stations on the RailGraph.
-    journeys = dict()
+    journeys = {}
     for start, end in itertools.permutations(real_stations, 2):
         try:
             pathinfo = rail_graph.find_shortest_path(start, end, walk=True)
