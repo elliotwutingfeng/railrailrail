@@ -22,6 +22,7 @@ install:
 	uv run pre-commit install
 
 update:
+	uvx --from python-update-checker@1.4.0 --exclude-newer "7 days" puc update pyproject.toml
 	uv lock --upgrade
 	uv sync --all-groups
 
