@@ -9,11 +9,11 @@ generate_config_examples:
 markdown_lint:
 	markdownlint --disable MD013 MD033 MD041 --fix . --ignore CODE_OF_CONDUCT.md
 
-ruff_check:
+check:
 	uv run ruff check
 	uv run ruff format --check
 
-ruff_format:
+format:
 	uv run ruff check --fix
 	uv run ruff format
 
@@ -26,5 +26,5 @@ update:
 	uv lock --upgrade
 	uv sync --all-groups
 
-test: ruff_check
+test: check
 	uv run pytest -vv --cov=./ --cov-report html --cov-report=lcov --cov-branch -n auto
