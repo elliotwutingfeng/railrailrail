@@ -18,13 +18,12 @@ format:
 	uv run ruff format
 
 install:
-	uv sync --locked --all-extras --dev
+	uv sync --locked --all-groups --all-extras
 	uv run pre-commit install
 
 update:
 	uvx --from python-update-checker@1.4.0 --exclude-newer "7 days" puc update pyproject.toml
-	uv lock --upgrade
-	uv sync --all-groups
+	uv sync --upgrade --all-groups --all-extras
 
 test: check
 	uv run pytest -vv --cov=./ --cov-report html --cov-report=lcov --cov-branch -n auto
