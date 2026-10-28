@@ -41,8 +41,8 @@ class Coordinates:
         """Great-circle (shortest) distance between 2 points on Earth in metres.
 
         Args:
-            initial_coord (float): Coordinates of of initial point in decimal degrees.
-            final_coord (float): Coordinates of final point in decimal degrees.
+            initial_coord (Coordinates): Coordinates of of initial point in decimal degrees.
+            final_coord (Coordinates): Coordinates of final point in decimal degrees.
 
         Returns:
             float: Shortest distance between 2 points in metres.
