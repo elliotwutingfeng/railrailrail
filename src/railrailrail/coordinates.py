@@ -59,6 +59,8 @@ class Coordinates:
             math.sin(dlat / 2) ** 2
             + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2) ** 2
         )
+        if a < 0 or a > 1:
+            raise ValueError("Invalid value for haversine formula: a must be in [0, 1]")
         c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
         return cls.__earth_radius_in_metres * c

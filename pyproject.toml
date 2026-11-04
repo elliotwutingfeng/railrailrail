@@ -26,8 +26,8 @@ project-includes = ["**/*.py*"]
 
 [dependency-groups]
 dev = [
-    "ruff==0.17.1",
-    "pytest==9.1.1",
+    "ruff==0.17.3",
+    "pytest==9.2.0",
     "pytest-cov==7.1.0",
     "pytest-mock==3.17.0",
     "pytest-xdist==3.8.0",
@@ -35,8 +35,8 @@ dev = [
 ]
 
 [build-system]
-requires = ["uv_build >=0.13, <0.14"]
-build-backend = "uv_build"
+requires = ["flit-core >=4.2.0, <5"]
+build-backend = "flit_core.buildapi"
 
 [tool.uv]
 exclude-newer = "7 days"

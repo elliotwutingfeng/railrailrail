@@ -29,8 +29,8 @@ railrailrail finds fastest routes between any 2 stations on the Singapore MRT/LR
 
 ## Requirements
 
-- Python 3.14+
-- [uv](https://docs.astral.sh/uv) 0.9.15+
+- Python 3.15+
+- [uv](https://docs.astral.sh/uv) 0.13.6+
 - GNU Make
 
 Works natively on a POSIX/UNIX-like environment like Linux/macOS. Windows users should use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install).

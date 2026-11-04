@@ -638,9 +638,9 @@ class StageMeta(type):
                     SingaporeStation("DT37", "Sungei Bedok"),
                 ),
                 "Thomson-East Coast Line 5 and Downtown Line 3 Extension",
-                datetime.datetime.strptime("30 November 2026", "%d %B %Y").replace(
+                datetime.datetime.strptime("26 December 2026", "%d %B %Y").replace(
                     tzinfo=datetime.timezone(datetime.timedelta(hours=8))
-                ),  # TBC
+                ),
             ),
             "jrl_1": (
                 (
