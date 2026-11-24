@@ -105,7 +105,7 @@ class SingaporeStation(Station):
             self.to_station_code_components(self.station_code)
         )  # Based on pseudo station code, if any.
         object.__setattr__(self, "line_code", line_code)
-        object.__setattr__(self, "station_number", int(station_number))
+        object.__setattr__(self, "station_number", station_number)
         object.__setattr__(self, "station_number_suffix", station_number_suffix)
 
         if self.real_station_code is None:

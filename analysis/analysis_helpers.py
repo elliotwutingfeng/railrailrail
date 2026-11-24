@@ -110,6 +110,7 @@ def get_station_agg_stats(df: pd.DataFrame, rail_graph: RailGraph) -> pd.DataFra
     )  # Remove trips between stations from the same interchange.
     df = (
         df.groupby("start")
+        # pyrefly: ignore[no-matching-overload]
         .agg(
             {
                 "circuity": agg_functions,

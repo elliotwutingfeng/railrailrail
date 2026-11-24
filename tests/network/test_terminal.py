@@ -67,13 +67,13 @@ class TestTerminal:
         )
 
         # Journeys on lines without loops must start and end on stations with same line code.
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match="must be the same"):
             Terminal.get_approaching_terminal(
                 graph, non_linear_line_terminals, "EW1", "NS2"
             )
 
         # Journey cannot start and end at the same station.
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match="must be different"):
             Terminal.get_approaching_terminal(
                 graph, non_linear_line_terminals, "EW1", "EW1"
             )

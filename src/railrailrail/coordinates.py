@@ -72,17 +72,17 @@ class Coordinates:
             / "config_examples"
             / "station_coordinates.csv"
         )
-        with open(example_coordinates_path, "r") as f:
+        with pathlib.Path.open(example_coordinates_path, "r") as f:
             example_coordinates = f.read().splitlines()
         try:
-            with open(path, "r") as f:
+            with pathlib.Path.open(path, "r") as f:
                 coordinates = f.read().splitlines()
         except OSError:
             coordinates = None
         if coordinates is None or all(not line for line in coordinates):
             shutil.copy(src=example_coordinates_path, dst=path)
         else:
-            with open(path, "w") as f:
+            with pathlib.Path.open(path, "w") as f:
                 f.write(
                     "\n".join(
                         line.removeprefix("  ").rstrip("\n")

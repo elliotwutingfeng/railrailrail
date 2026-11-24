@@ -1,6 +1,6 @@
 repos:
     - repo: https://github.com/tsvikas/sync-with-uv
-      rev: v0.5.0
+      rev: v0.6.0
       hooks:
           - id: sync-with-uv
             always_run: true
@@ -10,7 +10,7 @@ repos:
           - id: check-yaml
             always_run: true
     - repo: https://github.com/astral-sh/ruff-pre-commit
-      rev: v0.17.3
+      rev: v0.17.0
       hooks:
           - id: ruff-check
             always_run: true

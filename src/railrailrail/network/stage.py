@@ -879,11 +879,11 @@ class StageMeta(type):
                         f"Not allowed: Multiple stations with station code {station_code} must not exist concurrently."
                     )  # pragma: no cover
 
-        cls.stages = immutabledict.immutabledict(  # pyrefly: ignore
+        cls.stages = immutabledict.immutabledict(
             {stage: stations for stage, (stations, _, _) in cls.__stages.items()}
         )
-        cls.stages_defunct = cls.__stages_defunct  # pyrefly: ignore
-        cls.stages_info = {  # pyrefly: ignore
+        cls.stages_defunct = cls.__stages_defunct
+        cls.stages_info = {
             stage: (stage_description, stage_timestamp)
             for stage, (_, stage_description, stage_timestamp) in cls.__stages.items()
         }

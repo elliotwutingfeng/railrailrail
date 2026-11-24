@@ -21,13 +21,43 @@ from railrailrail.network.conditional_transfers import ConditionalTransfersSegme
 
 class TestConditionalTransfersSegment:
     @pytest.mark.parametrize(
-        "station_code_pair,edge_type,interchange_station_code,defunct_with_station_code",
+        (
+            "station_code_pair",
+            "edge_type",
+            "interchange_station_code",
+            "defunct_with_station_code",
+            "match",
+        ),
         [
-            (("AB1", "AB2"), "", "AB1", None),
-            (("AB1", "AB1"), "x", "AB1", None),
-            (("AB1", "AB2"), "x", "AB3", None),
-            (("AB1", "AB2"), "x", "AB1", "AB1"),
-            (("AB1", "AB2"), "x", "AB1", "AB2"),
+            (("AB1", "AB2"), "", "AB1", None, "edge_type must be a non-empty string"),
+            (
+                ("AB1", "AB1"),
+                "x",
+                "AB1",
+                None,
+                "station_code_pair must be 2 different station codes",
+            ),
+            (
+                ("AB1", "AB2"),
+                "x",
+                "AB3",
+                None,
+                "station_code_pair must contain interchange_station_code",
+            ),
+            (
+                ("AB1", "AB2"),
+                "x",
+                "AB1",
+                "AB1",
+                "defunct_with_station_code must not be in station_code_pair",
+            ),
+            (
+                ("AB1", "AB2"),
+                "x",
+                "AB1",
+                "AB2",
+                "defunct_with_station_code must not be in station_code_pair",
+            ),
         ],
     )
     def test_post_init(
@@ -36,8 +66,9 @@ class TestConditionalTransfersSegment:
         edge_type,
         interchange_station_code,
         defunct_with_station_code,
+        match,
     ):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match=match):
             ConditionalTransfersSegment(
                 station_code_pair,
                 edge_type,

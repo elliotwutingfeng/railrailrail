@@ -25,5 +25,5 @@ class TestStage:
         assert Stage.stages_defunct
 
     def test_bad_stage(self):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match="No such stage"):
             Stage("this_is_not_a_real_stage")

@@ -17,8 +17,8 @@ limitations under the License.
 from __future__ import annotations
 
 import itertools
-import pathlib
 import typing
+lazy import pathlib
 
 from dijkstar import Graph
 from dijkstar.algorithm import PathInfo, find_path
@@ -71,7 +71,7 @@ class RailGraph:
             station_code: SingaporeStation(
                 station_code,
                 station_name,
-                real_station_code=station_code_pseudonyms.get(station_code, None),
+                real_station_code=station_code_pseudonyms.get(station_code),
             )
             for station_code, station_name in stations.items()
         }
@@ -344,7 +344,9 @@ class RailGraph:
             current_station_code,
             next_station_code,
             edge_details,
-        ) in enumerate(zip(pathinfo.nodes[:-1], pathinfo.nodes[1:], pathinfo.edges)):
+        ) in enumerate(
+            zip(pathinfo.nodes[:-1], pathinfo.nodes[1:], pathinfo.edges, strict=True)
+        ):
             current_station = self.station_code_to_station[current_station_code]
             next_station = self.station_code_to_station[next_station_code]
             is_pseudo_transfer = (
@@ -411,7 +413,7 @@ class RailGraph:
                     steps.append(f"Walk to {next_station_full_name}")
                     status = "walking"
                 elif (
-                    0 < edge_idx
+                    edge_idx > 0
                     and self.conditional_transfers.get(
                         pathinfo.edges[edge_idx - 1][1], {}
                     ).get(pathinfo.edges[edge_idx][1], None)
@@ -446,7 +448,7 @@ class RailGraph:
                     steps.append(f"Walk to {next_station_full_name}")
                     status = "walking"
                 elif (
-                    0 < edge_idx
+                    edge_idx > 0
                     and self.conditional_transfers.get(
                         pathinfo.edges[edge_idx - 1][1], {}
                     ).get(pathinfo.edges[edge_idx][1], None)

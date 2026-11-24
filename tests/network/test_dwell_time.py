@@ -21,7 +21,13 @@ from railrailrail.network.dwell_time import DwellTime
 
 class TestDwellTime:
     @pytest.mark.parametrize(
-        "terminal_station_codes,interchange_station_codes,current_station,next_station,expected_dwell_times",
+        (
+            "terminal_station_codes",
+            "interchange_station_codes",
+            "current_station",
+            "next_station",
+            "expected_dwell_times",
+        ),
         [
             ({}, {}, "SW1", "STC", (28, 28)),
             ({}, {"SW1"}, "SW1", "STC", (28, 45)),

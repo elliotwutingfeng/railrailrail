@@ -10,6 +10,7 @@ markdown_lint:
 	markdownlint --disable MD013 MD033 MD041 --fix . --ignore CODE_OF_CONDUCT.md
 
 check:
+	uv run pyrefly check
 	uv run ruff check
 	uv run ruff format --check
 
@@ -22,7 +23,8 @@ install:
 	uv run pre-commit install
 
 update:
-	uvx --from python-update-checker@1.4.0 --exclude-newer "7 days" puc update pyproject.toml
+	uvx --from python-update-checker@1.5.0 --exclude-newer "7 days" puc update pyproject.toml
+	uv lock
 	uv sync --upgrade --all-groups --all-extras
 
 test: check

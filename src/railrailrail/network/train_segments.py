@@ -339,7 +339,7 @@ class TrainSegmentsMeta(type):
     )
 
     def __new__(cls, name, bases, dct):
-        cls.train_segments = {}  # pyrefly: ignore
+        cls.train_segments = {}
         pairs: set[tuple[str, str]] = set()
         for segment, *details in cls.__train_segments:
             # Validate segment format
@@ -370,11 +370,11 @@ class TrainSegmentsMeta(type):
 
             # Validate segment details
             segment_details = dict(details)
-            if type(segment_details.get("duration", None)) is not int:
+            if type(segment_details.get("duration")) is not int:
                 raise AttributeError(
                     "Segment duration must be int."
                 )  # pragma: no cover
-            cls.train_segments[segment] = segment_details  # pyrefly: ignore
+            cls.train_segments[segment] = segment_details
 
         return super().__new__(cls, name, bases, dct)
 

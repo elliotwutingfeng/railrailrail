@@ -51,14 +51,16 @@ class TestCoordinates:
         # Modify in-place.
         mocked_open = self.mocker.mock_open()
         mocked_open.return_value.read.side_effect = ["a", "b"]
-        mocked_open = self.mocker.patch("builtins.open", mocked_open)
+        mocked_open = self.mocker.patch(
+            "railrailrail.coordinates.pathlib.Path.open", mocked_open
+        )
 
         Coordinates.update_coordinates_file(coordinates_path)
         assert mocked_open.call_count == 3
 
         # Direct copy.
         mocked_open = self.mocker.mock_open()
-        self.mocker.patch("builtins.open", mocked_open)
+        self.mocker.patch("railrailrail.coordinates.pathlib.Path.open", mocked_open)
         Coordinates.update_coordinates_file(coordinates_path)
         mocked_copy.assert_called_once_with(
             src=example_coordinates_path, dst=coordinates_path

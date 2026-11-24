@@ -78,20 +78,15 @@ class TransfersMeta(type):
     )
 
     def __new__(cls, name, bases, dct):
-        cls.interchange_transfers = {  # pyrefly: ignore
+        cls.interchange_transfers = {
             station_name: duration
             for station_name, duration in cls.__interchange_transfers
         }
-        if len(cls.interchange_transfers) != len(  # pyrefly: ignore
-            cls.__interchange_transfers
-        ):
+        if len(cls.interchange_transfers) != len(cls.__interchange_transfers):
             raise AttributeError(
                 "Duplicate station names are not allowed."
             )  # pragma: no cover
-        if any(
-            duration <= 0
-            for duration in cls.interchange_transfers.values()  # pyrefly: ignore
-        ):
+        if any(duration <= 0 for duration in cls.interchange_transfers.values()):
             raise AttributeError(
                 "Transfer duration must be positive."
             )  # pragma: no cover

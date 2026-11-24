@@ -71,7 +71,7 @@ class WalksMeta(type):
                     f"Duplicate route not allowed: {station_name_1}, {station_name_2}"
                 )  # pragma: no cover
             pairs.add(pair)
-        cls.routes = cls.__routes  # pyrefly: ignore
+        cls.routes = cls.__routes
         return super().__new__(cls, name, bases, dct)
 
 

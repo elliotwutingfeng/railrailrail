@@ -21,7 +21,7 @@ from railrailrail.network.station import SingaporeStation
 
 class TestStation:
     @pytest.mark.parametrize(
-        "station_code,station_code_components",
+        ("station_code", "station_code_components"),
         [
             (("NS1"), ("NS", 1, "")),
             (("NS3A"), ("NS", 3, "A")),
@@ -41,7 +41,9 @@ class TestStation:
     )
     def test_to_station_code_components(self, station_code, station_code_components):
         if station_code_components is None:
-            with pytest.raises(ValueError):  # Invalid station codes
+            with pytest.raises(
+                ValueError, match="Invalid station code"
+            ):  # Invalid station codes
                 SingaporeStation.to_station_code_components(station_code)
         else:
             assert (
@@ -57,7 +59,7 @@ class TestStation:
                 SingaporeStation("AC2", "Y"),
             ]
         ) == ({SingaporeStation("AB1", "X"), SingaporeStation("AC1", "X")},)
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match="Stations with same line code"):
             SingaporeStation.get_interchanges(
                 [SingaporeStation("AB1", "X"), SingaporeStation("AB2", "X")]
             )

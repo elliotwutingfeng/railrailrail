@@ -34,7 +34,7 @@ class TestRailGraph:
             parent_path.parent / "config_examples" / "station_coordinates.csv"
         )
 
-        with open(parent_path / "test_trips.toml", "rb") as f:
+        with pathlib.Path.open(parent_path / "test_trips.toml", "rb") as f:
             self.trips: dict = tomllib.load(f)
         for trip in self.trips:
             test_network_path = (
@@ -56,8 +56,14 @@ class TestRailGraph:
 
     @pytest.mark.parametrize(
         (
-            "segments,transfers,conditional_transfers,non_linear_line_terminals,"
-            "station_code_pseudonyms,stations,station_coordinates,match"
+            "segments",
+            "transfers",
+            "conditional_transfers",
+            "non_linear_line_terminals",
+            "station_code_pseudonyms",
+            "stations",
+            "station_coordinates",
+            "match",
         ),
         [
             (
@@ -237,7 +243,7 @@ class TestRailGraph:
                 f"{start}-{end} | Expected {expected_pathinfo.total_cost}. Got {actual_pathinfo.total_cost}."
             )
 
-            with pytest.raises(ValueError):
+            with pytest.raises(ValueError, match="Station code not found"):
                 rail_graph.find_shortest_path("AA1", "BB2")
 
             if trip_details["input"]["network"] == "sklrt_east_loop":
@@ -247,10 +253,12 @@ class TestRailGraph:
                     )  # Sengkang East Loop was isolated.
 
             if trip_details["input"]["network"] == "tel_4":
-                with pytest.raises(ValueError):
+                with pytest.raises(
+                    ValueError, match="Station code pseudonym not allowed"
+                ):
                     rail_graph.find_shortest_path(
                         "EW6", "CE0Y"
-                    )  # Sengkang East Loop was isolated.
+                    )  # Station code pseudonym not allowed.
 
     def test_make_directions(self):
         for trip_details in self.trips.values():
@@ -264,7 +272,7 @@ class TestRailGraph:
             )
 
             # At least 2 stations needed for journey.
-            with pytest.raises(ValueError):
+            with pytest.raises(ValueError, match="At least 2 stations"):
                 rail_graph.make_directions(self.single_node_path)
 
     def test_path_and_haversine_distance(self):
@@ -279,11 +287,12 @@ class TestRailGraph:
             )
             actual = rail_graph.path_and_haversine_distance(trip_details["pathinfo"])
             assert all(
-                math.isclose(p[0], p[1], rel_tol=0.01) for p in zip(expected, actual)
+                math.isclose(p[0], p[1], rel_tol=0.01)
+                for p in zip(expected, actual, strict=True)
             ), f"{start}-{end} | Expected {expected}. Got {actual}."
 
             # At least 2 stations needed for journey.
-            with pytest.raises(ValueError):
+            with pytest.raises(ValueError, match="At least 2 stations"):
                 rail_graph.path_and_haversine_distance(self.single_node_path)
 
 
@@ -294,7 +303,7 @@ def __generate_test_trips():  # pragma: no cover
     """
     parent_path: pathlib.Path = pathlib.Path(__file__).resolve().parent
 
-    with open(parent_path / "test_trips.toml", "rb") as f:
+    with pathlib.Path.open(parent_path / "test_trips.toml", "rb") as f:
         trips = tomllib.load(f)
 
     data_ = {}

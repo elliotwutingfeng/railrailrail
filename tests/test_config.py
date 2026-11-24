@@ -233,13 +233,13 @@ class TestConfig:
         config_file_path = pathlib.Path("network_test.toml")
 
         mocked_open = self.mocker.patch(
-            "railrailrail.config.open", self.mocker.mock_open()
+            "railrailrail.config.pathlib.Path.open", self.mocker.mock_open()
         )  # Overwrite existing file.
         self.config_tel_3.update_network_config_file(config_file_path)
         assert mocked_open.call_count == 2
 
         mocked_open = self.mocker.patch(
-            "railrailrail.config.open",
+            "railrailrail.config.pathlib.Path.open",
             side_effect=[OSError, self.mocker.mock_open().return_value],
         )  # Create new file if it is empty or does not exist.
         self.config_tel_3.update_network_config_file(config_file_path)

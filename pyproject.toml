@@ -16,7 +16,7 @@ dependencies = [
     "psutil==7.2.2",
     "requests==2.34.2",
     "statsmodels==0.15.0",
-    "tomlkit==0.15.2",
+    "tomlkit==0.15.1",
     "xlrd==2.0.2",
     "jupyter==1.1.1",
 ]
@@ -26,17 +26,54 @@ project-includes = ["**/*.py*"]
 
 [dependency-groups]
 dev = [
-    "ruff==0.17.3",
-    "pytest==9.2.0",
+    "ruff==0.17.0",
+    "pytest==9.1.1",
     "pytest-cov==7.1.0",
-    "pytest-mock==3.17.0",
+    "pytest-mock==3.16.0",
     "pytest-xdist==3.8.0",
     "pre-commit==4.7.0",
+    "pyrefly==1.3.2",
+    "types-shapely==2.1.0.20260728",
 ]
 
 [build-system]
-requires = ["flit-core >=4.2.0, <5"]
+requires = ["flit-core >=4.0.2, <5"]
 build-backend = "flit_core.buildapi"
 
+[tool.ruff.lint]
+select = [
+    "YTT",   # flake8-2020
+    "S",     # flake8-bandit
+    "B",     # flake8-bugbear
+    "COM",   # flake8-commas
+    "PYI",   # flake8-pyi
+    "PT",    # flake8-pytest-style
+    "SIM",   # flake8-simplify
+    "TC",    # flake8-type-checking
+    "PTH",   # flake8-use-pathlib
+    "I",     # isort
+    "PERF",  # Perflint
+    "E",     # pycodestyle
+    "W",     # pycodestyle
+    "F",     # Pyflakes
+    "UP",    # pyupgrade
+    "RUF",   # Ruff-specific rules
+]
+ignore = [
+    "COM812",   # missing trailing comma; conflicts with ruff format
+    "E501",     # line too long; the formatter handles line length
+    "S603",     # subprocess call with shell=True
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+    "S101", # assert statement used; pytest relies on assert statements
+]
+"!tests/**" = [
+    "PT", # pytest style rules are to be ignored outside of tests
+]
+
 [tool.uv]
-exclude-newer = "7 days"
+audit = { malware-check = true }
+exclude-newer = "42 days"
+preview-features = ["malware-check"]

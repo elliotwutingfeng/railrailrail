@@ -27,12 +27,12 @@ import tomlkit.items
 from railrailrail.coordinates import Coordinates
 from railrailrail.network.conditional_transfers import ConditionalTransfers
 from railrailrail.network.dwell_time import DwellTime
-from railrailrail.network.stage import Stage
 from railrailrail.network.station import SingaporeStation
 from railrailrail.network.terminal import Terminal
 from railrailrail.network.train_segments import TrainSegments
 from railrailrail.network.transfers import Transfers
 from railrailrail.network.walks import Walks
+lazy from railrailrail.network.stage import Stage
 
 
 class Config:
@@ -525,13 +525,13 @@ class Config:
             path (pathlib.Path): Path to network config file.
         """
         try:
-            with open(path, "r") as f:
+            with pathlib.Path.open(path, "r") as f:
                 original = f.read().splitlines()
         except OSError:
             original = None
         network = self.make_network()
         updated: list[str] = tomlkit.dumps(network).splitlines()
-        with open(path, "w") as f:
+        with pathlib.Path.open(path, "w") as f:
             if original is None or all(not line for line in original):
                 tomlkit.dump(network, f)  # File at path is empty or non-existent.
             else:
@@ -553,7 +553,7 @@ class Config:
         Returns:
             tuple: Parsed network config data.
         """
-        with open(network_path, "rb") as f:
+        with pathlib.Path.open(network_path, "rb") as f:
             network = tomllib.load(f)
 
         schema = network.get("schema", None)
@@ -614,7 +614,7 @@ class Config:
             )
 
         station_coordinates: dict[str, Coordinates] = {}
-        with open(coordinates_path, "r") as f:
+        with pathlib.Path.open(coordinates_path, "r") as f:
             csv_reader = csv.reader(f)
             next(csv_reader)  # Skip column headers.
             for row in csv_reader:

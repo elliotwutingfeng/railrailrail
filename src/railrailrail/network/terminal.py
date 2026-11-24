@@ -17,7 +17,7 @@ limitations under the License.
 from collections import OrderedDict, defaultdict
 
 import immutabledict
-from dijkstar import Graph
+lazy from dijkstar import Graph
 
 from railrailrail.network.station import SingaporeStation
 
